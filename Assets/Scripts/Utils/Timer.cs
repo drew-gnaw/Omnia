@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace S2dio.Utils
 {
@@ -19,6 +20,8 @@ namespace S2dio.Utils
         }
 
         public bool IsRunning => isRunning;
+        
+        public float Progress => isRunning ? 1 - (timeRemaining / duration) : 0f;
 
         public void Start()
         {

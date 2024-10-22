@@ -11,21 +11,25 @@ namespace S2dio.Player
         public BoxCollider2D groundCheck;
         public BoxCollider2D leftWallCheck;
         public BoxCollider2D rightWallCheck;
+        public Animator animator;
+
+        [Header(("General Settings"))] [SerializeField]
+        float maxFallingSpeed = 10f;
+
+        [SerializeField] float moveSpeed = 5f;
 
         [Header("Jump Settings")] [SerializeField]
-        float jumpForce = 7f;
+        private float jumpForce = 7f;
 
         [SerializeField] float jumpDuration = 0.2f;
         [SerializeField] float jumpCooldown = 0f;
         [SerializeField] float gravityMultiplier = 3f;
         [SerializeField] float maxSlidingSpeed = 4f;
         [SerializeField] public float wallJumpPower = 2f;
+        [SerializeField] public float wallJumpLockoutTime = 1f;
 
-
-        public float moveSpeed = 5f;
         public float attackCooldownDuration = 0.5f;
-        public Animator animator;
-        public float groundCheckRadius = 0.2f;
+
         public WeaponClass currentWeapon;
         public WeaponClass offhandWeapon;
 
@@ -46,10 +50,9 @@ namespace S2dio.Player
         private CountdownTimer jumpTimer;
         private CountdownTimer jumpCooldownTimer;
         private CountdownTimer wallJumpTimer;
-
+        private CountdownTimer wallJumpLockoutTimer;
 
         private CountdownTimer attackTimer;
-        private bool allowHorizontalInput = true;
 
         float jumpVelocity;
         float xVelocity;
@@ -100,9 +103,11 @@ namespace S2dio.Player
             jumpTimer = new CountdownTimer(jumpDuration);
             jumpCooldownTimer = new CountdownTimer(jumpCooldown);
             wallJumpTimer = new CountdownTimer(jumpDuration);
+            wallJumpLockoutTimer = new CountdownTimer(wallJumpLockoutTime);
 
             jumpTimer.OnTimerStart += () => jumpVelocity = jumpForce;
             wallJumpTimer.OnTimerStart += () => jumpVelocity = jumpForce;
+            wallJumpTimer.OnTimerStart += () => wallJumpLockoutTimer.Start();
             jumpTimer.OnTimerStop += () => jumpCooldownTimer.Start();
             wallJumpTimer.OnTimerStop += () => jumpCooldownTimer.Start();
             attackTimer = new CountdownTimer(attackCooldownDuration);
@@ -115,6 +120,7 @@ namespace S2dio.Player
             HandleWallCheck();
             HandleInput();
             HandleTimers();
+            Debug.Log(stateMachine.CurrentState);
         }
 
         void HandleTimers()
@@ -122,6 +128,7 @@ namespace S2dio.Player
             jumpTimer.Tick(Time.deltaTime);
             wallJumpTimer.Tick(Time.deltaTime);
             attackTimer.Tick(Time.deltaTime);
+            wallJumpLockoutTimer.Tick(Time.deltaTime);
         }
 
         void FixedUpdate()
@@ -131,12 +138,9 @@ namespace S2dio.Player
 
         void HandleInput()
         {
-            if (allowHorizontalInput)
-            {
-                float moveInput = Input.GetAxis("Horizontal");
-                HandleMovement(moveInput);
-            }
-
+            float moveInput = (wallJumpLockoutTimer.IsRunning ? wallJumpLockoutTimer.Progress : 1) * Input.GetAxis("Horizontal");
+            HandleMovement(moveInput);
+            
             if (Input.GetButtonDown("Jump"))
             {
                 OnJump(true);
@@ -188,25 +192,17 @@ namespace S2dio.Player
             rb.velocity = new Vector2(rb.velocity.x, jumpVelocity);
         }
 
-        public void HandleWallJump(int wallJumpDirection)
-        {
-            if (!wallJumpTimer.IsRunning)
-            {
-                jumpVelocity += Physics.gravity.y * gravityMultiplier * Time.fixedDeltaTime;
-            }
-
-            StartCoroutine(DisableHorizontalMovementCoroutine(0.5f));
-
-            rb.velocity = new Vector2(rb.velocity.x, jumpVelocity);
-        }
-
         public void HandleFall()
         {
             jumpVelocity += Physics.gravity.y * gravityMultiplier * Time.fixedDeltaTime;
+            if (jumpVelocity < -maxFallingSpeed)
+            {
+                jumpVelocity = -maxFallingSpeed;
+            }
+
             rb.velocity = new Vector2(rb.velocity.x, jumpVelocity);
         }
-
-
+        
         public void HandleAttack()
         {
             currentWeapon.Attack();
@@ -249,13 +245,6 @@ namespace S2dio.Player
             xVelocity += velocity;
             Debug.Log(xVelocity);
             rb.velocity = new Vector2(xVelocity, rb.velocity.y);
-        }
-
-        private IEnumerator DisableHorizontalMovementCoroutine(float seconds)
-        {
-            allowHorizontalInput = false;
-            yield return new WaitForSeconds(seconds);
-            allowHorizontalInput = true;
         }
     }
 }
