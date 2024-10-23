@@ -54,8 +54,9 @@ namespace S2dio.Player
 
         private CountdownTimer attackTimer;
 
-        float jumpVelocity;
-        float xVelocity;
+        private float jumpVelocity;
+        private float inputXVelocity;
+        private float externalXVelocity;
 
         void Start()
         {
@@ -108,6 +109,7 @@ namespace S2dio.Player
             jumpTimer.OnTimerStart += () => jumpVelocity = jumpForce;
             wallJumpTimer.OnTimerStart += () => jumpVelocity = jumpForce;
             wallJumpTimer.OnTimerStart += () => wallJumpLockoutTimer.Start();
+            // wallJumpTimer.OnTimerStop += () => externalXVelocity = 0f;
             jumpTimer.OnTimerStop += () => jumpCooldownTimer.Start();
             wallJumpTimer.OnTimerStop += () => jumpCooldownTimer.Start();
             attackTimer = new CountdownTimer(attackCooldownDuration);
@@ -120,7 +122,6 @@ namespace S2dio.Player
             HandleWallCheck();
             HandleInput();
             HandleTimers();
-            Debug.Log(stateMachine.CurrentState);
         }
 
         void HandleTimers()
@@ -138,7 +139,7 @@ namespace S2dio.Player
 
         void HandleInput()
         {
-            float moveInput = (wallJumpLockoutTimer.IsRunning ? wallJumpLockoutTimer.Progress : 1) * Input.GetAxis("Horizontal");
+            float moveInput = Input.GetAxis("Horizontal");
             HandleMovement(moveInput);
             
             if (Input.GetButtonDown("Jump"))
@@ -191,6 +192,23 @@ namespace S2dio.Player
 
             rb.velocity = new Vector2(rb.velocity.x, jumpVelocity);
         }
+        
+        public void HandleWallJump(int direction)
+        {
+            if (wallJumpTimer.IsRunning)
+            {
+                externalXVelocity = direction * wallJumpPower;
+            }
+            
+            if (!wallJumpTimer.IsRunning)
+            {
+                jumpVelocity += Physics.gravity.y * gravityMultiplier * Time.fixedDeltaTime;
+            }
+
+            Debug.Log(direction);
+
+            rb.velocity = new Vector2(inputXVelocity + externalXVelocity, jumpVelocity);
+        }
 
         public void HandleFall()
         {
@@ -231,10 +249,19 @@ namespace S2dio.Player
 
         public void HandleMovement(float moveInput)
         {
-            xVelocity = moveInput * moveSpeed;
-            rb.velocity = new Vector2(xVelocity, rb.velocity.y);
+            if (!wallJumpLockoutTimer.IsRunning)
+            {
+                inputXVelocity = moveInput * moveSpeed;
+            }
+            else
+            {
+                inputXVelocity = wallJumpLockoutTimer.Progress * moveInput * moveSpeed;
+            }
+            
+            rb.velocity = new Vector2(inputXVelocity + externalXVelocity, rb.velocity.y);
         }
 
+        // BAD vvvv
         public void ZeroYVelocity()
         {
             rb.velocity = new Vector2(rb.velocity.x, 0f);
@@ -242,9 +269,9 @@ namespace S2dio.Player
 
         public void AddHorizontalVelocity(float velocity)
         {
-            xVelocity += velocity;
-            Debug.Log(xVelocity);
-            rb.velocity = new Vector2(xVelocity, rb.velocity.y);
+            externalXVelocity = velocity;
+            Debug.Log(velocity);
+            rb.velocity = new Vector2(externalXVelocity, rb.velocity.y);
         }
     }
 }

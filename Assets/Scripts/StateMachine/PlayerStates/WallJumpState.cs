@@ -8,7 +8,7 @@ namespace S2dio.State {
 
         public override void OnEnter() {
             wallJumpDirection = 0;
-
+            
             if (player.IsSlidingLeft)
             {
                 wallJumpDirection = 1;
@@ -17,8 +17,8 @@ namespace S2dio.State {
             {
                 wallJumpDirection = -1;
             }
-            
-            player.AddHorizontalVelocity(wallJumpDirection * player.wallJumpPower);
+
+            // player.AddHorizontalVelocity(wallJumpDirection * player.wallJumpPower);
         }
 
         public override void Update() {
@@ -27,7 +27,8 @@ namespace S2dio.State {
         }
 
         public override void FixedUpdate() {
-            player.HandleJump();
+            
+            player.HandleWallJump(wallJumpDirection);
         }
 
         public override void OnExit()
