@@ -260,6 +260,31 @@ namespace S2dio.Player
             
             rb.velocity = new Vector2(inputXVelocity + externalXVelocity, rb.velocity.y);
         }
+        
+        public IEnumerator WallJumpLockoutCoroutine(float direction)
+        {
+            float duration = wallJumpLockoutTime;
+            float elapsedTime = 0f;
+
+            while (elapsedTime < duration)
+            {
+                // Calculate the progress over time
+                float progress = elapsedTime / duration;
+
+                // Apply the external X velocity with wall jump power, scaling by progress
+                externalXVelocity = (1 - progress) * direction * wallJumpPower;
+
+                // Increment elapsed time
+                elapsedTime += Time.deltaTime;
+
+                // Wait until next frame
+                yield return null;
+            }
+
+            // Ensure externalXVelocity is fully zeroed out at the end
+            externalXVelocity = 0f;
+        }
+
 
         // BAD vvvv
         public void ZeroYVelocity()

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class EnemyClass : MonoBehaviour
+public abstract class EnemyBase : MonoBehaviour
 {
     public int maxHealth;
     protected int currentHealth;

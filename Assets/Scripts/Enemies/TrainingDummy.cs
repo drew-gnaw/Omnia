@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class TrainingDummy : EnemyClass
+public class TrainingDummy : EnemyBase
 {
     public override void TakeDamage(int damage)
     {

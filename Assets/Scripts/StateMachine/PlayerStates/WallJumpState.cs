@@ -18,7 +18,7 @@ namespace S2dio.State {
                 wallJumpDirection = -1;
             }
 
-            // player.AddHorizontalVelocity(wallJumpDirection * player.wallJumpPower);
+            player.StartCoroutine(player.WallJumpLockoutCoroutine(wallJumpDirection));
         }
 
         public override void Update() {

@@ -10,7 +10,7 @@ public class Mace : WeaponClass
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, radius, enemyLayers);
         foreach (Collider2D enemy in hitEnemies)
         {
-            enemy.GetComponent<EnemyClass>().TakeDamage(damage);
+            enemy.GetComponent<EnemyBase>().TakeDamage(damage);
         }
     }
 
