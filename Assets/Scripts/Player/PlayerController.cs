@@ -205,8 +205,6 @@ namespace S2dio.Player
                 jumpVelocity += Physics.gravity.y * gravityMultiplier * Time.fixedDeltaTime;
             }
 
-            Debug.Log(direction);
-
             rb.velocity = new Vector2(inputXVelocity + externalXVelocity, jumpVelocity);
         }
 
@@ -284,19 +282,6 @@ namespace S2dio.Player
             // Ensure externalXVelocity is fully zeroed out at the end
             externalXVelocity = 0f;
         }
-
-
-        // BAD vvvv
-        public void ZeroYVelocity()
-        {
-            rb.velocity = new Vector2(rb.velocity.x, 0f);
-        }
-
-        public void AddHorizontalVelocity(float velocity)
-        {
-            externalXVelocity = velocity;
-            Debug.Log(velocity);
-            rb.velocity = new Vector2(externalXVelocity, rb.velocity.y);
-        }
+        
     }
 }

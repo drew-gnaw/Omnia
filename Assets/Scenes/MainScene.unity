@@ -1364,6 +1364,10 @@ PrefabInstance:
       propertyPath: maxSlidingSpeed
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 6488805757808827087, guid: 26f2309bb06480d468bc0e15e77500f1, type: 3}
+      propertyPath: wallJumpLockoutTime
+      value: 0.4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
