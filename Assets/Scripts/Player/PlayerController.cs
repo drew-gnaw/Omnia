@@ -54,7 +54,7 @@ namespace S2dio.Player
 
         private CountdownTimer attackTimer;
 
-        private float jumpVelocity;
+        private float yVelocity;
         private float inputXVelocity;
         private float externalXVelocity;
 
@@ -106,10 +106,9 @@ namespace S2dio.Player
             wallJumpTimer = new CountdownTimer(jumpDuration);
             wallJumpLockoutTimer = new CountdownTimer(wallJumpLockoutTime);
 
-            jumpTimer.OnTimerStart += () => jumpVelocity = jumpForce;
-            wallJumpTimer.OnTimerStart += () => jumpVelocity = jumpForce;
+            jumpTimer.OnTimerStart += () => yVelocity = jumpForce;
+            wallJumpTimer.OnTimerStart += () => yVelocity = jumpForce;
             wallJumpTimer.OnTimerStart += () => wallJumpLockoutTimer.Start();
-            // wallJumpTimer.OnTimerStop += () => externalXVelocity = 0f;
             jumpTimer.OnTimerStop += () => jumpCooldownTimer.Start();
             wallJumpTimer.OnTimerStop += () => jumpCooldownTimer.Start();
             attackTimer = new CountdownTimer(attackCooldownDuration);
@@ -187,10 +186,10 @@ namespace S2dio.Player
         {
             if (!jumpTimer.IsRunning)
             {
-                jumpVelocity += Physics.gravity.y * gravityMultiplier * Time.fixedDeltaTime;
+                yVelocity += Physics.gravity.y * gravityMultiplier * Time.fixedDeltaTime;
             }
 
-            rb.velocity = new Vector2(rb.velocity.x, jumpVelocity);
+            rb.velocity = new Vector2(rb.velocity.x, yVelocity);
         }
         
         public void HandleWallJump(int direction)
@@ -202,21 +201,21 @@ namespace S2dio.Player
             
             if (!wallJumpTimer.IsRunning)
             {
-                jumpVelocity += Physics.gravity.y * gravityMultiplier * Time.fixedDeltaTime;
+                yVelocity += Physics.gravity.y * gravityMultiplier * Time.fixedDeltaTime;
             }
 
-            rb.velocity = new Vector2(inputXVelocity + externalXVelocity, jumpVelocity);
+            rb.velocity = new Vector2(inputXVelocity + externalXVelocity, yVelocity);
         }
 
         public void HandleFall()
         {
-            jumpVelocity += Physics.gravity.y * gravityMultiplier * Time.fixedDeltaTime;
-            if (jumpVelocity < -maxFallingSpeed)
+            yVelocity += Physics.gravity.y * gravityMultiplier * Time.fixedDeltaTime;
+            if (yVelocity < -maxFallingSpeed)
             {
-                jumpVelocity = -maxFallingSpeed;
+                yVelocity = -maxFallingSpeed;
             }
 
-            rb.velocity = new Vector2(rb.velocity.x, jumpVelocity);
+            rb.velocity = new Vector2(rb.velocity.x, yVelocity);
         }
         
         public void HandleAttack()
@@ -258,7 +257,13 @@ namespace S2dio.Player
             
             rb.velocity = new Vector2(inputXVelocity + externalXVelocity, rb.velocity.y);
         }
-        
+
+        public void ZeroYVelocity()
+        {
+            yVelocity = 0f;
+            rb.velocity = new Vector2(rb.velocity.x, yVelocity);
+        }
+
         public IEnumerator WallJumpLockoutCoroutine(float direction)
         {
             float duration = wallJumpLockoutTime;
@@ -282,6 +287,5 @@ namespace S2dio.Player
             // Ensure externalXVelocity is fully zeroed out at the end
             externalXVelocity = 0f;
         }
-        
     }
 }

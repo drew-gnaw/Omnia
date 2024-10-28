@@ -6,7 +6,7 @@ namespace S2dio.State {
         public WalkState(PlayerController player, Animator animator) : base(player, animator) { }
 
         public override void OnEnter() {
-            // Initialize walking state (e.g., set animations)
+            player.ZeroYVelocity();
         }
 
         public override void Update() {
