@@ -35,6 +35,7 @@ namespace S2dio.Player
 
         private Rigidbody2D rb;
         private bool isGrounded = false;
+        private bool facing; // false = left
 
         public bool IsSlidingLeft { get; private set; } = false;
         public bool IsSlidingRight { get; private set; } = false;
@@ -246,6 +247,19 @@ namespace S2dio.Player
 
         public void HandleMovement(float moveInput)
         {
+            Debug.Log(facing);
+            if (moveInput != 0)
+            {
+                facing = moveInput > 0;
+            }
+            if (facing)
+            {
+                transform.localScale = new Vector3(-1, 1, 1);
+            }
+            else
+            {
+                transform.localScale = new Vector3(1, 1, 1);
+            }
             if (!wallJumpLockoutTimer.IsRunning)
             {
                 inputXVelocity = moveInput * moveSpeed;
