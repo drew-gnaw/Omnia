@@ -1,7 +1,7 @@
+using Omnia.Player;
 using UnityEngine;
-using S2dio.Player;
 
-namespace S2dio.State {
+namespace Omnia.State {
     public class WallJumpState : BaseState {
         public WallJumpState(PlayerController player, Animator animator) : base(player, animator) { }
         private int wallJumpDirection;

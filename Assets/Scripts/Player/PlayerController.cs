@@ -1,9 +1,9 @@
 using UnityEngine;
-using S2dio.State;
-using S2dio.Utils;
 using System.Collections;
+using Omnia.State;
+using Omnia.Utils;
 
-namespace S2dio.Player
+namespace Omnia.Player
 {
     public class PlayerController : MonoBehaviour
     {
@@ -41,6 +41,7 @@ namespace S2dio.Player
         public bool IsSlidingRight { get; private set; } = false;
 
         private StateMachine stateMachine;
+        private IdleState idleState;
         private WalkState walkState;
         private JumpState jumpState;
         private SlideState slideState;
@@ -73,11 +74,19 @@ namespace S2dio.Player
         {
             stateMachine = new StateMachine();
 
+            idleState = new IdleState(this, animator);
             walkState = new WalkState(this, animator);
             jumpState = new JumpState(this, animator);
             slideState = new SlideState(this, animator);
             wallJumpState = new WallJumpState(this, animator);
             fallState = new FallState(this, animator);
+            
+            At(idleState, walkState, new FuncPredicate(() => Mathf.Abs(inputXVelocity) > 0.1f));
+            At(idleState, jumpState, new FuncPredicate(() => jumpTimer.IsRunning));
+            
+            At(walkState, idleState, new FuncPredicate(ReturnToIdleState));
+            At(fallState, idleState, new FuncPredicate(ReturnToIdleState));
+            At(slideState, idleState, new FuncPredicate(() => isGrounded && Mathf.Abs(inputXVelocity) < 0.1f)); 
 
             At(walkState, jumpState, new FuncPredicate(() => jumpTimer.IsRunning));
             Any(walkState, new FuncPredicate(ReturnTowalkState));
@@ -92,14 +101,19 @@ namespace S2dio.Player
             At(slideState, wallJumpState, new FuncPredicate(() => wallJumpTimer.IsRunning));
             At(jumpState, wallJumpState, new FuncPredicate(() => wallJumpTimer.IsRunning));
 
-            stateMachine.SetState(walkState);
+            stateMachine.SetState(idleState);
+        }
+        
+        bool ReturnToIdleState()
+        {
+            return isGrounded && Mathf.Abs(inputXVelocity) < 0.1f;
         }
 
         bool ReturnTowalkState()
         {
-            return isGrounded && !jumpTimer.IsRunning && !wallJumpTimer.IsRunning;
+            return isGrounded && !jumpTimer.IsRunning && !wallJumpTimer.IsRunning && Mathf.Abs(inputXVelocity) >= 0.1;
         }
-
+        
         void SetupTimers()
         {
             jumpTimer = new CountdownTimer(jumpDuration);
@@ -247,18 +261,18 @@ namespace S2dio.Player
 
         public void HandleMovement(float moveInput)
         {
-            Debug.Log(facing);
             if (moveInput != 0)
             {
                 facing = moveInput > 0;
             }
+            Vector3 currentScale = transform.localScale;
             if (facing)
             {
-                transform.localScale = new Vector3(-1, 1, 1);
+                transform.localScale = new Vector3(-Mathf.Abs(currentScale.x), currentScale.y, currentScale.z);
             }
             else
             {
-                transform.localScale = new Vector3(1, 1, 1);
+                transform.localScale = new Vector3(Mathf.Abs(currentScale.x), currentScale.y, currentScale.z);
             }
             if (!wallJumpLockoutTimer.IsRunning)
             {

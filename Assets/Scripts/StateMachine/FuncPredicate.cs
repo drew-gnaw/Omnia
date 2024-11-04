@@ -1,6 +1,6 @@
 using System;
 
-namespace S2dio.State {
+namespace Omnia.State {
     public class FuncPredicate : IPredicate {
         readonly Func<bool> func;
         

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace S2dio.State {
+namespace Omnia.State {
     public class StateMachine {
         StateNode current;
         Dictionary<Type, StateNode> nodes = new();

@@ -2,11 +2,11 @@ using Omnia.Player;
 using UnityEngine;
 
 namespace Omnia.State {
-    public class WalkState : BaseState {
-        public WalkState(PlayerController player, Animator animator) : base(player, animator) { }
+    public class IdleState : BaseState {
+        public IdleState(PlayerController player, Animator animator) : base(player, animator) { }
 
         public override void OnEnter() {
-            player.ZeroYVelocity();
+
         }
 
         public override void Update() {

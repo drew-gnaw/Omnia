@@ -1,4 +1,4 @@
-﻿namespace S2dio.State {
+﻿namespace Omnia.State {
     public class Transition : ITransition {
         public IState To { get; }
         public IPredicate Condition { get; }

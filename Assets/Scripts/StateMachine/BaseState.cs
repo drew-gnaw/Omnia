@@ -1,7 +1,7 @@
-using S2dio.Player;
+using Omnia.Player;
 using UnityEngine;
 
-namespace S2dio.State {
+namespace Omnia.State {
     public abstract class BaseState : IState {
     protected readonly PlayerController player;
     protected readonly Animator animator;

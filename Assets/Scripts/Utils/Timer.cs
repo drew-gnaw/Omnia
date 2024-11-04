@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace S2dio.Utils
+namespace Omnia.Utils
 {
     public class CountdownTimer
     {
