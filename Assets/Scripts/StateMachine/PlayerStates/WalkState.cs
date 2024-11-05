@@ -7,6 +7,7 @@ namespace Omnia.State {
 
         public override void OnEnter() {
             player.ZeroYVelocity();
+            animator.CrossFade(Animator.StringToHash("RightJamieRun"), 0.1f);
         }
 
         public override void Update() {

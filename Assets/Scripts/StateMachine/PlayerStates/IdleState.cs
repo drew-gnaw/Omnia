@@ -6,7 +6,7 @@ namespace Omnia.State {
         public IdleState(PlayerController player, Animator animator) : base(player, animator) { }
 
         public override void OnEnter() {
-
+            animator.CrossFade(Animator.StringToHash("RightJamieIdle"), 0.1f);
         }
 
         public override void Update() {
