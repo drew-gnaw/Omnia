@@ -268,11 +268,11 @@ namespace Omnia.Player
             Vector3 currentScale = transform.localScale;
             if (facing)
             {
-                transform.localScale = new Vector3(-Mathf.Abs(currentScale.x), currentScale.y, currentScale.z);
+                transform.localScale = new Vector3(Mathf.Abs(currentScale.x), currentScale.y, currentScale.z);
             }
             else
             {
-                transform.localScale = new Vector3(Mathf.Abs(currentScale.x), currentScale.y, currentScale.z);
+                transform.localScale = new Vector3(-Mathf.Abs(currentScale.x), currentScale.y, currentScale.z);
             }
             if (!wallJumpLockoutTimer.IsRunning)
             {
