@@ -12,6 +12,7 @@ namespace Omnia.Player
         public BoxCollider2D leftWallCheck;
         public BoxCollider2D rightWallCheck;
         public Animator animator;
+        public SpriteRenderer spriteRenderer;
 
         [Header(("General Settings"))] [SerializeField]
         float maxFallingSpeed = 10f;
@@ -235,8 +236,7 @@ namespace Omnia.Player
         
         public void HandleAttack()
         {
-            currentWeapon.Attack();
-            attackTimer.Start();
+            
         }
 
         public void HandleSlide()
@@ -265,15 +265,9 @@ namespace Omnia.Player
             {
                 facing = moveInput > 0;
             }
-            Vector3 currentScale = transform.localScale;
-            if (facing)
-            {
-                transform.localScale = new Vector3(Mathf.Abs(currentScale.x), currentScale.y, currentScale.z);
-            }
-            else
-            {
-                transform.localScale = new Vector3(-Mathf.Abs(currentScale.x), currentScale.y, currentScale.z);
-            }
+            
+            spriteRenderer.flipX = !facing;
+            
             if (!wallJumpLockoutTimer.IsRunning)
             {
                 inputXVelocity = moveInput * moveSpeed;

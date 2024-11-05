@@ -550,6 +550,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2157272981753954215, guid: 26f2309bb06480d468bc0e15e77500f1, type: 3}
   m_PrefabInstance: {fileID: 1563873380471879921}
   m_PrefabAsset: {fileID: 0}
+--- !u!212 &1066561364 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 4483931757471981706, guid: 26f2309bb06480d468bc0e15e77500f1, type: 3}
+  m_PrefabInstance: {fileID: 1563873380471879921}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1320361155
 GameObject:
   m_ObjectHideFlags: 0
@@ -1538,6 +1543,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114218580143928455, guid: 26f2309bb06480d468bc0e15e77500f1, type: 3}
+      propertyPath: m_Size.x
+      value: 0.84733444
+      objectReference: {fileID: 0}
+    - target: {fileID: 114218580143928455, guid: 26f2309bb06480d468bc0e15e77500f1, type: 3}
+      propertyPath: m_Offset.x
+      value: 0.5806681
+      objectReference: {fileID: 0}
+    - target: {fileID: 2089878435842221790, guid: 26f2309bb06480d468bc0e15e77500f1, type: 3}
+      propertyPath: m_Size.x
+      value: 0.9435208
+      objectReference: {fileID: 0}
+    - target: {fileID: 2089878435842221790, guid: 26f2309bb06480d468bc0e15e77500f1, type: 3}
+      propertyPath: m_Size.y
+      value: 0.91996384
+      objectReference: {fileID: 0}
+    - target: {fileID: 2089878435842221790, guid: 26f2309bb06480d468bc0e15e77500f1, type: 3}
+      propertyPath: m_Offset.x
+      value: -0.60769045
+      objectReference: {fileID: 0}
     - target: {fileID: 2157272981753954215, guid: 26f2309bb06480d468bc0e15e77500f1, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.2599
@@ -1579,8 +1604,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3119127342257128012, guid: 26f2309bb06480d468bc0e15e77500f1, type: 3}
+      propertyPath: m_Size.x
+      value: 1.0349753
+      objectReference: {fileID: 0}
+    - target: {fileID: 3119127342257128012, guid: 26f2309bb06480d468bc0e15e77500f1, type: 3}
       propertyPath: m_Size.y
-      value: 0.21595141
+      value: 0.21595144
+      objectReference: {fileID: 0}
+    - target: {fileID: 3119127342257128012, guid: 26f2309bb06480d468bc0e15e77500f1, type: 3}
+      propertyPath: m_Offset.x
+      value: -0.18723145
       objectReference: {fileID: 0}
     - target: {fileID: 3119127342257128012, guid: 26f2309bb06480d468bc0e15e77500f1, type: 3}
       propertyPath: m_Offset.y
@@ -1627,16 +1660,28 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6488805757808827087, guid: 26f2309bb06480d468bc0e15e77500f1, type: 3}
+      propertyPath: spriteRenderer
+      value: 
+      objectReference: {fileID: 1066561364}
+    - target: {fileID: 6488805757808827087, guid: 26f2309bb06480d468bc0e15e77500f1, type: 3}
       propertyPath: wallJumpLockoutTime
       value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 7115771231767347545, guid: 26f2309bb06480d468bc0e15e77500f1, type: 3}
+      propertyPath: m_Size.x
+      value: 1.5573418
+      objectReference: {fileID: 0}
+    - target: {fileID: 7115771231767347545, guid: 26f2309bb06480d468bc0e15e77500f1, type: 3}
       propertyPath: m_Size.y
-      value: 3.59446
+      value: 3.820969
+      objectReference: {fileID: 0}
+    - target: {fileID: 7115771231767347545, guid: 26f2309bb06480d468bc0e15e77500f1, type: 3}
+      propertyPath: m_Offset.x
+      value: -0.009067029
       objectReference: {fileID: 0}
     - target: {fileID: 7115771231767347545, guid: 26f2309bb06480d468bc0e15e77500f1, type: 3}
       propertyPath: m_Offset.y
-      value: -0.10502887
+      value: 0.008225679
       objectReference: {fileID: 0}
     - target: {fileID: 7115771231767347545, guid: 26f2309bb06480d468bc0e15e77500f1, type: 3}
       propertyPath: m_SpriteTilingProperty.border.w

@@ -7,7 +7,7 @@ namespace Omnia.State {
         public SlideState(PlayerController player, Animator animator) : base(player, animator) { }
         public override void OnEnter()
         {
-
+            animator.CrossFade(Animator.StringToHash("RightJamieSlide"), 0.1f);
         }
 
         public override void OnExit()
