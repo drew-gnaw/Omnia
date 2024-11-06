@@ -28,6 +28,7 @@ namespace Omnia.Player
         [SerializeField] float maxSlidingSpeed = 4f;
         [SerializeField] public float wallJumpPower = 2f;
         [SerializeField] public float wallJumpLockoutTime = 1f;
+        [SerializeField] public float wallJumpCoyoteTime = 0.3f;
 
         public float attackCooldownDuration = 0.5f;
 
@@ -54,6 +55,7 @@ namespace Omnia.Player
         private CountdownTimer jumpCooldownTimer;
         private CountdownTimer wallJumpTimer;
         private CountdownTimer wallJumpLockoutTimer;
+        private CountdownTimer wallJumpCoyoteTimer;
 
         private CountdownTimer attackTimer;
 
@@ -97,8 +99,9 @@ namespace Omnia.Player
             At(walkState, fallState, new FuncPredicate(() => rb.velocity.y < -0.1f));
 
             At(fallState, slideState, new FuncPredicate(() => IsSlidingLeft || IsSlidingRight));
+            At(slideState, fallState, new FuncPredicate(() => !IsSlidingLeft && !IsSlidingRight));
 
-            At(slideState, walkState, new FuncPredicate(() => !IsSlidingLeft && !IsSlidingRight));
+
             At(slideState, wallJumpState, new FuncPredicate(() => wallJumpTimer.IsRunning));
             At(jumpState, wallJumpState, new FuncPredicate(() => wallJumpTimer.IsRunning));
 
@@ -121,12 +124,15 @@ namespace Omnia.Player
             jumpCooldownTimer = new CountdownTimer(jumpCooldown);
             wallJumpTimer = new CountdownTimer(jumpDuration);
             wallJumpLockoutTimer = new CountdownTimer(wallJumpLockoutTime);
+            wallJumpCoyoteTimer = new CountdownTimer(wallJumpCoyoteTime);
 
             jumpTimer.OnTimerStart += () => yVelocity = jumpForce;
             wallJumpTimer.OnTimerStart += () => yVelocity = jumpForce;
             wallJumpTimer.OnTimerStart += () => wallJumpLockoutTimer.Start();
             jumpTimer.OnTimerStop += () => jumpCooldownTimer.Start();
             wallJumpTimer.OnTimerStop += () => jumpCooldownTimer.Start();
+
+            wallJumpCoyoteTimer.OnTimerStart += () => Debug.Log("Coyote AWOO");
             attackTimer = new CountdownTimer(attackCooldownDuration);
         }
 
@@ -143,8 +149,8 @@ namespace Omnia.Player
         {
             jumpTimer.Tick(Time.deltaTime);
             wallJumpTimer.Tick(Time.deltaTime);
-            attackTimer.Tick(Time.deltaTime);
             wallJumpLockoutTimer.Tick(Time.deltaTime);
+            wallJumpCoyoteTimer.Tick(Time.deltaTime);
         }
 
         void FixedUpdate()
@@ -174,11 +180,12 @@ namespace Omnia.Player
 
         void OnJump(bool performed)
         {
-            if (IsSlidingLeft || IsSlidingRight)
+            if (IsSlidingLeft || IsSlidingRight || wallJumpCoyoteTimer.IsRunning)
             {
                 if (performed && !wallJumpTimer.IsRunning)
                 {
                     wallJumpTimer.Start();
+                    wallJumpCoyoteTimer.Stop();
                 }
                 else if (!performed && wallJumpTimer.IsRunning)
                 {
@@ -251,11 +258,20 @@ namespace Omnia.Player
 
         void HandleWallCheck()
         {
+            bool wasSlidingLeft = IsSlidingLeft;
+            bool wasSlidingRight = IsSlidingRight;
+
             bool isLeftKeyPressed = Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A);
             bool isRightKeyPressed = Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D);
 
             IsSlidingLeft = leftWallCheck.IsTouchingLayers(groundLayer) && isLeftKeyPressed;
             IsSlidingRight = rightWallCheck.IsTouchingLayers(groundLayer) && isRightKeyPressed;
+
+            // Start coyote timer if player just left the wall
+            if ((wasSlidingLeft && !IsSlidingLeft) || (wasSlidingRight && !IsSlidingRight))
+            {
+                wallJumpCoyoteTimer.Start();
+            }
         }
 
 
