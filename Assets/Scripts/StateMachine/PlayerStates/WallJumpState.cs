@@ -16,7 +16,12 @@ namespace Omnia.State {
             else if (player.IsSlidingRight)
             {
                 wallJumpDirection = -1;
+            } 
+            else if (player.wallJumpCoyoteTimer.IsRunning) // Use last known wall direction
+            {
+                wallJumpDirection = player.lastWallDirection;
             }
+            Debug.Log(wallJumpDirection);
 
             player.StartCoroutine(player.WallJumpLockoutCoroutine(wallJumpDirection));
         }

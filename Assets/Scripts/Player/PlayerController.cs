@@ -37,7 +37,8 @@ namespace Omnia.Player
 
         private Rigidbody2D rb;
         private bool isGrounded = false;
-        private bool facing; // false = left
+        public bool facing; // false = left
+        public int lastWallDirection; // 1 = right, -1 = left, 0 = no wall
 
         public bool IsSlidingLeft { get; private set; } = false;
         public bool IsSlidingRight { get; private set; } = false;
@@ -55,7 +56,7 @@ namespace Omnia.Player
         private CountdownTimer jumpCooldownTimer;
         private CountdownTimer wallJumpTimer;
         private CountdownTimer wallJumpLockoutTimer;
-        private CountdownTimer wallJumpCoyoteTimer;
+        public CountdownTimer wallJumpCoyoteTimer;
 
         private CountdownTimer attackTimer;
 
@@ -103,6 +104,7 @@ namespace Omnia.Player
 
 
             At(slideState, wallJumpState, new FuncPredicate(() => wallJumpTimer.IsRunning));
+            At(fallState, wallJumpState, new FuncPredicate(() => wallJumpTimer.IsRunning && wallJumpCoyoteTimer.IsRunning));
             At(jumpState, wallJumpState, new FuncPredicate(() => wallJumpTimer.IsRunning));
 
             stateMachine.SetState(idleState);
@@ -131,8 +133,7 @@ namespace Omnia.Player
             wallJumpTimer.OnTimerStart += () => wallJumpLockoutTimer.Start();
             jumpTimer.OnTimerStop += () => jumpCooldownTimer.Start();
             wallJumpTimer.OnTimerStop += () => jumpCooldownTimer.Start();
-
-            wallJumpCoyoteTimer.OnTimerStart += () => Debug.Log("Coyote AWOO");
+            
             attackTimer = new CountdownTimer(attackCooldownDuration);
         }
 
@@ -184,8 +185,8 @@ namespace Omnia.Player
             {
                 if (performed && !wallJumpTimer.IsRunning)
                 {
+                    Debug.Log("Wall jump");
                     wallJumpTimer.Start();
-                    wallJumpCoyoteTimer.Stop();
                 }
                 else if (!performed && wallJumpTimer.IsRunning)
                 {
@@ -266,6 +267,15 @@ namespace Omnia.Player
 
             IsSlidingLeft = leftWallCheck.IsTouchingLayers(groundLayer) && isLeftKeyPressed;
             IsSlidingRight = rightWallCheck.IsTouchingLayers(groundLayer) && isRightKeyPressed;
+            
+            if (IsSlidingLeft)
+            {
+                lastWallDirection = 1;
+            }
+            else if (IsSlidingRight)
+            {
+                lastWallDirection = -1;
+            }
 
             // Start coyote timer if player just left the wall
             if ((wasSlidingLeft && !IsSlidingLeft) || (wasSlidingRight && !IsSlidingRight))
