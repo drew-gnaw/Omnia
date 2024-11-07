@@ -17,7 +17,7 @@ namespace Omnia.State {
             {
                 wallJumpDirection = -1;
             } 
-            else if (player.wallJumpCoyoteTimer.IsRunning) // Use last known wall direction
+            else if (player.wallJumpCoyoteTimer.IsRunning)
             {
                 wallJumpDirection = player.lastWallDirection;
             }
