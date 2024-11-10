@@ -185,7 +185,6 @@ namespace Omnia.Player
             {
                 if (performed && !wallJumpTimer.IsRunning)
                 {
-                    Debug.Log("Wall jump");
                     wallJumpTimer.Start();
                 }
                 else if (!performed && wallJumpTimer.IsRunning)
@@ -294,13 +293,13 @@ namespace Omnia.Player
             
             spriteRenderer.flipX = !facing;
             
-            if (!wallJumpLockoutTimer.IsRunning)
+            if (wallJumpLockoutTimer.IsRunning && Mathf.Approximately(-lastWallDirection, Mathf.Sign(inputXVelocity)))
             {
-                inputXVelocity = moveInput * moveSpeed;
+                inputXVelocity = wallJumpLockoutTimer.Progress * moveInput * moveSpeed;
             }
             else
             {
-                inputXVelocity = wallJumpLockoutTimer.Progress * moveInput * moveSpeed;
+                inputXVelocity = moveInput * moveSpeed;
             }
             
             rb.velocity = new Vector2(inputXVelocity + externalXVelocity, rb.velocity.y);
@@ -317,23 +316,28 @@ namespace Omnia.Player
             float duration = wallJumpLockoutTime;
             float elapsedTime = 0f;
 
-            while (elapsedTime < duration)
+            try
             {
-                // Calculate the progress over time
-                float progress = elapsedTime / duration;
+                while (elapsedTime < duration)
+                {
+                    // Calculate the progress over time
+                    float progress = elapsedTime / duration;
 
-                // Apply the external X velocity with wall jump power, scaling by progress
-                externalXVelocity = (1 - progress) * direction * wallJumpPower;
+                    // Apply the external X velocity with wall jump power, scaling by progress
+                    externalXVelocity = (1 - progress) * direction * wallJumpPower;
 
-                // Increment elapsed time
-                elapsedTime += Time.deltaTime;
+                    // Increment elapsed time
+                    elapsedTime += Time.deltaTime;
 
-                // Wait until next frame
-                yield return null;
+                    // Wait until next frame
+                    yield return null;
+                }
             }
-
-            // Ensure externalXVelocity is fully zeroed out at the end
-            externalXVelocity = 0f;
+            finally
+            {
+                // Ensure externalXVelocity is fully zeroed out at the end, even if interrupted
+                externalXVelocity = 0f;
+            }
         }
     }
 }
