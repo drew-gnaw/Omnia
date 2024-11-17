@@ -30,7 +30,7 @@ namespace Omnia.State {
         void ChangeState(IState state) {
             if (state == current.State) return;
 
-            // Debug.Log("Changing from " + current.State + " to " + state);
+            Debug.Log("Changing from " + current.State + " to " + state);
             
             var previousState = current.State;
             var nextState = nodes[state.GetType()].State;
