@@ -64,6 +64,7 @@ namespace Omnia.Player
         private float inputXVelocity;
         private float externalXVelocity;
 
+        private IEnumerator currentWallJumpCoroutine;
         void Start()
         {
             rb = GetComponent<Rigidbody2D>();
@@ -84,13 +85,13 @@ namespace Omnia.Player
             slideState = new SlideState(this, animator);
             wallJumpState = new WallJumpState(this, animator);
             fallState = new FallState(this, animator);
-            
+
             At(idleState, walkState, new FuncPredicate(() => Mathf.Abs(inputXVelocity) > 0.1f));
             At(idleState, jumpState, new FuncPredicate(() => jumpTimer.IsRunning));
-            
+
             At(walkState, idleState, new FuncPredicate(ReturnToIdleState));
             At(fallState, idleState, new FuncPredicate(ReturnToIdleState));
-            At(slideState, idleState, new FuncPredicate(() => isGrounded && Mathf.Abs(inputXVelocity) < 0.1f)); 
+            At(slideState, idleState, new FuncPredicate(() => isGrounded && Mathf.Abs(inputXVelocity) < 0.1f));
 
             At(walkState, jumpState, new FuncPredicate(() => jumpTimer.IsRunning));
             Any(walkState, new FuncPredicate(ReturnTowalkState));
@@ -104,12 +105,13 @@ namespace Omnia.Player
 
 
             At(slideState, wallJumpState, new FuncPredicate(() => wallJumpTimer.IsRunning));
-            At(fallState, wallJumpState, new FuncPredicate(() => wallJumpTimer.IsRunning && wallJumpCoyoteTimer.IsRunning));
+            At(fallState, wallJumpState,
+                new FuncPredicate(() => wallJumpTimer.IsRunning && wallJumpCoyoteTimer.IsRunning));
             At(jumpState, wallJumpState, new FuncPredicate(() => wallJumpTimer.IsRunning));
 
             stateMachine.SetState(idleState);
         }
-        
+
         bool ReturnToIdleState()
         {
             return isGrounded && Mathf.Abs(inputXVelocity) < 0.1f;
@@ -119,7 +121,7 @@ namespace Omnia.Player
         {
             return isGrounded && !jumpTimer.IsRunning && !wallJumpTimer.IsRunning && Mathf.Abs(inputXVelocity) >= 0.1;
         }
-        
+
         void SetupTimers()
         {
             jumpTimer = new CountdownTimer(jumpDuration);
@@ -133,7 +135,7 @@ namespace Omnia.Player
             wallJumpTimer.OnTimerStart += () => wallJumpLockoutTimer.Start();
             jumpTimer.OnTimerStop += () => jumpCooldownTimer.Start();
             wallJumpTimer.OnTimerStop += () => jumpCooldownTimer.Start();
-            
+
             attackTimer = new CountdownTimer(attackCooldownDuration);
         }
 
@@ -163,7 +165,7 @@ namespace Omnia.Player
         {
             float moveInput = Input.GetAxis("Horizontal");
             HandleMovement(moveInput);
-            
+
             if (Input.GetButtonDown("Jump"))
             {
                 OnJump(true);
@@ -214,14 +216,14 @@ namespace Omnia.Player
 
             rb.velocity = new Vector2(rb.velocity.x, yVelocity);
         }
-        
+
         public void HandleWallJump(int direction)
         {
             if (wallJumpTimer.IsRunning)
             {
                 externalXVelocity = direction * wallJumpPower;
             }
-            
+
             if (!wallJumpTimer.IsRunning)
             {
                 yVelocity += Physics.gravity.y * gravityMultiplier * Time.fixedDeltaTime;
@@ -240,10 +242,9 @@ namespace Omnia.Player
 
             rb.velocity = new Vector2(rb.velocity.x, yVelocity);
         }
-        
+
         public void HandleAttack()
         {
-            
         }
 
         public void HandleSlide()
@@ -266,7 +267,7 @@ namespace Omnia.Player
 
             IsSlidingLeft = leftWallCheck.IsTouchingLayers(groundLayer) && isLeftKeyPressed;
             IsSlidingRight = rightWallCheck.IsTouchingLayers(groundLayer) && isRightKeyPressed;
-            
+
             if (IsSlidingLeft)
             {
                 lastWallDirection = 1;
@@ -290,9 +291,9 @@ namespace Omnia.Player
             {
                 facing = moveInput > 0;
             }
-            
+
             spriteRenderer.flipX = !facing;
-            
+
             if (wallJumpLockoutTimer.IsRunning && Mathf.Approximately(-lastWallDirection, Mathf.Sign(inputXVelocity)))
             {
                 inputXVelocity = wallJumpLockoutTimer.Progress * moveInput * moveSpeed;
@@ -301,7 +302,7 @@ namespace Omnia.Player
             {
                 inputXVelocity = moveInput * moveSpeed;
             }
-            
+
             rb.velocity = new Vector2(inputXVelocity + externalXVelocity, rb.velocity.y);
         }
 
@@ -313,31 +314,30 @@ namespace Omnia.Player
 
         public IEnumerator WallJumpLockoutCoroutine(float direction)
         {
+            if (currentWallJumpCoroutine != null)
+            {
+                StopCoroutine(currentWallJumpCoroutine);
+            }
+
+            currentWallJumpCoroutine = WallJumpLockoutCoroutineInternal(direction);
+            yield return StartCoroutine(currentWallJumpCoroutine);
+        }
+
+        private IEnumerator WallJumpLockoutCoroutineInternal(float direction)
+        {
             float duration = wallJumpLockoutTime;
             float elapsedTime = 0f;
 
-            try
+            while (elapsedTime < duration)
             {
-                while (elapsedTime < duration)
-                {
-                    // Calculate the progress over time
-                    float progress = elapsedTime / duration;
-
-                    // Apply the external X velocity with wall jump power, scaling by progress
-                    externalXVelocity = (1 - progress) * direction * wallJumpPower;
-
-                    // Increment elapsed time
-                    elapsedTime += Time.deltaTime;
-
-                    // Wait until next frame
-                    yield return null;
-                }
+                float progress = elapsedTime / duration;
+                externalXVelocity = (1 - progress) * direction * wallJumpPower;
+                elapsedTime += Time.deltaTime;
+                yield return null; // Waits for the next frame
             }
-            finally
-            {
-                // Ensure externalXVelocity is fully zeroed out at the end, even if interrupted
-                externalXVelocity = 0f;
-            }
+
+            externalXVelocity = 0f;
+            currentWallJumpCoroutine = null; // Clear the reference when done
         }
     }
 }
