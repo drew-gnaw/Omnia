@@ -16,7 +16,7 @@ namespace Omnia.Player
         // The conversion ratio for flow to health: E.g. a ratio of 0.2 means 100 flow heals 20 HP
         private float flowToHealth = 0.2f;
         
-        public event Action<int> OnHealthChanged;           // Triggered when health changes
+        public event Action<float> OnHealthChanged;           // Triggered when health changes
         public event Action<float> OnFlowChanged;           // Triggered when flow meter changes
         public event Action OnPlayerDeath;                  // Triggered when the player dies
         
@@ -43,7 +43,7 @@ namespace Omnia.Player
             }
         }
 
-        public void Heal(int amount)
+        public void Heal(float amount)
         {
             if (!IsAlive) return;
 
@@ -56,7 +56,7 @@ namespace Omnia.Player
         public void UseALlFlow()
         {
             CurrentFlow = 0;
-            Heal(Mathf.RoundToInt(flowToHealth * MaxFlow));
+            Heal(flowToHealth * MaxFlow);
 
             OnFlowChanged?.Invoke(CurrentFlow);
         }
