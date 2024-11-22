@@ -5,7 +5,7 @@ namespace Omnia.Player
 {
     public class PlayerBase
     {
-        // Health is a float internally
+        // Health is a float internally, but we should only display it rounded to int
         public float MaxHealth { get; private set; }
         public float CurrentHealth { get; private set; }
 

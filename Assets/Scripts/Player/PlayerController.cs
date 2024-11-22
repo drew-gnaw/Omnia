@@ -14,7 +14,7 @@ namespace Omnia.Player
         public Animator animator;
         public SpriteRenderer spriteRenderer;
 
-        [Header(("General Settings"))] [SerializeField]
+        [Header("General Settings")] [SerializeField]
         float maxFallingSpeed = 10f;
 
         [SerializeField] float moveSpeed = 5f;
@@ -32,10 +32,12 @@ namespace Omnia.Player
 
         public float attackCooldownDuration = 0.5f;
 
+        private PlayerBase playerBase;
         public WeaponClass currentWeapon;
         public WeaponClass offhandWeapon;
 
         private Rigidbody2D rb;
+        
         private bool isGrounded = false;
         public bool facing; // false = left
         public int lastWallDirection; // 1 = right, -1 = left, 0 = no wall
@@ -57,7 +59,6 @@ namespace Omnia.Player
         private CountdownTimer wallJumpTimer;
         private CountdownTimer wallJumpLockoutTimer;
         public CountdownTimer wallJumpCoyoteTimer;
-
         private CountdownTimer attackTimer;
 
         private float yVelocity;
@@ -151,6 +152,7 @@ namespace Omnia.Player
         void HandleTimers()
         {
             jumpTimer.Tick(Time.deltaTime);
+            attackTimer.Tick(Time.deltaTime);
             wallJumpTimer.Tick(Time.deltaTime);
             wallJumpLockoutTimer.Tick(Time.deltaTime);
             wallJumpCoyoteTimer.Tick(Time.deltaTime);
