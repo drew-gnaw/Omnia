@@ -173,9 +173,6 @@ namespace Omnia.Player {
         void OnJump(bool performed) {
             if (!isGrounded && (IsSlidingLeft || IsSlidingRight || wallJumpCoyoteTimer.IsRunning)) {
                 if (performed && !wallJumpTimer.IsRunning) {
-                    if (wallJumpCoyoteTimer.IsRunning) {
-                        Debug.Log("Coyote timer allowed jumping");
-                    }
                     wallJumpTimer.Start();
                 }
                 else if (!performed && wallJumpTimer.IsRunning) {
