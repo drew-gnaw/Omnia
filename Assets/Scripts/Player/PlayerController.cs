@@ -3,10 +3,8 @@ using System.Collections;
 using Omnia.State;
 using Omnia.Utils;
 
-namespace Omnia.Player
-{
-    public class PlayerController : MonoBehaviour
-    {
+namespace Omnia.Player {
+    public class PlayerController : MonoBehaviour {
         [Header("References")] public LayerMask groundLayer;
         public BoxCollider2D groundCheck;
         public BoxCollider2D leftWallCheck;
@@ -37,7 +35,7 @@ namespace Omnia.Player
         public WeaponClass offhandWeapon;
 
         private Rigidbody2D rb;
-        
+
         private bool isGrounded = false;
         public bool facing; // false = left
         public int lastWallDirection; // 1 = right, -1 = left, 0 = no wall
@@ -66,8 +64,8 @@ namespace Omnia.Player
         private float externalXVelocity;
 
         private IEnumerator currentWallJumpCoroutine;
-        void Start()
-        {
+
+        void Start() {
             rb = GetComponent<Rigidbody2D>();
             SetupStateMachine();
             SetupTimers();
@@ -76,8 +74,7 @@ namespace Omnia.Player
         void At(IState from, IState to, IPredicate condition) => stateMachine.AddTransition(from, to, condition);
         void Any(IState to, IPredicate condition) => stateMachine.AddAnyTransition(to, condition);
 
-        void SetupStateMachine()
-        {
+        void SetupStateMachine() {
             stateMachine = new StateMachine();
 
             idleState = new IdleState(this, animator);
@@ -106,25 +103,21 @@ namespace Omnia.Player
 
 
             At(slideState, wallJumpState, new FuncPredicate(() => wallJumpTimer.IsRunning));
-            At(fallState, wallJumpState,
-                new FuncPredicate(() => wallJumpTimer.IsRunning && wallJumpCoyoteTimer.IsRunning));
+            At(fallState, wallJumpState, new FuncPredicate(() => wallJumpTimer.IsRunning && wallJumpCoyoteTimer.IsRunning));
             At(jumpState, wallJumpState, new FuncPredicate(() => wallJumpTimer.IsRunning));
 
             stateMachine.SetState(idleState);
         }
 
-        bool ReturnToIdleState()
-        {
+        bool ReturnToIdleState() {
             return isGrounded && Mathf.Abs(inputXVelocity) < 0.1f;
         }
 
-        bool ReturnTowalkState()
-        {
+        bool ReturnTowalkState() {
             return isGrounded && !jumpTimer.IsRunning && !wallJumpTimer.IsRunning && Mathf.Abs(inputXVelocity) >= 0.1;
         }
 
-        void SetupTimers()
-        {
+        void SetupTimers() {
             jumpTimer = new CountdownTimer(jumpDuration);
             jumpCooldownTimer = new CountdownTimer(jumpCooldown);
             wallJumpTimer = new CountdownTimer(jumpDuration);
@@ -134,14 +127,14 @@ namespace Omnia.Player
             jumpTimer.OnTimerStart += () => yVelocity = jumpForce;
             wallJumpTimer.OnTimerStart += () => yVelocity = jumpForce;
             wallJumpTimer.OnTimerStart += () => wallJumpLockoutTimer.Start();
+            wallJumpTimer.OnTimerStop += () => wallJumpCoyoteTimer.Stop();
             jumpTimer.OnTimerStop += () => jumpCooldownTimer.Start();
             wallJumpTimer.OnTimerStop += () => jumpCooldownTimer.Start();
 
             attackTimer = new CountdownTimer(attackCooldownDuration);
         }
 
-        void Update()
-        {
+        void Update() {
             stateMachine.Update();
             HandleGroundCheck();
             HandleWallCheck();
@@ -149,8 +142,7 @@ namespace Omnia.Player
             HandleTimers();
         }
 
-        void HandleTimers()
-        {
+        void HandleTimers() {
             jumpTimer.Tick(Time.deltaTime);
             attackTimer.Tick(Time.deltaTime);
             wallJumpTimer.Tick(Time.deltaTime);
@@ -158,109 +150,89 @@ namespace Omnia.Player
             wallJumpCoyoteTimer.Tick(Time.deltaTime);
         }
 
-        void FixedUpdate()
-        {
+        void FixedUpdate() {
             stateMachine.FixedUpdate();
         }
 
-        void HandleInput()
-        {
+        void HandleInput() {
             float moveInput = Input.GetAxis("Horizontal");
             HandleMovement(moveInput);
 
-            if (Input.GetButtonDown("Jump"))
-            {
+            if (Input.GetButtonDown("Jump")) {
                 OnJump(true);
             }
-            else if (Input.GetButtonUp("Jump"))
-            {
+            else if (Input.GetButtonUp("Jump")) {
                 OnJump(false);
             }
 
-            if (Input.GetButtonDown("Fire1") && !attackTimer.IsRunning)
-            {
+            if (Input.GetButtonDown("Fire1") && !attackTimer.IsRunning) {
                 HandleAttack();
             }
         }
 
-        void OnJump(bool performed)
-        {
-            if (!isGrounded && (IsSlidingLeft || IsSlidingRight || wallJumpCoyoteTimer.IsRunning))
-            {
-                if (performed && !wallJumpTimer.IsRunning)
-                {
+        void OnJump(bool performed) {
+            if (!isGrounded && (IsSlidingLeft || IsSlidingRight || wallJumpCoyoteTimer.IsRunning)) {
+                if (performed && !wallJumpTimer.IsRunning) {
+                    if (wallJumpCoyoteTimer.IsRunning) {
+                        Debug.Log("Coyote timer allowed jumping");
+                    }
                     wallJumpTimer.Start();
                 }
-                else if (!performed && wallJumpTimer.IsRunning)
-                {
+                else if (!performed && wallJumpTimer.IsRunning) {
                     wallJumpTimer.Stop();
                 }
             }
-            else
-            {
-                if (performed && !jumpTimer.IsRunning && isGrounded)
-                {
+            else {
+                if (performed && !jumpTimer.IsRunning && isGrounded) {
                     jumpTimer.Start();
                 }
-                else if (!performed && jumpTimer.IsRunning)
-                {
+                else if (!performed && jumpTimer.IsRunning) {
                     jumpTimer.Stop();
                 }
             }
         }
 
-        public void HandleJump()
-        {
-            if (!jumpTimer.IsRunning)
-            {
+        public void HandleJump() {
+            if (!jumpTimer.IsRunning) {
                 yVelocity += Physics.gravity.y * gravityMultiplier * Time.fixedDeltaTime;
             }
 
             rb.velocity = new Vector2(rb.velocity.x, yVelocity);
         }
 
-        public void HandleWallJump(int direction)
-        {
-            if (wallJumpTimer.IsRunning)
-            {
+        public void HandleWallJump(int direction) {
+            if (wallJumpTimer.IsRunning) {
                 externalXVelocity = direction * wallJumpPower;
             }
 
-            if (!wallJumpTimer.IsRunning)
-            {
+            if (!wallJumpTimer.IsRunning) {
                 yVelocity += Physics.gravity.y * gravityMultiplier * Time.fixedDeltaTime;
             }
 
             rb.velocity = new Vector2(inputXVelocity + externalXVelocity, yVelocity);
         }
 
-        public void HandleFall()
-        {
+        public void HandleFall() {
             yVelocity += Physics.gravity.y * gravityMultiplier * Time.fixedDeltaTime;
-            if (yVelocity < -maxFallingSpeed)
-            {
+            if (yVelocity < -maxFallingSpeed) {
                 yVelocity = -maxFallingSpeed;
             }
 
             rb.velocity = new Vector2(rb.velocity.x, yVelocity);
         }
 
-        public void HandleAttack()
-        {
+        public void HandleAttack() {
         }
 
-        public void HandleSlide()
-        {
+        public void HandleSlide() {
             rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(rb.velocity.y, -maxSlidingSpeed));
         }
 
-        void HandleGroundCheck()
-        {
+        void HandleGroundCheck() {
             isGrounded = groundCheck.IsTouchingLayers(groundLayer);
         }
 
-        void HandleWallCheck()
-        {
+        void HandleWallCheck() {
             bool wasSlidingLeft = IsSlidingLeft;
             bool wasSlidingRight = IsSlidingRight;
 
@@ -270,54 +242,44 @@ namespace Omnia.Player
             IsSlidingLeft = leftWallCheck.IsTouchingLayers(groundLayer) && isLeftKeyPressed;
             IsSlidingRight = rightWallCheck.IsTouchingLayers(groundLayer) && isRightKeyPressed;
 
-            if (IsSlidingLeft)
-            {
+            if (IsSlidingLeft) {
                 lastWallDirection = 1;
             }
-            else if (IsSlidingRight)
-            {
+            else if (IsSlidingRight) {
                 lastWallDirection = -1;
             }
 
             // Start coyote timer if player just left the wall
-            if ((wasSlidingLeft && !IsSlidingLeft) || (wasSlidingRight && !IsSlidingRight))
-            {
+            if ((wasSlidingLeft && !IsSlidingLeft) || (wasSlidingRight && !IsSlidingRight)) {
                 wallJumpCoyoteTimer.Start();
             }
         }
 
 
-        public void HandleMovement(float moveInput)
-        {
-            if (moveInput != 0)
-            {
+        public void HandleMovement(float moveInput) {
+            if (moveInput != 0) {
                 facing = moveInput > 0;
             }
 
             spriteRenderer.flipX = !facing;
 
-            if (wallJumpLockoutTimer.IsRunning && Mathf.Approximately(-lastWallDirection, Mathf.Sign(inputXVelocity)))
-            {
+            if (wallJumpLockoutTimer.IsRunning && Mathf.Approximately(-lastWallDirection, Mathf.Sign(inputXVelocity))) {
                 inputXVelocity = wallJumpLockoutTimer.Progress * moveInput * moveSpeed;
             }
-            else
-            {
+            else {
                 inputXVelocity = moveInput * moveSpeed;
             }
 
             rb.velocity = new Vector2(inputXVelocity + externalXVelocity, rb.velocity.y);
         }
 
-        public void ZeroYVelocity()
-        {
+        public void ZeroYVelocity() {
             yVelocity = 0f;
             rb.velocity = new Vector2(rb.velocity.x, yVelocity);
         }
 
-        public IEnumerator WallJumpLockoutCoroutine(float direction)
-        {
-            if (currentWallJumpCoroutine != null)
-            {
+        public IEnumerator WallJumpLockoutCoroutine(float direction) {
+            if (currentWallJumpCoroutine != null) {
                 StopCoroutine(currentWallJumpCoroutine);
             }
 
@@ -325,13 +287,11 @@ namespace Omnia.Player
             yield return StartCoroutine(currentWallJumpCoroutine);
         }
 
-        private IEnumerator WallJumpLockoutCoroutineInternal(float direction)
-        {
+        private IEnumerator WallJumpLockoutCoroutineInternal(float direction) {
             float duration = wallJumpLockoutTime;
             float elapsedTime = 0f;
 
-            while (elapsedTime < duration)
-            {
+            while (elapsedTime < duration) {
                 float progress = elapsedTime / duration;
                 externalXVelocity = (1 - progress) * direction * wallJumpPower;
                 elapsedTime += Time.deltaTime;
