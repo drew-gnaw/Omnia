@@ -43,7 +43,7 @@ namespace Enemies.Armadillo {
         public void OnAttack(GameObject it) {
             /* TODO: Not implemented yet. Take self-damage for testing purposes. */
             Debug.Log(this + " attacked " + it);
-            TakeDamage(1);
+            TakeDamage(4);
         }
 
         private void UseAnimation(StateMachine stateMachine) {

@@ -24,7 +24,7 @@ namespace Enemies.Armadillo.Behaviour {
         public void OnTick() {
             self.rb.velocity = new Vector2(mode == Mode.Idle ? 0 : self.facing.x * 3, self.rb.velocity.y);
 
-            if (mode == Mode.Rush && CheckHit()) self.UseBehaviour(new Stun(self));
+            if (mode == Mode.Rush && CheckHit()) UseStun();
         }
 
         private IEnumerator DoRush() {
@@ -34,6 +34,13 @@ namespace Enemies.Armadillo.Behaviour {
 
         private bool CheckHit() {
             return self.checks[Math.Sign(self.facing.x) == 1 ? 0 : 3].IsTouchingLayers(self.ground | self.player);
+        }
+
+        private void UseStun() {
+            var hit = Armadillo.Sweep(self.sprite.transform.position, self.facing, 0, 1, 1, self.player).First();
+            if (hit) self.OnAttack(hit.collider.gameObject);
+
+            self.UseBehaviour(new Stun(self));
         }
 
         private enum Mode {
