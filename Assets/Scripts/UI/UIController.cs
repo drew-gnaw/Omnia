@@ -12,8 +12,8 @@ namespace UI {
         private Dictionary<EnemyBase, EnemyUI> enemies;
 
         public void Awake() {
-            Instance = Instance ? Instance : this;
-            if (Instance != this) Destroy(this);
+            Instance = Instance != null ? Instance : this;
+            if (Instance != this) Destroy(gameObject);
 
             EnemyBase.Spawn += OnEnemySpawn;
             EnemyBase.Death += OnEnemyDeath;
@@ -26,7 +26,7 @@ namespace UI {
 
         private void OnEnemySpawn(EnemyBase enemy) {
             var ui = prefabs[0];
-            enemies[enemy] = Instantiate(ui, canvas.transform).GetComponent<EnemyUI>().Of(enemy);
+            enemies[enemy] = Instantiate(ui, transform).GetComponent<EnemyUI>().Of(enemy);
         }
 
         private void OnEnemyDeath(EnemyBase enemy) {
