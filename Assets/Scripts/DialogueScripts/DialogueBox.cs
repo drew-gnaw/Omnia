@@ -23,6 +23,7 @@ public class DialogueBox : MonoBehaviour
     private bool lineIsFinished;
 
     public delegate void DialogueBoxDelegate();
+
     public static event DialogueBoxDelegate DialogueBoxEvent; //New event to help you coordinate cool things during dialogue
 
     public void SetLine(DialogueText line)
@@ -63,7 +64,6 @@ public class DialogueBox : MonoBehaviour
 
     void SetFontStyles(DialogueText line)
     {
-
         if (line.Bold)
         {
             bodyText.fontStyle |= FontStyles.Bold;
@@ -86,7 +86,6 @@ public class DialogueBox : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
     }
 
     public void StopScrollingText()
@@ -108,7 +107,6 @@ public class DialogueBox : MonoBehaviour
     //Effects: Adds the rolling dialogue effect to the text
     IEnumerator TypeLine()
     {
-
         lineIsFinished = false;
         int currentIndex = 0;
         string displayedText = "";
@@ -120,16 +118,23 @@ public class DialogueBox : MonoBehaviour
 
             bodyText.text = displayedText;
 
-            yield return new WaitForSeconds(1f / rollingSpeed);
+            // Rolling delay using unscaled time
+            float delay = 1f / rollingSpeed;
+            float timer = 0f;
+
+            while (timer < delay)
+            {
+                timer += Time.unscaledDeltaTime;
+                yield return null;
+            }
         }
 
         lineIsFinished = true;
-
     }
+
 
     public bool FinishedLine()
     {
         return lineIsFinished;
     }
-
 }

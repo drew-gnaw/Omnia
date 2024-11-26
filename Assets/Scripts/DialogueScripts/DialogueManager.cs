@@ -54,6 +54,8 @@ public class DialogueManager : MonoBehaviour
 
         sentences = newSentences;
         inDialogue = true;
+        
+        Time.timeScale = 0f;
 
         DisplayNextSentence();
         yield return new WaitUntil(() => !inDialogue);
@@ -154,6 +156,7 @@ public class DialogueManager : MonoBehaviour
     void EndDialogue()
     {
         ClearPanel();
+        Time.timeScale = 1f;
     }
 
     void Update()
