@@ -24,8 +24,7 @@ public class DialogueBox : MonoBehaviour
 
     public delegate void DialogueBoxDelegate();
 
-    public static event DialogueBoxDelegate
-        DialogueBoxEvent; //New event to help you coordinate cool things during dialogue
+    public static event DialogueBoxDelegate DialogueBoxEvent; //New event to help you coordinate cool things during dialogue
 
     public void SetLine(DialogueText line)
     {

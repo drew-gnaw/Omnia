@@ -21,7 +21,6 @@ namespace Omnia.State {
             {
                 wallJumpDirection = player.lastWallDirection;
             }
-            Debug.Log(wallJumpDirection);
 
             player.StartCoroutine(player.WallJumpLockoutCoroutine(wallJumpDirection));
         }
