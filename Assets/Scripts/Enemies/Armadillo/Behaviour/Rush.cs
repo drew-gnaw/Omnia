@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
@@ -32,10 +33,7 @@ namespace Enemies.Armadillo.Behaviour {
         }
 
         private bool CheckHit() {
-            var hit = Armadillo.Sweep(self.sprite.transform.position, self.facing, 0, 0.625f, 1, self.ground | self.player).First();
-            if (!hit) return false;
-            if (Armadillo.IsOnLayer(hit, self.player)) self.OnAttack(hit.collider.gameObject);
-            return true;
+            return self.checks[Math.Sign(self.facing.x) == 1 ? 0 : 3].IsTouchingLayers(self.ground | self.player);
         }
 
         private enum Mode {
