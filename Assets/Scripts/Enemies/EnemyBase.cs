@@ -1,13 +1,15 @@
+using System;
 using UnityEngine;
 
 public abstract class EnemyBase : MonoBehaviour
 {
     public int maxHealth;
-    protected int currentHealth;
+    public int currentHealth;
 
     void Start()
     {
         currentHealth = maxHealth;
+        Spawn?.Invoke(this);
     }
     public virtual void TakeDamage(int damage)
     {
@@ -22,6 +24,10 @@ public abstract class EnemyBase : MonoBehaviour
     protected virtual void Die()
     {
         Debug.Log("Enemy died.");
+        Death?.Invoke(this);
         Destroy(gameObject);
     }
+
+    public static event Action<EnemyBase> Spawn;
+    public static event Action<EnemyBase> Death;
 }

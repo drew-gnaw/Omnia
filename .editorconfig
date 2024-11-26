@@ -1,0 +1,11 @@
+[*]
+csharp_new_line_before_catch = false   # Who does this?
+csharp_new_line_before_else = false    # "   }
+csharp_new_line_before_finally = false #     else {   "
+csharp_new_line_before_open_brace = none
+end_of_line = lf
+indent_size = 4
+indent_style = space
+insert_final_newline = true
+max_line_length = 160
+trim_trailing_whitespace = true
