@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Enemies;
 using UnityEngine;
 
 namespace UI {
@@ -9,27 +10,27 @@ namespace UI {
         [SerializeField] internal GameObject[] prefabs;
         [SerializeField] internal Canvas canvas;
 
-        private Dictionary<EnemyBase, EnemyUI> enemies;
+        private Dictionary<Enemy, EnemyUI> enemies;
 
         public void Awake() {
             Instance = Instance != null ? Instance : this;
             if (Instance != this) Destroy(gameObject);
 
-            EnemyBase.Spawn += OnEnemySpawn;
-            EnemyBase.Death += OnEnemyDeath;
-            enemies = new Dictionary<EnemyBase, EnemyUI>();
+            Enemy.Spawn += OnEnemySpawn;
+            Enemy.Death += OnEnemyDeath;
+            enemies = new Dictionary<Enemy, EnemyUI>();
         }
 
         public void Update() {
             foreach (var (enemy, ui) in enemies) ui.Move(WorldToUIPoint(enemy.transform.position, canvas.worldCamera));
         }
 
-        private void OnEnemySpawn(EnemyBase enemy) {
+        private void OnEnemySpawn(Enemy enemy) {
             var ui = prefabs[0];
-            enemies[enemy] = Instantiate(ui, transform).GetComponent<EnemyUI>().Of(enemy);
+            enemies[enemy] = Instantiate(ui, transform).GetComponent<EnemyUI>()!.Of(enemy);
         }
 
-        private void OnEnemyDeath(EnemyBase enemy) {
+        private void OnEnemyDeath(Enemy enemy) {
             if (enemies.Remove(enemy, out var ui)) Destroy(ui.gameObject);
         }
 

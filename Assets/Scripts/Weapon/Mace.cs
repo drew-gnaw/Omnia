@@ -1,3 +1,4 @@
+using Enemies;
 using UnityEngine;
 
 public class Mace : WeaponClass
@@ -10,7 +11,7 @@ public class Mace : WeaponClass
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, radius, enemyLayers);
         foreach (Collider2D enemy in hitEnemies)
         {
-            enemy.GetComponent<EnemyBase>().TakeDamage(damage);
+            enemy.GetComponent<Enemy>().Hurt(damage);
         }
     }
 

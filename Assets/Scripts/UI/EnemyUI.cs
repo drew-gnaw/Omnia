@@ -1,16 +1,17 @@
+using Enemies;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace UI {
     public class EnemyUI : MonoBehaviour {
-        [SerializeField] internal EnemyBase target;
         [SerializeField] internal Slider slider;
+        [SerializeField] internal Enemy target;
 
         public void Update() {
-            slider.value = target.currentHealth * 1f / target.maxHealth;
+            slider.value = target.maximumHealth == 0 ? 0 : target.currentHealth / target.maximumHealth;
         }
 
-        public EnemyUI Of(EnemyBase it) {
+        public EnemyUI Of(Enemy it) {
             target = it;
             return this;
         }
