@@ -16,11 +16,19 @@ namespace UI {
             Instance = Instance != null ? Instance : this;
             if (Instance != this) Destroy(gameObject);
 
-            CinemachineCore.CameraUpdatedEvent.AddListener(OnCameraUpdate);
-            Enemy.Death += OnEnemyDeath;
-            Enemy.Spawn += OnEnemySpawn;
-
             enemies = new Dictionary<Enemy, EnemyUI>();
+        }
+
+        public void OnEnable() {
+            Enemy.Spawn += OnEnemySpawn;
+            Enemy.Death += OnEnemyDeath;
+            CinemachineCore.CameraUpdatedEvent.AddListener(OnCameraUpdate);
+        }
+
+        public void OnDisable() {
+            Enemy.Spawn -= OnEnemySpawn;
+            Enemy.Death -= OnEnemyDeath;
+            CinemachineCore.CameraUpdatedEvent.RemoveListener(OnCameraUpdate);
         }
 
         private void OnCameraUpdate(CinemachineBrain it) {
