@@ -17,27 +17,23 @@ namespace UI {
             if (Instance != this) Destroy(gameObject);
 
             CinemachineCore.CameraUpdatedEvent.AddListener(OnCameraUpdate);
-            Enemy.Spawn += OnEnemySpawn;
             Enemy.Death += OnEnemyDeath;
+            Enemy.Spawn += OnEnemySpawn;
+
             enemies = new Dictionary<Enemy, EnemyUI>();
         }
 
         private void OnCameraUpdate(CinemachineBrain it) {
-            foreach (var (enemy, ui) in enemies) ui.Move(WorldToUIPoint(enemy.transform.position, canvas.worldCamera));
-        }
-
-        private void OnEnemySpawn(Enemy enemy) {
-            var ui = prefabs[0];
-            enemies[enemy] = Instantiate(ui, transform).GetComponent<EnemyUI>()!.Of(enemy);
+            foreach (var ui in enemies.Values) ui.OnCameraUpdate();
         }
 
         private void OnEnemyDeath(Enemy enemy) {
             if (enemies.Remove(enemy, out var ui)) Destroy(ui.gameObject);
         }
 
-        private static Vector2 WorldToUIPoint(Vector2 position, Camera camera) {
-            var p = camera.WorldToViewportPoint(position);
-            return new Vector2(camera.scaledPixelWidth * (p.x * 2 - 1) / 2, camera.scaledPixelHeight * (p.y * 2 - 1) / 2);
+        private void OnEnemySpawn(Enemy enemy) {
+            var ui = prefabs[0];
+            enemies[enemy] = Instantiate(ui, transform).GetComponent<EnemyUI>()!.Of(enemy);
         }
     }
 }
