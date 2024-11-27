@@ -14,7 +14,7 @@ namespace Enemies.Armadillo.Behaviour {
         public void OnEnter() {
             self.rb.velocity = new Vector2(self.facing.x * -1, 3);
 
-            co = self.StartCoroutine(DoRush());
+            co = self.StartCoroutine(DoStun());
         }
 
         public void OnExit() {
@@ -25,7 +25,7 @@ namespace Enemies.Armadillo.Behaviour {
             if (mode == Mode.Idle) self.UseBehaviour(new Walk(self));
         }
 
-        private IEnumerator DoRush() {
+        private IEnumerator DoStun() {
             yield return new WaitForSeconds(3);
             mode = Mode.Idle;
         }

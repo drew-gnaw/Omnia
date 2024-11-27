@@ -6,7 +6,7 @@ using Omnia.State;
 using UnityEngine;
 
 namespace Enemies.Armadillo {
-    public class Armadillo : EnemyBase {
+    public class Armadillo : Enemy {
         [SerializeField] internal SpriteRenderer sprite;
         [SerializeField] internal Animator animator;
         [SerializeField] internal Rigidbody2D rb;
@@ -34,16 +34,15 @@ namespace Enemies.Armadillo {
             animationStateMachine?.FixedUpdate();
         }
 
+        /* TODO: Not implemented yet. Taking self-damage for testing purposes. */
+        public void Attack(GameObject it) {
+            Hurt(4);
+        }
+
         public void UseBehaviour(IBehaviour it) {
             behaviour?.OnExit();
             behaviour = it;
             behaviour?.OnEnter();
-        }
-
-        public void OnAttack(GameObject it) {
-            /* TODO: Not implemented yet. Take self-damage for testing purposes. */
-            Debug.Log(this + " attacked " + it);
-            TakeDamage(4);
         }
 
         private void UseAnimation(StateMachine stateMachine) {
@@ -59,22 +58,6 @@ namespace Enemies.Armadillo {
 
             stateMachine.SetState(idle);
             animationStateMachine = stateMachine;
-        }
-
-        /* TODO: This is a common utility function and should be moved. */
-        public static bool IsOnLayer(RaycastHit2D hit, LayerMask mask) {
-            return hit && (mask & 1 << hit.collider.gameObject.layer) != 0;
-        }
-
-        /* TODO: This is a common utility function and should be moved. */
-        public static RaycastHit2D[] Sweep(Vector2 origin, Vector2 direction, float angle, float distance, int count, LayerMask mask) {
-            var step = count == 1 ? 0 : angle / (count - 1);
-            var initial = angle / 2f;
-            return Enumerable.Range(0, count).Select(it => Raycast(origin, direction, initial - step * it, distance, mask)).ToArray();
-        }
-
-        private static RaycastHit2D Raycast(Vector2 origin, Vector2 direction, float angle, float distance, LayerMask mask) {
-            return Physics2D.Raycast(origin, Quaternion.Euler(0, 0, angle) * direction.normalized, distance, mask);
         }
     }
 }

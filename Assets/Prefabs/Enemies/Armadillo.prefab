@@ -388,7 +388,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11fe3eace9864408e8273d9fe1ac46b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 10
+  maximumHealth: 10
+  currentHealth: 10
   sprite: {fileID: 9202038865644320477}
   animator: {fileID: 6149703548532306918}
   rb: {fileID: 7893308943432753642}
