@@ -1,5 +1,5 @@
-using System;
 using System.Collections.Generic;
+using Cinemachine;
 using Enemies;
 using UnityEngine;
 
@@ -16,12 +16,13 @@ namespace UI {
             Instance = Instance != null ? Instance : this;
             if (Instance != this) Destroy(gameObject);
 
+            CinemachineCore.CameraUpdatedEvent.AddListener(OnCameraUpdate);
             Enemy.Spawn += OnEnemySpawn;
             Enemy.Death += OnEnemyDeath;
             enemies = new Dictionary<Enemy, EnemyUI>();
         }
 
-        public void Update() {
+        private void OnCameraUpdate(CinemachineBrain it) {
             foreach (var (enemy, ui) in enemies) ui.Move(WorldToUIPoint(enemy.transform.position, canvas.worldCamera));
         }
 
