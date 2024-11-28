@@ -1,14 +1,14 @@
-using Enemies;
 using UnityEngine;
+using Enemies;
 
 public class Mace : WeaponClass
 {
-    public Transform attackPoint;
-    public float radius;
+    Transform attackPoint;
+    float radius;
     
     public override void Attack()
     {
-        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, radius, enemyLayers);
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, radius, enemyLayer);
         foreach (Collider2D enemy in hitEnemies)
         {
             enemy.GetComponent<Enemy>().Hurt(damage);
@@ -17,6 +17,10 @@ public class Mace : WeaponClass
 
     public override void UseSkill()
     {
+        
+    }
+
+    public override void IntroSkill() {
         
     }
 }
