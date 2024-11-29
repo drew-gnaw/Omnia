@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using System.Linq;
 using Enemies;
 using UnityEngine;
+using UnityEngine.Pool;
 
 public class HarpoonGun : WeaponClass
 {
@@ -11,37 +13,65 @@ public class HarpoonGun : WeaponClass
     [SerializeField] public float harpoonSpearGravityScale = 1;
     [SerializeField] public GameObject harpoonSpearPrefab;
 
-    // Assuming harpoons isn't too great, otherwise will use HashSet
-    LinkedList<HarpoonSpear> spears = new LinkedList<HarpoonSpear>();
+    private ObjectPool<HarpoonSpear> harpoonSpearPool;
+
+    // Assuming number of spears isn't too big
+    LinkedList<HarpoonSpear> firedSpears = new LinkedList<HarpoonSpear>();
+
+    private void Start()
+    {
+        harpoonSpearPool = new ObjectPool<HarpoonSpear>(
+            // Create
+            () => {
+                GameObject spearObject = Instantiate(harpoonSpearPrefab, transform.position, transform.rotation);
+                return spearObject.GetComponent<HarpoonSpear>();
+            },
+            // OnGet
+            (HarpoonSpear spear) => {
+                spear.gameObject.SetActive(true);
+            },
+            // OnRelease
+            (HarpoonSpear spear) => {
+                spear.gameObject.SetActive(false);
+            },
+            // OnDestroy
+            (HarpoonSpear spear) => {
+                Destroy(spear.gameObject);
+            },
+            true,
+            harpoons,
+            harpoons
+        );
+    }
 
     public override void Attack()
     {
-        if (spears.Count >= harpoons) {
+        if (firedSpears.Count >= harpoons) {
             // Do nothing
             return;
         }
-
-        GameObject spearObject = Instantiate(harpoonSpearPrefab, transform.position, transform.rotation);
-        HarpoonSpear spear = spearObject.GetComponent<HarpoonSpear>();
-        spears.AddFirst(spear);
+        HarpoonSpear spear = harpoonSpearPool.Get();
         spear.Fire(this);
+        firedSpears.AddFirst(spear);
     }
 
     public override void UseSkill()
     {
-        if (spears.Count == 0) {
+        if (firedSpears.Count == 0) {
             return;
         }
 
         // Find the next most recent spear that has tagged enemy
-        Enemy tagged = null;
-        foreach (var spear in spears) {
-            if (spear.TaggedEnemy != null) {
-                tagged = spear.TaggedEnemy;
-                break;
-            }
-        }
+        // Enemy tagged = null;
+        // foreach (var spear in firedSpears) {
+        //     if (spear.TaggedEnemy != null) {
+        //         tagged = spear.TaggedEnemy;
+        //         break;
+        //     }
+        // }
 
+        Enemy tagged = firedSpears.FirstOrDefault(spear => spear.TaggedEnemy != null)?.TaggedEnemy;
+        
         if (tagged == null) {
             return;
         }
@@ -52,7 +82,7 @@ public class HarpoonGun : WeaponClass
     public override void IntroSkill() 
     {
         // Pull all enemies
-        foreach (var spear in spears)
+        foreach (var spear in firedSpears)
         {
             spear.PullEnemy();
         }
@@ -64,7 +94,8 @@ public class HarpoonGun : WeaponClass
     }
 
     public void SpearCollected(HarpoonSpear spear) {
-        spears.Remove(spear);
+        harpoonSpearPool.Release(spear);
+        firedSpears.Remove(spear);
     }
 
 

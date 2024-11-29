@@ -18,14 +18,11 @@ public class HarpoonSpear : MonoBehaviour {
     private HarpoonGun gun;
 
     // Tracking enemy
-    private Enemy taggedEnemy;
-    public Enemy TaggedEnemy {
-        get { return taggedEnemy; }
-    }
+    public Enemy TaggedEnemy { get; private set;}
 
     public void Awake() {
         this.dropped = false;
-        this.taggedEnemy = null;
+        this.TaggedEnemy = null;
     }
 
     public void OnEnable() {
@@ -38,14 +35,20 @@ public class HarpoonSpear : MonoBehaviour {
 
     // Fires the spear in the rotation of the gun with its velocity
     public void Fire(HarpoonGun gun) {
-        this.dropped = false;
         this.gun = gun;
+
+        gameObject.SetActive(true);
+
+        // Temporary, set the firing origin to the gun
+        transform.position = gun.transform.position;
+        transform.rotation = gun.transform.rotation;
+
 
         Rigidbody2D.velocity = gun.transform.right * gun.harpoonVelocity;
     }
 
     public void PullEnemy() {
-        if (taggedEnemy == null) {
+        if (TaggedEnemy == null) {
             return;
         }
 
@@ -81,21 +84,21 @@ public class HarpoonSpear : MonoBehaviour {
     }
 
     private void HandlePlayerCollision() {
+        Unfreeze();
+        // Tell gun to mark this spear as available
         gun.SpearCollected(this);
-        // Can be handled by disabling the spear and "returning to inventory" instead
-        Destroy(gameObject);
     }
 
     private void HandleEnemyCollision(Enemy enemy) {
         Freeze();
 
-        this.taggedEnemy = enemy;
+        this.TaggedEnemy = enemy;
 
         // HingeJoints are created during runtime as it can't be disabled
         HingeJoint2D hj = this.AddComponent<HingeJoint2D>();
-        hj.connectedBody = taggedEnemy.GetComponent<Rigidbody2D>();
+        hj.connectedBody = TaggedEnemy.GetComponent<Rigidbody2D>();
 
-        taggedEnemy.GetComponent<Enemy>().Hurt(gun.damage);
+        TaggedEnemy.GetComponent<Enemy>().Hurt(gun.damage);
     }
 
     private void HandleGroundCollision() {
@@ -103,7 +106,7 @@ public class HarpoonSpear : MonoBehaviour {
     }
 
     private void HandleEnemyDeath(Enemy enemy) {
-        if (enemy == taggedEnemy) {
+        if (enemy == TaggedEnemy) {
             Unfreeze();
         }
     }
