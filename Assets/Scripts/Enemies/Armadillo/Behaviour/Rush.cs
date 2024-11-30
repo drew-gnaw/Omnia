@@ -33,7 +33,7 @@ namespace Enemies.Armadillo.Behaviour {
         }
 
         private bool CheckHit() {
-            return self.checks[Math.Sign(self.facing.x) == 1 ? 0 : 3].IsTouchingLayers(self.ground | self.player);
+            return self.checks[self.facing.x > 0 ? 0 : 3].IsTouchingLayers(self.ground | self.player);
         }
 
         private void UseStun() {

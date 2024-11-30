@@ -24,7 +24,7 @@ namespace Enemies.Armadillo {
         }
 
         public void Update() {
-            sprite.flipX = facing.x == 0 ? sprite.flipX : Math.Sign(facing.x) == 1;
+            sprite.flipX = facing.x == 0 ? sprite.flipX : facing.x > 0;
 
             animationStateMachine?.Update();
         }
