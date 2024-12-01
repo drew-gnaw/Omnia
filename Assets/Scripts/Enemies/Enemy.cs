@@ -16,7 +16,7 @@ namespace Enemies {
             Spawn?.Invoke(this);
         }
 
-        public virtual void Hurt(int damage) {
+        public virtual void Hurt(float damage) {
             currentHealth = Math.Clamp(currentHealth - damage, 0, maximumHealth);
 
             if (currentHealth == 0) Die();
