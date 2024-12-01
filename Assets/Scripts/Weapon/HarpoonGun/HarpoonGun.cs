@@ -71,7 +71,7 @@ public class HarpoonGun : WeaponClass
         // }
 
         Enemy tagged = firedSpears.FirstOrDefault(spear => spear.TaggedEnemy != null)?.TaggedEnemy;
-        
+
         if (tagged == null) {
             return;
         }
@@ -79,7 +79,7 @@ public class HarpoonGun : WeaponClass
         // TODO Pull to most recent
     }
 
-    public override void IntroSkill() 
+    public override void IntroSkill()
     {
         // Pull all enemies
         foreach (var spear in firedSpears)
@@ -100,26 +100,16 @@ public class HarpoonGun : WeaponClass
 
 
     private void HandleWeaponRotation() {
-        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(
-            new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.nearClipPlane)
-        );
-        Vector2 direction = mousePosition - transform.position;
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        Vector2 facing = player.GetComponent<Player.Alt.Player>().facing;
+
+        float angle = Mathf.Atan2(facing.y, facing.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
 
-        // TODO temporary solution to flipping the gun when pointing left/right
-        // until design/art team as consolidated on style
         SpriteRenderer[] children = GetComponentsInChildren<SpriteRenderer>();
-        if (angle > 90 || angle < -90) {
-            foreach (SpriteRenderer sr in children)
-            {
-                sr.flipY = true;
-            }
-        } else {
-            foreach (SpriteRenderer sr in children)
-            {
-                sr.flipY = false;
-            }
+        bool shouldFlip = angle > 90 || angle < -90;
+        foreach (SpriteRenderer sr in children)
+        {
+            sr.flipY = shouldFlip;
         }
     }
 }
