@@ -15,6 +15,8 @@ namespace Player.Alt {
         [SerializeField] internal float maximumHealth;
         [SerializeField] internal float currentHealth;
         [SerializeField] internal float flow;
+        [SerializeField] internal WeaponClass[] weapons;
+        [SerializeField] internal int selectedWeapon;
 
         /* TODO: Is this bad? */
         [SerializeField] internal Camera cam;
@@ -23,6 +25,7 @@ namespace Player.Alt {
         [SerializeField] internal Vector2 moving;
         [SerializeField] internal bool jump;
         [SerializeField] internal bool held;
+        [SerializeField] internal bool attack;
         [SerializeField] internal bool grounded;
         [SerializeField] internal Vector2 slide;
 
@@ -42,6 +45,14 @@ namespace Player.Alt {
         public void Start() {
             currentHealth = maximumHealth;
             flow = 0;
+
+            Transform weaponsTransform = transform.Find("Weapons");
+            if (weaponsTransform != null) {
+                weapons = weaponsTransform.GetComponentsInChildren<WeaponClass>();
+            } else {
+                Debug.LogError("Weapons object not found as a child of the player!");
+            }
+
             Spawn?.Invoke();
         }
 
@@ -56,6 +67,7 @@ namespace Player.Alt {
             rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(10 * -1, rb.velocity.y));
             rb.gravityScale = held && rb.velocity.y > 0 ? 1 : 2;
 
+            DoAttack();
             behaviour?.OnTick();
             animationStateMachine?.FixedUpdate();
         }
@@ -76,6 +88,13 @@ namespace Player.Alt {
 
         private void Die() {
             Death?.Invoke();
+        }
+
+        private void DoAttack() {
+            if (attack) {
+                weapons[selectedWeapon].Attack();
+                attack = false;
+            }
         }
 
         private void UseAnimation(StateMachine stateMachine) {

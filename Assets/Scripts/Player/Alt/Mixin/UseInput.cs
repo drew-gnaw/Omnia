@@ -17,11 +17,13 @@ namespace Player.Alt.Mixin {
             var holdable = self.grounded || self.slide.x != 0;
             var held = Input.GetButton("Jump");
             var jump = Input.GetButtonDown("Jump");
+            var attack = Input.GetButtonDown("Fire1");
 
             self.facing = GetFacingInput(self);
             self.moving = GetMovingInput();
             self.jump = self.jump || jump;
             self.held = self.jump && holdable || self.held && held;
+            self.attack = self.attack || attack;
         }
 
         public void OnEnable() {
