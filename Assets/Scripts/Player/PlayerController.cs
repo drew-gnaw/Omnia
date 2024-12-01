@@ -219,6 +219,7 @@ namespace Omnia.Player {
         }
 
         public void HandleAttack() {
+            currentWeapon.Attack();
         }
 
         public void HandleSlide() {
