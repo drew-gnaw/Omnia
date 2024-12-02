@@ -17,7 +17,7 @@ namespace Player.Alt.Behaviour {
         }
 
         public void OnTick() {
-            var x = MathUtils.Lerpish(self.rb.velocity.x, self.moving.x * 5, Time.fixedDeltaTime * 10);
+            var x = MathUtils.Lerpish(self.rb.velocity.x, self.moving.x * 5, Time.fixedDeltaTime * 20);
             self.rb.velocity = new Vector2(x, Math.Max(-1, self.rb.velocity.y));
         }
 
