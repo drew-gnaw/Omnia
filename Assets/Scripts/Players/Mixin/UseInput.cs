@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Player.Alt.Mixin {
+namespace Players.Mixin {
     public class UseInput : MonoBehaviour {
         private static readonly string[] Keys = { "Horizontal", "Vertical", "Fire1", "Jump" };
 

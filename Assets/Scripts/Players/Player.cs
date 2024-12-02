@@ -1,10 +1,10 @@
 using System;
 using Omnia.State;
-using Player.Alt.Animation;
-using Player.Alt.Behaviour;
+using Players.Animation;
+using Players.Behaviour;
 using UnityEngine;
 
-namespace Player.Alt {
+namespace Players {
     public class Player : MonoBehaviour {
         [SerializeField] internal SpriteRenderer sprite;
         [SerializeField] internal Animator animator;

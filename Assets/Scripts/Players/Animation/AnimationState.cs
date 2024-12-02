@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Player.Alt.Animation {
+namespace Players.Animation {
     public class IdleAnimation : AnimationState {
         public IdleAnimation(Animator animator) : base("PlayerIdle", animator) {
         }

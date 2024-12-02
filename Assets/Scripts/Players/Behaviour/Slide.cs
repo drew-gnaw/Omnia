@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using Utils;
 
-namespace Player.Alt.Behaviour {
+namespace Players.Behaviour {
     public class Slide : IBehaviour {
         private readonly Player self;
 

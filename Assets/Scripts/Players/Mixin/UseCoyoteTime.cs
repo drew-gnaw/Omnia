@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using UnityEngine;
 
-namespace Player.Alt.Mixin {
+namespace Players.Mixin {
     public class UseCoyoteTime : MonoBehaviour {
         [SerializeField] internal Player self;
         [SerializeField] internal float delay;

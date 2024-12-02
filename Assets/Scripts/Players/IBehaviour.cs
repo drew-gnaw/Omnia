@@ -1,4 +1,4 @@
-namespace Player.Alt {
+namespace Players {
     public interface IBehaviour {
         void OnEnter();
         void OnExit();

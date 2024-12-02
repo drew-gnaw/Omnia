@@ -1,7 +1,7 @@
 using UnityEngine;
 using Utils;
 
-namespace Player.Alt.Behaviour {
+namespace Players.Behaviour {
     public class Fall : IBehaviour {
         private readonly Player self;
 

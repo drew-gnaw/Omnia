@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Enemies;
+using Players;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -100,7 +101,7 @@ public class HarpoonGun : WeaponClass
 
 
     private void HandleWeaponRotation() {
-        Vector2 facing = player.GetComponent<Player.Alt.Player>().facing;
+        Vector2 facing = player.GetComponent<Player>().facing;
 
         float angle = Mathf.Atan2(facing.y, facing.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
