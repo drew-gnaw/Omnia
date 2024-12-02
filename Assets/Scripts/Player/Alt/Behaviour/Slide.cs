@@ -1,11 +1,12 @@
 using System;
 using UnityEngine;
+using Utils;
 
 namespace Player.Alt.Behaviour {
     public class Slide : IBehaviour {
         private readonly Player self;
 
-        public Slide(Player self) {
+        private Slide(Player self) {
             this.self = self;
         }
 
@@ -16,19 +17,16 @@ namespace Player.Alt.Behaviour {
         }
 
         public void OnTick() {
-            self.rb.velocity = new Vector2(self.moving.x * 7, Math.Max(-1, self.rb.velocity.y));
+            var x = MathUtils.Lerpish(self.rb.velocity.x, self.moving.x * 5, Time.fixedDeltaTime * 10);
+            self.rb.velocity = new Vector2(x, Math.Max(-1, self.rb.velocity.y));
         }
 
         public void OnUpdate() {
-            if (WallJump.Check(self)) self.UseBehaviour(new WallJump(self));
-            if (Check(self)) {
-            } //
-            else if (Fall.Check(self)) self.UseBehaviour(new Fall(self));
-            else if (Move.Check(self)) self.UseBehaviour(new Move(self));
+            self.UseBehaviour(WallJump.If(self) ?? Fall.If(self) ?? Move.If(self));
         }
 
-        public static bool Check(Player it) {
-            return !it.grounded && it.slide.x != 0 && it.checks[it.slide.x > 0 ? 0 : 2].IsTouchingLayers(it.ground);
+        public static IBehaviour If(Player it) {
+            return !it.grounded && it.slide.x != 0 && it.checks[it.slide.x > 0 ? 0 : 2].IsTouchingLayers(it.ground) ? new Slide(it) : null;
         }
     }
 }

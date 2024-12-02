@@ -1,10 +1,11 @@
 using UnityEngine;
+using Utils;
 
 namespace Player.Alt.Behaviour {
     public class Fall : IBehaviour {
         private readonly Player self;
 
-        public Fall(Player self) {
+        private Fall(Player self) {
             this.self = self;
         }
 
@@ -15,18 +16,16 @@ namespace Player.Alt.Behaviour {
         }
 
         public void OnTick() {
-            self.rb.velocity = new Vector2(self.moving.x * 7, self.rb.velocity.y);
+            var x = MathUtils.Lerpish(self.rb.velocity.x, self.moving.x * 5, Time.fixedDeltaTime * 5);
+            self.rb.velocity = new Vector2(x, self.rb.velocity.y);
         }
 
         public void OnUpdate() {
-            if (Slide.Check(self)) self.UseBehaviour(new Slide(self));
-            else if (Check(self)) {
-            } //
-            else if (Move.Check(self)) self.UseBehaviour(new Move(self));
+            self.UseBehaviour(Slide.If(self) ?? Move.If(self));
         }
 
-        public static bool Check(Player it) {
-            return !it.grounded && it.rb.velocity.y < 1;
+        public static IBehaviour If(Player it) {
+            return !it.grounded && it.slide.x == 0 && it.rb.velocity.y < 0 ? new Fall(it) : null;
         }
     }
 }

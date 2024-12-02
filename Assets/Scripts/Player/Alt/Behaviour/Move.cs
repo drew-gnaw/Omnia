@@ -1,10 +1,11 @@
 using UnityEngine;
+using Utils;
 
 namespace Player.Alt.Behaviour {
     public class Move : IBehaviour {
         private readonly Player self;
 
-        public Move(Player self) {
+        private Move(Player self) {
             this.self = self;
         }
 
@@ -15,16 +16,20 @@ namespace Player.Alt.Behaviour {
         }
 
         public void OnTick() {
-            self.rb.velocity = new Vector2(self.moving.x * 7, self.rb.velocity.y);
+            var x = MathUtils.Lerpish(self.rb.velocity.x, self.moving.x * 5, Time.fixedDeltaTime * 10);
+            self.rb.velocity = new Vector2(x, self.rb.velocity.y);
         }
 
         public void OnUpdate() {
-            if (Fall.Check(self)) self.UseBehaviour(new Fall(self));
-            else if (Jump.Check(self)) self.UseBehaviour(new Jump(self));
+            self.UseBehaviour(Fall.If(self) ?? Jump.If(self));
         }
 
-        public static bool Check(Player it) {
-            return it.grounded && it.checks[1].IsTouchingLayers(it.ground);
+        public static IBehaviour AsDefaultOf(Player it) {
+            return new Move(it);
+        }
+
+        public static IBehaviour If(Player it) {
+            return it.grounded && it.checks[1].IsTouchingLayers(it.ground) ? new Move(it) : null;
         }
     }
 }

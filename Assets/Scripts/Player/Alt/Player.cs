@@ -15,6 +15,7 @@ namespace Player.Alt {
         [SerializeField] internal float maximumHealth;
         [SerializeField] internal float currentHealth;
         [SerializeField] internal float flow;
+
         [SerializeField] internal WeaponClass[] weapons;
         [SerializeField] internal int selectedWeapon;
 
@@ -25,11 +26,11 @@ namespace Player.Alt {
         [SerializeField] internal Vector2 moving;
         [SerializeField] internal bool jump;
         [SerializeField] internal bool held;
-        [SerializeField] internal bool attack;
+        [SerializeField] internal bool fire;
         [SerializeField] internal bool grounded;
         [SerializeField] internal Vector2 slide;
 
-        [SerializeField] private string behaviourName;
+        [SerializeField] internal string debugBehaviour;
 
         public event Action Spawn;
         public event Action Death;
@@ -38,7 +39,7 @@ namespace Player.Alt {
         private StateMachine animationStateMachine;
 
         public void Awake() {
-            UseBehaviour(new Move(this));
+            UseBehaviour(Move.AsDefaultOf(this));
             UseAnimation(new StateMachine());
         }
 
@@ -79,11 +80,12 @@ namespace Player.Alt {
         }
 
         public void UseBehaviour(IBehaviour it) {
+            if (it == null) return;
+            debugBehaviour = it.GetType().Name;
+
             behaviour?.OnExit();
             behaviour = it;
             behaviour?.OnEnter();
-
-            behaviourName = behaviour?.GetType().Name;
         }
 
         private void Die() {
@@ -91,9 +93,9 @@ namespace Player.Alt {
         }
 
         private void DoAttack() {
-            if (attack) {
+            if (fire) {
                 weapons[selectedWeapon].Attack();
-                attack = false;
+                fire = false;
             }
         }
 
@@ -101,9 +103,9 @@ namespace Player.Alt {
             var initial = new IdleAnimation(animator);
 
             stateMachine.AddAnyTransition(initial, new FuncPredicate(() => behaviour is Move && moving.x == 0));
-            stateMachine.AddAnyTransition(new MoveAnimation(animator), new FuncPredicate(() => behaviour is Move && moving.x != 0));
-            stateMachine.AddAnyTransition(new JumpAnimation(animator), new FuncPredicate(() => behaviour is Jump or WallJump));
             stateMachine.AddAnyTransition(new FallAnimation(animator), new FuncPredicate(() => behaviour is Fall));
+            stateMachine.AddAnyTransition(new JumpAnimation(animator), new FuncPredicate(() => behaviour is Jump or WallJump));
+            stateMachine.AddAnyTransition(new MoveAnimation(animator), new FuncPredicate(() => behaviour is Move && moving.x != 0));
             stateMachine.AddAnyTransition(new SlideAnimation(animator), new FuncPredicate(() => behaviour is Slide));
 
             stateMachine.SetState(initial);
