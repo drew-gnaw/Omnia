@@ -21,7 +21,7 @@ namespace Players.Behaviour {
         }
 
         public void OnUpdate() {
-            self.UseBehaviour(Slide.If(self) ?? Move.If(self));
+            self.UseBehaviour(WallJump.If(self) ?? Slide.If(self) ?? Move.If(self));
         }
 
         public static IBehaviour If(Player it) {

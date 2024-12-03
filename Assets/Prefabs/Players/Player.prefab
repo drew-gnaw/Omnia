@@ -275,7 +275,7 @@ GameObject:
   - component: {fileID: 2761024857814508083}
   - component: {fileID: 6402661582757285898}
   m_Layer: 7
-  m_Name: Player Alt
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -325,14 +325,17 @@ MonoBehaviour:
   maximumHealth: 10
   currentHealth: 10
   flow: 0
+  weapons: []
+  selectedWeapon: 0
   cam: {fileID: 0}
   facing: {x: 0, y: 0}
   moving: {x: 0, y: 0}
   jump: 0
   held: 0
+  fire: 0
   grounded: 0
   slide: {x: 0, y: 0}
-  behaviourName: 
+  debugBehaviour: 
 --- !u!50 &1006114366540754684
 Rigidbody2D:
   serializedVersion: 4
