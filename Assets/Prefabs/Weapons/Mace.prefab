@@ -98,12 +98,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ef1a1889607d463e897dcc81754543c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
   enemyLayer:
     serializedVersion: 2
     m_Bits: 64
   damage: 3
-  attackPoint: {fileID: 6201978427254820976}
-  radius: 0
+  attackCooldownS: 0.2
 --- !u!1 &8535286365459487641
 GameObject:
   m_ObjectHideFlags: 0

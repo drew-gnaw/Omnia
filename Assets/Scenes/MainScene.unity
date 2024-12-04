@@ -130,6 +130,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1172910855}
     m_Modifications:
+    - target: {fileID: 1502666338241675100, guid: e599d2cfcbbb7144aa5584dbf373f6dd, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -2.99
+      objectReference: {fileID: 0}
+    - target: {fileID: 1502666338241675100, guid: e599d2cfcbbb7144aa5584dbf373f6dd, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.12
+      objectReference: {fileID: 0}
     - target: {fileID: 3346402560137263328, guid: e599d2cfcbbb7144aa5584dbf373f6dd, type: 3}
       propertyPath: damage
       value: 3
@@ -141,6 +149,14 @@ PrefabInstance:
     - target: {fileID: 3775420795739930932, guid: e599d2cfcbbb7144aa5584dbf373f6dd, type: 3}
       propertyPath: m_Name
       value: HarpoonGun
+      objectReference: {fileID: 0}
+    - target: {fileID: 5922244361394495977, guid: e599d2cfcbbb7144aa5584dbf373f6dd, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5922244361394495977, guid: e599d2cfcbbb7144aa5584dbf373f6dd, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6285305121185895517, guid: e599d2cfcbbb7144aa5584dbf373f6dd, type: 3}
       propertyPath: m_LocalScale.x
@@ -156,7 +172,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6285305121185895517, guid: e599d2cfcbbb7144aa5584dbf373f6dd, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6285305121185895517, guid: e599d2cfcbbb7144aa5584dbf373f6dd, type: 3}
       propertyPath: m_LocalPosition.z
@@ -191,7 +207,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 3564971602769521084, guid: e599d2cfcbbb7144aa5584dbf373f6dd, type: 3}
+    - {fileID: 5208661044873130318, guid: e599d2cfcbbb7144aa5584dbf373f6dd, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e599d2cfcbbb7144aa5584dbf373f6dd, type: 3}
@@ -816,7 +834,7 @@ Transform:
   m_GameObject: {fileID: 1172910854}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

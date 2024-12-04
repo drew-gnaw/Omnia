@@ -6,7 +6,7 @@ public class Mace : WeaponClass
     Transform attackPoint;
     float radius;
     
-    public override void Attack()
+    protected override void HandleAttack()
     {
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, radius, enemyLayer);
         foreach (Collider2D enemy in hitEnemies)

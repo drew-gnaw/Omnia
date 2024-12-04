@@ -39,10 +39,9 @@ public class HarpoonSpear : MonoBehaviour {
 
         gameObject.SetActive(true);
 
-        // Temporary, set the firing origin to the gun
+        // Temporary fire from center of player until idea consolidated
         transform.position = gun.transform.position;
         transform.rotation = gun.transform.rotation;
-
 
         Rigidbody2D.velocity = gun.transform.right * gun.harpoonVelocity;
     }
@@ -113,7 +112,7 @@ public class HarpoonSpear : MonoBehaviour {
 
     // Unfreezes the spear
     private void Unfreeze() {
-        Rigidbody2D.gravityScale = 1;
+        Rigidbody2D.gravityScale = 1 * gun.harpoonSpearGravityScale;
         Rigidbody2D.freezeRotation = false;
         dropped = false;
         

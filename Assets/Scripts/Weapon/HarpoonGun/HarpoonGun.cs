@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Enemies;
 using Players;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -12,7 +13,10 @@ public class HarpoonGun : WeaponClass
     [SerializeField] public int harpoons = 3;
     [SerializeField] public float harpoonVelocity = 20;
     [SerializeField] public float harpoonSpearGravityScale = 1;
-    [SerializeField] public GameObject harpoonSpearPrefab;
+    [SerializeField] public float harpoonSpearPickupCooldown = 0; // TODO
+
+    [Header("HarpoonGun References")]
+    public GameObject harpoonSpearPrefab;
 
     private ObjectPool<HarpoonSpear> harpoonSpearPool;
 
@@ -45,7 +49,7 @@ public class HarpoonGun : WeaponClass
         );
     }
 
-    public override void Attack()
+    protected override void HandleAttack()
     {
         if (firedSpears.Count >= harpoons) {
             // Do nothing
