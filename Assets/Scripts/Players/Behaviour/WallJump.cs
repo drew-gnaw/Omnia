@@ -14,14 +14,14 @@ namespace Players.Behaviour {
         public void OnEnter() {
             self.jump = false;
             t = 0.1f;
-            self.rb.velocity = new Vector2(self.slide.x * 5 * -1, 5);
+            self.rb.velocity = new Vector2(self.slide.x * self.moveSpeed * -1, self.jumpForce);
         }
 
         public void OnExit() {
         }
 
         public void OnTick() {
-            var x = MathUtils.Lerpish(self.rb.velocity.x, self.moving.x * 5, (0.1f - t) / 0.1f * Time.fixedDeltaTime * 5);
+            var x = MathUtils.Lerpish(self.rb.velocity.x, self.moving.x * self.moveSpeed, (self.wallJumpLockoutTime - t) / self.wallJumpLockoutTime * Time.fixedDeltaTime * self.C);
             self.rb.velocity = new Vector2(x, self.rb.velocity.y);
         }
 

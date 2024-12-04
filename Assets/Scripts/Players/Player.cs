@@ -14,6 +14,10 @@ namespace Players {
 
         [SerializeField] internal float maximumHealth;
         [SerializeField] internal float currentHealth;
+        [SerializeField] internal float moveSpeed;
+        [SerializeField] internal float jumpForce;
+        [SerializeField] internal float wallJumpLockoutTime;
+        [SerializeField] internal float C;
         [SerializeField] internal float flow;
 
         [SerializeField] internal WeaponClass[] weapons;
