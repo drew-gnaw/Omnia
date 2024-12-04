@@ -26,6 +26,9 @@ namespace Enemies.Armadillo.Behaviour {
             if (mode == Mode.Rush && CheckHit()) UseStun();
         }
 
+        public void OnUpdate() {
+        }
+
         private IEnumerator DoRush() {
             yield return new WaitForSeconds(1);
             mode = Mode.Rush;
