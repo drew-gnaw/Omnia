@@ -1,6 +1,7 @@
 using System;
 using Players.Behaviour;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Players {
     public class Player : MonoBehaviour {
@@ -13,9 +14,11 @@ namespace Players {
         [SerializeField] internal float maximumHealth;
         [SerializeField] internal float currentHealth;
         [SerializeField] internal float moveSpeed;
-        [SerializeField] internal float jumpForce;
+        [SerializeField] internal float jumpSpeed;
+        [SerializeField] internal float fallSpeed;
+        [SerializeField] internal float moveAccel;
+        [SerializeField] internal float fallAccel;
         [SerializeField] internal float wallJumpLockoutTime;
-        [SerializeField] internal float C;
         [SerializeField] internal float flow;
 
         [SerializeField] internal WeaponClass[] weapons;
@@ -63,7 +66,7 @@ namespace Players {
         }
 
         public void FixedUpdate() {
-            rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(10 * -1, rb.velocity.y));
+            rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(fallSpeed * -1, rb.velocity.y));
             rb.gravityScale = held && rb.velocity.y > 0 ? 1 : 2;
 
             DoAttack();

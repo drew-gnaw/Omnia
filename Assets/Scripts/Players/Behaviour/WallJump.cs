@@ -11,9 +11,9 @@ namespace Players.Behaviour {
         }
 
         public void OnEnter() {
-            t = 0.1f;
+            t = self.wallJumpLockoutTime;
 
-            self.rb.velocity = new Vector2(self.slide.x * self.moveSpeed * -1, self.jumpForce);
+            self.rb.velocity = new Vector2(self.slide.x * self.moveSpeed * -1, self.jumpSpeed);
             self.jump = false;
             self.UseAnimation("PlayerJump");
         }
@@ -22,7 +22,9 @@ namespace Players.Behaviour {
         }
 
         public void OnTick() {
-            var x = MathUtils.Lerpish(self.rb.velocity.x, self.moving.x * self.moveSpeed, (self.wallJumpLockoutTime - t) / self.wallJumpLockoutTime * Time.fixedDeltaTime * self.C);
+            var responsiveness = 1 - t / self.wallJumpLockoutTime;
+
+            var x = MathUtils.Lerpish(self.rb.velocity.x, self.moving.x * self.moveSpeed, responsiveness * Time.fixedDeltaTime * self.fallAccel);
             self.rb.velocity = new Vector2(x, self.rb.velocity.y);
         }
 

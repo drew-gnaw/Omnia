@@ -13,7 +13,7 @@ namespace Players.Behaviour {
         public void OnEnter() {
             t = 0.1f;
 
-            self.rb.velocity = new Vector2(self.moving.x * self.moveSpeed, self.jumpForce);
+            self.rb.velocity = new Vector2(self.moving.x * self.moveSpeed, self.jumpSpeed);
             self.jump = false;
             self.UseAnimation("PlayerJump");
         }
@@ -22,7 +22,7 @@ namespace Players.Behaviour {
         }
 
         public void OnTick() {
-            var x = MathUtils.Lerpish(self.rb.velocity.x, self.moving.x * self.moveSpeed, Time.fixedDeltaTime * self.moveSpeed);
+            var x = MathUtils.Lerpish(self.rb.velocity.x, self.moving.x * self.moveSpeed, Time.fixedDeltaTime * self.fallAccel);
             self.rb.velocity = new Vector2(x, self.rb.velocity.y);
         }
 
