@@ -1,6 +1,8 @@
 using System.Linq;
 using Enemies.Sundew.Behaviour;
+using Players;
 using UnityEngine;
+using Utils;
 
 namespace Enemies.Sundew {
     public class Sundew : Enemy {
@@ -16,6 +18,7 @@ namespace Enemies.Sundew {
         [SerializeField] internal Rigidbody2D rb;
         [SerializeField] internal LayerMask ground;
         [SerializeField] internal LayerMask player;
+        [SerializeField] internal LayerMask bg;
         [SerializeField] internal GameObject projectile;
 
         [SerializeField] internal bool detected;
@@ -61,9 +64,12 @@ namespace Enemies.Sundew {
             behaviour?.OnEnter();
         }
 
-        public Sundew WithAnimation(string it) {
-            animator.CrossFade(it, 0.1f);
-            return this;
+        public void UseAnimation(string it) {
+            animator.Play(it);
+        }
+
+        public void SetLayer(LayerMask it) {
+            gameObject.layer = MathUtils.LayerIndexOf(it);
         }
 
         private void UseDetection() {
@@ -72,13 +78,13 @@ namespace Enemies.Sundew {
             detected = Sweep(sprite.transform.position, Vector2.up, 180, distance, 10, ground | player).Any(it => IsOnLayer(it, player));
         }
 
-        private void Attack(Player.Alt.Player it) {
+        private void Attack(Player it) {
             it.Hurt(damage);
         }
 
         private void FireProjectile(Vector2 velocity) {
             var instance = Instantiate(projectile, sprite.transform.position, sprite.transform.rotation).GetComponent<SundewProjectile>().Of(Attack);
-            var noise = new Vector2(Random.Range(0.1f * -1, 0.1f), Random.Range(0.1f * -1, 0.1f));
+            var noise = new Vector2(Random.Range(0.25f * -1, 0.25f), Random.Range(0.25f * -1, 0.25f));
 
             instance.rb.velocity = velocity + noise;
             Destroy(instance.gameObject, windup + reload);

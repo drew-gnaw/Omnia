@@ -10,6 +10,7 @@ namespace Players.Behaviour {
         }
 
         public void OnEnter() {
+            self.UseAnimation("PlayerFall");
         }
 
         public void OnExit() {
@@ -21,7 +22,7 @@ namespace Players.Behaviour {
         }
 
         public void OnUpdate() {
-            self.UseBehaviour(WallJump.If(self) ?? Slide.If(self) ?? Move.If(self));
+            self.UseBehaviour(WallJump.If(self) ?? Slide.If(self) ?? Run.If(self) ?? Idle.If(self));
         }
 
         public static IBehaviour If(Player it) {

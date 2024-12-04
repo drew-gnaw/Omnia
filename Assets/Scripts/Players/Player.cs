@@ -1,6 +1,4 @@
 using System;
-using Omnia.State;
-using Players.Animation;
 using Players.Behaviour;
 using UnityEngine;
 
@@ -40,11 +38,9 @@ namespace Players {
         public event Action Death;
 
         private IBehaviour behaviour;
-        private StateMachine animationStateMachine;
 
         public void Awake() {
-            UseBehaviour(Move.AsDefaultOf(this));
-            UseAnimation(new StateMachine());
+            UseBehaviour(Idle.AsDefaultOf(this));
         }
 
         public void Start() {
@@ -63,9 +59,7 @@ namespace Players {
 
         public void Update() {
             sprite.flipX = facing.x == 0 ? sprite.flipX : facing.x < 0;
-
             behaviour?.OnUpdate();
-            animationStateMachine?.Update();
         }
 
         public void FixedUpdate() {
@@ -74,11 +68,10 @@ namespace Players {
 
             DoAttack();
             behaviour?.OnTick();
-            animationStateMachine?.FixedUpdate();
         }
 
         public void Hurt(float damage) {
-            currentHealth = Math.Clamp(currentHealth - damage, 0, maximumHealth);
+            currentHealth = Mathf.Clamp(currentHealth - damage, 0, maximumHealth);
 
             if (currentHealth == 0) Die();
         }
@@ -92,28 +85,18 @@ namespace Players {
             behaviour?.OnEnter();
         }
 
+        public void UseAnimation(string it) {
+            animator.Play(it);
+        }
+
         private void Die() {
             Death?.Invoke();
         }
 
         private void DoAttack() {
-            if (fire) {
-                weapons[selectedWeapon].Attack();
-                fire = false;
-            }
-        }
-
-        private void UseAnimation(StateMachine stateMachine) {
-            var initial = new IdleAnimation(animator);
-
-            stateMachine.AddAnyTransition(initial, new FuncPredicate(() => behaviour is Move && moving.x == 0));
-            stateMachine.AddAnyTransition(new FallAnimation(animator), new FuncPredicate(() => behaviour is Fall));
-            stateMachine.AddAnyTransition(new JumpAnimation(animator), new FuncPredicate(() => behaviour is Jump or WallJump));
-            stateMachine.AddAnyTransition(new MoveAnimation(animator), new FuncPredicate(() => behaviour is Move && moving.x != 0));
-            stateMachine.AddAnyTransition(new SlideAnimation(animator), new FuncPredicate(() => behaviour is Slide));
-
-            stateMachine.SetState(initial);
-            animationStateMachine = stateMachine;
+            if (!fire) return;
+            fire = false;
+            weapons[selectedWeapon].Attack();
         }
     }
 }

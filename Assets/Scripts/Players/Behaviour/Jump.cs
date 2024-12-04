@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using Utils;
 
@@ -12,9 +11,11 @@ namespace Players.Behaviour {
         }
 
         public void OnEnter() {
-            self.jump = false;
             t = 0.1f;
+
             self.rb.velocity = new Vector2(self.moving.x * self.moveSpeed, self.jumpForce);
+            self.jump = false;
+            self.UseAnimation("PlayerJump");
         }
 
         public void OnExit() {
@@ -26,10 +27,10 @@ namespace Players.Behaviour {
         }
 
         public void OnUpdate() {
-            t = Math.Max(0, t - Time.deltaTime);
+            t = Mathf.Max(0, t - Time.deltaTime);
             if (t != 0) return;
 
-            self.UseBehaviour(Slide.If(self) ?? Fall.If(self) ?? Move.If(self));
+            self.UseBehaviour(Slide.If(self) ?? Fall.If(self) ?? Run.If(self) ?? Idle.If(self));
         }
 
         public static IBehaviour If(Player it) {

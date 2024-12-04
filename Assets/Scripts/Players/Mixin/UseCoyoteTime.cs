@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using UnityEngine;
 
@@ -15,8 +14,8 @@ namespace Players.Mixin {
         public void Update() {
             var touching = slide.x != 0;
 
-            gt = grounded ? delay : Math.Max(0, gt - Time.deltaTime);
-            st = touching ? delay : Math.Max(0, st - Time.deltaTime);
+            gt = grounded ? delay : Mathf.Max(0, gt - Time.deltaTime);
+            st = touching ? delay : Mathf.Max(0, st - Time.deltaTime);
             self.grounded = gt > 0;
             self.slide = st > 0 ? touching ? slide : self.slide : Vector2.zero;
         }

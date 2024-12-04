@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace Enemies.Sundew.Behaviour {
@@ -12,7 +11,9 @@ namespace Enemies.Sundew.Behaviour {
 
         public void OnEnter() {
             t = self.reload;
-            self.WithAnimation("SundewAttack").FireProjectiles();
+
+            self.FireProjectiles();
+            self.UseAnimation("SundewAttack");
         }
 
         public void OnExit() {

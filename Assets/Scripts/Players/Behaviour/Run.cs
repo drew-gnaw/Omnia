@@ -2,14 +2,15 @@ using UnityEngine;
 using Utils;
 
 namespace Players.Behaviour {
-    public class Move : IBehaviour {
+    public class Run : IBehaviour {
         private readonly Player self;
 
-        private Move(Player self) {
+        private Run(Player self) {
             this.self = self;
         }
 
         public void OnEnter() {
+            self.UseAnimation("PlayerRun");
         }
 
         public void OnExit() {
@@ -21,15 +22,11 @@ namespace Players.Behaviour {
         }
 
         public void OnUpdate() {
-            self.UseBehaviour(Fall.If(self) ?? Jump.If(self));
-        }
-
-        public static IBehaviour AsDefaultOf(Player it) {
-            return new Move(it);
+            self.UseBehaviour(Fall.If(self) ?? Jump.If(self) ?? Idle.If(self));
         }
 
         public static IBehaviour If(Player it) {
-            return it.grounded && it.checks[1].IsTouchingLayers(it.ground) ? new Move(it) : null;
+            return it.grounded && it.moving.x != 0 && it.checks[1].IsTouchingLayers(it.ground) ? new Run(it) : null;
         }
     }
 }

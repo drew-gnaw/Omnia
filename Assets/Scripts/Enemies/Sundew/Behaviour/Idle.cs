@@ -1,16 +1,21 @@
 namespace Enemies.Sundew.Behaviour {
     public class Idle : IBehaviour {
         private readonly Sundew self;
+        private int layer;
 
         private Idle(Sundew self) {
             this.self = self;
         }
 
         public void OnEnter() {
-            self.WithAnimation("SundewIdle");
+            layer = self.gameObject.layer;
+
+            self.SetLayer(self.bg);
+            self.UseAnimation("SundewIdle");
         }
 
         public void OnExit() {
+            self.gameObject.layer = layer;
         }
 
         public void OnTick() {

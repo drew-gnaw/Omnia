@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace Enemies.Sundew.Behaviour {
@@ -12,7 +11,7 @@ namespace Enemies.Sundew.Behaviour {
 
         public void OnEnter() {
             t = self.windup;
-            self.WithAnimation("SundewWindUp");
+            self.UseAnimation("SundewWindUp");
         }
 
         public void OnExit() {

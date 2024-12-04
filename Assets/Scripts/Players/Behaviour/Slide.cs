@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using Utils;
 
@@ -11,18 +10,19 @@ namespace Players.Behaviour {
         }
 
         public void OnEnter() {
+            self.UseAnimation("PlayerSlide");
         }
 
         public void OnExit() {
         }
 
         public void OnTick() {
-            var x = MathUtils.Lerpish(self.rb.velocity.x, self.moving.x * 5, Time.fixedDeltaTime * 20);
-            self.rb.velocity = new Vector2(x, Math.Max(-1, self.rb.velocity.y));
+            var x = MathUtils.Lerpish(self.rb.velocity.x, self.moving.x * 7, Time.fixedDeltaTime * 20);
+            self.rb.velocity = new Vector2(x, Mathf.Max(2 * -1, self.rb.velocity.y));
         }
 
         public void OnUpdate() {
-            self.UseBehaviour(WallJump.If(self) ?? Fall.If(self) ?? Move.If(self));
+            self.UseBehaviour(WallJump.If(self) ?? Fall.If(self) ?? Run.If(self) ?? Idle.If(self));
         }
 
         public static IBehaviour If(Player it) {
