@@ -326,9 +326,11 @@ MonoBehaviour:
   maximumHealth: 10
   currentHealth: 10
   moveSpeed: 7
-  jumpForce: 7
+  jumpSpeed: 7
+  fallSpeed: 10
+  moveAccel: 10
+  fallAccel: 3.5
   wallJumpLockoutTime: 0.1
-  C: 4
   flow: 0
   weapons: []
   selectedWeapon: 0

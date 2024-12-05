@@ -17,7 +17,7 @@ namespace Enemies {
         }
 
         public virtual void Hurt(float damage) {
-            currentHealth = Math.Clamp(currentHealth - damage, 0, maximumHealth);
+            currentHealth = Mathf.Clamp(currentHealth - damage, 0, maximumHealth);
 
             if (currentHealth == 0) Die();
         }
@@ -40,6 +40,9 @@ namespace Enemies {
         }
 
         private static RaycastHit2D Raycast(Vector2 origin, Vector2 direction, float angle, float distance, LayerMask mask) {
+            /* TODO: Remove debug. */
+            Debug.DrawRay(origin, Quaternion.Euler(0, 0, angle) * direction.normalized * distance);
+
             return Physics2D.Raycast(origin, Quaternion.Euler(0, 0, angle) * direction.normalized, distance, mask);
         }
     }

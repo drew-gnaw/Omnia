@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using Utils;
 
@@ -12,24 +11,28 @@ namespace Players.Behaviour {
         }
 
         public void OnEnter() {
+            t = self.wallJumpLockoutTime;
+
+            self.rb.velocity = new Vector2(self.slide.x * self.moveSpeed * -1, self.jumpSpeed);
             self.jump = false;
-            t = 0.1f;
-            self.rb.velocity = new Vector2(self.slide.x * self.moveSpeed * -1, self.jumpForce);
+            self.UseAnimation("PlayerJump");
         }
 
         public void OnExit() {
         }
 
         public void OnTick() {
-            var x = MathUtils.Lerpish(self.rb.velocity.x, self.moving.x * self.moveSpeed, (self.wallJumpLockoutTime - t) / self.wallJumpLockoutTime * Time.fixedDeltaTime * self.C);
+            var responsiveness = 1 - t / self.wallJumpLockoutTime;
+
+            var x = MathUtils.Lerpish(self.rb.velocity.x, self.moving.x * self.moveSpeed, responsiveness * Time.fixedDeltaTime * self.fallAccel);
             self.rb.velocity = new Vector2(x, self.rb.velocity.y);
         }
 
         public void OnUpdate() {
-            t = Math.Max(0, t - Time.deltaTime);
+            t = Mathf.Max(0, t - Time.deltaTime);
             if (t != 0) return;
 
-            self.UseBehaviour(Slide.If(self) ?? Fall.If(self) ?? Move.If(self));
+            self.UseBehaviour(Slide.If(self) ?? Fall.If(self) ?? Run.If(self) ?? Idle.If(self));
         }
 
         public static IBehaviour If(Player it) {

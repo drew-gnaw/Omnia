@@ -25,6 +25,9 @@ namespace Enemies.Armadillo.Behaviour {
             if (mode == Mode.Idle) self.UseBehaviour(new Walk(self));
         }
 
+        public void OnUpdate() {
+        }
+
         private IEnumerator DoStun() {
             yield return new WaitForSeconds(3);
             mode = Mode.Idle;

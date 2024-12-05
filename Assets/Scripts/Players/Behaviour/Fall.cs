@@ -10,18 +10,19 @@ namespace Players.Behaviour {
         }
 
         public void OnEnter() {
+            self.UseAnimation("PlayerFall");
         }
 
         public void OnExit() {
         }
 
         public void OnTick() {
-            var x = MathUtils.Lerpish(self.rb.velocity.x, self.moving.x * self.moveSpeed, Time.fixedDeltaTime * 5);
+            var x = MathUtils.Lerpish(self.rb.velocity.x, self.moving.x * self.moveSpeed, Time.fixedDeltaTime * self.fallAccel);
             self.rb.velocity = new Vector2(x, self.rb.velocity.y);
         }
 
         public void OnUpdate() {
-            self.UseBehaviour(WallJump.If(self) ?? Slide.If(self) ?? Move.If(self));
+            self.UseBehaviour(WallJump.If(self) ?? Slide.If(self) ?? Run.If(self) ?? Idle.If(self));
         }
 
         public static IBehaviour If(Player it) {
