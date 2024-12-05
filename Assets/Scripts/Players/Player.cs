@@ -9,7 +9,6 @@ namespace Players {
         [SerializeField] internal Animator animator;
         [SerializeField] internal Rigidbody2D rb;
         [SerializeField] internal LayerMask ground;
-        [SerializeField] internal LayerMask semisolid;
         [SerializeField] internal BoxCollider2D[] checks;
 
         [SerializeField] internal float maximumHealth;
