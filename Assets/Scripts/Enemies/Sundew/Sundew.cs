@@ -12,6 +12,7 @@ namespace Enemies.Sundew {
         [SerializeField] internal float spread;
         [SerializeField] internal float arc;
         [SerializeField] internal float damage;
+        [SerializeField] internal float count;
 
         [SerializeField] internal SpriteRenderer sprite;
         [SerializeField] internal Animator animator;
@@ -46,7 +47,7 @@ namespace Enemies.Sundew {
             var g = Mathf.Abs(Physics2D.gravity.y);
             var y = Mathf.Sqrt(arc * g * 2);
 
-            for (var i = 0; i < 3; i++) {
+            for (var i = 0; i < count; i++) {
                 var d = distance - i * spread;
                 var x = d * g / (y * 2);
 
