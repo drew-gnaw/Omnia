@@ -6,7 +6,7 @@ public static class AudioInit
     public static void InitializePrefab()
     {
         // Load the prefab from the Resources folder
-        GameObject prefab = Resources.Load<GameObject>("Prefabs/Audio/Audio Manager");
+        GameObject prefab = Resources.Load<GameObject>("AudioManager");
 
         if (prefab != null)
         {
