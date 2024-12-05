@@ -26,6 +26,9 @@ namespace Enemies.Armadillo.Behaviour {
             if (CheckPlayer()) self.UseBehaviour(new Rush(self));
         }
 
+        public void OnUpdate() {
+        }
+
         private IEnumerator DoWalk() {
             for (var direction = self.facing; self; direction = GetDirection()) {
                 yield return null;

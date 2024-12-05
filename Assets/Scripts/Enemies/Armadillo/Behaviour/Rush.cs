@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
@@ -25,6 +24,9 @@ namespace Enemies.Armadillo.Behaviour {
             self.rb.velocity = new Vector2(mode == Mode.Idle ? 0 : self.facing.x * 3, self.rb.velocity.y);
 
             if (mode == Mode.Rush && CheckHit()) UseStun();
+        }
+
+        public void OnUpdate() {
         }
 
         private IEnumerator DoRush() {

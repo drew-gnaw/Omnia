@@ -1,4 +1,4 @@
-namespace Enemies {
+namespace Players {
     public interface IBehaviour {
         void OnEnter();
         void OnExit();
