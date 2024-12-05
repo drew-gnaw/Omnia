@@ -10,9 +10,23 @@ public class AudioList : ScriptableObject {
     private Dictionary<string, AudioClip> bgmTracks;
 
     public AudioClip GetClipByName(string trackName) {
-        if (bgmTracks == null) InitializeDictionary();
-        return bgmTracks[trackName];
+        if (bgmTracks == null) {
+            InitializeDictionary();
+        }
+
+        if (string.IsNullOrEmpty(trackName)) {
+            Debug.LogWarning("Track name is null or empty.");
+            return null;
+        }
+
+        if (bgmTracks.TryGetValue(trackName, out AudioClip clip)) {
+            return clip;
+        }
+
+        Debug.LogWarning($"Audio List {name} does not contain track '{trackName}'");
+        return null;
     }
+
 
     public void InitializeDictionary() {
         bgmTracks = new();

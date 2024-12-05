@@ -13,11 +13,11 @@ public static class AudioInit
             // Instantiate the prefab at the origin with no rotation
             GameObject instance = Object.Instantiate(prefab);
             Object.DontDestroyOnLoad(instance);
-            Debug.Log("Prefab instantiated successfully.");
+            Debug.Log("AudioManager instantiated successfully.");
         }
         else
         {
-            Debug.LogError("Prefab not found in Resources folder.");
+            Debug.LogError("AudioManager not found in Resources folder.");
         }
     }
 }
