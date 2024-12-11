@@ -24,7 +24,7 @@ namespace Players.Behaviour {
         public void OnTick() {
             if (self.IsPhoon()) return;
 
-            var x = MathUtils.Lerpish(self.rb.velocity.x, self.moving.x * self.moveSpeed, Time.fixedDeltaTime * self.fallAccel);
+            var x = MathUtils.Lerpish(self.rb.velocity.x, self.moving.x * self.moveSpeed, Time.fixedDeltaTime * self.jumpAccel);
             self.rb.velocity = new Vector2(x, self.rb.velocity.y);
         }
 

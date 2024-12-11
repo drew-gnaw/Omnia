@@ -327,10 +327,9 @@ MonoBehaviour:
   currentHealth: 100
   moveSpeed: 5
   jumpSpeed: 5
-  fallSpeed: 10
   pullSpeed: 15
   moveAccel: 10
-  fallAccel: 5
+  jumpAccel: 5
   jumpLockoutTime: 0.1
   flow: 0
   weapons: []

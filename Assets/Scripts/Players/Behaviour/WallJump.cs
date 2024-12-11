@@ -24,7 +24,7 @@ namespace Players.Behaviour {
         public void OnTick() {
             var ratio = 1 - t / self.jumpLockoutTime;
 
-            var x = MathUtils.Lerpish(self.rb.velocity.x, self.moving.x * self.moveSpeed, ratio * Time.fixedDeltaTime * self.fallAccel);
+            var x = MathUtils.Lerpish(self.rb.velocity.x, self.moving.x * self.moveSpeed, ratio * Time.fixedDeltaTime * self.jumpAccel);
             self.rb.velocity = new Vector2(x, self.rb.velocity.y);
         }
 
