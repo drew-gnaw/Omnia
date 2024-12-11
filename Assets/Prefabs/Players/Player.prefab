@@ -318,6 +318,9 @@ MonoBehaviour:
   rb: {fileID: 1006114366540754684}
   ground:
     serializedVersion: 2
+    m_Bits: 520
+  solidGround:
+    serializedVersion: 2
     m_Bits: 8
   checks:
   - {fileID: 114218580143928455}

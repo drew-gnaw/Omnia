@@ -26,7 +26,7 @@ namespace Players.Behaviour {
         }
 
         public static IBehaviour If(Player it) {
-            return !it.grounded && it.slide.x != 0 && it.checks[it.slide.x > 0 ? 0 : 2].IsTouchingLayers(it.ground) ? new Slide(it) : null;
+            return !it.grounded && it.slide.x != 0 && it.checks[it.slide.x > 0 ? 0 : 2].IsTouchingLayers(it.solidGround) ? new Slide(it) : null;
         }
     }
 }
