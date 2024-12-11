@@ -16,9 +16,10 @@ namespace Players {
         [SerializeField] internal float moveSpeed;
         [SerializeField] internal float jumpSpeed;
         [SerializeField] internal float fallSpeed;
+        [SerializeField] internal float pullSpeed;
         [SerializeField] internal float moveAccel;
         [SerializeField] internal float fallAccel;
-        [SerializeField] internal float wallJumpLockoutTime;
+        [SerializeField] internal float jumpLockoutTime;
         [SerializeField] internal float flow;
 
         [SerializeField] internal WeaponClass[] weapons;
@@ -37,13 +38,15 @@ namespace Players {
 
         [SerializeField] internal string debugBehaviour;
 
+        [SerializeField] internal Transform debugPullToTargetTransform;
+
         public event Action Spawn;
         public event Action Death;
 
         private IBehaviour behaviour;
 
         public void Awake() {
-            UseBehaviour(Idle.AsDefaultOf(this));
+            UseBehaviour(new Idle(this));
         }
 
         public void Start() {
@@ -63,14 +66,22 @@ namespace Players {
         public void Update() {
             sprite.flipX = facing.x == 0 ? sprite.flipX : facing.x < 0;
             behaviour?.OnUpdate();
+
+            if (Input.GetKeyDown("e")) {
+                /* TODO: Remove. */
+                UsePull(debugPullToTargetTransform);
+            }
         }
 
         public void FixedUpdate() {
-            rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(fallSpeed * -1, rb.velocity.y));
-            rb.gravityScale = held && rb.velocity.y > 0 ? 1 : 2;
+            rb.gravityScale = held && rb.velocity.y >= 0 ? 1 : 2;
 
             DoAttack();
             behaviour?.OnTick();
+        }
+
+        public void UsePull(Transform target) {
+            UseBehaviour(new Pull(this, target));
         }
 
         public void Hurt(float damage) {
@@ -90,6 +101,10 @@ namespace Players {
 
         public void UseAnimation(string it) {
             animator.Play(it);
+        }
+
+        public bool IsPhoon() {
+            return Math.Abs(rb.velocity.x) > moveSpeed && Math.Sign(rb.velocity.x) == Math.Sign(moving.x);
         }
 
         private void Die() {
