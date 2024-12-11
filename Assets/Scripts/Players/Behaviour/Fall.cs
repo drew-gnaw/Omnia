@@ -5,7 +5,7 @@ namespace Players.Behaviour {
     public class Fall : IBehaviour {
         private readonly Player self;
 
-        private Fall(Player self) {
+        public Fall(Player self) {
             this.self = self;
         }
 
@@ -17,8 +17,10 @@ namespace Players.Behaviour {
         }
 
         public void OnTick() {
+            if (self.IsPhoon()) return;
+
             var x = MathUtils.Lerpish(self.rb.velocity.x, self.moving.x * self.moveSpeed, Time.fixedDeltaTime * self.fallAccel);
-            self.rb.velocity = new Vector2(x, self.rb.velocity.y);
+            self.rb.velocity = new Vector2(x, Mathf.Max(self.fallSpeed * -1, self.rb.velocity.y));
         }
 
         public void OnUpdate() {
@@ -26,7 +28,7 @@ namespace Players.Behaviour {
         }
 
         public static IBehaviour If(Player it) {
-            return !it.grounded && it.slide.x == 0 && it.rb.velocity.y < 0 ? new Fall(it) : null;
+            return !it.grounded && it.slide.x == 0 && it.rb.velocity.y <= 0 ? new Fall(it) : null;
         }
     }
 }
