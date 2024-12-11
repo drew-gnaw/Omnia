@@ -22,6 +22,7 @@ namespace Players.Behaviour {
         }
 
         public void OnExit() {
+            self.rb.velocity = new Vector2(self.rb.velocity.x, Mathf.Min(self.jumpSpeed * 2, self.rb.velocity.y));
         }
 
         public void OnTick() {

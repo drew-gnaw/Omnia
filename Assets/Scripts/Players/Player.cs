@@ -1,6 +1,7 @@
 using System;
 using Players.Behaviour;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Players {
     public class Player : MonoBehaviour {
@@ -15,10 +16,9 @@ namespace Players {
         [SerializeField] internal float currentHealth;
         [SerializeField] internal float moveSpeed;
         [SerializeField] internal float jumpSpeed;
-        [SerializeField] internal float fallSpeed;
         [SerializeField] internal float pullSpeed;
         [SerializeField] internal float moveAccel;
-        [SerializeField] internal float fallAccel;
+        [SerializeField] internal float jumpAccel;
         [SerializeField] internal float jumpLockoutTime;
         [SerializeField] internal float flow;
 
