@@ -85,7 +85,7 @@ namespace Players {
 
         public void Hurt(float damage) {
             currentHealth = Mathf.Clamp(currentHealth - damage, 0, maximumHealth);
-
+            Debug.LogWarning($"Ouch that dealt: {damage} {currentHealth}/{maximumHealth} left");
             if (currentHealth == 0) Die();
         }
 

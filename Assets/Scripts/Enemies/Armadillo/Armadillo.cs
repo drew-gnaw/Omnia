@@ -3,6 +3,7 @@ using System.Linq;
 using Enemies.Armadillo.Animation;
 using Enemies.Armadillo.Behaviour;
 using Omnia.State;
+using Players;
 using UnityEngine;
 
 namespace Enemies.Armadillo {
@@ -36,7 +37,8 @@ namespace Enemies.Armadillo {
 
         /* TODO: Not implemented yet. Taking self-damage for testing purposes. */
         public void Attack(GameObject it) {
-            Hurt(4);
+            Debug.Log("I am attacking the player");
+            it.GetComponent<Player>().Hurt(20);
         }
 
         public void UseBehaviour(IBehaviour it) {
