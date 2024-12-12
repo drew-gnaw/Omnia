@@ -44,7 +44,7 @@ namespace Enemies.Armadillo.Behaviour {
         }
 
         private bool CheckPlayer(out RaycastHit2D player) {
-            var hits = Enemy.Sweep(self.sprite.transform.position, self.facing, 45, 5, 5, self.ground | self.player);
+            var hits = Enemy.Sweep(self.sprite.transform.position, self.facing, 60, 5, 5, self.ground | self.player); //crappy way to check if the player has been hit lol
             player = hits.FirstOrDefault(hit => Enemy.IsOnLayer(hit, self.player));
             return player != default;
         }
