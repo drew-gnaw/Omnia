@@ -13,11 +13,11 @@ public static class DialogueInit
             // Instantiate the prefab at the origin with no rotation
             GameObject instance = Object.Instantiate(prefab);
             Object.DontDestroyOnLoad(instance);
-            Debug.Log("Prefab instantiated successfully.");
+            Debug.Log("DialogueManager instantiated successfully.");
         }
         else
         {
-            Debug.LogError("Prefab not found in Resources folder.");
+            Debug.LogError("DialogueManager not found in Resources folder.");
         }
     }
 }
