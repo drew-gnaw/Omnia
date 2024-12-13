@@ -5,7 +5,7 @@ namespace Players.Behaviour {
     public class Idle : IBehaviour {
         private readonly Player self;
 
-        private Idle(Player self) {
+        public Idle(Player self) {
             this.self = self;
         }
 
@@ -23,10 +23,6 @@ namespace Players.Behaviour {
 
         public void OnUpdate() {
             self.UseBehaviour(Fall.If(self) ?? Jump.If(self) ?? Run.If(self));
-        }
-
-        public static IBehaviour AsDefaultOf(Player it) {
-            return new Idle(it);
         }
 
         public static IBehaviour If(Player it) {

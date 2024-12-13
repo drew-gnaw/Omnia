@@ -11,9 +11,9 @@ namespace Players.Behaviour {
         }
 
         public void OnEnter() {
-            t = 0.1f;
+            t = self.jumpLockoutTime;
 
-            self.rb.velocity = new Vector2(self.moving.x * self.moveSpeed, self.jumpSpeed);
+            self.rb.velocity = new Vector2(self.rb.velocity.x, self.jumpSpeed);
             self.jump = false;
             self.UseAnimation("PlayerJump");
         }
@@ -22,7 +22,9 @@ namespace Players.Behaviour {
         }
 
         public void OnTick() {
-            var x = MathUtils.Lerpish(self.rb.velocity.x, self.moving.x * self.moveSpeed, Time.fixedDeltaTime * self.fallAccel);
+            if (self.IsPhoon()) return;
+
+            var x = MathUtils.Lerpish(self.rb.velocity.x, self.moving.x * self.moveSpeed, Time.fixedDeltaTime * self.jumpAccel);
             self.rb.velocity = new Vector2(x, self.rb.velocity.y);
         }
 

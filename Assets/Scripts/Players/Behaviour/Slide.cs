@@ -18,7 +18,7 @@ namespace Players.Behaviour {
 
         public void OnTick() {
             var x = MathUtils.Lerpish(self.rb.velocity.x, self.moving.x * self.moveSpeed, Time.fixedDeltaTime * self.moveAccel);
-            self.rb.velocity = new Vector2(x, Mathf.Max(self.fallSpeed / 5 * -1, self.rb.velocity.y));
+            self.rb.velocity = new Vector2(x, Mathf.Max(self.jumpSpeed / 2 * -1, self.rb.velocity.y));
         }
 
         public void OnUpdate() {
