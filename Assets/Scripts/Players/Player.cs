@@ -1,7 +1,6 @@
 using System;
 using Players.Behaviour;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Players {
     public class Player : MonoBehaviour {

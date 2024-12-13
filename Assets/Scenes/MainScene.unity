@@ -925,7 +925,7 @@ Tilemap:
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Origin: {x: 0, y: 0, z: 0}
-  m_Size: {x: 16, y: 3, z: 1}
+  m_Size: {x: 20, y: 4, z: 1}
   m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
   m_TileOrientation: 0
   m_TileOrientationMatrix:
@@ -1137,13 +1137,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2941076381043899073, guid: a0a8f7069068e40faa87eaf58c7b7cda, type: 3}
+      propertyPath: delay
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2941076381043899073, guid: a0a8f7069068e40faa87eaf58c7b7cda, type: 3}
+      propertyPath: semisolidCollider
+      value: 
+      objectReference: {fileID: 823867733}
     - target: {fileID: 3119127342257128012, guid: a0a8f7069068e40faa87eaf58c7b7cda, type: 3}
       propertyPath: m_Size.y
-      value: 0.125
+      value: 0.375
       objectReference: {fileID: 0}
     - target: {fileID: 3119127342257128012, guid: a0a8f7069068e40faa87eaf58c7b7cda, type: 3}
       propertyPath: m_Offset.y
-      value: -0.0625
+      value: 0.0625
       objectReference: {fileID: 0}
     - target: {fileID: 5710193498280292276, guid: a0a8f7069068e40faa87eaf58c7b7cda, type: 3}
       propertyPath: m_Name
