@@ -21,7 +21,7 @@ namespace Players.Mixin {
         }
 
         public void FixedUpdate() {
-            var checks = self.checks.Select(it => it.IsTouchingLayers(self.ground)).ToArray();
+            var checks = self.checks.Select(it => it.IsTouchingLayers(self.ground | self.semisolid)).ToArray();
             var l = checks[2] && self.moving.x < 0;
             var r = checks[0] && self.moving.x > 0;
 

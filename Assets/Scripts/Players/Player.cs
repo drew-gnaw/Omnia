@@ -7,8 +7,8 @@ namespace Players {
         [SerializeField] internal SpriteRenderer sprite;
         [SerializeField] internal Animator animator;
         [SerializeField] internal Rigidbody2D rb;
-        [SerializeField] internal LayerMask ground;      // includes semisolid platforms
-        [SerializeField] internal LayerMask solidGround; // does not include semisolid platforms
+        [SerializeField] internal LayerMask ground;
+        [SerializeField] internal LayerMask semisolid;
         [SerializeField] internal BoxCollider2D[] checks;
 
         [SerializeField] internal float maximumHealth;

@@ -319,10 +319,10 @@ MonoBehaviour:
   rb: {fileID: 1006114366540754684}
   ground:
     serializedVersion: 2
-    m_Bits: 520
-  solidGround:
-    serializedVersion: 2
     m_Bits: 8
+  semisolid:
+    serializedVersion: 2
+    m_Bits: 512
   checks:
   - {fileID: 114218580143928455}
   - {fileID: 3119127342257128012}
@@ -452,7 +452,6 @@ MonoBehaviour:
   self: {fileID: 6725967550211918722}
   playerCollider: {fileID: 6160612355849141162}
   semisolidCollider: {fileID: 0}
-  delay: 0.6
 --- !u!1 &6737632353640172575
 GameObject:
   m_ObjectHideFlags: 0
