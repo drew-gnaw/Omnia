@@ -13,7 +13,7 @@ public class HarpoonGun : WeaponClass
     [SerializeField] public int harpoons = 3;
     [SerializeField] public float harpoonVelocity = 20;
     [SerializeField] public float harpoonSpearGravityScale = 1;
-    [SerializeField] public float harpoonSpearPickupCooldown = 0; // TODO
+    [SerializeField] public float harpoonSpearPickupCooldown = 1; // seconds
 
     [Header("HarpoonGun References")]
     public GameObject harpoonSpearPrefab;
@@ -103,6 +103,11 @@ public class HarpoonGun : WeaponClass
         firedSpears.Remove(spear);
     }
 
+    public void SpearCollectAll() {
+        foreach (var spear in firedSpears) {
+            SpearCollected(spear);
+        }
+    }
 
     private void HandleWeaponRotation() {
         Vector2 facing = player.GetComponent<Player>().facing;

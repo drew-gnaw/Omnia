@@ -9,7 +9,7 @@ public abstract class WeaponClass : MonoBehaviour
 
     [Header("Weapon Base Stats")]
     public int damage;
-    public float attackCooldownS; // TODO
+    public float attackCooldown; // seconds
 
     private bool canAttack = true;
 
@@ -28,7 +28,7 @@ public abstract class WeaponClass : MonoBehaviour
 
     IEnumerator cooldown() {
         canAttack = false;
-        yield return new WaitForSeconds(attackCooldownS);
+        yield return new WaitForSeconds(attackCooldown);
         canAttack = true;
     }
 }

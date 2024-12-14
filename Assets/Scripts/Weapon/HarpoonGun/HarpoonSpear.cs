@@ -2,6 +2,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using Enemies;
 using Omnia.Utils;
+using System.Collections;
 /*
     The projectile for HarpoonGun
     This class should only be interacted upon by its prefabs and HarpoonGun
@@ -124,6 +125,12 @@ public class HarpoonSpear : MonoBehaviour {
         Rigidbody2D.gravityScale = 0;
         Rigidbody2D.velocity = Vector2.zero;
         Rigidbody2D.freezeRotation = true;
+
+        StartCoroutine(cooldown());
+    }
+
+    IEnumerator cooldown() {
+        yield return new WaitForSeconds(gun.harpoonSpearPickupCooldown);
         dropped = true;
     }
 }
