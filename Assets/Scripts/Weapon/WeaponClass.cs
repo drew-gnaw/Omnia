@@ -6,6 +6,7 @@ public abstract class WeaponClass : MonoBehaviour
     public GameObject player;
     [Header("Reference Layers")]
     public LayerMask enemyLayer;
+    public LayerMask groundLayer;
 
     [Header("Weapon Base Stats")]
     public int damage;

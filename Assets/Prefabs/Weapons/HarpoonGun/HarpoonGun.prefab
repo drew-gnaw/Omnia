@@ -102,8 +102,11 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 64
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 8
   damage: 1
-  attackCooldownS: 0.5
+  attackCooldown: 0
   harpoons: 3
   harpoonVelocity: 20
   harpoonSpearGravityScale: 1

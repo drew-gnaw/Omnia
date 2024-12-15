@@ -10,10 +10,10 @@ public class HarpoonGun : WeaponClass
 {
 
     [Header("HarpoonGun Stats")]
-    [SerializeField] public int harpoons = 3;
-    [SerializeField] public float harpoonVelocity = 20;
-    [SerializeField] public float harpoonSpearGravityScale = 1;
-    [SerializeField] public float harpoonSpearPickupCooldown = 1; // seconds
+    [SerializeField] public int harpoons;
+    [SerializeField] public float harpoonVelocity;
+    [SerializeField] public float harpoonSpearGravityScale;
+    [SerializeField] public float harpoonSpearPickupCooldown; // seconds
 
     [Header("HarpoonGun References")]
     public GameObject harpoonSpearPrefab;
