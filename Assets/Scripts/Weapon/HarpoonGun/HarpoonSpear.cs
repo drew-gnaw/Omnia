@@ -2,6 +2,8 @@ using Unity.VisualScripting;
 using UnityEngine;
 using Enemies;
 using Omnia.Utils;
+using Players;
+
 /*
     The projectile for HarpoonGun
     This class should only be interacted upon by its prefabs and HarpoonGun
@@ -16,6 +18,7 @@ public class HarpoonSpear : MonoBehaviour {
 
     private bool dropped;
     private HarpoonGun gun;
+    [SerializeField] private Player player;
 
     // Tracking enemy
     public Enemy TaggedEnemy { get; private set;}
@@ -99,6 +102,7 @@ public class HarpoonSpear : MonoBehaviour {
         hj.connectedBody = TaggedEnemy.GetComponent<Rigidbody2D>();
 
         TaggedEnemy.GetComponent<Enemy>().Hurt(gun.damage);
+        player?.GainFlow(34);
     }
 
     private void HandleGroundCollision() {
@@ -116,7 +120,7 @@ public class HarpoonSpear : MonoBehaviour {
         Rigidbody2D.gravityScale = 1;
         Rigidbody2D.freezeRotation = false;
         dropped = false;
-        
+
         Destroy(GetComponent<HingeJoint2D>());
     }
 

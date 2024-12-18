@@ -13,13 +13,14 @@ namespace Players {
 
         [SerializeField] internal float maximumHealth;
         [SerializeField] internal float currentHealth;
+        [SerializeField] internal float currentFlow;
         [SerializeField] internal float moveSpeed;
         [SerializeField] internal float jumpSpeed;
         [SerializeField] internal float fallSpeed;
         [SerializeField] internal float moveAccel;
         [SerializeField] internal float fallAccel;
         [SerializeField] internal float wallJumpLockoutTime;
-        [SerializeField] internal float flow;
+
 
         [SerializeField] internal WeaponClass[] weapons;
         [SerializeField] internal int selectedWeapon;
@@ -37,6 +38,11 @@ namespace Players {
 
         [SerializeField] internal string debugBehaviour;
 
+        public const float MAXIMUM_FLOW = 100f;
+
+        // Describes the ratio at which flow is converted into HP.
+        public const float FLOW_TO_HP_RATIO = 0.2f;
+
         public event Action Spawn;
         public event Action Death;
 
@@ -48,7 +54,7 @@ namespace Players {
 
         public void Start() {
             currentHealth = maximumHealth;
-            flow = 0;
+            currentFlow = 0;
 
             Transform weaponsTransform = transform.Find("Weapons");
             if (weaponsTransform != null) {
@@ -73,10 +79,36 @@ namespace Players {
             behaviour?.OnTick();
         }
 
+        // ***** Methods for handling player stats (HP, Flow) ***** //
+
         public void Hurt(float damage) {
             currentHealth = Mathf.Clamp(currentHealth - damage, 0, maximumHealth);
-
+            Debug.Log($"Player was Hurt: {currentHealth}");
             if (currentHealth == 0) Die();
+        }
+
+        public void GainFlow(float amount) {
+            currentFlow = Mathf.Min(currentFlow + amount, MAXIMUM_FLOW);
+        }
+
+        public void ConsumeAllFlow() {
+            if (currentFlow > 0) {
+                float healthGain = currentFlow * FLOW_TO_HP_RATIO;
+                currentHealth = Mathf.Clamp(currentHealth + healthGain, 0, maximumHealth);
+                currentFlow = 0;
+            }
+        }
+
+        private void Die() {
+            Death?.Invoke();
+        }
+
+        // ***** Methods for behaviour + animation ***** //
+
+        private void DoAttack() {
+            if (!fire) return;
+            fire = false;
+            weapons[selectedWeapon].Attack();
         }
 
         public void UseBehaviour(IBehaviour it) {
@@ -90,16 +122,6 @@ namespace Players {
 
         public void UseAnimation(string it) {
             animator.Play(it);
-        }
-
-        private void Die() {
-            Death?.Invoke();
-        }
-
-        private void DoAttack() {
-            if (!fire) return;
-            fire = false;
-            weapons[selectedWeapon].Attack();
         }
     }
 }
