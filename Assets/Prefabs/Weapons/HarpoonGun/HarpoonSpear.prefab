@@ -111,6 +111,7 @@ MonoBehaviour:
     m_Bits: 8
   Collider2D: {fileID: -393871621549028721}
   Rigidbody2D: {fileID: 2207564300050308312}
+  player: {fileID: 6725967550211918722, guid: a0a8f7069068e40faa87eaf58c7b7cda, type: 3}
 --- !u!61 &-393871621549028721
 BoxCollider2D:
   m_ObjectHideFlags: 0

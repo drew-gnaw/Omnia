@@ -2,6 +2,8 @@ using Unity.VisualScripting;
 using UnityEngine;
 using Enemies;
 using Omnia.Utils;
+using Players;
+
 using System.Collections;
 /*
     The projectile for HarpoonGun
@@ -19,6 +21,7 @@ public class HarpoonSpear : MonoBehaviour {
     private bool collectable;
     private IEnumerator cooldown;
     private HarpoonGun gun;
+    [SerializeField] private Player player;
 
     // Tracking enemy
     public Enemy TaggedEnemy { get; private set;}
@@ -98,6 +101,7 @@ public class HarpoonSpear : MonoBehaviour {
         hj.connectedBody = TaggedEnemy.GetComponent<Rigidbody2D>();
 
         TaggedEnemy.GetComponent<Enemy>().Hurt(gun.damage);
+        player?.GainFlow(34);
     }
 
     private void HandleGroundCollision() {
@@ -122,7 +126,7 @@ public class HarpoonSpear : MonoBehaviour {
         Rigidbody2D.gravityScale = 1 * gun.harpoonSpearGravityScale;
         Rigidbody2D.freezeRotation = false;
         dropped = false;
-        
+
         Destroy(GetComponent<HingeJoint2D>());
     }
 

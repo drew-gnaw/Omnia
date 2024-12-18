@@ -10,6 +10,7 @@ namespace Enemies {
 
         [SerializeField] internal float maximumHealth;
         [SerializeField] internal float currentHealth;
+        [SerializeField] internal float attack;
 
         public virtual void Start() {
             currentHealth = maximumHealth;
