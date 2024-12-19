@@ -7,9 +7,10 @@ public abstract class WeaponClass : MonoBehaviour
     [Header("Reference Layers")]
     public LayerMask enemyLayer;
     public LayerMask groundLayer;
+    public LayerMask playerLayer;
 
     [Header("Weapon Base Stats")]
-    public int damage;
+    public float damage;
     public float attackCooldown; // seconds
 
     private bool canAttack = true;

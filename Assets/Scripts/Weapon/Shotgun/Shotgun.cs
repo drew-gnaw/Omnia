@@ -1,68 +1,46 @@
 using System;
+using System.Collections;
 using Enemies;
+using Omnia.Utils;
 using Players;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Shotgun : WeaponClass
-{
+public class Shotgun : WeaponClass {
+
+    private const bool DEBUG_RAYS = true;
 
     [Header("Shotgun Stats")]
     [SerializeField] public int maxShells;
+    [SerializeField] public float reloadTime; // Seconds
     [SerializeField] public float blastAngle; // Deg, The total angle with the halfway point being player's aim
-    [SerializeField] public float blastRadius;
-    [SerializeField] public int radiusSubdivisions;
-    [SerializeField] public int maxEnemies; // To damage within the blastArea
+    [SerializeField] public float range;
+    [SerializeField] public int subDivide; // Number of raycasts that divide up the damage
+
+    [SerializeField] private Material tracerMaterial;
 
     public int shells { get; private set; }
 
-    private PolygonCollider2D blastArea;
+    private Coroutine reloadCoroutine;
 
-    private void Start()
-    {
+    private void Start() {
         shells = maxShells;
-
-        blastArea = GetComponent<PolygonCollider2D>();
-
-        Vector2[] points = new Vector2[radiusSubdivisions + 1];
-        
-        points[radiusSubdivisions] = Vector2.zero;
-        for (int i = 0; i < radiusSubdivisions; i++)
-        {
-            var deg = blastAngle / 2 - (float) i / radiusSubdivisions * blastAngle;
-            Vector2 point = new Vector2(Mathf.Cos(deg * Mathf.PI / 180f), Mathf.Sin(deg * Mathf.PI / 180f)) * blastRadius;
-            points[i] = point;
-        }
-
-        blastArea.points = points;
-        blastArea.SetPath(0, points);
     }
 
-    protected override void HandleAttack()
-    {
-        if (shells <= 0) {
-            // TODO Reload mechanic
-            shells = maxShells;
-            return;
-        }
-
-        --shells;
-        DamageEnemiesInArea();
+    protected override void HandleAttack() {
+        Shoot();
     }
 
-    public override void UseSkill()
-    {
+    public override void UseSkill() {
         // TODO Skill
     }
 
-    public override void IntroSkill()
-    {
+    public override void IntroSkill() {
         // TODO Recoil player and damage markiplier?
-        DamageEnemiesInArea();
+        Shoot();
     }
 
-    void Update()
-    {
+    void Update() {
         HandleWeaponRotation();
     }
 
@@ -74,25 +52,90 @@ public class Shotgun : WeaponClass
 
         SpriteRenderer[] children = GetComponentsInChildren<SpriteRenderer>();
         bool shouldFlip = angle > 90 || angle < -90;
-        foreach (SpriteRenderer sr in children)
-        {
+        foreach (SpriteRenderer sr in children) {
             sr.flipY = shouldFlip;
         }
     }
 
-    private void DamageEnemiesInArea() {
+    private void Shoot() {
+        if (shells <= 0) {
+            return;
+        }
 
-        Collider2D[] hitEnemies = new Collider2D[maxEnemies];
-        ContactFilter2D filter = new ContactFilter2D { layerMask = enemyLayer, useLayerMask = true };
-        int n = Physics2D.OverlapCollider(blastArea, filter, hitEnemies);
-        for (int i = 0; i < n; i++)
-        {
-            // Maybe not the best, requires that the shotgun has line of sight to *center* of enemy
-            if (!Physics2D.Linecast(transform.position, hitEnemies[i].transform.position, groundLayer))
-            {
-                // TODO Damage falloff?
-                hitEnemies[i].GetComponent<Enemy>().Hurt(damage);
+        --shells;
+
+        HandleRayCasts();
+
+        HandleTracers();
+
+        HandleReload();
+    }
+
+    private void HandleRayCasts() {
+        Vector2 origin = transform.position;
+        float halfAngle = blastAngle / 2;
+        float angleStep = blastAngle / (subDivide - 1);
+        for (int i = 0; i < subDivide; i++) {
+            float currentAngle = -halfAngle + (angleStep * i);
+            Vector2 direction = Quaternion.Euler(0, 0, currentAngle) * transform.right;
+            RaycastHit2D hit = Physics2D.Raycast(origin, direction, range, groundLayer | enemyLayer);
+            
+            if (hit.collider != null && CollisionUtils.isLayerInMask(hit.collider.gameObject.layer, enemyLayer)) {
+                // Apply damage to the enemy
+                Enemy enemy = hit.collider.GetComponent<Enemy>();
+                if (enemy != null) {
+                    float distance = Vector2.Distance(origin, hit.point);
+                    enemy.Hurt(DamageDropOff(distance));
+                }
+            }
+            
+            if (DEBUG_RAYS) {
+                if (hit.collider == null) {
+                    Debug.DrawRay(origin, direction * range, Color.red, 1.0f);
+                } else {
+                    Debug.DrawRay(origin, hit.point - origin, Color.red, 1.0f);
+                }
             }
         }
+    }
+
+    private float DamageDropOff(float distance) {
+        return Math.Max(damage / subDivide * (1 - distance / range), 0);
+    }
+
+    // TODO TEMP TRACER until assets consolidated
+    private void HandleTracers() {
+        Vector2 origin = transform.position;
+        for (int i = 0; i < subDivide; i++) {
+            float randomAngle = UnityEngine.Random.Range(-blastAngle / 2, blastAngle / 2);
+            Vector2 direction = Quaternion.Euler(0, 0, randomAngle) * transform.right;
+            RaycastHit2D hit = Physics2D.Raycast(origin, direction, range, groundLayer | enemyLayer);
+
+            LineRenderer line = new GameObject("Tracer").AddComponent<LineRenderer>();
+            line.positionCount = 2;
+            line.SetPosition(0, origin);
+            line.SetPosition(1, hit.collider != null ? hit.point : direction * range + origin);
+            line.startWidth = 0.01f;
+            line.endWidth = 0.01f;
+            line.material = tracerMaterial;
+            Destroy(line.gameObject, 0.1f);
+        }
+    }
+    private void HandleReload() {
+        Debug.Log("Shotgun shells: " + shells);
+
+        if (reloadCoroutine != null) {
+            StopCoroutine(reloadCoroutine);
+        }
+        if (shells < maxShells) {
+            reloadCoroutine = StartCoroutine(Reload());
+        }
+    }
+
+    private IEnumerator Reload() {
+        yield return new WaitForSeconds(reloadTime);
+        shells += 1;
+        reloadCoroutine = null;
+        HandleReload();
     }
 }
