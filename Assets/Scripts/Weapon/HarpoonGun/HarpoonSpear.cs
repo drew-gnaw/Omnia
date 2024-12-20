@@ -2,6 +2,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using Enemies;
 using Omnia.Utils;
+using System.Collections;
 /*
     The projectile for HarpoonGun
     This class should only be interacted upon by its prefabs and HarpoonGun
@@ -39,10 +40,9 @@ public class HarpoonSpear : MonoBehaviour {
 
         gameObject.SetActive(true);
 
-        // Temporary, set the firing origin to the gun
+        // Temporary fire from center of player until idea consolidated
         transform.position = gun.transform.position;
         transform.rotation = gun.transform.rotation;
-
 
         Rigidbody2D.velocity = gun.transform.right * gun.harpoonVelocity;
     }
@@ -113,7 +113,7 @@ public class HarpoonSpear : MonoBehaviour {
 
     // Unfreezes the spear
     private void Unfreeze() {
-        Rigidbody2D.gravityScale = 1;
+        Rigidbody2D.gravityScale = 1 * gun.harpoonSpearGravityScale;
         Rigidbody2D.freezeRotation = false;
         dropped = false;
         
@@ -125,6 +125,12 @@ public class HarpoonSpear : MonoBehaviour {
         Rigidbody2D.gravityScale = 0;
         Rigidbody2D.velocity = Vector2.zero;
         Rigidbody2D.freezeRotation = true;
+
+        StartCoroutine(cooldown());
+    }
+
+    IEnumerator cooldown() {
+        yield return new WaitForSeconds(gun.harpoonSpearPickupCooldown);
         dropped = true;
     }
 }
