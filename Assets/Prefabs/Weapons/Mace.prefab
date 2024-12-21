@@ -137,8 +137,13 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 0
   damage: 3
   attackCooldown: 0
+  AttackPoint: {fileID: 6201978427254820976}
+  Radius: 0
 --- !u!1 &8535286365459487641
 GameObject:
   m_ObjectHideFlags: 0
