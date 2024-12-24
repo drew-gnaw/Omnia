@@ -23,14 +23,19 @@ public class HarpoonSpear : MonoBehaviour {
     private bool collectable;
     private IEnumerator cooldown;
     private HarpoonGun gun;
-    [SerializeField] private Player player;
+    private Player player;
 
     // Tracking enemy
     public Enemy TaggedEnemy { get; private set;}
 
     public void Awake() {
-        this.dropped = false;
-        this.TaggedEnemy = null;
+        dropped = false;
+        TaggedEnemy = null;
+
+        player = GameObject.Find("Player")?.GetComponent<Player>();
+        if (player == null) {
+            Debug.LogWarning("Player not found or Player script is not attached to the GameObject.");
+        }
     }
 
     public void OnEnable() {
@@ -103,7 +108,7 @@ public class HarpoonSpear : MonoBehaviour {
         hj.connectedBody = TaggedEnemy.GetComponent<Rigidbody2D>();
 
         TaggedEnemy.GetComponent<Enemy>().Hurt(gun.damage);
-        player?.GainFlow(34);
+        player?.OnHit(34);
     }
 
     private void HandleGroundCollision() {

@@ -1,4 +1,5 @@
 using System;
+using Omnia.Utils;
 using Players.Behaviour;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -13,6 +14,7 @@ namespace Players {
 
         [SerializeField] internal float maximumHealth;
         [SerializeField] internal float currentHealth;
+        [SerializeField] internal float maximumFlow;
         [SerializeField] internal float currentFlow;
         [SerializeField] internal float moveSpeed;
         [SerializeField] internal float jumpSpeed;
@@ -20,6 +22,8 @@ namespace Players {
         [SerializeField] internal float moveAccel;
         [SerializeField] internal float fallAccel;
         [SerializeField] internal float wallJumpLockoutTime;
+        [SerializeField] internal float combatCooldown;
+        [SerializeField] internal float flowDrainRate;
 
 
         [SerializeField] internal WeaponClass[] weapons;
@@ -34,17 +38,18 @@ namespace Players {
         [SerializeField] internal bool held;
         [SerializeField] internal bool fire;
         [SerializeField] internal bool grounded;
+        [SerializeField] internal bool inCombat;
         [SerializeField] internal Vector2 slide;
 
         [SerializeField] internal string debugBehaviour;
-
-        public const float MAXIMUM_FLOW = 100f;
 
         // Describes the ratio at which flow is converted into HP.
         public const float FLOW_TO_HP_RATIO = 0.2f;
 
         public event Action Spawn;
         public event Action Death;
+
+        private CountdownTimer combatTimer;
 
         private IBehaviour behaviour;
 
@@ -55,6 +60,8 @@ namespace Players {
         public void Start() {
             currentHealth = maximumHealth;
             currentFlow = 0;
+
+            combatTimer = new CountdownTimer(combatCooldown);
 
             Transform weaponsTransform = transform.Find("Weapons");
             if (weaponsTransform != null) {
@@ -69,6 +76,7 @@ namespace Players {
         public void Update() {
             sprite.flipX = facing.x == 0 ? sprite.flipX : facing.x < 0;
             behaviour?.OnUpdate();
+            UpdateCombatTimer();
         }
 
         public void FixedUpdate() {
@@ -82,13 +90,17 @@ namespace Players {
         // ***** Methods for handling player stats (HP, Flow) ***** //
 
         public void Hurt(float damage) {
+            combatTimer.Start();
             currentHealth = Mathf.Clamp(currentHealth - damage, 0, maximumHealth);
             Debug.Log($"Player was Hurt: {currentHealth}");
             if (currentHealth == 0) Die();
         }
 
-        public void GainFlow(float amount) {
-            currentFlow = Mathf.Min(currentFlow + amount, MAXIMUM_FLOW);
+        public void OnHit(float flowAmount) {
+            combatTimer.Start();
+            Debug.Log(currentFlow);
+            currentFlow = Mathf.Min(currentFlow + flowAmount, maximumFlow);
+            Debug.Log(currentFlow);
         }
 
         public void ConsumeAllFlow() {
@@ -96,6 +108,18 @@ namespace Players {
                 float healthGain = currentFlow * FLOW_TO_HP_RATIO;
                 currentHealth = Mathf.Clamp(currentHealth + healthGain, 0, maximumHealth);
                 currentFlow = 0;
+            }
+        }
+
+        public void DrainFlowOverTime(float drainRate) {
+            if (currentFlow > 0) {
+                float flowToDrain = Mathf.Min(currentFlow, drainRate * Time.deltaTime);
+                currentFlow -= flowToDrain;
+
+                float healthGain = flowToDrain * FLOW_TO_HP_RATIO;
+                currentHealth = Mathf.Clamp(currentHealth + healthGain, 0, maximumHealth);
+
+                Debug.Log($"Drained {flowToDrain} flow, converted to {healthGain} health.");
             }
         }
 
@@ -122,6 +146,16 @@ namespace Players {
 
         public void UseAnimation(string it) {
             animator.Play(it);
+        }
+
+        // ***** Helpers ***** //
+
+        private void UpdateCombatTimer() {
+            combatTimer.Tick(Time.deltaTime);
+
+            if (!combatTimer.IsRunning) {
+                DrainFlowOverTime(flowDrainRate);
+            }
         }
     }
 }

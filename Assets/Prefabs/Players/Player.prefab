@@ -359,13 +359,16 @@ MonoBehaviour:
   - {fileID: 2089878435842221790}
   maximumHealth: 10
   currentHealth: 10
+  maximumFlow: 100
+  currentFlow: 0
   moveSpeed: 7
   jumpSpeed: 7
   fallSpeed: 10
   moveAccel: 10
   fallAccel: 3.5
   wallJumpLockoutTime: 0.1
-  flow: 0
+  combatCooldown: 5
+  flowDrainRate: 10
   weapons:
   - {fileID: 6250211812916678861}
   - {fileID: 8474927021672394680}
@@ -378,6 +381,7 @@ MonoBehaviour:
   held: 0
   fire: 0
   grounded: 0
+  inCombat: 0
   slide: {x: 0, y: 0}
   debugBehaviour: 
 --- !u!50 &1006114366540754684
