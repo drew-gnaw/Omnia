@@ -4,12 +4,13 @@ using Players;
 
 public class Mace : WeaponClass
 {
-    Transform attackPoint;
-    float radius;
+    [Header("Mace Stats")]
+    [SerializeField] Transform AttackPoint;
+    [SerializeField] float Radius;
     
     protected override void HandleAttack()
     {
-        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, radius, enemyLayer);
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(AttackPoint.position, Radius, enemyLayer);
         foreach (Collider2D enemy in hitEnemies)
         {
             enemy.GetComponent<Enemy>().Hurt(damage);

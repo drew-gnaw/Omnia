@@ -105,12 +105,15 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 0
   damage: 1
   attackCooldown: 0
   harpoons: 3
   harpoonVelocity: 20
   harpoonSpearGravityScale: 1
-  harpoonSpearPickupCooldown: 0
+  harpoonSpearPickupCooldown: 1
   harpoonSpearPrefab: {fileID: 3775420795739930932, guid: 3287e05fa4feefa43b2d14e7d0d7e6de, type: 3}
 --- !u!1 &7395887500203567774
 GameObject:
