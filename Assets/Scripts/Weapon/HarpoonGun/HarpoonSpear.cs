@@ -2,6 +2,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using Enemies;
 using Omnia.Utils;
+using System.Collections;
 /*
     The projectile for HarpoonGun
     This class should only be interacted upon by its prefabs and HarpoonGun
@@ -15,6 +16,8 @@ public class HarpoonSpear : MonoBehaviour {
     public Rigidbody2D Rigidbody2D;
 
     private bool dropped;
+    private bool collectable;
+    private IEnumerator cooldown;
     private HarpoonGun gun;
 
     // Tracking enemy
@@ -39,10 +42,9 @@ public class HarpoonSpear : MonoBehaviour {
 
         gameObject.SetActive(true);
 
-        // Temporary, set the firing origin to the gun
+        // Temporary fire from center of player until idea consolidated
         transform.position = gun.transform.position;
         transform.rotation = gun.transform.rotation;
-
 
         Rigidbody2D.velocity = gun.transform.right * gun.harpoonVelocity;
     }
@@ -56,43 +58,40 @@ public class HarpoonSpear : MonoBehaviour {
     }
 
     public void Update() {
-        var rb = GetComponent<Rigidbody2D>();
-
         // Rotate based on velocity
-        if (!dropped && rb.velocity != Vector2.zero) {
-            float angle = Mathf.Atan2(rb.velocity.y, rb.velocity.x) * Mathf.Rad2Deg;
+        if (!dropped && Rigidbody2D.velocity != Vector2.zero) {
+            float angle = Mathf.Atan2(Rigidbody2D.velocity.y, Rigidbody2D.velocity.x) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
         }
     }
 
     void OnTriggerEnter2D(Collider2D other) {
 
-        if (Collider2D.IsTouchingLayers(playerLayer) && dropped) {
-            Debug.Log("HarpoonSpear collected by player");
+        if (Collider2D.IsTouchingLayers(playerLayer) && collectable) {
             HandlePlayerCollision();
         }
         // FIXME: for whatever reason, checking if the spear collider is touching enemy does not always work,
         // other collider ends up as null if they are moving
         if (CollisionUtils.isLayerInMask(other.gameObject.layer, enemyLayer) && !dropped) {
-            Debug.Log("HarpoonSpear hit enemy");
             HandleEnemyCollision(other.GetComponent<Enemy>());
         }
         if (Collider2D.IsTouchingLayers(groundLayer) && !dropped) {
-            Debug.Log("HarpoonSpear hit ground");
             HandleGroundCollision();
         }
     }
 
     private void HandlePlayerCollision() {
         Unfreeze();
+        collectable = false;
         // Tell gun to mark this spear as available
         gun.SpearCollected(this);
     }
 
     private void HandleEnemyCollision(Enemy enemy) {
         Freeze();
+        StartCooldown();
 
-        this.TaggedEnemy = enemy;
+        TaggedEnemy = enemy;
 
         // HingeJoints are created during runtime as it can't be disabled
         HingeJoint2D hj = this.AddComponent<HingeJoint2D>();
@@ -103,17 +102,24 @@ public class HarpoonSpear : MonoBehaviour {
 
     private void HandleGroundCollision() {
         Freeze();
+        StartCooldown();
     }
 
     private void HandleEnemyDeath(Enemy enemy) {
         if (enemy == TaggedEnemy) {
+            TaggedEnemy = null;
             Unfreeze();
         }
     }
 
     // Unfreezes the spear
     private void Unfreeze() {
-        Rigidbody2D.gravityScale = 1;
+        if (cooldown != null) {
+            StopCoroutine(cooldown);
+        }
+
+
+        Rigidbody2D.gravityScale = 1 * gun.harpoonSpearGravityScale;
         Rigidbody2D.freezeRotation = false;
         dropped = false;
         
@@ -122,9 +128,29 @@ public class HarpoonSpear : MonoBehaviour {
 
     // Freezes the spear and marks as collectable
     private void Freeze() {
+        if (cooldown != null) {
+            StopCoroutine(cooldown);
+        }
+
         Rigidbody2D.gravityScale = 0;
         Rigidbody2D.velocity = Vector2.zero;
         Rigidbody2D.freezeRotation = true;
         dropped = true;
+    }
+
+    // Begin pickup cooldown at the first spear contact, after that free to collect anytime
+    private void StartCooldown() {
+        if (collectable) return;
+
+        if (cooldown != null) {
+            StopCoroutine(cooldown);
+        }
+        cooldown = DropCooldown();
+        StartCoroutine(cooldown);
+    }
+
+    private IEnumerator DropCooldown() {
+        yield return new WaitForSeconds(gun.harpoonSpearPickupCooldown);
+        collectable = true;
     }
 }
