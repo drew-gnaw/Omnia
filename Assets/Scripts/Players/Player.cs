@@ -1,7 +1,6 @@
 using System;
 using Players.Behaviour;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Players {
     public class Player : MonoBehaviour {
@@ -9,6 +8,7 @@ namespace Players {
         [SerializeField] internal Animator animator;
         [SerializeField] internal Rigidbody2D rb;
         [SerializeField] internal LayerMask ground;
+        [SerializeField] internal LayerMask semisolid;
         [SerializeField] internal BoxCollider2D[] checks;
 
         [SerializeField] internal float maximumHealth;

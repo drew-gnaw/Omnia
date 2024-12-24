@@ -308,6 +308,7 @@ GameObject:
   - component: {fileID: 6160612355849141162}
   - component: {fileID: 2761024857814508083}
   - component: {fileID: 6402661582757285898}
+  - component: {fileID: 1129889265447086856}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -353,6 +354,9 @@ MonoBehaviour:
   ground:
     serializedVersion: 2
     m_Bits: 8
+  semisolid:
+    serializedVersion: 2
+    m_Bits: 512
   checks:
   - {fileID: 114218580143928455}
   - {fileID: 3119127342257128012}
@@ -470,6 +474,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   self: {fileID: 6725967550211918722}
   delay: 0.1
+--- !u!114 &1129889265447086856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5710193498280292276}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f924a2bbf9b145b99326a33fe2cc9c64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  self: {fileID: 6725967550211918722}
+  playerCollider: {fileID: 6160612355849141162}
+  semisolidCollider: {fileID: 0}
 --- !u!1 &7341513922277732889
 GameObject:
   m_ObjectHideFlags: 0
