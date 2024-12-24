@@ -14,11 +14,11 @@ namespace Players.Mixin {
             if (self.moving.y < 0) {
                 Physics2D.IgnoreCollision(playerCollider, semisolidCollider, true);
             } else if (self.moving.y >= 0 && fell) {
-                StartCoroutine(ReenableCollisionWithDelay());
+                StartCoroutine(ReenableCollisionAfterFall());
             }
         }
 
-        private IEnumerator ReenableCollisionWithDelay() {
+        private IEnumerator ReenableCollisionAfterFall() {
             fell = false;
 
             while (self.grounded) {
