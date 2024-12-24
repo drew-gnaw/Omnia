@@ -5,6 +5,8 @@ using Omnia.Utils;
 using Players;
 
 using System.Collections;
+using Players;
+
 /*
     The projectile for HarpoonGun
     This class should only be interacted upon by its prefabs and HarpoonGun
