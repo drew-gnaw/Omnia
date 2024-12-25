@@ -1,8 +1,6 @@
 using System;
-using JetBrains.Annotations;
 using Players.Behaviour;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Utils;
 
 namespace Players {
@@ -68,10 +66,10 @@ namespace Players {
         }
 
         public void Update() {
-            sprite.flipX = facing.x == 0 ? sprite.flipX : facing.x < 0;
+            currentLockout = Mathf.Clamp(currentLockout - Time.deltaTime, 0, maximumLockout);
             behaviour?.OnUpdate();
 
-            currentLockout = Mathf.Clamp(currentLockout - Time.deltaTime, 0, maximumLockout);
+            sprite.flipX = facing.x == 0 ? sprite.flipX : facing.x < 0;
 
             if (Input.GetKeyDown("e")) {
                 /* TODO: Remove. */
@@ -80,8 +78,7 @@ namespace Players {
         }
 
         public void FixedUpdate() {
-            rb.gravityScale = held && rb.velocity.y >= 0 ? 1 : 2;
-
+            rb.gravityScale = !held || rb.velocity.y < 0 ? 2 : 1;
             DoAttack();
             behaviour?.OnTick();
         }
