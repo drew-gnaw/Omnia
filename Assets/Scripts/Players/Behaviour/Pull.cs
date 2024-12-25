@@ -13,7 +13,7 @@ namespace Players.Behaviour {
             this.target = target;
         }
 
-        /* TODO: Figure out what should happen on collision during pull? */
+        /* TODO: This will need another pass once player input is figured out! */
         public void OnEnter() {
             t = Vector2.Distance(self.transform.position, target.position) / self.pullSpeed;
             direction = target.position - self.transform.position;
@@ -22,7 +22,7 @@ namespace Players.Behaviour {
         }
 
         public void OnExit() {
-            self.rb.velocity = new Vector2(self.rb.velocity.x, Mathf.Min(self.jumpSpeed * 2, self.rb.velocity.y));
+            self.rb.velocity = new Vector2(self.rb.velocity.x, Mathf.Min(self.jumpSpeed, self.rb.velocity.y));
         }
 
         public void OnTick() {
@@ -33,7 +33,7 @@ namespace Players.Behaviour {
             t = Mathf.Max(0, t - Time.deltaTime);
             if (t != 0) return;
 
-            self.UseBehaviour(new Fall(self));
+            self.UseBehaviour(Fall.AdHoc(self));
         }
     }
 }

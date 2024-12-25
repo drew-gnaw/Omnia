@@ -361,14 +361,14 @@ MonoBehaviour:
   - {fileID: 114218580143928455}
   - {fileID: 3119127342257128012}
   - {fileID: 2089878435842221790}
-  maximumHealth: 100
-  currentHealth: 100
-  moveSpeed: 5
-  jumpSpeed: 5
-  pullSpeed: 15
+  maximumHealth: 10
+  currentHealth: 10
+  moveSpeed: 7
+  jumpSpeed: 7
+  fallSpeed: 10
   moveAccel: 10
-  jumpAccel: 5
-  jumpLockoutTime: 0.1
+  fallAccel: 3.5
+  wallJumpLockoutTime: 0.1
   flow: 0
   weapons:
   - {fileID: 6250211812916678861}
@@ -384,7 +384,6 @@ MonoBehaviour:
   grounded: 0
   slide: {x: 0, y: 0}
   debugBehaviour: 
-  debugPullToTargetTransform: {fileID: 0}
 --- !u!50 &1006114366540754684
 Rigidbody2D:
   serializedVersion: 4
