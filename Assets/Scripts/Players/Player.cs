@@ -1,6 +1,7 @@
 using System;
 using Players.Behaviour;
 using UnityEngine;
+using Utils;
 
 namespace Players {
     public class Player : MonoBehaviour {
@@ -15,11 +16,12 @@ namespace Players {
         [SerializeField] internal float currentHealth;
         [SerializeField] internal float moveSpeed;
         [SerializeField] internal float jumpSpeed;
-        [SerializeField] internal float fallSpeed;
+        [SerializeField] internal float pullSpeed;
         [SerializeField] internal float moveAccel;
         [SerializeField] internal float fallAccel;
-        [SerializeField] internal float wallJumpLockoutTime;
+        [SerializeField] internal float jumpLockoutTime;
         [SerializeField] internal float flow;
+        [SerializeField] internal float weaponRecoilLockoutTime;
 
         [SerializeField] internal WeaponClass[] weapons;
         [SerializeField] internal int selectedWeapon;
@@ -36,14 +38,17 @@ namespace Players {
         [SerializeField] internal Vector2 slide;
 
         [SerializeField] internal string debugBehaviour;
+        [SerializeField] internal Transform debugPullToTargetTransform;
 
         public event Action Spawn;
         public event Action Death;
 
+        private float currentLockout;
+        private float maximumLockout;
         private IBehaviour behaviour;
 
         public void Awake() {
-            UseBehaviour(Idle.AsDefaultOf(this));
+            UseBehaviour(Idle.AdHoc(this));
         }
 
         public void Start() {
@@ -61,16 +66,30 @@ namespace Players {
         }
 
         public void Update() {
-            sprite.flipX = facing.x == 0 ? sprite.flipX : facing.x < 0;
+            currentLockout = Mathf.Clamp(currentLockout - Time.deltaTime, 0, maximumLockout);
             behaviour?.OnUpdate();
+
+            sprite.flipX = facing.x == 0 ? sprite.flipX : facing.x < 0;
+
+            if (Input.GetKeyDown("e")) {
+                /* TODO: Remove. */
+                UsePull(debugPullToTargetTransform);
+            }
         }
 
         public void FixedUpdate() {
-            rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(fallSpeed * -1, rb.velocity.y));
-            rb.gravityScale = held && rb.velocity.y > 0 ? 1 : 2;
-
+            rb.gravityScale = !held || rb.velocity.y < 0 ? 2 : 1;
             DoAttack();
             behaviour?.OnTick();
+        }
+
+        public void UsePull(Transform target) {
+            UseBehaviour(new Pull(this, target));
+        }
+
+        public void UseRecoil(float speed) {
+            var recoil = -1 * speed * facing.normalized;
+            UseExternalVelocity(new Vector2(rb.velocity.x + recoil.x, recoil.y), weaponRecoilLockoutTime);
         }
 
         public void Hurt(float damage) {
@@ -92,6 +111,22 @@ namespace Players {
             animator.Play(it);
         }
 
+        public void UseExternalVelocity(Vector2 velocity, float lockout) {
+            rb.velocity = velocity;
+            currentLockout = maximumLockout = lockout;
+        }
+
+        public float HorizontalVelocityOf(float x, float acceleration) {
+            if (maximumLockout == 0) return MathUtils.Lerpish(rb.velocity.x, x, acceleration);
+
+            var control = 1 - currentLockout / maximumLockout;
+            return MathUtils.Lerpish(rb.velocity.x, x, control * acceleration);
+        }
+
+        public bool IsPhoon() {
+            return Math.Abs(rb.velocity.x) > moveSpeed && Math.Sign(rb.velocity.x) == Math.Sign(moving.x);
+        }
+
         private void Die() {
             Death?.Invoke();
         }
@@ -100,6 +135,9 @@ namespace Players {
             if (!fire) return;
             fire = false;
             weapons[selectedWeapon].Attack();
+
+            /* TODO: Remove. */
+            UseRecoil(5);
         }
     }
 }

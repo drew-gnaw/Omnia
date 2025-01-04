@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections;
-using UnityEngine.Serialization;
 
 namespace Players.Mixin {
     public class HandleLayerCollision : MonoBehaviour {
