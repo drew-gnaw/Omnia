@@ -1,11 +1,11 @@
 using UnityEngine;
-using Utils;
 
 namespace Players.Behaviour {
-    public class Run : IBehaviour {
+    public class Move : IBehaviour {
+        private static IBehaviour _s;
         private readonly Player self;
 
-        private Run(Player self) {
+        private Move(Player self) {
             this.self = self;
         }
 
@@ -17,7 +17,7 @@ namespace Players.Behaviour {
         }
 
         public void OnTick() {
-            var x = MathUtils.Lerpish(self.rb.velocity.x, self.moving.x * self.moveSpeed, Time.fixedDeltaTime * self.moveAccel);
+            var x = self.HorizontalVelocityOf(self.moving.x * self.moveSpeed, Time.fixedDeltaTime * self.moveAccel);
             self.rb.velocity = new Vector2(x, self.rb.velocity.y);
         }
 
@@ -25,8 +25,12 @@ namespace Players.Behaviour {
             self.UseBehaviour(Fall.If(self) ?? Jump.If(self) ?? Idle.If(self));
         }
 
+        private static IBehaviour AdHoc(Player it) {
+            return _s ??= new Move(it);
+        }
+
         public static IBehaviour If(Player it) {
-            return it.grounded && it.moving.x != 0 && it.checks[1].IsTouchingLayers(it.ground) ? new Run(it) : null;
+            return it.grounded && it.moving.x != 0 && it.checks[1].IsTouchingLayers(it.ground | it.semisolid) ? AdHoc(it) : null;
         }
     }
 }

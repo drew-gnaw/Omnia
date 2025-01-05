@@ -3,7 +3,7 @@ using Omnia.Utils;
 using Players.Behaviour;
 using UI;
 using UnityEngine;
-using UnityEngine.Serialization;
+using Utils;
 
 namespace Players {
     public class Player : MonoBehaviour {
@@ -11,6 +11,7 @@ namespace Players {
         [SerializeField] internal Animator animator;
         [SerializeField] internal Rigidbody2D rb;
         [SerializeField] internal LayerMask ground;
+        [SerializeField] internal LayerMask semisolid;
         [SerializeField] internal BoxCollider2D[] checks;
 
         [SerializeField] internal float maximumHealth;
@@ -19,9 +20,12 @@ namespace Players {
         [SerializeField] internal float currentFlow;
         [SerializeField] internal float moveSpeed;
         [SerializeField] internal float jumpSpeed;
-        [SerializeField] internal float fallSpeed;
+        [SerializeField] internal float pullSpeed;
         [SerializeField] internal float moveAccel;
         [SerializeField] internal float fallAccel;
+        [SerializeField] internal float jumpLockoutTime;
+        [SerializeField] internal float flow;
+        [SerializeField] internal float weaponRecoilLockoutTime;
         [SerializeField] internal float wallJumpLockoutTime;
         [SerializeField] internal float combatCooldown;
         [SerializeField] internal float flowDrainRate;
@@ -43,6 +47,7 @@ namespace Players {
         [SerializeField] internal Vector2 slide;
 
         [SerializeField] internal string debugBehaviour;
+        [SerializeField] internal Transform debugPullToTargetTransform;
 
         // Describes the ratio at which flow is converted into HP.
         public const float FLOW_TO_HP_RATIO = 0.2f;
@@ -50,12 +55,14 @@ namespace Players {
         public event Action Spawn;
         public event Action Death;
 
+        private float currentLockout;
+        private float maximumLockout;
         private CountdownTimer combatTimer;
 
         private IBehaviour behaviour;
 
         public void Awake() {
-            UseBehaviour(Idle.AsDefaultOf(this));
+            UseBehaviour(Idle.AdHoc(this));
         }
 
         public void Start() {
@@ -77,18 +84,32 @@ namespace Players {
         }
 
         public void Update() {
-            sprite.flipX = facing.x == 0 ? sprite.flipX : facing.x < 0;
+            currentLockout = Mathf.Clamp(currentLockout - Time.deltaTime, 0, maximumLockout);
             behaviour?.OnUpdate();
             UpdateCombatTimer();
             Debug.Log("Flow: " + currentFlow);
+
+            sprite.flipX = facing.x == 0 ? sprite.flipX : facing.x < 0;
+
+            if (Input.GetKeyDown("e")) {
+                /* TODO: Remove. */
+                UsePull(debugPullToTargetTransform);
+            }
         }
 
         public void FixedUpdate() {
-            rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(fallSpeed * -1, rb.velocity.y));
-            rb.gravityScale = held && rb.velocity.y > 0 ? 1 : 2;
-
+            rb.gravityScale = !held || rb.velocity.y < 0 ? 2 : 1;
             DoAttack();
             behaviour?.OnTick();
+        }
+
+        public void UsePull(Transform target) {
+            UseBehaviour(new Pull(this, target));
+        }
+
+        public void UseRecoil(float speed) {
+            var recoil = -1 * speed * facing.normalized;
+            UseExternalVelocity(new Vector2(rb.velocity.x + recoil.x, recoil.y), weaponRecoilLockoutTime);
         }
 
         // ***** Methods for handling player stats (HP, Flow) ***** //
@@ -154,6 +175,33 @@ namespace Players {
             animator.Play(it);
         }
 
+        public void UseExternalVelocity(Vector2 velocity, float lockout) {
+            rb.velocity = velocity;
+            currentLockout = maximumLockout = lockout;
+        }
+
+        public float HorizontalVelocityOf(float x, float acceleration) {
+            if (maximumLockout == 0) return MathUtils.Lerpish(rb.velocity.x, x, acceleration);
+
+            var control = 1 - currentLockout / maximumLockout;
+            return MathUtils.Lerpish(rb.velocity.x, x, control * acceleration);
+        }
+
+        public bool IsPhoon() {
+            return Math.Abs(rb.velocity.x) > moveSpeed && Math.Sign(rb.velocity.x) == Math.Sign(moving.x);
+        }
+
+        private void Die() {
+            Death?.Invoke();
+        }
+
+        private void DoAttack() {
+            if (!fire) return;
+            fire = false;
+            weapons[selectedWeapon].Attack();
+
+            /* TODO: Remove. */
+            UseRecoil(5);
         // ***** Helpers ***** //
 
         private void UpdateCombatTimer() {
