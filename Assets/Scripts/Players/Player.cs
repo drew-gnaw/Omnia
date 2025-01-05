@@ -86,8 +86,7 @@ namespace Players {
         public void Update() {
             currentLockout = Mathf.Clamp(currentLockout - Time.deltaTime, 0, maximumLockout);
             behaviour?.OnUpdate();
-            //UpdateCombatTimer();
-            Debug.Log("Flow: " + currentFlow);
+            UpdateCombatTimer();
 
             sprite.flipX = facing.x == 0 ? sprite.flipX : facing.x < 0;
 
@@ -189,9 +188,6 @@ namespace Players {
             if (!fire) return;
             fire = false;
             weapons[selectedWeapon].Attack();
-
-            /* TODO: Remove. */
-            UseRecoil(5);
         }
 
         // ***** Helpers ***** //

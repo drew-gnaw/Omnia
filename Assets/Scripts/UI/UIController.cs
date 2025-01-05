@@ -25,7 +25,6 @@ namespace UI {
             Enemy.Death += OnEnemyDeath;
             CinemachineCore.CameraUpdatedEvent.AddListener(OnCameraUpdate);
 
-            // Initialize Player UI
             InitializePlayerUI();
         }
 
