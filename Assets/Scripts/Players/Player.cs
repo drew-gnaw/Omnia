@@ -86,7 +86,7 @@ namespace Players {
         public void Update() {
             currentLockout = Mathf.Clamp(currentLockout - Time.deltaTime, 0, maximumLockout);
             behaviour?.OnUpdate();
-            UpdateCombatTimer();
+            //UpdateCombatTimer();
             Debug.Log("Flow: " + currentFlow);
 
             sprite.flipX = facing.x == 0 ? sprite.flipX : facing.x < 0;
@@ -156,12 +156,6 @@ namespace Players {
 
         // ***** Methods for behaviour + animation ***** //
 
-        private void DoAttack() {
-            if (!fire) return;
-            fire = false;
-            weapons[selectedWeapon].Attack();
-        }
-
         public void UseBehaviour(IBehaviour it) {
             if (it == null) return;
             debugBehaviour = it.GetType().Name;
@@ -191,10 +185,6 @@ namespace Players {
             return Math.Abs(rb.velocity.x) > moveSpeed && Math.Sign(rb.velocity.x) == Math.Sign(moving.x);
         }
 
-        private void Die() {
-            Death?.Invoke();
-        }
-
         private void DoAttack() {
             if (!fire) return;
             fire = false;
@@ -202,6 +192,8 @@ namespace Players {
 
             /* TODO: Remove. */
             UseRecoil(5);
+        }
+
         // ***** Helpers ***** //
 
         private void UpdateCombatTimer() {
