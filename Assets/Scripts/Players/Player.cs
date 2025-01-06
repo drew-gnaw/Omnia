@@ -42,6 +42,7 @@ namespace Players {
         [SerializeField] internal bool jump;
         [SerializeField] internal bool held;
         [SerializeField] internal bool fire;
+        [SerializeField] internal bool skill;
         [SerializeField] internal bool grounded;
         [SerializeField] internal bool inCombat;
         [SerializeField] internal Vector2 slide;
@@ -99,6 +100,7 @@ namespace Players {
         public void FixedUpdate() {
             rb.gravityScale = !held || rb.velocity.y < 0 ? 2 : 1;
             DoAttack();
+            DoSkill();
             behaviour?.OnTick();
         }
 
@@ -188,6 +190,13 @@ namespace Players {
             if (!fire) return;
             fire = false;
             weapons[selectedWeapon].Attack();
+        }
+
+        private void DoSkill() {
+            if (!skill) return;
+            Debug.Log("skilling");
+            skill = false;
+            weapons[selectedWeapon].UseSkill();
         }
 
         // ***** Helpers ***** //

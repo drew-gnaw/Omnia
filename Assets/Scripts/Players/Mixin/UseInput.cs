@@ -2,23 +2,27 @@ using UnityEngine;
 
 namespace Players.Mixin {
     public class UseInput : MonoBehaviour {
-        private static readonly string[] Keys = { "Horizontal", "Vertical", "Fire1", "Jump" };
+        private static readonly string[] Keys = { "Horizontal", "Vertical", "Fire1", "Jump", "Fire2" };
 
         [SerializeField] internal Player self;
         [SerializeField] internal float delay;
 
         private float jt;
         private float ft;
+        private float st;
 
         public void Update() {
             var fire = Input.GetButtonDown(Keys[2]);
             var jump = Input.GetButtonDown(Keys[3]);
             var held = Input.GetButton(Keys[3]);
+            var skill = Input.GetButtonDown(Keys[4]);
 
             ft = fire ? delay : Mathf.Max(0, ft - Time.deltaTime);
             jt = jump ? delay : Mathf.Max(0, jt - Time.deltaTime);
+            st = skill ? delay : Mathf.Max(0, st - Time.deltaTime);
             self.fire = self.fire ? ft > 0 : fire;
             self.jump = self.jump ? jt > 0 : jump;
+            self.skill = self.skill ? st > 0 : skill;
 
             self.facing = GetFacingInput(self);
             self.moving = GetMovingInput();

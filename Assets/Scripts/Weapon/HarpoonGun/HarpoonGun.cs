@@ -66,22 +66,13 @@ public class HarpoonGun : WeaponClass
             return;
         }
 
-        // Find the next most recent spear that has tagged enemy
-        // Enemy tagged = null;
-        // foreach (var spear in firedSpears) {
-        //     if (spear.TaggedEnemy != null) {
-        //         tagged = spear.TaggedEnemy;
-        //         break;
-        //     }
-        // }
-
         Enemy tagged = firedSpears.FirstOrDefault(spear => spear.TaggedEnemy != null)?.TaggedEnemy;
 
         if (tagged == null) {
             return;
         }
 
-        // TODO Pull to most recent
+        player.GetComponent<Player>().UsePull(tagged.transform);
     }
 
     public override void IntroSkill()
