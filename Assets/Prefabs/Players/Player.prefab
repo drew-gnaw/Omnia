@@ -365,8 +365,8 @@ MonoBehaviour:
   currentHealth: 100
   maximumFlow: 100
   currentFlow: 0
-  moveSpeed: 6
-  jumpSpeed: 6
+  moveSpeed: 7
+  jumpSpeed: 7
   pullSpeed: 12
   moveAccel: 8
   fallAccel: 4
@@ -386,6 +386,7 @@ MonoBehaviour:
   jump: 0
   held: 0
   fire: 0
+  skill: 0
   grounded: 0
   inCombat: 0
   slide: {x: 0, y: 0}
