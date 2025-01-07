@@ -28,6 +28,10 @@ public abstract class WeaponClass : MonoBehaviour
     public abstract void UseSkill();
     public abstract void IntroSkill();
 
+    public void SetSpriteActive(bool active) {
+        GetComponentInChildren<SpriteRenderer>().enabled = active;
+    }
+
     IEnumerator cooldown() {
         canAttack = false;
         yield return new WaitForSeconds(attackCooldown);

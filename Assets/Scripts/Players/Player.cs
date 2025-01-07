@@ -190,6 +190,7 @@ namespace Players {
         private void DoAttack() {
             if (!fire) return;
             fire = false;
+            Debug.Log("attacking");
             weapons[selectedWeapon].Attack();
         }
 
@@ -201,7 +202,11 @@ namespace Players {
 
         public void DoSwap(int targetWeapon) {
             if (selectedWeapon != targetWeapon) {
+                weapons[selectedWeapon].SetSpriteActive(false);
+
                 selectedWeapon = targetWeapon;
+
+                weapons[selectedWeapon].SetSpriteActive(true);
 
                 if (Mathf.Approximately(currentFlow, maximumFlow)) {
                     ConsumeAllFlow();
