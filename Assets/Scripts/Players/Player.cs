@@ -134,6 +134,7 @@ namespace Players {
                 float healthGain = currentFlow * FLOW_TO_HP_RATIO;
                 currentHealth = Mathf.Clamp(currentHealth + healthGain, 0, maximumHealth);
                 currentFlow = 0;
+                UIController.Instance.UpdatePlayerHealth(currentHealth, maximumHealth);
                 UIController.Instance.UpdatePlayerFlow(currentFlow, maximumFlow);
             }
         }
@@ -201,6 +202,12 @@ namespace Players {
         public void DoSwap(int targetWeapon) {
             if (selectedWeapon != targetWeapon) {
                 selectedWeapon = targetWeapon;
+
+                if (Mathf.Approximately(currentFlow, maximumFlow)) {
+                    ConsumeAllFlow();
+                    weapons[selectedWeapon].IntroSkill();
+                }
+
                 Debug.Log($"Swapped to weapon {targetWeapon}");
             }
         }
