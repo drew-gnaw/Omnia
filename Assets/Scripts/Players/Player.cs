@@ -194,10 +194,10 @@ namespace Players {
 
         private void DoSkill() {
             if (!skill) return;
-            Debug.Log("skilling");
             skill = false;
             weapons[selectedWeapon].UseSkill();
         }
+
 
         // ***** Helpers ***** //
 
