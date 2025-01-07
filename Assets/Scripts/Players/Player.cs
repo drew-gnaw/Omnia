@@ -198,6 +198,13 @@ namespace Players {
             weapons[selectedWeapon].UseSkill();
         }
 
+        public void DoSwap(int targetWeapon) {
+            if (selectedWeapon != targetWeapon) {
+                selectedWeapon = targetWeapon;
+                Debug.Log($"Swapped to weapon {targetWeapon}");
+            }
+        }
+
 
         // ***** Helpers ***** //
 

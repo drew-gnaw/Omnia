@@ -26,7 +26,7 @@ namespace Players.Mixin {
 
             foreach (var kvp in weaponKeyMap) {
                 if (Input.GetKeyDown(kvp.Key)) {
-                    SwapWeapon(kvp.Value);
+                    self.DoSwap(kvp.Value);
                 }
             }
 
@@ -49,13 +49,6 @@ namespace Players.Mixin {
 
         private static Vector2 GetFacingInput(Player it) {
             return it.cam.ScreenToWorldPoint(Input.mousePosition) - it.sprite.transform.position;
-        }
-
-        private void SwapWeapon(int weaponIndex) {
-            if (self.selectedWeapon != weaponIndex) {
-                self.selectedWeapon = weaponIndex;
-                Debug.Log($"Swapped to weapon {weaponIndex}");
-            }
         }
     }
 }
