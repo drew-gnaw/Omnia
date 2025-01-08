@@ -36,8 +36,8 @@ public class Shotgun : WeaponClass {
     }
 
     public override void IntroSkill() {
-        // TODO Recoil player and damage markiplier?
         Shoot();
+        player.GetComponent<Player>().UseRecoil(10);
     }
 
     void Update() {
