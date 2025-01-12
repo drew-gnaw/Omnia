@@ -21,6 +21,8 @@ namespace Players {
         [SerializeField] internal float moveSpeed;
         [SerializeField] internal float jumpSpeed;
         [SerializeField] internal float pullSpeed;
+        [SerializeField] internal float rollSpeed;
+        [SerializeField] internal float rollDuration;
         [SerializeField] internal float moveAccel;
         [SerializeField] internal float fallAccel;
         [SerializeField] internal float jumpLockoutTime;
@@ -40,6 +42,7 @@ namespace Players {
         [SerializeField] internal Vector2 facing;
         [SerializeField] internal Vector2 moving;
         [SerializeField] internal bool jump;
+        [SerializeField] internal bool roll;
         [SerializeField] internal bool held;
         [SerializeField] internal bool fire;
         [SerializeField] internal bool skill;
