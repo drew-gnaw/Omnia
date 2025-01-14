@@ -1,3 +1,4 @@
+using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 
 namespace Players.Behaviour {
@@ -5,6 +6,7 @@ namespace Players.Behaviour {
         private static IBehaviour _s;
         private readonly Player self;
         private float t;
+        private float direction;
 
         private Roll(Player self) {
             this.self = self;
@@ -13,16 +15,20 @@ namespace Players.Behaviour {
         public void OnEnter() {
             t = self.rollDuration;
             self.roll = false;
+            self.invulnerable = true;
 
+            direction = Mathf.Sign(self.moving.x != 0 ? self.moving.x : self.facing.x);
+            
+            self.OnRoll();
             self.UseAnimation("PlayerSlide");
-
         }
 
         public void OnExit() {
+            self.invulnerable = false;
         }
 
         public void OnTick() {
-            self.rb.velocity = new Vector2(self.rollSpeed, self.rb.velocity.y);
+            self.rb.velocity = new Vector2(self.rollSpeed * direction, self.rb.velocity.y);
         }
 
         public void OnUpdate() {
@@ -37,7 +43,7 @@ namespace Players.Behaviour {
         }
 
         public static IBehaviour If(Player it) {
-            return it.grounded && it.checks[1].IsTouchingLayers(it.ground | it.semisolid) ? AdHoc(it) : null;
+            return it.roll && it.canRoll && it.grounded && it.checks[1].IsTouchingLayers(it.ground | it.semisolid) ? AdHoc(it) : null;
         }
     }
 }

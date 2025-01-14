@@ -23,6 +23,7 @@ namespace Players {
         [SerializeField] internal float pullSpeed;
         [SerializeField] internal float rollSpeed;
         [SerializeField] internal float rollDuration;
+        [SerializeField] internal float rollCooldown;
         [SerializeField] internal float moveAccel;
         [SerializeField] internal float fallAccel;
         [SerializeField] internal float jumpLockoutTime;
@@ -47,6 +48,8 @@ namespace Players {
         [SerializeField] internal bool fire;
         [SerializeField] internal bool skill;
         [SerializeField] internal bool grounded;
+        [SerializeField] internal bool canRoll;
+        [SerializeField] internal bool invulnerable;
         [SerializeField] internal bool inCombat;
         [SerializeField] internal Vector2 slide;
 
@@ -62,6 +65,7 @@ namespace Players {
         private float currentLockout;
         private float maximumLockout;
         private CountdownTimer combatTimer;
+        private CountdownTimer rollTimer;
 
         private IBehaviour behaviour;
 
@@ -77,6 +81,9 @@ namespace Players {
 
             combatTimer = new CountdownTimer(combatCooldown);
 
+            rollTimer = new CountdownTimer(rollCooldown);
+            canRoll = true;
+
             Transform weaponsTransform = transform.Find("Weapons");
             if (weaponsTransform != null) {
                 weapons = weaponsTransform.GetComponentsInChildren<WeaponClass>();
@@ -91,6 +98,7 @@ namespace Players {
             currentLockout = Mathf.Clamp(currentLockout - Time.deltaTime, 0, maximumLockout);
             behaviour?.OnUpdate();
             UpdateCombatTimer();
+            UpdateRollTimer();
 
             sprite.flipX = facing.x == 0 ? sprite.flipX : facing.x < 0;
 
@@ -119,6 +127,8 @@ namespace Players {
         // ***** Methods for handling player stats (HP, Flow) ***** //
 
         public void Hurt(float damage) {
+            if (invulnerable) return;
+
             combatTimer.Start();
             currentHealth = Mathf.Clamp(currentHealth - damage, 0, maximumHealth);
             UIController.Instance.UpdatePlayerHealth(currentHealth, maximumHealth);
@@ -186,8 +196,14 @@ namespace Players {
             return MathUtils.Lerpish(rb.velocity.x, x, control * acceleration);
         }
 
-        public bool IsPhoon() {
+        internal bool IsPhoon() {
             return Math.Abs(rb.velocity.x) > moveSpeed && Math.Sign(rb.velocity.x) == Math.Sign(moving.x);
+        }
+
+        // Called by Behaviour.Roll to handle the cooldown timer
+        internal void OnRoll() {
+            canRoll = false;
+            rollTimer.Start();
         }
 
         private void DoAttack() {
@@ -228,6 +244,14 @@ namespace Players {
 
             if (!combatTimer.IsRunning) {
                 DrainFlowOverTime(flowDrainRate);
+            }
+        }
+
+        private void UpdateRollTimer() {
+            rollTimer.Tick(Time.deltaTime);
+
+            if (!rollTimer.IsRunning) {
+                canRoll = true;
             }
         }
     }

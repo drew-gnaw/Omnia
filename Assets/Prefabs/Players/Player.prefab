@@ -368,6 +368,9 @@ MonoBehaviour:
   moveSpeed: 7
   jumpSpeed: 7
   pullSpeed: 12
+  rollSpeed: 8
+  rollDuration: 0.4
+  rollCooldown: 1
   moveAccel: 8
   fallAccel: 4
   jumpLockoutTime: 0.1
@@ -384,10 +387,13 @@ MonoBehaviour:
   facing: {x: 0, y: 0}
   moving: {x: 0, y: 0}
   jump: 0
+  roll: 0
   held: 0
   fire: 0
   skill: 0
   grounded: 0
+  canRoll: 0
+  invulnerable: 0
   inCombat: 0
   slide: {x: 0, y: 0}
   debugBehaviour: 
