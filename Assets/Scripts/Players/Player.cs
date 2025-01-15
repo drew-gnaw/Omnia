@@ -10,6 +10,7 @@ namespace Players {
         [SerializeField] internal SpriteRenderer sprite;
         [SerializeField] internal Animator animator;
         [SerializeField] internal Rigidbody2D rb;
+        [SerializeField] internal CapsuleCollider2D cc;
         [SerializeField] internal LayerMask ground;
         [SerializeField] internal LayerMask semisolid;
         [SerializeField] internal BoxCollider2D[] checks;
@@ -65,7 +66,7 @@ namespace Players {
         private float currentLockout;
         private float maximumLockout;
         private CountdownTimer combatTimer;
-        private CountdownTimer rollTimer;
+        private CountdownTimer rollCooldownTimer;
 
         private IBehaviour behaviour;
 
@@ -81,7 +82,7 @@ namespace Players {
 
             combatTimer = new CountdownTimer(combatCooldown);
 
-            rollTimer = new CountdownTimer(rollCooldown);
+            rollCooldownTimer = new CountdownTimer(rollCooldown);
             canRoll = true;
 
             Transform weaponsTransform = transform.Find("Weapons");
@@ -98,8 +99,8 @@ namespace Players {
             currentLockout = Mathf.Clamp(currentLockout - Time.deltaTime, 0, maximumLockout);
             behaviour?.OnUpdate();
             UpdateCombatTimer();
-            UpdateRollTimer();
-
+            UpdateRollCooldownTimer();
+            
             sprite.flipX = facing.x == 0 ? sprite.flipX : facing.x < 0;
 
             if (Input.GetKeyDown("e")) {
@@ -203,7 +204,7 @@ namespace Players {
         // Called by Behaviour.Roll to handle the cooldown timer
         internal void OnRoll() {
             canRoll = false;
-            rollTimer.Start();
+            rollCooldownTimer.Start();
         }
 
         private void DoAttack() {
@@ -247,10 +248,10 @@ namespace Players {
             }
         }
 
-        private void UpdateRollTimer() {
-            rollTimer.Tick(Time.deltaTime);
+        private void UpdateRollCooldownTimer() {
+            rollCooldownTimer.Tick(Time.deltaTime);
 
-            if (!rollTimer.IsRunning) {
+            if (!rollCooldownTimer.IsRunning) {
                 canRoll = true;
             }
         }
