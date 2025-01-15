@@ -151,6 +151,7 @@ public class DialogueManager : MonoBehaviour
     void OnSceneChange(Scene s, LoadSceneMode m)
     {
         EndDialogue();
+        //dialogueHistory.Clear();
     }
 
     void EndDialogue()

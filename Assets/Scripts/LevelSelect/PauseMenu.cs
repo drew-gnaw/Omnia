@@ -19,7 +19,7 @@ public class PauseMenu : MonoBehaviour
     [SerializeField] private TextMeshProUGUI historyText;
 
     [SerializeField]
-    private Slider musicSlider, sfxSlider; 
+    private Slider musicSlider; 
 
 
     public delegate void PauseMenuEventHandler();
@@ -77,7 +77,6 @@ public class PauseMenu : MonoBehaviour
     private void Start()
     {
         musicSlider.value = 0.7f;
-        sfxSlider.value = 0.7f;
         //AudioManager.Instance.MusicVolume(musicSlider.value);
         //AudioManager.Instance.SFXVolume(sfxSlider.value);
         //pauseCanvas.sortingLayerName = "Top";
@@ -132,27 +131,17 @@ public class PauseMenu : MonoBehaviour
     {
         IsPaused = false;
         Time.timeScale = 1f;
-        //GameStateManager.Instance.Restart();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void ToggleMusic()
     {
-       // AudioManager.Instance.ToggleMusic();
-    }
-
-    public void ToggleSFX()
-    {
-       // AudioManager.Instance.ToggleSFX();
+       AudioManager.Instance.ToggleMusic();
     }
 
     public void MusicVolume()
     {
-       // AudioManager.Instance.MusicVolume(musicSlider.value);
-    }
-
-    public void SFXVolume()
-    {
-       // AudioManager.Instance.SFXVolume(sfxSlider.value);
+       AudioManager.Instance.MusicVolume(musicSlider.value);
     }
 
     public void ToggleScreenShake()
