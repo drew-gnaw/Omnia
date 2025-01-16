@@ -55,21 +55,12 @@ namespace Players {
             currentHealth = maximumHealth;
             flow = 0;
 
-            Transform weaponsTransform = transform.Find("Weapons");
-            if (weaponsTransform != null) {
-                weapons = weaponsTransform.GetComponentsInChildren<WeaponClass>();
-            } else {
-                Debug.LogError("Weapons object not found as a child of the player!");
-            }
-
             Spawn?.Invoke();
         }
 
         public void Update() {
             currentLockout = Mathf.Clamp(currentLockout - Time.deltaTime, 0, maximumLockout);
             behaviour?.OnUpdate();
-
-            sprite.flipX = facing.x == 0 ? sprite.flipX : facing.x < 0;
 
             if (Input.GetKeyDown("e")) {
                 /* TODO: Remove. */
