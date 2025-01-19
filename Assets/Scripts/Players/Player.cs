@@ -25,6 +25,7 @@ namespace Players {
         [SerializeField] internal float rollSpeed;
         [SerializeField] internal float rollDuration;
         [SerializeField] internal float rollCooldown;
+        [SerializeField] internal float rollThreshold;
         [SerializeField] internal float moveAccel;
         [SerializeField] internal float fallAccel;
         [SerializeField] internal float jumpLockoutTime;

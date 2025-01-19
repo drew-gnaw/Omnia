@@ -22,7 +22,8 @@ namespace Players.Behaviour {
             originalColliderSize = self.cc.size;
             shrinkCollider();
 
-            direction = Mathf.Sign(self.moving.x != 0 ? self.moving.x : self.facing.x);
+            // If player is moving above threshold, roll in that direction, else roll in facing direction
+            direction = Mathf.Sign(Mathf.Abs(self.rb.velocity.x) > self.rollThreshold ? self.rb.velocity.x : self.facing.x);
             
             self.OnRoll();
             self.UseAnimation("PlayerSlide");
