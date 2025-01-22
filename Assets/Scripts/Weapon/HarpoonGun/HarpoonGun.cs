@@ -67,14 +67,17 @@ public class HarpoonGun : WeaponClass
             return;
         }
 
-        Enemy tagged = firedSpears.FirstOrDefault(spear => spear.TaggedEnemy != null)?.TaggedEnemy;
+        var spear = firedSpears.FirstOrDefault(s => s.TaggedEnemy != null || s.PullTo != null);
 
-        if (tagged == null) {
+        Transform target = spear?.PullTo ?? spear?.TaggedEnemy?.transform;
+
+        if (target == null) {
             return;
         }
 
-        player.GetComponent<Player>().UsePull(tagged.transform);
+        player.GetComponent<Player>().UsePull(target);
     }
+
 
     public override void IntroSkill()
     {

@@ -15,6 +15,7 @@ public class HarpoonSpear : MonoBehaviour {
     public LayerMask enemyLayer;
     public LayerMask playerLayer;
     public LayerMask groundLayer;
+    public LayerMask semisolidLayer;
 
     public Collider2D Collider2D;
     public Rigidbody2D Rigidbody2D;
@@ -26,11 +27,13 @@ public class HarpoonSpear : MonoBehaviour {
     private Player player;
 
     // Tracking enemy
-    public Enemy TaggedEnemy { get; private set;}
+    public Enemy TaggedEnemy { get; private set; }
+    public Transform PullTo { get; private set; }
 
     public void Awake() {
         dropped = false;
         TaggedEnemy = null;
+        PullTo = null;
 
         player = GameObject.Find("Player")?.GetComponent<Player>();
         if (player == null) {
@@ -85,6 +88,11 @@ public class HarpoonSpear : MonoBehaviour {
         if (CollisionUtils.isLayerInMask(other.gameObject.layer, enemyLayer) && !dropped) {
             HandleEnemyCollision(other.GetComponent<Enemy>());
         }
+
+        if (Collider2D.IsTouchingLayers(semisolidLayer) && !dropped) {
+            HandleSemisolidCollision();
+        }
+
         if (Collider2D.IsTouchingLayers(groundLayer) && !dropped) {
             HandleGroundCollision();
         }
@@ -93,6 +101,8 @@ public class HarpoonSpear : MonoBehaviour {
     private void HandlePlayerCollision() {
         Unfreeze();
         collectable = false;
+        PullTo = null;
+
         // Tell gun to mark this spear as available
         gun.SpearCollected(this);
     }
@@ -109,6 +119,12 @@ public class HarpoonSpear : MonoBehaviour {
 
         TaggedEnemy.GetComponent<Enemy>().Hurt(gun.damage);
         player?.OnHit(gun.damage * gun.damageToFlowRatio);
+    }
+
+    private void HandleSemisolidCollision() {
+        Freeze();
+        PullTo = gameObject.transform;
+        StartCooldown();
     }
 
     private void HandleGroundCollision() {
