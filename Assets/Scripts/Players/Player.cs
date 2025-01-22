@@ -10,6 +10,7 @@ namespace Players {
         [SerializeField] internal SpriteRenderer sprite;
         [SerializeField] internal Animator animator;
         [SerializeField] internal Rigidbody2D rb;
+        [SerializeField] internal CapsuleCollider2D cc;
         [SerializeField] internal LayerMask ground;
         [SerializeField] internal LayerMask semisolid;
         [SerializeField] internal BoxCollider2D[] checks;
@@ -21,6 +22,10 @@ namespace Players {
         [SerializeField] internal float moveSpeed;
         [SerializeField] internal float jumpSpeed;
         [SerializeField] internal float pullSpeed;
+        [SerializeField] internal float rollSpeed;
+        [SerializeField] internal float rollDuration;
+        [SerializeField] internal float rollCooldown;
+        [SerializeField] internal float rollThreshold;
         [SerializeField] internal float moveAccel;
         [SerializeField] internal float fallAccel;
         [SerializeField] internal float jumpLockoutTime;
@@ -40,10 +45,13 @@ namespace Players {
         [SerializeField] internal Vector2 facing;
         [SerializeField] internal Vector2 moving;
         [SerializeField] internal bool jump;
+        [SerializeField] internal bool roll;
         [SerializeField] internal bool held;
         [SerializeField] internal bool fire;
         [SerializeField] internal bool skill;
         [SerializeField] internal bool grounded;
+        [SerializeField] internal bool canRoll;
+        [SerializeField] internal bool invulnerable;
         [SerializeField] internal bool inCombat;
         [SerializeField] internal Vector2 slide;
 
@@ -59,6 +67,7 @@ namespace Players {
         private float currentLockout;
         private float maximumLockout;
         private CountdownTimer combatTimer;
+        private CountdownTimer rollCooldownTimer;
 
         private IBehaviour behaviour;
 
@@ -74,6 +83,9 @@ namespace Players {
 
             combatTimer = new CountdownTimer(combatCooldown);
 
+            rollCooldownTimer = new CountdownTimer(rollCooldown);
+            canRoll = true;
+
             Transform weaponsTransform = transform.Find("Weapons");
             if (weaponsTransform != null) {
                 weapons = weaponsTransform.GetComponentsInChildren<WeaponClass>();
@@ -88,6 +100,7 @@ namespace Players {
             currentLockout = Mathf.Clamp(currentLockout - Time.deltaTime, 0, maximumLockout);
             behaviour?.OnUpdate();
             UpdateCombatTimer();
+            UpdateRollCooldownTimer();
 
             sprite.flipX = facing.x == 0 ? sprite.flipX : facing.x < 0;
 
@@ -95,6 +108,8 @@ namespace Players {
                 /* TODO: Remove. */
                 UsePull(debugPullToTargetTransform);
             }
+
+            Debug.Log(rb.velocity.x);
         }
 
         public void FixedUpdate() {
@@ -116,6 +131,8 @@ namespace Players {
         // ***** Methods for handling player stats (HP, Flow) ***** //
 
         public void Hurt(float damage) {
+            if (invulnerable) return;
+
             combatTimer.Start();
             currentHealth = Mathf.Clamp(currentHealth - damage, 0, maximumHealth);
             UIController.Instance.UpdatePlayerHealth(currentHealth, maximumHealth);
@@ -183,8 +200,14 @@ namespace Players {
             return MathUtils.Lerpish(rb.velocity.x, x, control * acceleration);
         }
 
-        public bool IsPhoon() {
+        internal bool IsPhoon() {
             return Math.Abs(rb.velocity.x) > moveSpeed && Math.Sign(rb.velocity.x) == Math.Sign(moving.x);
+        }
+
+        // Called by Behaviour.Roll to handle the cooldown timer
+        internal void OnRoll() {
+            canRoll = false;
+            rollCooldownTimer.Start();
         }
 
         private void DoAttack() {
@@ -225,6 +248,14 @@ namespace Players {
 
             if (!combatTimer.IsRunning) {
                 DrainFlowOverTime(flowDrainRate);
+            }
+        }
+
+        private void UpdateRollCooldownTimer() {
+            rollCooldownTimer.Tick(Time.deltaTime);
+
+            if (!rollCooldownTimer.IsRunning) {
+                canRoll = true;
             }
         }
     }

@@ -1,10 +1,28 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Players.Mixin {
     public class UseInput : MonoBehaviour {
-        private static readonly string[] Keys = { "Horizontal", "Vertical", "Fire1", "Jump", "Fire2"};
 
+        private enum KeysEnum {
+            Horizontal,
+            Vertical,
+            Fire1,
+            Fire2,
+            Jump,
+            Roll,
+        }
+
+        private static readonly Dictionary<KeysEnum, string> KeyMap = new Dictionary<KeysEnum, string> {
+            { KeysEnum.Horizontal, "Horizontal" },
+            { KeysEnum.Vertical, "Vertical" },
+            { KeysEnum.Fire1, "Fire1" },
+            { KeysEnum.Fire2, "Fire2" },
+            { KeysEnum.Jump, "Jump" },
+            { KeysEnum.Roll, "Roll" },
+        };
+        
         [SerializeField] internal Player self;
         [SerializeField] internal float delay;
 
@@ -17,12 +35,14 @@ namespace Players.Mixin {
         private float ft;
         private float skt;
         private float swt;
+        private float rlt;
 
         public void Update() {
-            var fire = Input.GetButtonDown(Keys[2]);
-            var jump = Input.GetButtonDown(Keys[3]);
-            var held = Input.GetButton(Keys[3]);
-            var skill = Input.GetButtonDown(Keys[4]);
+            var fire = Input.GetButtonDown(KeyMap[KeysEnum.Fire1]);
+            var jump = Input.GetButtonDown(KeyMap[KeysEnum.Jump]);
+            var held = Input.GetButton(KeyMap[KeysEnum.Jump]);
+            var skill = Input.GetButtonDown(KeyMap[KeysEnum.Fire2]);
+            var roll = Input.GetButtonDown(KeyMap[KeysEnum.Roll]);
 
             foreach (var kvp in weaponKeyMap) {
                 if (Input.GetKeyDown(kvp.Key)) {
@@ -33,10 +53,12 @@ namespace Players.Mixin {
             ft = fire ? delay : Mathf.Max(0, ft - Time.deltaTime);
             jt = jump ? delay : Mathf.Max(0, jt - Time.deltaTime);
             skt = skill ? delay : Mathf.Max(0, skt - Time.deltaTime);
+            rlt = roll ? delay : Mathf.Max(0, rlt - Time.deltaTime);
 
             self.fire = self.fire ? ft > 0 : fire;
             self.jump = self.jump ? jt > 0 : jump;
             self.skill = self.skill ? skt > 0 : skill;
+            self.roll = self.roll ? rlt > 0 : roll;
 
             self.facing = GetFacingInput(self);
             self.moving = GetMovingInput();
@@ -44,7 +66,7 @@ namespace Players.Mixin {
         }
 
         private static Vector2 GetMovingInput() {
-            return new Vector2(Input.GetAxisRaw(Keys[0]), Input.GetAxisRaw(Keys[1]));
+            return new Vector2(Input.GetAxisRaw(KeyMap[KeysEnum.Horizontal]), Input.GetAxisRaw(KeyMap[KeysEnum.Vertical]));
         }
 
         private static Vector2 GetFacingInput(Player it) {
