@@ -11,7 +11,6 @@ namespace Enemies.Sundew {
         [SerializeField] internal float reload;
         [SerializeField] internal float spread;
         [SerializeField] internal float arc;
-        [SerializeField] internal float damage;
         [SerializeField] internal float count;
 
         [SerializeField] internal SpriteRenderer sprite;
@@ -80,7 +79,7 @@ namespace Enemies.Sundew {
         }
 
         private void Attack(Player it) {
-            it.Hurt(damage);
+            it.Hurt(attack);
         }
 
         private void FireProjectile(Vector2 velocity) {

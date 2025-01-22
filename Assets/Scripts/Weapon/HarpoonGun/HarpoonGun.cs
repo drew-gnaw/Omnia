@@ -25,6 +25,7 @@ public class HarpoonGun : WeaponClass
 
     private void Start()
     {
+        Debug.Log(damage);
         harpoonSpearPool = new ObjectPool<HarpoonSpear>(
             // Create
             () => {

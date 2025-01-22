@@ -104,12 +104,6 @@ namespace Players {
 
             sprite.flipX = facing.x == 0 ? sprite.flipX : facing.x < 0;
 
-            if (Input.GetKeyDown("e")) {
-                /* TODO: Remove. */
-                UsePull(debugPullToTargetTransform);
-            }
-
-            Debug.Log(rb.velocity.x);
         }
 
         public void FixedUpdate() {

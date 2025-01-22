@@ -86,7 +86,7 @@ public class Shotgun : WeaponClass {
                 if (enemy != null) {
                     float distance = Vector2.Distance(origin, hit.point);
                     enemy.Hurt(DamageDropOff(distance));
-                    player.GetComponent<Player>().OnHit(10);
+                    player.GetComponent<Player>().OnHit(damage * damageToFlowRatio);
                 }
             }
 

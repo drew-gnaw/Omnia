@@ -36,8 +36,6 @@ namespace Enemies.Armadillo {
         }
 
         public void Attack(GameObject it) {
-            Hurt(4);
-
             Player targetPlayer = it.GetComponent<Player>();
             if (targetPlayer != null) {
                 targetPlayer.Hurt(attack);

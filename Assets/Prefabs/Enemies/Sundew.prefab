@@ -115,9 +115,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2157272981753954215}
+  - component: {fileID: 8387723225425041366}
   - component: {fileID: 7893308943432753642}
   - component: {fileID: 3889079982024592863}
-  - component: {fileID: 8387723225425041366}
   m_Layer: 6
   m_Name: Sundew
   m_TagString: Untagged
@@ -141,6 +141,43 @@ Transform:
   - {fileID: 285959956619106809}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8387723225425041366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5710193498280292276}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1304ed83fe99498591cfe27dc1a8eed5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maximumHealth: 60
+  currentHealth: 60
+  attack: 33
+  distance: 6
+  windup: 1
+  reload: 1
+  spread: 1
+  arc: 3
+  damage: 1
+  count: 3
+  sprite: {fileID: 9202038865644320477}
+  animator: {fileID: 6149703548532306918}
+  rb: {fileID: 7893308943432753642}
+  ground:
+    serializedVersion: 2
+    m_Bits: 8
+  player:
+    serializedVersion: 2
+    m_Bits: 128
+  bg:
+    serializedVersion: 2
+    m_Bits: 256
+  projectile: {fileID: 5710193498280292276, guid: 405681e7663724b52868906c5592258e, type: 3}
+  detected: 0
+  debugBehaviour: 
 --- !u!50 &7893308943432753642
 Rigidbody2D:
   serializedVersion: 4
@@ -213,40 +250,3 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &8387723225425041366
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5710193498280292276}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1304ed83fe99498591cfe27dc1a8eed5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maximumHealth: 20
-  currentHealth: 20
-  attack: 33
-  distance: 6
-  windup: 1
-  reload: 1
-  spread: 1
-  arc: 3
-  damage: 1
-  count: 3
-  sprite: {fileID: 9202038865644320477}
-  animator: {fileID: 6149703548532306918}
-  rb: {fileID: 7893308943432753642}
-  ground:
-    serializedVersion: 2
-    m_Bits: 8
-  player:
-    serializedVersion: 2
-    m_Bits: 128
-  bg:
-    serializedVersion: 2
-    m_Bits: 256
-  projectile: {fileID: 5710193498280292276, guid: 405681e7663724b52868906c5592258e, type: 3}
-  detected: 0
-  debugBehaviour: 

@@ -108,7 +108,7 @@ public class HarpoonSpear : MonoBehaviour {
         hj.connectedBody = TaggedEnemy.GetComponent<Rigidbody2D>();
 
         TaggedEnemy.GetComponent<Enemy>().Hurt(gun.damage);
-        player?.OnHit(34);
+        player?.OnHit(gun.damage * gun.damageToFlowRatio);
     }
 
     private void HandleGroundCollision() {
