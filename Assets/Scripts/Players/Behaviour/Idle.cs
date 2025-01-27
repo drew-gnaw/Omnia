@@ -22,7 +22,7 @@ namespace Players.Behaviour {
         }
 
         public void OnUpdate() {
-            self.UseBehaviour(Fall.If(self) ?? Jump.If(self) ?? Move.If(self));
+            self.UseBehaviour(Fall.If(self) ?? Jump.If(self) ?? Move.If(self) ?? Roll.If(self));
         }
 
         public static IBehaviour AdHoc(Player it) {

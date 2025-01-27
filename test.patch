@@ -1,0 +1,61 @@
+diff --git a/Assets/Scripts/Players/Behaviour/Idle.cs b/Assets/Scripts/Players/Behaviour/Idle.cs
+index 49aa4a2..e8b3977 100644
+--- a/Assets/Scripts/Players/Behaviour/Idle.cs
++++ b/Assets/Scripts/Players/Behaviour/Idle.cs
+@@ -22,7 +22,7 @@ namespace Players.Behaviour {
+         }
+ 
+         public void OnUpdate() {
+-            self.UseBehaviour(Fall.If(self) ?? Jump.If(self) ?? Run.If(self));
++            self.UseBehaviour(Fall.If(self) ?? Jump.If(self) ?? Run.If(self) ?? Roll.If(self));
+         }
+ 
+         public static IBehaviour AsDefaultOf(Player it) {
+diff --git a/Assets/Scripts/Players/Behaviour/Jump.cs b/Assets/Scripts/Players/Behaviour/Jump.cs
+index 32ddd6c..448537c 100644
+--- a/Assets/Scripts/Players/Behaviour/Jump.cs
++++ b/Assets/Scripts/Players/Behaviour/Jump.cs
+@@ -27,8 +27,8 @@ namespace Players.Behaviour {
+         }
+ 
+         public void OnUpdate() {
+-            t = Mathf.Max(0, t - Time.deltaTime);
+-            if (t != 0) return;
++            t -= Time.deltaTime;
++            if (t > 0) return;
+ 
+             self.UseBehaviour(Slide.If(self) ?? Fall.If(self) ?? Run.If(self) ?? Idle.If(self));
+         }
+diff --git a/Assets/Scripts/Players/Behaviour/Run.cs b/Assets/Scripts/Players/Behaviour/Run.cs
+index 277d920..05d2865 100644
+--- a/Assets/Scripts/Players/Behaviour/Run.cs
++++ b/Assets/Scripts/Players/Behaviour/Run.cs
+@@ -22,7 +22,7 @@ namespace Players.Behaviour {
+         }
+ 
+         public void OnUpdate() {
+-            self.UseBehaviour(Fall.If(self) ?? Jump.If(self) ?? Idle.If(self));
++            self.UseBehaviour(Fall.If(self) ?? Jump.If(self) ?? Roll.If(self) ?? Idle.If(self));
+         }
+ 
+         public static IBehaviour If(Player it) {
+diff --git a/Assets/Scripts/Players/Player.cs b/Assets/Scripts/Players/Player.cs
+index e375ff2..a6879ef 100644
+--- a/Assets/Scripts/Players/Player.cs
++++ b/Assets/Scripts/Players/Player.cs
+@@ -16,6 +16,7 @@ namespace Players {
+         [SerializeField] internal float moveSpeed;
+         [SerializeField] internal float jumpSpeed;
+         [SerializeField] internal float fallSpeed;
++        [SerializeField] internal float rollSpeed;
+         [SerializeField] internal float moveAccel;
+         [SerializeField] internal float fallAccel;
+         [SerializeField] internal float wallJumpLockoutTime;
+@@ -30,6 +31,7 @@ namespace Players {
+         [SerializeField] internal Vector2 facing;
+         [SerializeField] internal Vector2 moving;
+         [SerializeField] internal bool jump;
++        [SerializeField] internal bool roll;
+         [SerializeField] internal bool held;
+         [SerializeField] internal bool fire;
+         [SerializeField] internal bool grounded;

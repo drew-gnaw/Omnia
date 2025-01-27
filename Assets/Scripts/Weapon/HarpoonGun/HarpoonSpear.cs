@@ -2,7 +2,11 @@ using Unity.VisualScripting;
 using UnityEngine;
 using Enemies;
 using Omnia.Utils;
+using Players;
+
 using System.Collections;
+using Players;
+
 /*
     The projectile for HarpoonGun
     This class should only be interacted upon by its prefabs and HarpoonGun
@@ -11,6 +15,7 @@ public class HarpoonSpear : MonoBehaviour {
     public LayerMask enemyLayer;
     public LayerMask playerLayer;
     public LayerMask groundLayer;
+    public LayerMask semisolidLayer;
 
     public Collider2D Collider2D;
     public Rigidbody2D Rigidbody2D;
@@ -19,13 +24,21 @@ public class HarpoonSpear : MonoBehaviour {
     private bool collectable;
     private IEnumerator cooldown;
     private HarpoonGun gun;
+    private Player player;
 
     // Tracking enemy
-    public Enemy TaggedEnemy { get; private set;}
+    public Enemy TaggedEnemy { get; private set; }
+    public Transform PullTo { get; private set; }
 
     public void Awake() {
-        this.dropped = false;
-        this.TaggedEnemy = null;
+        dropped = false;
+        TaggedEnemy = null;
+        PullTo = null;
+
+        player = GameObject.Find("Player")?.GetComponent<Player>();
+        if (player == null) {
+            Debug.LogWarning("Player not found or Player script is not attached to the GameObject.");
+        }
     }
 
     public void OnEnable() {
@@ -75,6 +88,11 @@ public class HarpoonSpear : MonoBehaviour {
         if (CollisionUtils.isLayerInMask(other.gameObject.layer, enemyLayer) && !dropped) {
             HandleEnemyCollision(other.GetComponent<Enemy>());
         }
+
+        if (Collider2D.IsTouchingLayers(semisolidLayer) && !dropped) {
+            HandleSemisolidCollision();
+        }
+
         if (Collider2D.IsTouchingLayers(groundLayer) && !dropped) {
             HandleGroundCollision();
         }
@@ -83,6 +101,8 @@ public class HarpoonSpear : MonoBehaviour {
     private void HandlePlayerCollision() {
         Unfreeze();
         collectable = false;
+        PullTo = null;
+
         // Tell gun to mark this spear as available
         gun.SpearCollected(this);
     }
@@ -98,6 +118,13 @@ public class HarpoonSpear : MonoBehaviour {
         hj.connectedBody = TaggedEnemy.GetComponent<Rigidbody2D>();
 
         TaggedEnemy.GetComponent<Enemy>().Hurt(gun.damage);
+        player?.OnHit(gun.damage * gun.damageToFlowRatio);
+    }
+
+    private void HandleSemisolidCollision() {
+        Freeze();
+        PullTo = gameObject.transform;
+        StartCooldown();
     }
 
     private void HandleGroundCollision() {
@@ -122,7 +149,7 @@ public class HarpoonSpear : MonoBehaviour {
         Rigidbody2D.gravityScale = 1 * gun.harpoonSpearGravityScale;
         Rigidbody2D.freezeRotation = false;
         dropped = false;
-        
+
         Destroy(GetComponent<HingeJoint2D>());
     }
 

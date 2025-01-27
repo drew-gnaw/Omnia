@@ -25,6 +25,7 @@ public class HarpoonGun : WeaponClass
 
     private void Start()
     {
+        Debug.Log(damage);
         harpoonSpearPool = new ObjectPool<HarpoonSpear>(
             // Create
             () => {
@@ -66,23 +67,17 @@ public class HarpoonGun : WeaponClass
             return;
         }
 
-        // Find the next most recent spear that has tagged enemy
-        // Enemy tagged = null;
-        // foreach (var spear in firedSpears) {
-        //     if (spear.TaggedEnemy != null) {
-        //         tagged = spear.TaggedEnemy;
-        //         break;
-        //     }
-        // }
+        var spear = firedSpears.FirstOrDefault(s => s.TaggedEnemy != null || s.PullTo != null);
 
-        Enemy tagged = firedSpears.FirstOrDefault(spear => spear.TaggedEnemy != null)?.TaggedEnemy;
+        Transform target = spear?.PullTo ?? spear?.TaggedEnemy?.transform;
 
-        if (tagged == null) {
+        if (target == null) {
             return;
         }
 
-        // TODO Pull to most recent
+        player.GetComponent<Player>().UsePull(target);
     }
+
 
     public override void IntroSkill()
     {
