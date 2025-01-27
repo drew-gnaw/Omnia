@@ -1,8 +1,8 @@
 using UnityEngine;
-using Utils;
 
 namespace Players.Behaviour {
     public class Idle : IBehaviour {
+        private static IBehaviour _s;
         private readonly Player self;
 
         private Idle(Player self) {
@@ -17,20 +17,20 @@ namespace Players.Behaviour {
         }
 
         public void OnTick() {
-            var x = MathUtils.Lerpish(self.rb.velocity.x, 0, Time.fixedDeltaTime * self.moveAccel);
+            var x = self.HorizontalVelocityOf(0, Time.fixedDeltaTime * self.moveAccel);
             self.rb.velocity = new Vector2(x, self.rb.velocity.y);
         }
 
         public void OnUpdate() {
-            self.UseBehaviour(Fall.If(self) ?? Jump.If(self) ?? Run.If(self));
+            self.UseBehaviour(Fall.If(self) ?? Jump.If(self) ?? Move.If(self) ?? Roll.If(self));
         }
 
-        public static IBehaviour AsDefaultOf(Player it) {
-            return new Idle(it);
+        public static IBehaviour AdHoc(Player it) {
+            return _s ??= new Idle(it);
         }
 
         public static IBehaviour If(Player it) {
-            return it.grounded && it.moving.x == 0 && it.checks[1].IsTouchingLayers(it.ground) ? new Idle(it) : null;
+            return it.grounded && it.moving.x == 0 && it.checks[1].IsTouchingLayers(it.ground | it.semisolid) ? AdHoc(it) : null;
         }
     }
 }

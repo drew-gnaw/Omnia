@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Enemies;
 using Players;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -9,10 +10,13 @@ public class HarpoonGun : WeaponClass
 {
 
     [Header("HarpoonGun Stats")]
-    [SerializeField] public int harpoons = 3;
-    [SerializeField] public float harpoonVelocity = 20;
-    [SerializeField] public float harpoonSpearGravityScale = 1;
-    [SerializeField] public GameObject harpoonSpearPrefab;
+    [SerializeField] public int harpoons;
+    [SerializeField] public float harpoonVelocity;
+    [SerializeField] public float harpoonSpearGravityScale;
+    [SerializeField] public float harpoonSpearPickupCooldown; // seconds
+
+    [Header("HarpoonGun References")]
+    public GameObject harpoonSpearPrefab;
 
     private ObjectPool<HarpoonSpear> harpoonSpearPool;
 
@@ -21,6 +25,7 @@ public class HarpoonGun : WeaponClass
 
     private void Start()
     {
+        Debug.Log(damage);
         harpoonSpearPool = new ObjectPool<HarpoonSpear>(
             // Create
             () => {
@@ -45,7 +50,7 @@ public class HarpoonGun : WeaponClass
         );
     }
 
-    public override void Attack()
+    protected override void HandleAttack()
     {
         if (firedSpears.Count >= harpoons) {
             // Do nothing
@@ -62,23 +67,17 @@ public class HarpoonGun : WeaponClass
             return;
         }
 
-        // Find the next most recent spear that has tagged enemy
-        // Enemy tagged = null;
-        // foreach (var spear in firedSpears) {
-        //     if (spear.TaggedEnemy != null) {
-        //         tagged = spear.TaggedEnemy;
-        //         break;
-        //     }
-        // }
+        var spear = firedSpears.FirstOrDefault(s => s.TaggedEnemy != null || s.PullTo != null);
 
-        Enemy tagged = firedSpears.FirstOrDefault(spear => spear.TaggedEnemy != null)?.TaggedEnemy;
+        Transform target = spear?.PullTo ?? spear?.TaggedEnemy?.transform;
 
-        if (tagged == null) {
+        if (target == null) {
             return;
         }
 
-        // TODO Pull to most recent
+        player.GetComponent<Player>().UsePull(target);
     }
+
 
     public override void IntroSkill()
     {
@@ -99,6 +98,11 @@ public class HarpoonGun : WeaponClass
         firedSpears.Remove(spear);
     }
 
+    public void SpearCollectAll() {
+        foreach (var spear in firedSpears) {
+            SpearCollected(spear);
+        }
+    }
 
     private void HandleWeaponRotation() {
         Vector2 facing = player.GetComponent<Player>().facing;
