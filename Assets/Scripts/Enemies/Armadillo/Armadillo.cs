@@ -38,7 +38,8 @@ namespace Enemies.Armadillo {
         public void Attack(GameObject it) {
             Player targetPlayer = it.GetComponent<Player>();
             if (targetPlayer != null) {
-                targetPlayer.Hurt(attack);
+                var knockback = new Vector2(facing.x * 10, 5); // demo values
+                targetPlayer.Hurt(attack, knockback, 1);
             }
         }
 
