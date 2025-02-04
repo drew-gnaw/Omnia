@@ -79,7 +79,14 @@ namespace Enemies.Sundew {
         }
 
         private void Attack(Player it) {
-            it.Hurt(attack);
+            float direction = Mathf.Sign(it.transform.position.x - transform.position.x);
+
+            float radians = knockbackAngle * Mathf.Deg2Rad;
+            Vector2 knockback = new Vector2(Mathf.Cos(radians), Mathf.Sin(radians)) * knockbackForce;
+
+            knockback.x *= direction;
+
+            it.Hurt(attack, knockback, 1);
         }
 
         private void FireProjectile(Vector2 velocity) {
