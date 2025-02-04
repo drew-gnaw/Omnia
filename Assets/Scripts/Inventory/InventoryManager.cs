@@ -14,6 +14,8 @@ public class InventoryManager : MonoBehaviour
     public static InventoryManager Instance { get; private set; }
     public bool IsInventoryOpen { get; private set; }
 
+    private bool isShaking = false;
+
     private void Awake()
     {
         if (Instance == null)
@@ -45,6 +47,11 @@ public class InventoryManager : MonoBehaviour
         {
             slot.Initialize();
         }
+
+        foreach (var slot in equipSlots)
+        {
+            slot.Initialize();
+        }
     }
 
     public void ToggleInventory()
@@ -71,7 +78,9 @@ public class InventoryManager : MonoBehaviour
         }
 
         // If all slots are full, shake the first slot
-        StartCoroutine(ShakeSlot(equipSlots[0].gameObject));
+        if (!isShaking) {
+            StartCoroutine(ShakeSlot(equipSlots[0].gameObject));
+        }
     }
 
     public void UnequipTrinket(EquipSlot slot)
@@ -79,11 +88,11 @@ public class InventoryManager : MonoBehaviour
         slot.Unequip();
     }
 
-    private IEnumerator ShakeSlot(GameObject slot)
-    {
+    private IEnumerator ShakeSlot(GameObject slot) {
+        isShaking = true;
         Vector3 originalPos = slot.transform.position;
         float duration = 0.2f;
-        float magnitude = 5f;
+        float magnitude = 0.2f;
         float elapsed = 0f;
 
         while (elapsed < duration)
@@ -95,6 +104,7 @@ public class InventoryManager : MonoBehaviour
         }
 
         slot.transform.position = originalPos;
+        isShaking = false;
     }
 
     public void UpdateDescription(string name, string description)

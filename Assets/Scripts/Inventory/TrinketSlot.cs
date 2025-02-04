@@ -7,9 +7,11 @@ public class TrinketSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 {
     [SerializeField] private Trinket trinket;
     private bool isEquipped = false;
-    private Image iconImage; // Store reference to Image component
+    private Image iconImage;
 
     public bool IsEquipped => isEquipped;
+    public Image IconImage => iconImage;
+
 
     public void Initialize()
     {

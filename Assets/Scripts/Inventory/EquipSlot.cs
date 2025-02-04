@@ -9,10 +9,15 @@ public class EquipSlot : MonoBehaviour, IPointerClickHandler
 
     public bool HasTrinket() => equippedTrinket != null;
 
+    public void Initialize()
+    {
+        icon = GetComponent<Image>();
+    }
+
     public void Equip(TrinketSlot trinketSlot)
     {
         equippedTrinket = trinketSlot;
-        icon.sprite = trinketSlot.GetComponent<Image>().sprite;
+        icon.sprite = trinketSlot.IconImage.sprite;
         icon.enabled = true;
     }
 
