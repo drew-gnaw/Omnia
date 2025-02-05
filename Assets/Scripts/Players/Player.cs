@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Omnia.Utils;
 using Players.Behaviour;
 using UI;
@@ -129,6 +130,11 @@ namespace Players {
 
         public void Hurt(float damage, Vector2 velocity = default, float lockout = 0) {
             if (invulnerable || currentHurtInvulnerability > 0) return;
+
+            // Apply any buffs that reduce incoming damage
+            foreach (var modifier in Buff.Buff.OnDamageTaken) {
+                damage = modifier(damage);
+            }
 
             combatTimer.Start();
             currentHealth = Mathf.Clamp(currentHealth - damage, 0, maximumHealth);
