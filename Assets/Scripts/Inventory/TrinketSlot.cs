@@ -38,6 +38,6 @@ public class TrinketSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public void SetEquipped(bool equipped)
     {
         isEquipped = equipped;
-        iconImage.color = equipped ? new Color(1, 1, 1, 0.5f) : Color.white; // Grey out if equipped
+        iconImage.color = equipped ? new Color(1, 1, 1, 0.2f) : Color.white; // Grey out if equipped
     }
 }
