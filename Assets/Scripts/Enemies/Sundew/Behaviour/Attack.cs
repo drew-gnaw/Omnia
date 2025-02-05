@@ -13,7 +13,6 @@ namespace Enemies.Sundew.Behaviour {
             t = self.reload;
 
             self.FireProjectiles();
-            self.UseAnimation("SundewAttack");
         }
 
         public void OnExit() {
