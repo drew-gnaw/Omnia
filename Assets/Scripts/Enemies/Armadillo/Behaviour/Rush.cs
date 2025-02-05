@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
@@ -27,13 +26,16 @@ namespace Enemies.Armadillo.Behaviour {
             if (mode == Mode.Rush && CheckHit()) UseStun();
         }
 
+        public void OnUpdate() {
+        }
+
         private IEnumerator DoRush() {
             yield return new WaitForSeconds(1);
             mode = Mode.Rush;
         }
 
         private bool CheckHit() {
-            return self.checks[Math.Sign(self.facing.x) == 1 ? 0 : 3].IsTouchingLayers(self.ground | self.player);
+            return self.checks[self.facing.x > 0 ? 0 : 3].IsTouchingLayers(self.ground | self.player);
         }
 
         private void UseStun() {

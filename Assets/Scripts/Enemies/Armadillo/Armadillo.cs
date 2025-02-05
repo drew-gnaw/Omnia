@@ -3,6 +3,7 @@ using System.Linq;
 using Enemies.Armadillo.Animation;
 using Enemies.Armadillo.Behaviour;
 using Omnia.State;
+using Players;
 using UnityEngine;
 
 namespace Enemies.Armadillo {
@@ -24,7 +25,7 @@ namespace Enemies.Armadillo {
         }
 
         public void Update() {
-            sprite.flipX = facing.x == 0 ? sprite.flipX : Math.Sign(facing.x) == 1;
+            sprite.flipX = facing.x == 0 ? sprite.flipX : facing.x > 0;
 
             animationStateMachine?.Update();
         }
@@ -34,9 +35,16 @@ namespace Enemies.Armadillo {
             animationStateMachine?.FixedUpdate();
         }
 
-        /* TODO: Not implemented yet. Taking self-damage for testing purposes. */
         public void Attack(GameObject it) {
-            Hurt(4);
+            Player targetPlayer = it.GetComponent<Player>();
+            if (targetPlayer != null) {
+                float radians = knockbackAngle * Mathf.Deg2Rad;
+                Vector2 knockback = new Vector2(Mathf.Cos(radians), Mathf.Sin(radians)) * knockbackForce;
+
+                knockback.x *= Mathf.Sign(facing.x);
+
+                targetPlayer.Hurt(attack, knockback, 1);
+            }
         }
 
         public void UseBehaviour(IBehaviour it) {

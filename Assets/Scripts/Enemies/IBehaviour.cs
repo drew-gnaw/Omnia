@@ -3,5 +3,6 @@ namespace Enemies {
         void OnEnter();
         void OnExit();
         void OnTick();
+        void OnUpdate();
     }
 }
