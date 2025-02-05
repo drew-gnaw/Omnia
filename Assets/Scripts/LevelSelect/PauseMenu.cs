@@ -77,9 +77,7 @@ public class PauseMenu : MonoBehaviour
     private void Start()
     {
         musicSlider.value = 0.7f;
-        //AudioManager.Instance.MusicVolume(musicSlider.value);
-        //AudioManager.Instance.SFXVolume(sfxSlider.value);
-        //pauseCanvas.sortingLayerName = "Top";
+        MusicVolume();
     }
     // Update is called once per frame
     void Update()
@@ -136,12 +134,15 @@ public class PauseMenu : MonoBehaviour
 
     public void ToggleMusic()
     {
-       AudioManager.Instance.ToggleMusic();
+       AudioManager.Instance.ToggleAudio();
     }
 
     public void MusicVolume()
     {
-       AudioManager.Instance.MusicVolume(musicSlider.value);
+        AudioManager.Instance.SetBGMVolume(musicSlider.value);
+        AudioManager.Instance.SetSFXVolume(musicSlider.value);
+        AudioManager.Instance.SetAmbientVolume(musicSlider.value);
+        
     }
 
     public void ToggleScreenShake()
