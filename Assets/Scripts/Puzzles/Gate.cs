@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Puzzle {
@@ -26,7 +27,12 @@ namespace Puzzle {
             startPos = transform.position;
             Vector3 direction = (gateType == GateType.Horizontal) ? Vector3.right : Vector3.up;
             targetPos = startPos + direction * moveDistance;
+
             Redraw();
+            List<float> gearInitial = CalculateFinalPosition(false);
+            for (int i = 0; i < gears.Count; i++) {
+                gears[i].transform.rotation = Quaternion.Euler(0, 0, gearInitial[i]);
+            }
         }
 
         private void OnEnable() {
@@ -68,7 +74,9 @@ namespace Puzzle {
             isSliding = true;
             Vector3 initialPos = transform.position;
             Vector3 finalPos = open ? targetPos : startPos;
-            float rotationSpeed = 10f; 
+
+            List<float> initialRotations = gears.Select(it => it.transform.rotation.z).ToList();
+            List<float> finalRotations = CalculateFinalPosition(open);
             float timer = 0f;
             bool movingRight = open;
 
@@ -78,7 +86,10 @@ namespace Puzzle {
                 float easedT = easeCurve.Evaluate(t);
 
                 transform.position = Vector3.Lerp(initialPos, finalPos, easedT);
-                RotateGears(movingRight, easedT * rotationSpeed);
+                for (int i = 0; i < gears.Count; i++) {
+                    float angle = Mathf.Lerp(initialRotations[i], finalRotations[i], easedT);
+                    gears[i].transform.rotation = Quaternion.Euler(0, 0, angle);
+                }
                 yield return null;
             }
 
@@ -90,17 +101,17 @@ namespace Puzzle {
             }
         }
 
-        private void RotateGears(bool movingRight, float rotationAmount) {
+        private List<float> CalculateFinalPosition(bool movingRight) {
+            float rotationAmount = 180f; // Between [0, 180] (no support for more than 360 degree turn for now)
+            List<float> rotations = new();
             for (int i = 0; i < gears.Count; i++) {
-                bool evenIndex = i % 2 == 0;
-                float directionMultiplier = evenIndex ? 1f : -1f; 
+                float directionMultiplier = (i % 2 == 0) ? 1f : -1f;
 
                 // Even indexed gear follows gate movement direction
                 float gearRotation = movingRight ? rotationAmount : -rotationAmount;
-
-
-                gears[i].transform.Rotate(0, 0, gearRotation * directionMultiplier);
+                rotations.Add(gearRotation * directionMultiplier);
             }
+            return rotations;
         }
     }
 }
