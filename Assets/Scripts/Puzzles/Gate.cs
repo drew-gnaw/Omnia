@@ -5,27 +5,28 @@ using UnityEngine;
 
 namespace Puzzle {
     public class Gate : MonoBehaviour, IReceiver {
-        [SerializeField] private List<InterfaceReference<ISignal>> signals;
         [TypeFilter(typeof(ReceiverBehaviour))]
         [SerializeField] private SerializableType behaviour;
-
+        [SerializeField] private GateType gateType = GateType.Horizontal;
+        [SerializeField] private List<InterfaceReference<ISignal>> signals;
+        [SerializeField] private List<SpriteRenderer> gears;
+        [SerializeField] private float moveDistance = 3.0f;
+        [SerializeField] private float moveDuration = 0.5f;
+        [SerializeField] private AnimationCurve easeCurve;
         public ReceiverBehaviour ReceiverBehaviour => ReceiverBehaviour.Parse(behaviour);
-
-        [SerializeField] private float moveDistance = 2.0f; // How far the gate moves
-        [SerializeField] private float moveDuration = 1.5f; // Time to slide fully
-        [SerializeField] private AnimationCurve easeCurve;  // Optional smoothing
 
         private Vector3 startPos;
         private Vector3 targetPos;
         private bool isSliding = false;
         private bool desiredOpenState = false; // The final state the gate should reach
+
         public enum GateType { Horizontal, Vertical }
-        [SerializeField] private GateType gateType = GateType.Horizontal;
 
         private void Start() {
             startPos = transform.position;
             Vector3 direction = (gateType == GateType.Horizontal) ? Vector3.right : Vector3.up;
             targetPos = startPos + direction * moveDistance;
+            Redraw();
         }
 
         private void OnEnable() {
@@ -44,14 +45,20 @@ namespace Puzzle {
             }
         }
 
-        private void SignalReceived(ISignal signal) {
-            // Get the latest state that the gate *should* be in
-            bool newState = ReceiverBehaviour.Accept(signals.Unbox());
+        private void Redraw() {
+            for (int i = 0; i < gears.Count; i++) {
+                if (i < signals.Count) {
+                    gears[i].color = signals.Unbox()[i].SignalColour.Color;
+                }
+            }
+        }
 
-            // If a new state is received while sliding, we store it but don't interrupt
+        private void SignalReceived(ISignal signal) {
+            bool newState = ReceiverBehaviour.Accept(signals.Unbox());
+            if (newState == desiredOpenState) return;
+
             desiredOpenState = newState;
 
-            // If not sliding, start moving; otherwise, let the current slide finish
             if (!isSliding) {
                 StartCoroutine(SlideToState(desiredOpenState));
             }
@@ -61,26 +68,39 @@ namespace Puzzle {
             isSliding = true;
             Vector3 initialPos = transform.position;
             Vector3 finalPos = open ? targetPos : startPos;
-
+            float rotationSpeed = 10f; 
             float timer = 0f;
+            bool movingRight = open;
+
             while (timer < moveDuration) {
                 timer += Time.deltaTime;
                 float t = timer / moveDuration;
-                float easedT = easeCurve.Evaluate(t); // Use easing curve
+                float easedT = easeCurve.Evaluate(t);
 
                 transform.position = Vector3.Lerp(initialPos, finalPos, easedT);
+                RotateGears(movingRight, easedT * rotationSpeed);
                 yield return null;
             }
 
             transform.position = finalPos;
             isSliding = false;
 
-            // After completing movement, check if the state is still correct
             if (desiredOpenState != open) {
-                StartCoroutine(SlideToState(desiredOpenState)); // Re-slide if needed
+                StartCoroutine(SlideToState(desiredOpenState));
+            }
+        }
+
+        private void RotateGears(bool movingRight, float rotationAmount) {
+            for (int i = 0; i < gears.Count; i++) {
+                bool evenIndex = i % 2 == 0;
+                float directionMultiplier = evenIndex ? 1f : -1f; 
+
+                // Even indexed gear follows gate movement direction
+                float gearRotation = movingRight ? rotationAmount : -rotationAmount;
+
+
+                gears[i].transform.Rotate(0, 0, gearRotation * directionMultiplier);
             }
         }
     }
-
 }
-

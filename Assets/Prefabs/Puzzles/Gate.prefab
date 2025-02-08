@@ -46,10 +46,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a2f51a9f804bd844a50e128cb413527, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  signals: []
   behaviour:
-    assemblyQualifiedName: Puzzle.And, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
+    assemblyQualifiedName: Puzzle.ReceiverBehaviour+And, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  gateType: 0
+  signals: []
+  gears: []
   moveDistance: 3
   moveDuration: 0.5
   easeCurve:
@@ -76,7 +78,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  gateType: 0
 --- !u!61 &8964749105068036512
 BoxCollider2D:
   m_ObjectHideFlags: 0
