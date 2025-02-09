@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using Omnia.Utils;
 using Players.Behaviour;
 using UI;
@@ -34,7 +36,7 @@ namespace Players {
         [SerializeField] internal float wallJumpLockoutTime;
         [SerializeField] internal float combatCooldown;
         [SerializeField] internal float flowDrainRate;
-
+        [SerializeField] internal float hurtInvulnerabilityTime;
 
         [SerializeField] internal WeaponClass[] weapons;
         [SerializeField] internal int selectedWeapon;
@@ -58,6 +60,8 @@ namespace Players {
         [SerializeField] internal string debugBehaviour;
         [SerializeField] internal Transform debugPullToTargetTransform;
 
+        [SerializeField] internal Transform buffsParent;
+
         // Describes the ratio at which flow is converted into HP.
         public const float FLOW_TO_HP_RATIO = 0.2f;
 
@@ -66,6 +70,8 @@ namespace Players {
 
         private float currentLockout;
         private float maximumLockout;
+        private float currentHurtInvulnerability;
+
         private CountdownTimer combatTimer;
         private CountdownTimer rollCooldownTimer;
 
@@ -103,7 +109,7 @@ namespace Players {
             UpdateRollCooldownTimer();
 
             sprite.flipX = facing.x == 0 ? sprite.flipX : facing.x < 0;
-
+            currentHurtInvulnerability = Mathf.Max(0, currentHurtInvulnerability - Time.deltaTime);
         }
 
         public void FixedUpdate() {
@@ -124,12 +130,21 @@ namespace Players {
 
         // ***** Methods for handling player stats (HP, Flow) ***** //
 
-        public void Hurt(float damage) {
-            if (invulnerable) return;
+        public void Hurt(float damage, Vector2 velocity = default, float lockout = 0) {
+            if (invulnerable || currentHurtInvulnerability > 0) return;
+
+            // Apply any buffs that reduce incoming damage
+            foreach (var modifier in Buff.Buff.OnDamageTaken) {
+                damage = modifier(damage);
+            }
 
             combatTimer.Start();
             currentHealth = Mathf.Clamp(currentHealth - damage, 0, maximumHealth);
             UIController.Instance.UpdatePlayerHealth(currentHealth, maximumHealth);
+
+            currentHurtInvulnerability = hurtInvulnerabilityTime;
+            UseExternalVelocity(velocity, lockout);
+            StartCoroutine(DoHurtInvincibilityFlicker());
 
             if (currentHealth == 0) Die();
         }
@@ -250,6 +265,17 @@ namespace Players {
 
             if (!rollCooldownTimer.IsRunning) {
                 canRoll = true;
+            }
+        }
+
+        /* This is kind of lazy but it works. */
+        private IEnumerator DoHurtInvincibilityFlicker() {
+            while (currentHurtInvulnerability > 0) {
+                sprite.enabled = false;
+                yield return new WaitForSeconds(0.02f);
+
+                sprite.enabled = true;
+                yield return new WaitForSeconds(0.10f);
             }
         }
     }

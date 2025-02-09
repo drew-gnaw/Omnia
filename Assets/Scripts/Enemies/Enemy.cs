@@ -11,6 +11,8 @@ namespace Enemies {
         [SerializeField] internal float maximumHealth;
         [SerializeField] internal float currentHealth;
         [SerializeField] internal float attack;
+        [SerializeField] internal float knockbackForce = 10f;
+        [SerializeField] internal float knockbackAngle = 45f;
 
         public virtual void Start() {
             currentHealth = maximumHealth;

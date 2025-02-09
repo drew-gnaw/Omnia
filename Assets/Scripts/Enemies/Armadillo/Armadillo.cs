@@ -38,7 +38,12 @@ namespace Enemies.Armadillo {
         public void Attack(GameObject it) {
             Player targetPlayer = it.GetComponent<Player>();
             if (targetPlayer != null) {
-                targetPlayer.Hurt(attack);
+                float radians = knockbackAngle * Mathf.Deg2Rad;
+                Vector2 knockback = new Vector2(Mathf.Cos(radians), Mathf.Sin(radians)) * knockbackForce;
+
+                knockback.x *= Mathf.Sign(facing.x);
+
+                targetPlayer.Hurt(attack, knockback, 1);
             }
         }
 
