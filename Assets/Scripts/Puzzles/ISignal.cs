@@ -8,7 +8,7 @@ namespace Puzzle {
         public delegate void SignalFired(ISignal signal);
         public event SignalFired SignalEvent;
         public bool IsActive { get; }
-        public SignalColor SignalColour { get; }
+        public SignalColor SignalColor { get; }
 
     }
     public abstract class SignalColor : Enum<SignalColor> {

@@ -54,7 +54,7 @@ namespace Puzzle {
         private void Redraw() {
             for (int i = 0; i < gears.Count; i++) {
                 if (i < signals.Count) {
-                    gears[i].color = signals.Unbox()[i].SignalColour.Color;
+                    gears[i].color = signals.Unbox()[i].SignalColor.Color;
                 }
             }
         }

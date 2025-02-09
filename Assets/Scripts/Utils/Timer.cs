@@ -21,7 +21,8 @@ namespace Omnia.Utils
 
         public bool IsRunning => isRunning;
 
-        public float Progress => isRunning ? 1 - (timeRemaining / duration) : 0f;
+        public float Progress => isRunning ? 1 - (timeRemaining / duration) : 1f;
+        public float TimeRemaining => timeRemaining;
 
         public void Start()
         {

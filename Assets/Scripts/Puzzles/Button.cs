@@ -8,7 +8,6 @@ namespace Puzzle {
         [SerializeField]
         [TypeFilter(typeof(SignalColor))]
         private SerializableType signalColour;
-        [property: SerializeField] public SignalColor SignalColour { get => SignalColor.Parse(signalColour); }
         [SerializeField] BoxCollider2D boxCollider;
         [SerializeField] SpriteRenderer spriteRenderer;
         [SerializeField] Sprite downState;
@@ -16,6 +15,7 @@ namespace Puzzle {
 #nullable enable
         public event SignalFired? SignalEvent;
         public bool IsActive { get; set; } = false;
+        public SignalColor SignalColor { get => SignalColor.Parse(signalColour); }
         private int objectsInside = 0;
 
         void Start() {
@@ -40,7 +40,7 @@ namespace Puzzle {
 
         private void Redraw() {
             spriteRenderer.sprite = (IsActive) ? downState : upState;
-            spriteRenderer.color = SignalColour.Color;
+            spriteRenderer.color = SignalColor.Color;
         }
     }
 }
