@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Omnia.Utils;
 using Players.Behaviour;
 using UI;
@@ -58,6 +59,8 @@ namespace Players {
 
         [SerializeField] internal string debugBehaviour;
         [SerializeField] internal Transform debugPullToTargetTransform;
+
+        [SerializeField] internal Transform buffsParent;
 
         // Describes the ratio at which flow is converted into HP.
         public const float FLOW_TO_HP_RATIO = 0.2f;
@@ -129,6 +132,11 @@ namespace Players {
 
         public void Hurt(float damage, Vector2 velocity = default, float lockout = 0) {
             if (invulnerable || currentHurtInvulnerability > 0) return;
+
+            // Apply any buffs that reduce incoming damage
+            foreach (var modifier in Buff.Buff.OnDamageTaken) {
+                damage = modifier(damage);
+            }
 
             combatTimer.Start();
             currentHealth = Mathf.Clamp(currentHealth - damage, 0, maximumHealth);
