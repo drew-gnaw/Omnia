@@ -62,11 +62,9 @@ public class InventoryManager : MonoBehaviour
 
     public void EquipTrinket(TrinketSlot selectedTrinket)
     {
-        // Check if already equipped
         if (selectedTrinket.IsEquipped)
             return;
 
-        // Find an empty equip slot
         foreach (EquipSlot slot in equipSlots)
         {
             if (!slot.HasTrinket())
@@ -77,7 +75,6 @@ public class InventoryManager : MonoBehaviour
             }
         }
 
-        // If all slots are full, shake the first slot
         if (!isShaking) {
             StartCoroutine(ShakeSlot(equipSlots[0].gameObject));
         }
