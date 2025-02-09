@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Cinemachine;
 using Enemies;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace UI {
     public class UIController : MonoBehaviour {
@@ -9,6 +10,9 @@ namespace UI {
 
         [SerializeField] internal GameObject[] prefabs; // 0: EnemyUI, 1: PlayerHealthBar, 2: PlayerFlowBar
         [SerializeField] internal Canvas canvas;
+        // Used for setting the color of the player's health bar (likely temporary)
+        [SerializeField] internal Color defaultHealthColor = Color.red;
+        [SerializeField] internal Color buffHealthColor = Color.yellow;
 
         private Dictionary<Enemy, EnemyUI> enemies;
         private PlayerUI playerUI;
@@ -60,6 +64,10 @@ namespace UI {
 
         public void UpdatePlayerFlow(float current, float max) {
             playerUI.FlowBar.UpdateBar(current, max);
+        }
+
+        public void SetHealthBarColor(Color c) {
+            playerUI.HealthBar.SetColor(c);
         }
     }
 
