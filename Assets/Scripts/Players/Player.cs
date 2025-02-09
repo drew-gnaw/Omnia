@@ -60,6 +60,8 @@ namespace Players {
         [SerializeField] internal string debugBehaviour;
         [SerializeField] internal Transform debugPullToTargetTransform;
 
+        [SerializeField] internal Transform buffsParent;
+
         // Describes the ratio at which flow is converted into HP.
         public const float FLOW_TO_HP_RATIO = 0.2f;
 

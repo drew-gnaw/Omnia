@@ -15,7 +15,7 @@ namespace Players.Buff {
         private Buff buffInstance;
 
         private void InstantiateBuff() {
-            buffInstance = Instantiate(buff, player.transform);
+            buffInstance = Instantiate(buff, player.buffsParent);
             buffInstance.Initialize(player);
             buffInstance.ApplyBuff();
 
