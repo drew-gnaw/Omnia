@@ -11,7 +11,6 @@ namespace Enemies.Sundew.Behaviour {
 
         public void OnEnter() {
             t = self.reload;
-            self.UseAnimation("SundewHide");
         }
 
         public void OnExit() {

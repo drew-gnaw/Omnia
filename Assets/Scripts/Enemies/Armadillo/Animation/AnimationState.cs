@@ -20,4 +20,10 @@ namespace Enemies.Armadillo.Animation {
         public StunAnimation(Animator animator) : base("ArmadilloStun", animator) {
         }
     }
+    
+    public class StaggerAnimation : AnimationState {
+        // TODO replace with proper stagger animation
+        public StaggerAnimation(Animator animator) : base("ArmadilloIdle", animator) {
+        }
+    }
 }

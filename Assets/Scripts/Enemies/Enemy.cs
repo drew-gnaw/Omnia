@@ -1,9 +1,10 @@
 using System;
-using System.Collections;
 using System.Linq;
 using UnityEngine;
+using Omnia.State;
+using Enemies.Common.Behaviour;
 
-namespace Enemies {
+namespace Enemies{
     public abstract class Enemy : MonoBehaviour {
         public static event Action<Enemy> Spawn;
         public static event Action<Enemy> Death;
@@ -13,17 +14,58 @@ namespace Enemies {
         [SerializeField] internal float attack;
         [SerializeField] internal float knockbackForce = 10f;
         [SerializeField] internal float knockbackAngle = 45f;
+        [SerializeField] internal float staggerDurationS = 1f;
+
+        protected IBehaviour behaviour;
+        public IBehaviour prevBehaviour {get; protected set;}
+
+        protected StateMachine animationStateMachine;
 
         public virtual void Start() {
             currentHealth = maximumHealth;
             Spawn?.Invoke(this);
+            UseAnimation(new StateMachine());
         }
 
         public virtual void Hurt(float damage) {
             currentHealth = Mathf.Clamp(currentHealth - damage, 0, maximumHealth);
 
             if (currentHealth == 0) Die();
+            
+            // Currently the enemy just attempts its previous behaviour after stagger
+            if (staggerDurationS <= 0) return;
+            
+            // Previous behavious should be set here to avoid softlocking the enemy
+            prevBehaviour = behaviour;
+            UseBehaviour(Stagger.If(this));
         }
+
+        /**
+         * The child inheriting this class must call base.Update()
+         */
+        public virtual void Update() {
+            behaviour?.OnUpdate();
+            animationStateMachine?.Update();
+        }
+
+        /**
+         * The child inheriting this class must call base.FixedUpdate()
+         */
+        public virtual void FixedUpdate() {
+            behaviour?.OnTick();
+            animationStateMachine?.FixedUpdate();
+        }
+
+        public virtual void UseBehaviour(IBehaviour it) {
+            behaviour?.OnExit();
+            behaviour = it;
+            behaviour?.OnEnter();
+        }
+
+        /**
+         * This method should define the animationStateMachine, which is then updated in Update and FixedUpdate.
+         */
+        protected abstract void UseAnimation(StateMachine stateMachine);
 
         /* TODO: This could be a coroutine so enemies can play an animation on death...? */
         private void Die() {

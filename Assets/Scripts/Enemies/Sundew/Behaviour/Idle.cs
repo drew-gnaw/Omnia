@@ -11,7 +11,6 @@ namespace Enemies.Sundew.Behaviour {
             layer = self.gameObject.layer;
 
             self.SetLayer(self.bg);
-            self.UseAnimation("SundewIdle");
         }
 
         public void OnExit() {
