@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance { get; private set; }
+
     public AudioSource BGMPlayer, SFXPlayer, AmbientPlayer;
     private AudioList bgmTracks, sfxTracks, ambientTracks;
 
@@ -30,6 +31,7 @@ public class AudioManager : MonoBehaviour
     {
         
     }
+
 
     //////////////////////////////
     // Background Music Methods //
@@ -97,6 +99,11 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    // Mutes background music
+    public void ToggleBGM() {
+        BGMPlayer.mute = !BGMPlayer.mute;
+    }
+
     // Adjust BGM volume dynamically, allowing for changes
     // during intense scenes or quieter moments
     public void SetBGMVolume(float volume) {
@@ -140,6 +147,11 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    // Mutes sound effects
+    public void ToggleSFX() {
+        SFXPlayer.mute = !SFXPlayer.mute;
+    }
+
     /////////////////////
     // Ambient Methods //
     /////////////////////
@@ -168,5 +180,17 @@ public class AudioManager : MonoBehaviour
         else {
             AmbientPlayer.volume = volume;
         }
+    }
+
+    // Mutes ambient sounds
+    public void ToggleAmbient() {
+        AmbientPlayer.mute = !AmbientPlayer.mute;
+    }
+
+    // Mutes all sounds
+    public void ToggleAudio() {
+        ToggleBGM();
+        ToggleSFX();
+        ToggleAmbient();
     }
 }
