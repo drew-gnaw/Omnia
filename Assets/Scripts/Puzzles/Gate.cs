@@ -16,20 +16,19 @@ namespace Puzzle {
         [SerializeField] private AnimationCurve easeCurve;
 #nullable enable
         public ReceiverBehaviour ReceiverBehaviour => ReceiverBehaviour.Parse(behaviour);
-
-        private Vector3 startPos;
-        private Vector3 targetPos;
+        public enum GateType { Horizontal, Vertical }
+        private Vector3 StartPos { get; set; }
+        private Vector3 TargetPos => StartPos + ((gateType == GateType.Horizontal) ? Vector3.right : Vector3.up) * moveDistance;
         private bool isSliding = false;
         private bool desiredOpenState = false; // Desired state, used in case signal switches while gate is moving.
-        private List<ISignal> signalList;
-        public enum GateType { Horizontal, Vertical }
+        private List<ISignal> signalList = new();
+        
+        void Awake() {
+            signalList = signals?.Unbox() ?? new();
+        }
 
         private void Start() {
-            signalList = signals?.Unbox() ?? new();
-
-            startPos = transform.position;
-            Vector3 direction = (gateType == GateType.Horizontal) ? Vector3.right : Vector3.up;
-            targetPos = startPos + direction * moveDistance;
+            StartPos = transform.position;
 
             List<float> gearInitial = CalculateFinalPosition(false);
             for (int i = 0; i < gears.Count; i++) {
@@ -62,7 +61,6 @@ namespace Puzzle {
         private void SignalReceived(ISignal signal) {
             bool newState = ReceiverBehaviour.Accept(signalList);
             if (newState == desiredOpenState) return;
-
             desiredOpenState = newState;
 
             if (!isSliding) {
@@ -73,7 +71,7 @@ namespace Puzzle {
         private IEnumerator SlideToState(bool open) {
             isSliding = true;
             Vector3 initialPos = transform.position;
-            Vector3 finalPos = open ? targetPos : startPos;
+            Vector3 finalPos = open ? TargetPos : StartPos;
 
             List<float> initialRotations = gears.Select(it => it.transform.rotation.z).ToList();
             List<float> finalRotations = CalculateFinalPosition(open);
@@ -84,12 +82,13 @@ namespace Puzzle {
                 timer += Time.deltaTime;
                 float t = timer / moveDuration;
                 float easedT = easeCurve.Evaluate(t);
+                transform.position = Vector3.Lerp(initialPos, finalPos, easedT); // Move gate
 
-                transform.position = Vector3.Lerp(initialPos, finalPos, easedT);
                 for (int i = 0; i < gears.Count; i++) {
-                    float angle = Mathf.Lerp(initialRotations[i], finalRotations[i], easedT);
+                    float angle = Mathf.Lerp(initialRotations[i], finalRotations[i], easedT); // Move gears
                     gears[i].transform.rotation = Quaternion.Euler(0, 0, angle);
                 }
+
                 yield return null;
             }
 
@@ -104,13 +103,15 @@ namespace Puzzle {
         private List<float> CalculateFinalPosition(bool movingRight) {
             float rotationAmount = 180f; // Between [0, 180] (no support for more than 360 degree turn for now)
             List<float> rotations = new();
-            for (int i = 0; i < gears.Count; i++) {
-                float directionMultiplier = (i % 2 == 0) ? 1f : -1f;
 
-                // Even indexed gear follows gate movement direction
+            for (int i = 0; i < gears.Count; i++) {
+                // Even indexed gears turn in the direction of gate movement
+                float directionMultiplier = (i % 2 == 0) ? 1f : -1f;
                 float gearRotation = movingRight ? rotationAmount : -rotationAmount;
+
                 rotations.Add(gearRotation * directionMultiplier);
             }
+
             return rotations;
         }
     }
