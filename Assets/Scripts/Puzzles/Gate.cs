@@ -15,8 +15,8 @@ namespace Puzzle {
         [SerializeField] private float moveDuration = 0.5f;
         [SerializeField] private AnimationCurve easeCurve;
 #nullable enable
-        public ReceiverBehaviour ReceiverBehaviour => ReceiverBehaviour.Parse(behaviour);
         public enum GateType { Horizontal, Vertical }
+        public ReceiverBehaviour ReceiverBehaviour => ReceiverBehaviour.Parse(behaviour);
         private Vector3 StartPos { get; set; }
         private Vector3 TargetPos => StartPos + ((gateType == GateType.Horizontal) ? Vector3.right : Vector3.up) * moveDistance;
         private bool isSliding = false;
@@ -29,13 +29,12 @@ namespace Puzzle {
 
         private void Start() {
             StartPos = transform.position;
+            Redraw();
 
             List<float> gearInitial = CalculateFinalPosition(false);
             for (int i = 0; i < gears.Count; i++) {
                 gears[i].transform.rotation = Quaternion.Euler(0, 0, gearInitial[i]);
             }
-
-            Redraw();
         }
 
         private void OnEnable() {
@@ -108,7 +107,6 @@ namespace Puzzle {
                 // Even indexed gears turn in the direction of gate movement
                 float directionMultiplier = (i % 2 == 0) ? 1f : -1f;
                 float gearRotation = movingRight ? rotationAmount : -rotationAmount;
-
                 rotations.Add(gearRotation * directionMultiplier);
             }
 

@@ -68,7 +68,7 @@ namespace Puzzle {
 
             leverUptime.Tick(Time.deltaTime);
 
-            if (!leverUptime.IsRunning) {
+            if (!leverUptime.IsRunning && IsActive) {
                 IsActive = false;
                 SignalEvent?.Invoke(this);
             }
