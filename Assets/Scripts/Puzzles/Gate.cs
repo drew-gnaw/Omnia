@@ -14,53 +14,53 @@ namespace Puzzle {
         [SerializeField] private float moveDistance = 3.0f;
         [SerializeField] private float moveDuration = 0.5f;
         [SerializeField] private AnimationCurve easeCurve;
+#nullable enable
         public ReceiverBehaviour ReceiverBehaviour => ReceiverBehaviour.Parse(behaviour);
 
         private Vector3 startPos;
         private Vector3 targetPos;
         private bool isSliding = false;
-        private bool desiredOpenState = false; // The final state the gate should reach
-
+        private bool desiredOpenState = false; // Desired state, used in case signal switches while gate is moving.
+        private List<ISignal> signalList;
         public enum GateType { Horizontal, Vertical }
 
         private void Start() {
+            signalList = signals?.Unbox() ?? new();
+
             startPos = transform.position;
             Vector3 direction = (gateType == GateType.Horizontal) ? Vector3.right : Vector3.up;
             targetPos = startPos + direction * moveDistance;
 
-            Redraw();
             List<float> gearInitial = CalculateFinalPosition(false);
             for (int i = 0; i < gears.Count; i++) {
                 gears[i].transform.rotation = Quaternion.Euler(0, 0, gearInitial[i]);
             }
+
+            Redraw();
         }
 
         private void OnEnable() {
-            if (signals != null) {
-                foreach (ISignal signal in signals.Unbox()) {
-                    signal.SignalEvent += SignalReceived;
-                }
+            foreach (ISignal signal in signalList) {
+                signal.SignalEvent += SignalReceived;
             }
         }
 
         private void OnDisable() {
-            if (signals != null) {
-                foreach (ISignal signal in signals.Unbox()) {
-                    signal.SignalEvent -= SignalReceived;
-                }
+            foreach (ISignal signal in signalList) {
+                signal.SignalEvent -= SignalReceived;
             }
         }
 
         private void Redraw() {
             for (int i = 0; i < gears.Count; i++) {
-                if (i < signals.Count) {
-                    gears[i].color = signals.Unbox()[i].SignalColor.Color;
+                if (i < signalList.Count) {
+                    gears[i].color = signalList[i].SignalColor.Color;
                 }
             }
         }
 
         private void SignalReceived(ISignal signal) {
-            bool newState = ReceiverBehaviour.Accept(signals.Unbox());
+            bool newState = ReceiverBehaviour.Accept(signalList);
             if (newState == desiredOpenState) return;
 
             desiredOpenState = newState;
