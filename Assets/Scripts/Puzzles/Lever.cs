@@ -1,40 +1,34 @@
 using Omnia.Utils;
-using System;
+using static Puzzle.ISignal;
 using UnityEngine;
 
 namespace Puzzle {
     public class Lever : MonoBehaviour, ISignal {
-        [SerializeField]
         [TypeFilter(typeof(SignalColor))]
-        private SerializableType signalColor;
-        [SerializeField] private float maxChargeDuration; // Max charge time in seconds
+        [SerializeField] private SerializableType signalColor;
+        [SerializeField] private float maxChargeDuration;
         [SerializeField] private Collider2D Collider2D;
         [SerializeField] private LayerMask enemyLayer;
         [SerializeField] private LayerMask playerLayer;
         [SerializeField] private SpriteRenderer handle;
         [SerializeField] private SpriteRenderer baseRenderer;
         [SerializeField] private Sprite ticks;
-        [SerializeField] private Transform pivotPoint; 
+        [SerializeField] private Transform pivotPoint;
 #nullable enable
-        public event ISignal.SignalFired? SignalEvent;
-
-        public bool IsActive { get; set; }
         public SignalColor SignalColor => SignalColor.Parse(signalColor);
+        public event SignalFired? SignalEvent;
+        public bool IsActive { get; set; }
         private CountdownTimer leverUptime = new(0);
-        private int objectsInside = 0;
         private readonly float chargeRate = 180f; //(degrees per second)
         private readonly float radius = 0.2f; // Fixed distance from pivot
-        private float startAngle = 150f;
-        private float endAngle = 30f;
         private float currentHandleAngle;
         private bool isCharging = false;
+        private int objectsInside = 0;
+        private float startAngle = 150f;
+        private float endAngle = 30f;
 
         void Start() {
-            // Account for parent rotation
-            //startAngle = startAngle + transform.rotation.z;
-            //endAngle = endAngle + transform.rotation.z;
             currentHandleAngle = startAngle;
-            Debug.Log($"The Current start ${startAngle} end {endAngle} z angle {transform.localRotation}");
             Draw();
         }
 

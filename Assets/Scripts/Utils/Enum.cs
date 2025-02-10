@@ -13,7 +13,6 @@ public abstract class Enum<T> where T : Enum<T> {
     private static void RegisterValues() {
         Type baseType = typeof(T);
 
-        // Get all non-abstract subclasses
         var subTypes = Assembly.GetAssembly(baseType)!
             .GetTypes()
             .Where(t => t.IsClass && !t.IsAbstract && baseType.IsAssignableFrom(t));
