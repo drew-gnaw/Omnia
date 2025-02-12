@@ -31,7 +31,6 @@ public class TrinketSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        Debug.Log("Clicked");
         InventoryManager.Instance.EquipTrinket(this);
     }
 
