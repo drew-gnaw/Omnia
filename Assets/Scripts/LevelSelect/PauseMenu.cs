@@ -122,7 +122,7 @@ public class PauseMenu : MonoBehaviour
     {
         IsPaused = false;
         Time.timeScale = 1f;
-        //SceneManager.LoadScene(GameStateManager.LEVEL_SELECT_NAME); uncomment when level select added
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); //change when level select added
     }
 
     public void ResetScene()

@@ -38,6 +38,8 @@ namespace Players.Mixin {
         private float rlt;
 
         public void Update() {
+            if (PauseMenu.IsPaused) return;
+
             var fire = Input.GetButtonDown(KeyMap[KeysEnum.Fire1]);
             var jump = Input.GetButtonDown(KeyMap[KeysEnum.Jump]);
             var held = Input.GetButton(KeyMap[KeysEnum.Jump]);
