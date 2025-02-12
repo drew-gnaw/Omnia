@@ -1,12 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 using UnityEngine.SceneManagement;
+using Utils;
 
-public class DialogueManager : MonoBehaviour
+public class DialogueManager : PersistentSingleton<DialogueManager>
 {
-    public static DialogueManager Instance { get; private set; }
     private DialogueBox activeDialogueBox;
     [SerializeField]
     private DialogueBox picturelessDialogueBoxComponent;
@@ -18,21 +18,19 @@ public class DialogueManager : MonoBehaviour
 
     List<DialogueText> dialogueHistory = new();
 
-    void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else if (Instance != null && Instance != this)
-        {
-            Destroy(this);
-        }
-        activeDialogueBox = pictureDialogueBox;
+    public void OnEnable() {
         SceneManager.sceneLoaded += OnSceneChange;
     }
 
-    //Manager is going to listen to a bunch of events that then cause it to gain new sentences and 
+    public void OnDisable() {
+        SceneManager.sceneLoaded -= OnSceneChange;
+    }
+
+    protected override void OnAwake() {
+        activeDialogueBox = pictureDialogueBox;
+    }
+
+    //Manager is going to listen to a bunch of events that then cause it to gain new sentences and
     void Start()
     {
         ClearPanel();
@@ -54,7 +52,7 @@ public class DialogueManager : MonoBehaviour
 
         sentences = newSentences;
         inDialogue = true;
-        
+
         Time.timeScale = 0f;
 
         DisplayNextSentence();

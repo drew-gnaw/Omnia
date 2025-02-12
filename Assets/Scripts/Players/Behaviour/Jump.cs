@@ -2,11 +2,10 @@ using UnityEngine;
 
 namespace Players.Behaviour {
     public class Jump : IBehaviour {
-        private static IBehaviour _s;
         private readonly Player self;
         private float t;
 
-        private Jump(Player self) {
+        public Jump(Player self) {
             this.self = self;
         }
 
@@ -35,12 +34,8 @@ namespace Players.Behaviour {
             self.UseBehaviour(Slide.If(self) ?? Fall.If(self) ?? Move.If(self) ?? Idle.If(self));
         }
 
-        private static IBehaviour AdHoc(Player it) {
-            return _s ??= new Jump(it);
-        }
-
         public static IBehaviour If(Player it) {
-            return it.grounded && it.jump ? AdHoc(it) : null;
+            return it.grounded && it.jump ? new Jump(it) : null;
         }
     }
 }
