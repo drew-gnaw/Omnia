@@ -23,6 +23,8 @@ namespace Omnia.Utils
 
         public float Progress => isRunning ? 1 - (timeRemaining / duration) : 0f;
 
+        public float TimeRemaining => timeRemaining;
+
         public void Start()
         {
             timeRemaining = duration;
