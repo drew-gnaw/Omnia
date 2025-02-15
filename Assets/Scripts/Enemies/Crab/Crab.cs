@@ -6,6 +6,7 @@ using JetBrains.Annotations;
 using Omnia.State;
 using Players;
 using UnityEngine;
+using Utils;
 
 namespace Enemies.Crab {
     public class Crab : Enemy {
@@ -62,7 +63,7 @@ namespace Enemies.Crab {
 
             Collider2D c = Physics2D.OverlapBox(attackPosition, attackSize, 0, player);
             if (c == null) return null;
-            
+
             Player p = c.GetComponent<Player>();
             return p;
         }
@@ -83,7 +84,7 @@ namespace Enemies.Crab {
         }
 
         public void SetDirection(Vector2 dir) {
-            direction = new Vector2(RoundX(dir.x), 0);
+            direction = new Vector2(MathUtils.RoundX(dir.x), 0);
             sprite.flipX = dir.x < 0;
             crabAttackArea.transform.position = dir.x < 0 ? leftAttackPosition.position : dir.x > 0 ? rightAttackPosition.position : Vector3.zero;
         }
@@ -109,10 +110,6 @@ namespace Enemies.Crab {
             animationStateMachine = stateMachine;
         }
 
-        private float RoundX(float value) {
-            if (value >= 0.5) return 1;
-            if (value <= -0.5) return -1;
-            return 0;
-        }
+
     }
 }
