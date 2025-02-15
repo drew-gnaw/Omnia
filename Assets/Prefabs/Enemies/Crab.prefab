@@ -436,9 +436,9 @@ MonoBehaviour:
   player:
     serializedVersion: 2
     m_Bits: 128
-  windup: 3
-  vulnerableTime: 5
-  reload: 5
+  windup: 1
+  vulnerableTime: 1
+  reload: 0.5
   crabAttackArea: {fileID: 4857823787951053072}
   leftAttackPosition: {fileID: 9149908889773333566}
   rightAttackPosition: {fileID: 6637705648206526607}
