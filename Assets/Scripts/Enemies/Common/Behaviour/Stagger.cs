@@ -1,16 +1,17 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
-namespace Enemies.Sundew.Behaviour {
-    public class WindUp : IBehaviour {
-        private readonly Sundew self;
+namespace Enemies.Common.Behaviour {
+    public class Stagger : IBehaviour {
+        private readonly Enemy self;
         private float t;
 
-        private WindUp(Sundew self) {
+        private Stagger(Enemy self) {
             this.self = self;
         }
 
         public void OnEnter() {
-            t = self.windup;
+            t = self.staggerDurationS;
         }
 
         public void OnExit() {
@@ -23,11 +24,11 @@ namespace Enemies.Sundew.Behaviour {
             t = Mathf.Max(0, t - Time.deltaTime);
             if (t != 0) return;
 
-            self.UseBehaviour(Attack.If(self));
+            self.UseBehaviour(self.prevBehaviour);
         }
 
-        public static IBehaviour If(Sundew it) {
-            return it.detected ? new WindUp(it) : null;
+        public static IBehaviour If(Enemy it) {
+            return new Stagger(it);
         }
     }
 }
