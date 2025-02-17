@@ -95,7 +95,7 @@ namespace Enemies.Crab {
             behaviour?.OnEnter();
         }
 
-        private void UseAnimation(StateMachine stateMachine) {
+        protected override void UseAnimation(StateMachine stateMachine) {
             var idle = new IdleAnimation(animator);
             var center = new CenterPopOutAnimation(animator); // Temporarily unused
             var directional = new DirectionalPopOutAnimation(animator);
