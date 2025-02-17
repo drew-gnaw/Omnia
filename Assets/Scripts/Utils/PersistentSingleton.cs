@@ -14,6 +14,10 @@ namespace Utils {
         [SerializeField]
         internal bool root = true;
 
+        [Tooltip("This object persists across scene changes.")] //
+        [SerializeField]
+        internal bool persistent = true;
+
         public void Awake() {
             _singleton ??= GetOrCreateSelf();
 
@@ -22,7 +26,7 @@ namespace Utils {
             } else {
                 if (root) transform.SetParent(null);
                 OnAwake();
-                DontDestroyOnLoad(gameObject);
+                if (persistent) DontDestroyOnLoad(gameObject);
             }
         }
 
