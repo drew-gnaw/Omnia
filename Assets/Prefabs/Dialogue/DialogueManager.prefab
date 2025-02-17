@@ -78,7 +78,7 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 32
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 1920, y: 1080}
+  m_ReferenceResolution: {x: 640, y: 360}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -99,6 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   root: 1
+  persistent: 1
   picturelessDialogueBoxComponent: {fileID: 5104453689515325453}
   pictureDialogueBox: {fileID: 6410928754391461768}
 --- !u!1001 &5566071346152445929

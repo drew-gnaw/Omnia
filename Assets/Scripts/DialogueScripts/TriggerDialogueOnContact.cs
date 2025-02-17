@@ -10,13 +10,15 @@ public class TriggerDialogueOnContact : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!triggered && other.gameObject.layer == LayerMask.NameToLayer("Player"))
+        if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-            triggered = true;
-            // StartCoroutine(DialogueManager.Instance.StartDialogue(dialogueWrapper.Dialogue));
-
-            // test scene changes
-            SceneInitializer.LoadScene("MainScene");
+            if (!triggered) {
+                triggered = true;
+                StartCoroutine(DialogueManager.Instance.StartDialogue(dialogueWrapper.Dialogue));
+            } else {
+                // test scene changes
+                SceneInitializer.LoadScene("MainScene");
+            }
         }
     }
 }
