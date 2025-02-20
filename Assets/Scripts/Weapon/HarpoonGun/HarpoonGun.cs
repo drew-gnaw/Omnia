@@ -14,6 +14,9 @@ public class HarpoonGun : WeaponClass
     [SerializeField] public float harpoonVelocity;
     [SerializeField] public float harpoonSpearGravityScale;
     [SerializeField] public float harpoonSpearPickupCooldown; // seconds
+    [SerializeField] public float collectionRadius;
+    [SerializeField] public float harpoonTimer; // seconds
+    [SerializeField] public float spearReturnSpeed;
 
     [Header("HarpoonGun References")]
     public GameObject harpoonSpearPrefab;
@@ -91,6 +94,14 @@ public class HarpoonGun : WeaponClass
     void Update()
     {
         HandleWeaponRotation();
+
+        foreach (var spear in firedSpears) {
+            if (spear.isCollectable() && 
+                    Vector2.Distance(player.transform.position, spear.transform.position) <= collectionRadius)
+            {
+                spear.ReturnToPlayer();
+            }
+        }
     }
 
     public void SpearCollected(HarpoonSpear spear) {

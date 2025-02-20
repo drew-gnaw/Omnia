@@ -25,6 +25,8 @@ public class HarpoonSpear : MonoBehaviour {
     private IEnumerator cooldown;
     private HarpoonGun gun;
     private Player player;
+    private bool playerAbsorb;
+    private IEnumerator absorbCooldown;
 
     // Tracking enemy
     public Enemy TaggedEnemy { get; private set; }
@@ -34,6 +36,7 @@ public class HarpoonSpear : MonoBehaviour {
         dropped = false;
         TaggedEnemy = null;
         PullTo = null;
+        playerAbsorb = false;
 
         player = GameObject.Find("Player")?.GetComponent<Player>();
         if (player == null) {
@@ -70,11 +73,29 @@ public class HarpoonSpear : MonoBehaviour {
         // TODO
     }
 
+    public void ReturnToPlayer() {
+        playerAbsorb = true;
+    }
+
+    public bool isCollectable() {
+        return collectable;
+    }
+
     public void Update() {
         // Rotate based on velocity
         if (!dropped && Rigidbody2D.velocity != Vector2.zero) {
             float angle = Mathf.Atan2(Rigidbody2D.velocity.y, Rigidbody2D.velocity.x) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+        }
+
+        if (playerAbsorb) {
+            transform.position = Vector2
+                .MoveTowards(transform.position, player.transform.position, gun.spearReturnSpeed * Time.deltaTime);
+
+            // Rotate over Z axis to face away from Player
+            Vector3 difference = transform.position - player.transform.position;
+            float rotationZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.Euler(0.0f, 0.0f, rotationZ);
         }
     }
 
@@ -100,6 +121,7 @@ public class HarpoonSpear : MonoBehaviour {
 
     private void HandlePlayerCollision() {
         Unfreeze();
+        playerAbsorb = false;
         collectable = false;
         PullTo = null;
 
@@ -110,6 +132,7 @@ public class HarpoonSpear : MonoBehaviour {
     private void HandleEnemyCollision(Enemy enemy) {
         Freeze();
         StartCooldown();
+        StartHarpoonTimer();
 
         TaggedEnemy = enemy;
 
@@ -125,11 +148,13 @@ public class HarpoonSpear : MonoBehaviour {
         Freeze();
         PullTo = gameObject.transform;
         StartCooldown();
+        StartHarpoonTimer();
     }
 
     private void HandleGroundCollision() {
         Freeze();
         StartCooldown();
+        StartHarpoonTimer();
     }
 
     private void HandleEnemyDeath(Enemy enemy) {
@@ -179,5 +204,20 @@ public class HarpoonSpear : MonoBehaviour {
     private IEnumerator DropCooldown() {
         yield return new WaitForSeconds(gun.harpoonSpearPickupCooldown);
         collectable = true;
+    }
+
+    private void StartHarpoonTimer() {
+        if (playerAbsorb) return;
+
+        if (absorbCooldown != null) {
+            StopCoroutine(absorbCooldown);
+        }
+        absorbCooldown = DropHarpoonTimer();
+        StartCoroutine(absorbCooldown);
+    }
+
+    private IEnumerator DropHarpoonTimer() {
+        yield return new WaitForSeconds(gun.harpoonTimer);
+        ReturnToPlayer();
     }
 }
