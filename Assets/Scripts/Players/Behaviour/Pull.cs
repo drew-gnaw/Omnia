@@ -33,7 +33,7 @@ namespace Players.Behaviour {
             t = Mathf.Max(0, t - Time.deltaTime);
             if (t != 0) return;
 
-            self.UseBehaviour(Fall.AdHoc(self));
+            self.UseBehaviour(new Fall(self));
         }
     }
 }

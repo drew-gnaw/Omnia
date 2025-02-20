@@ -78,7 +78,7 @@ namespace Players {
         private IBehaviour behaviour;
 
         public void Awake() {
-            UseBehaviour(Idle.AdHoc(this));
+            UseBehaviour(new Idle(this));
         }
 
         public void Start() {

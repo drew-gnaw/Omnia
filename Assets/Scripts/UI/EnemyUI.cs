@@ -23,9 +23,10 @@ namespace UI {
             rect.anchoredPosition = WorldToUIPoint(subject.transform.position, canvas.worldCamera);
         }
 
-        private static Vector2 WorldToUIPoint(Vector2 position, Camera camera) {
-            var p = camera.WorldToViewportPoint(position);
-            return new Vector2(camera.scaledPixelWidth * (p.x * 2 - 1) / 2, camera.scaledPixelHeight * (p.y * 2 - 1) / 2);
+        private Vector2 WorldToUIPoint(Vector2 position, Camera c) {
+            var p = c.WorldToViewportPoint(position);
+            var d = 2 * canvas.scaleFactor;
+            return new Vector2(c.pixelWidth * (p.x * 2 - 1) / d, c.pixelHeight * (p.y * 2 - 1) / d);
         }
     }
 }
