@@ -2,10 +2,9 @@ using UnityEngine;
 
 namespace Players.Behaviour {
     public class Fall : IBehaviour {
-        private static IBehaviour _s;
         private readonly Player self;
 
-        private Fall(Player self) {
+        public Fall(Player self) {
             this.self = self;
         }
 
@@ -27,12 +26,8 @@ namespace Players.Behaviour {
             self.UseBehaviour(Slide.If(self) ?? Move.If(self) ?? Idle.If(self));
         }
 
-        public static IBehaviour AdHoc(Player it) {
-            return _s ??= new Fall(it);
-        }
-
         public static IBehaviour If(Player it) {
-            return !it.grounded && it.slide.x == 0 && it.rb.velocity.y <= 0 ? AdHoc(it) : null;
+            return !it.grounded && it.slide.x == 0 && it.rb.velocity.y <= 0 ? new Fall(it) : null;
         }
     }
 }

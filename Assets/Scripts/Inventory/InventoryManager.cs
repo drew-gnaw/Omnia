@@ -3,29 +3,20 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Utils;
 
-public class InventoryManager : MonoBehaviour
+public class InventoryManager : PersistentSingleton<InventoryManager>
 {
     [SerializeField] private GameObject inventoryUI; // Reference to Inventory UI Panel
     [SerializeField] private TrinketSlot[] trinketSlots; // Grid of trinket slots
     [SerializeField] private EquipSlot[] equipSlots; // Equip slots
     [SerializeField] private TextMeshProUGUI descriptionText; // Description UI text box
 
-    public static InventoryManager Instance { get; private set; }
     public bool IsInventoryOpen { get; private set; }
 
     private bool isShaking = false;
 
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject); // Prevent duplicates
-        }
+    protected override void OnAwake() {
     }
 
     private void Start()
