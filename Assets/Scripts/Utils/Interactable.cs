@@ -37,6 +37,8 @@ public class Interactable : MonoBehaviour
     void Update() {
         if (mainScript == null) return; 
         if (inRange && Input.GetKeyDown(KeyCode.E)) {
+            inRange = false;
+            buttonIcon.enabled = false;
             mainScript.Interact();
         }
     }
