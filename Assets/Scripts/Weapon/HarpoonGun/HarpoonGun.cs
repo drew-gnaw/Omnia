@@ -28,7 +28,6 @@ public class HarpoonGun : WeaponClass
 
     private void Start()
     {
-        Debug.Log(damage);
         harpoonSpearPool = new ObjectPool<HarpoonSpear>(
             // Create
             () => {
@@ -51,6 +50,7 @@ public class HarpoonGun : WeaponClass
             harpoons,
             harpoons
         );
+        base.Start();
     }
 
     protected override void HandleAttack()
@@ -78,7 +78,7 @@ public class HarpoonGun : WeaponClass
             return;
         }
 
-        player.GetComponent<Player>().UsePull(target);
+        playerComponent.UsePull(target);
     }
 
 
@@ -96,8 +96,8 @@ public class HarpoonGun : WeaponClass
         HandleWeaponRotation();
 
         foreach (var spear in firedSpears) {
-            if (spear.isCollectable() && 
-                    Vector2.Distance(player.transform.position, spear.transform.position) <= collectionRadius)
+            if (spear.isCollectable() &&
+                    Vector2.Distance(playerComponent.Center, spear.transform.position) <= collectionRadius)
             {
                 spear.ReturnToPlayer();
             }
@@ -116,7 +116,7 @@ public class HarpoonGun : WeaponClass
     }
 
     private void HandleWeaponRotation() {
-        Vector2 facing = player.GetComponent<Player>().facing;
+        Vector2 facing = playerComponent.facing;
 
         float angle = Mathf.Atan2(facing.y, facing.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));

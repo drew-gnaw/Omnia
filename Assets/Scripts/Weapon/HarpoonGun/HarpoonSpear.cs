@@ -90,7 +90,7 @@ public class HarpoonSpear : MonoBehaviour {
 
         if (playerAbsorb) {
             transform.position = Vector2
-                .MoveTowards(transform.position, player.transform.position, gun.spearReturnSpeed * Time.deltaTime);
+                .MoveTowards(transform.position, player.Center, gun.spearReturnSpeed * Time.deltaTime);
 
             // Rotate over Z axis to face away from Player
             Vector3 difference = transform.position - player.transform.position;
