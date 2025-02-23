@@ -96,7 +96,7 @@ public class HarpoonGun : WeaponClass
         HandleWeaponRotation();
 
         foreach (var spear in firedSpears) {
-            if (spear.isCollectable() &&
+            if (spear.IsCollectable &&
                     Vector2.Distance(playerComponent.Center, spear.transform.position) <= collectionRadius)
             {
                 spear.ReturnToPlayer();

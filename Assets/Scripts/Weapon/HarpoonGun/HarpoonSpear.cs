@@ -32,6 +32,8 @@ public class HarpoonSpear : MonoBehaviour {
     public Enemy TaggedEnemy { get; private set; }
     public Transform PullTo { get; private set; }
 
+    public bool IsCollectable => collectable;
+
     public void Awake() {
         dropped = false;
         TaggedEnemy = null;
@@ -75,10 +77,6 @@ public class HarpoonSpear : MonoBehaviour {
 
     public void ReturnToPlayer() {
         playerAbsorb = true;
-    }
-
-    public bool isCollectable() {
-        return collectable;
     }
 
     public void Update() {
