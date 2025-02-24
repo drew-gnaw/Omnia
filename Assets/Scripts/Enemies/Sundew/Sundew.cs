@@ -1,5 +1,8 @@
 using System.Linq;
 using Enemies.Sundew.Behaviour;
+using Enemies.Sundew.Animation;
+using Enemies.Common.Behaviour;
+using Omnia.State;
 using Players;
 using UnityEngine;
 using Utils;
@@ -26,20 +29,19 @@ namespace Enemies.Sundew {
         [SerializeField] internal string debugBehaviour;
 
         private float t;
-        private IBehaviour behaviour;
 
         public void Awake() {
             UseBehaviour(Idle.AsDefaultOf(this));
         }
 
-        public void Update() {
+        override public void Update() {
+            base.Update();
             t = Mathf.Max(0, t - Time.deltaTime);
-            behaviour?.OnUpdate();
         }
 
-        public void FixedUpdate() {
+        override public void FixedUpdate() {
+            base.FixedUpdate();
             UseDetection();
-            behaviour?.OnTick();
         }
 
         public void FireProjectiles() {
@@ -55,17 +57,30 @@ namespace Enemies.Sundew {
             }
         }
 
-        public void UseBehaviour(IBehaviour it) {
+        override public void UseBehaviour(IBehaviour it) {
             if (it == null) return;
             debugBehaviour = it.GetType().Name;
 
-            behaviour?.OnExit();
-            behaviour = it;
-            behaviour?.OnEnter();
+            base.UseBehaviour(it);
         }
 
-        public void UseAnimation(string it) {
-            animator.Play(it);
+        protected override void UseAnimation(StateMachine stateMachine) {
+            var idle = new IdleAnimation(animator);
+            var attack = new AttackAnimation(animator);
+            var hide = new HideAnimation(animator);
+            var reveal = new RevealAnimation(animator);
+            var windUp = new WindUpAnimation(animator);
+            var stagger = new StaggerAnimation(animator);
+
+            stateMachine.AddAnyTransition(idle, new FuncPredicate(() => behaviour is Idle));
+            stateMachine.AddAnyTransition(attack, new FuncPredicate(() => behaviour is Attack));
+            stateMachine.AddAnyTransition(hide, new FuncPredicate(() => behaviour is Hide));
+            stateMachine.AddAnyTransition(reveal, new FuncPredicate(() => behaviour is Reveal));
+            stateMachine.AddAnyTransition(windUp, new FuncPredicate(() => behaviour is WindUp));
+            stateMachine.AddAnyTransition(stagger, new FuncPredicate(() => behaviour is Stagger));
+
+            stateMachine.SetState(idle);
+            animationStateMachine = stateMachine;
         }
 
         public void SetLayer(LayerMask it) {

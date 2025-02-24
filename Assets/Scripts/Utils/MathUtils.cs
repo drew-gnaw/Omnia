@@ -10,5 +10,11 @@ namespace Utils {
         public static int LayerIndexOf(LayerMask it) {
             return Mathf.FloorToInt(Mathf.Log(it, 2));
         }
+
+        public static float RoundX(float value) {
+            if (value >= 0.5) return 1;
+            if (value <= -0.5) return -1;
+            return 0;
+        }
     }
 }

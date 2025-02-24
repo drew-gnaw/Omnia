@@ -22,7 +22,7 @@ namespace Players.Mixin {
             { KeysEnum.Jump, "Jump" },
             { KeysEnum.Roll, "Roll" },
         };
-        
+
         [SerializeField] internal Player self;
         [SerializeField] internal float delay;
 
@@ -39,8 +39,8 @@ namespace Players.Mixin {
 
         public void Update() {
             if (PauseMenu.IsPaused) return;
+            var fire = !(InventoryManager.Instance?.IsInventoryOpen ?? false) && Input.GetButtonDown(KeyMap[KeysEnum.Fire1]);
 
-            var fire = Input.GetButtonDown(KeyMap[KeysEnum.Fire1]);
             var jump = Input.GetButtonDown(KeyMap[KeysEnum.Jump]);
             var held = Input.GetButton(KeyMap[KeysEnum.Jump]);
             var skill = Input.GetButtonDown(KeyMap[KeysEnum.Fire2]);

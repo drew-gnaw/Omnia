@@ -1,35 +1,32 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 using UnityEngine.SceneManagement;
+using Utils;
 
-public class AudioManager : MonoBehaviour
+public class AudioManager : PersistentSingleton<AudioManager>
 {
     public static AudioManager Instance { get; private set; }
 
     public AudioSource BGMPlayer, SFXPlayer, AmbientPlayer;
     private AudioList bgmTracks, sfxTracks, ambientTracks;
 
-    void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else if (Instance != null && Instance != this)
-        {
-            Destroy(this);
-        }
+    public void OnEnable() {
         SceneManager.sceneLoaded += OnSceneChange;
+    }
+
+    public void OnDisable() {
+        SceneManager.sceneLoaded -= OnSceneChange;
+    }
+
+    protected override void OnAwake() {
         ambientTracks = Resources.LoadAll<AudioList>("AudioResources")[0];
         bgmTracks = Resources.LoadAll<AudioList>("AudioResources")[1];
         sfxTracks = Resources.LoadAll<AudioList>("AudioResources")[2];
     }
-    
+
     void OnSceneChange(Scene scene, LoadSceneMode mode)
     {
-        
+
     }
 
 
@@ -37,7 +34,7 @@ public class AudioManager : MonoBehaviour
     // Background Music Methods //
     //////////////////////////////
 
-    // Starts playing the specified background track in a loop. 
+    // Starts playing the specified background track in a loop.
     // If the track is already playing, does nothing
     public void PlayBGM(string trackName) {
         AudioClip track = bgmTracks.GetClipByName(trackName);

@@ -11,7 +11,6 @@ namespace Enemies.Sundew.Behaviour {
 
         public void OnEnter() {
             t = self.windup;
-            self.UseAnimation("SundewWindUp");
         }
 
         public void OnExit() {

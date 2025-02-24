@@ -15,7 +15,7 @@ TagManager:
   - Player
   - Background
   - Semisolid
-  - 
+  - Minimap
   - 
   - 
   - 
@@ -43,4 +43,7 @@ TagManager:
     locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: UI
+    uniqueID: 405064753
     locked: 0
