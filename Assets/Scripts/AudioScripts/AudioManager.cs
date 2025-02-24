@@ -5,8 +5,6 @@ using Utils;
 
 public class AudioManager : PersistentSingleton<AudioManager>
 {
-    public static AudioManager Instance { get; private set; }
-
     public AudioSource BGMPlayer, SFXPlayer, AmbientPlayer;
     private AudioList bgmTracks, sfxTracks, ambientTracks;
 

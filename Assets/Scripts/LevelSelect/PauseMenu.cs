@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Initializers;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -19,7 +20,7 @@ public class PauseMenu : MonoBehaviour
     [SerializeField] private TextMeshProUGUI historyText;
 
     [SerializeField]
-    private Slider musicSlider; 
+    private Slider musicSlider;
 
 
     public delegate void PauseMenuEventHandler();
@@ -54,7 +55,7 @@ public class PauseMenu : MonoBehaviour
 
     void HideHistory()
     {
-        history.SetActive(false);   
+        history.SetActive(false);
         buttonparent.SetActive(true);
     }
 
@@ -121,15 +122,16 @@ public class PauseMenu : MonoBehaviour
     public void LevelSelectScene()
     {
         IsPaused = false;
-        Time.timeScale = 1f;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); //change when level select added
+        Time.timeScale = 1f
+            ;
+        SceneInitializer.LoadScene(SceneManager.GetActiveScene().name); //change when level select added
     }
 
     public void ResetScene()
     {
         IsPaused = false;
         Time.timeScale = 1f;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        SceneInitializer.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void ToggleMusic()
@@ -142,7 +144,7 @@ public class PauseMenu : MonoBehaviour
         AudioManager.Instance.SetBGMVolume(musicSlider.value);
         AudioManager.Instance.SetSFXVolume(musicSlider.value);
         AudioManager.Instance.SetAmbientVolume(musicSlider.value);
-        
+
     }
 
     public void ToggleScreenShake()
