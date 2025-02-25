@@ -15,8 +15,16 @@ public class Shield : MonoBehaviour {
     }
 
     private float OnHit(float damage) {
-        if (shieldHealth <= 0) return damage;
+        if (shieldHealth <= 0) {
+            self.OnHurt -= OnHit;
+            return damage;
+        }
         shieldHealth = Mathf.Max(shieldHealth - damage, 0);
         return 0; // Prevent overflow
+    }
+
+    private void OnDestroy() {
+        if (self == null) return;
+        self.OnHurt -= OnHit;
     }
 }
