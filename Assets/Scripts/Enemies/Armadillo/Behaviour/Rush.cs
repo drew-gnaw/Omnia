@@ -39,7 +39,7 @@ namespace Enemies.Armadillo.Behaviour {
         }
 
         private void UseStun() {
-            var hit = Enemy.Sweep(self.sprite.transform.position, self.facing, 0, 1, 1, self.player).First();
+            var hit = Enemy.Sweep(self.sprite.transform.position, self.facing, 0, self.hitDistance, 1, self.player).First();
             if (hit) self.Attack(hit.collider.gameObject);
 
             self.UseBehaviour(new Stun(self));

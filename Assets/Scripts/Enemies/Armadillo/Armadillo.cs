@@ -16,6 +16,7 @@ namespace Enemies.Armadillo {
         [SerializeField] internal LayerMask player;
         [SerializeField] internal BoxCollider2D[] checks;
         [SerializeField] internal Vector2 facing = Vector2.right;
+        [SerializeField] internal float hitDistance = 1;
 
         public void Awake() {
             UseBehaviour(new Walk(this));

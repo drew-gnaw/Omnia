@@ -4,10 +4,11 @@ using UnityEngine;
 using Omnia.State;
 using Enemies.Common.Behaviour;
 
-namespace Enemies{
+namespace Enemies {
     public abstract class Enemy : MonoBehaviour {
         public static event Action<Enemy> Spawn;
         public static event Action<Enemy> Death;
+        public Func<float, float> OnHurt;
 
         [SerializeField] internal float maximumHealth;
         [SerializeField] internal float currentHealth;
@@ -17,7 +18,7 @@ namespace Enemies{
         [SerializeField] internal float staggerDurationS = 1f;
 
         protected IBehaviour behaviour;
-        public IBehaviour prevBehaviour {get; protected set;}
+        public IBehaviour prevBehaviour { get; protected set; }
 
         protected StateMachine animationStateMachine;
 
@@ -28,13 +29,16 @@ namespace Enemies{
         }
 
         public virtual void Hurt(float damage) {
+            if (OnHurt != null) damage = OnHurt.Invoke(damage);
             currentHealth = Mathf.Clamp(currentHealth - damage, 0, maximumHealth);
 
             if (currentHealth == 0) Die();
-            
+
             // Currently the enemy just attempts its previous behaviour after stagger
             if (staggerDurationS <= 0) return;
-            
+            // Also prevent staggering if damage is 0
+            if (damage == 0) return;
+
             // Previous behavious should be set here to avoid softlocking the enemy
             prevBehaviour = behaviour;
             UseBehaviour(Stagger.If(this));
