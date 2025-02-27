@@ -1,4 +1,6 @@
+using System;
 using System.Collections;
+using Players;
 using UnityEngine;
 
 public abstract class WeaponClass : MonoBehaviour
@@ -15,6 +17,11 @@ public abstract class WeaponClass : MonoBehaviour
     public float damageToFlowRatio = 1; // determines the rate at which damage is translated into flow.
 
     private bool canAttack = true;
+    protected Player playerComponent;
+
+    public void Start() {
+        playerComponent = player.GetComponent<Player>();
+    }
 
     public void Attack() {
         if (!canAttack) {

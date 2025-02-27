@@ -77,6 +77,8 @@ namespace Players {
 
         private IBehaviour behaviour;
 
+        public Vector3 Center => transform.position + new Vector3(0, 1, 0);
+
         public void Awake() {
             UseBehaviour(new Idle(this));
         }
