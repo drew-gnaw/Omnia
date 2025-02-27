@@ -91,7 +91,7 @@ public class HarpoonSpear : MonoBehaviour {
                 .MoveTowards(transform.position, player.Center, gun.spearReturnSpeed * Time.deltaTime);
 
             // Rotate over Z axis to face away from Player
-            Vector3 difference = transform.position - player.transform.position;
+            Vector3 difference = transform.position - player.Center;
             float rotationZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.Euler(0.0f, 0.0f, rotationZ);
         }
