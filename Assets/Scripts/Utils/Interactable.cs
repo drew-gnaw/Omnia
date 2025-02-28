@@ -14,19 +14,18 @@ public class Interactable : MonoBehaviour
         mainScript = GetComponentInParent<IInteractable>();
     }
     private void OnTriggerEnter2D(Collider2D collision) {
-        if (collision.gameObject.CompareTag("Player")) {
+        Rigidbody2D rb = collision.attachedRigidbody;
+        if (rb != null && rb.gameObject.CompareTag("Player")) {
             inRange = true;
             buttonIcon.enabled = true;
-            //Debug.Log("can now interact");
-            //Debug.Log("null check:" + mainScript == null);
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision) {
-        if (collision.gameObject.CompareTag("Player")) {
+        Rigidbody2D rb = collision.attachedRigidbody;
+        if (rb != null && rb.gameObject.CompareTag("Player")) {
             inRange = false;
             buttonIcon.enabled = false;
-            //Debug.Log("can no longer interact");
         }
     }
 
@@ -35,7 +34,7 @@ public class Interactable : MonoBehaviour
     }
 
     void Update() {
-        if (mainScript == null) return; 
+        if (mainScript == null) return;
         if (inRange && Input.GetKeyDown(KeyCode.E)) {
             inRange = false;
             buttonIcon.enabled = false;
