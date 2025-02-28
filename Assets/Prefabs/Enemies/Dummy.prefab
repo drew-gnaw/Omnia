@@ -157,7 +157,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6,
+    type: 3}
   m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -265,3 +266,4 @@ MonoBehaviour:
   attack: 0
   knockbackForce: 10
   knockbackAngle: 45
+  dummyDialogue: {fileID: 11400000, guid: 503c6055ebc1801459827a9a0bbf5cbf, type: 2}
