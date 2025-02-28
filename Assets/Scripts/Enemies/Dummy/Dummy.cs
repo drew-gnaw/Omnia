@@ -1,3 +1,4 @@
+using Omnia.State;
 using UnityEngine;
 
 namespace Enemies.Dummy {
@@ -6,6 +7,10 @@ namespace Enemies.Dummy {
         public override void Hurt(float damage) {
             base.Hurt(damage);
             Debug.Log(this + " took damage " + damage);
+        }
+
+        protected override void UseAnimation(StateMachine stateMachine) {
+            // nothing...
         }
 
         public void Interact() {
