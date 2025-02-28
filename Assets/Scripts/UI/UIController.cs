@@ -7,8 +7,20 @@ using UnityEngine.Serialization;
 namespace UI {
     public class UIController : MonoBehaviour {
         public static UIController Instance { get; set; }
-
-        [SerializeField] internal GameObject[] prefabs; // 0: EnemyUI, 1: PlayerHealthBar, 2: PlayerFlowBar
+ 
+        /**
+            0: EnemyUI, 
+            1: PlayerHealthBar,
+            2: PlayerFlowBar,
+            3: DamageMarker,
+         */
+        private enum UiPrefabs {
+            EnemyUI = 0,
+            PlayerHealthBar = 1,
+            PlayerFlowBar = 2,
+            DamageMarker = 3
+        }
+        [SerializeField] internal GameObject[] prefabs;
         [SerializeField] internal Canvas canvas;
         // Used for setting the color of the player's health bar (likely temporary)
         [SerializeField] internal Color defaultHealthColor = Color.red;
@@ -26,6 +38,7 @@ namespace UI {
 
         public void OnEnable() {
             Enemy.Spawn += OnEnemySpawn;
+            Enemy.Damage += OnEnemyDamage;
             Enemy.Death += OnEnemyDeath;
             CinemachineCore.CameraUpdatedEvent.AddListener(OnCameraUpdate);
 
@@ -34,6 +47,7 @@ namespace UI {
 
         public void OnDisable() {
             Enemy.Spawn -= OnEnemySpawn;
+            Enemy.Damage -= OnEnemyDamage;
             Enemy.Death -= OnEnemyDeath;
             CinemachineCore.CameraUpdatedEvent.RemoveListener(OnCameraUpdate);
         }
@@ -46,15 +60,20 @@ namespace UI {
             if (enemies.Remove(enemy, out var ui)) Destroy(ui.gameObject);
         }
 
+        private void OnEnemyDamage(Enemy enemy, float damage) {
+            var marker = Instantiate(prefabs[(int) UiPrefabs.DamageMarker]).GetComponent<DamageMarker>();
+            marker.initialize(enemy.transform.position, damage);
+        }
+
         private void OnEnemySpawn(Enemy enemy) {
-            var ui = prefabs[0];
+            var ui = prefabs[(int) UiPrefabs.EnemyUI];
             var prefab = Instantiate(ui, canvas.transform).GetComponent<EnemyUI>()!.Of(enemy);
             enemies[enemy] = prefab;
         }
 
         private void InitializePlayerUI() {
-            var healthBar = Instantiate(prefabs[1], canvas.transform);
-            var flowBar = Instantiate(prefabs[2], canvas.transform);
+            var healthBar = Instantiate(prefabs[(int) UiPrefabs.PlayerHealthBar], canvas.transform);
+            var flowBar = Instantiate(prefabs[(int) UiPrefabs.PlayerFlowBar], canvas.transform);
 
             playerUI = new PlayerUI(healthBar.GetComponent<HealthBar>(), flowBar.GetComponent<FlowBar>());
         }
