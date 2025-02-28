@@ -7,6 +7,7 @@ namespace Enemies {
     public abstract class Enemy : MonoBehaviour {
         public static event Action<Enemy> Spawn;
         public static event Action<Enemy> Death;
+        public static event Action<Enemy, float> Damage;
 
         [SerializeField] internal float maximumHealth;
         [SerializeField] internal float currentHealth;
@@ -21,6 +22,7 @@ namespace Enemies {
 
         public virtual void Hurt(float damage) {
             currentHealth = Mathf.Clamp(currentHealth - damage, 0, maximumHealth);
+            Damage?.Invoke(this, damage);
 
             if (currentHealth == 0) Die();
         }
