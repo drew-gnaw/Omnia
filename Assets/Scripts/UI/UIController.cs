@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using Cinemachine;
 using Enemies;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace UI {
     public class UIController : MonoBehaviour {
@@ -62,7 +61,7 @@ namespace UI {
 
         private void OnEnemyDamage(Enemy enemy, float damage) {
             var marker = Instantiate(prefabs[(int) UiPrefabs.DamageMarker]).GetComponent<DamageMarker>();
-            marker.initialize(enemy.transform.position, damage);
+            marker.Initialize(enemy.transform.position, damage);
         }
 
         private void OnEnemySpawn(Enemy enemy) {

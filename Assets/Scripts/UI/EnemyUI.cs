@@ -1,5 +1,4 @@
 using Enemies;
-using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,11 +10,8 @@ namespace UI {
         [SerializeField] internal Slider shield;
         [SerializeField] internal Enemy subject;
 
-        private Shield enemyShield;
-
         public void Start() {
-            enemyShield = subject.GetComponent<Shield>();
-            shield.gameObject.SetActive(enemyShield != null);
+            shield.gameObject.SetActive(subject is ShieldedEnemy && ((ShieldedEnemy) subject).maxShieldHealth > 0);
         }
 
         public void Update() {
@@ -39,8 +35,9 @@ namespace UI {
         }
 
         private void UpdateShield() {
-            if (enemyShield == null) return;
-            shield.value = enemyShield.maxShieldHealth == 0 ? 0 : enemyShield.shieldHealth / enemyShield.maxShieldHealth;
+            if (!(subject is ShieldedEnemy)) return;
+            ShieldedEnemy shieldedEnemy = (ShieldedEnemy) subject;
+            shield.value = shieldedEnemy.shieldHealth == 0 ? 0 : shieldedEnemy.shieldHealth / shieldedEnemy.maxShieldHealth;
         }
     }
 }
