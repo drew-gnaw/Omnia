@@ -26,7 +26,7 @@ public class HarpoonGun : WeaponClass
     // Assuming number of spears isn't too big
     LinkedList<HarpoonSpear> firedSpears = new LinkedList<HarpoonSpear>();
 
-    private void Start()
+    override public void Start()
     {
         harpoonSpearPool = new ObjectPool<HarpoonSpear>(
             // Create

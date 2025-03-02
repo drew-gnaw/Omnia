@@ -8,7 +8,6 @@ namespace Enemies {
     public abstract class Enemy : MonoBehaviour {
         public static event Action<Enemy> Spawn;
         public static event Action<Enemy> Death;
-        public Func<float, float> OnHurt;
         public static event Action<Enemy, float> Damage;
 
         [SerializeField] internal float maximumHealth;
@@ -30,7 +29,6 @@ namespace Enemies {
         }
 
         public virtual void Hurt(float damage) {
-            if (OnHurt != null) damage = OnHurt.Invoke(damage);
             currentHealth = Mathf.Clamp(currentHealth - damage, 0, maximumHealth);
             Damage?.Invoke(this, damage);
 

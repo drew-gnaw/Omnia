@@ -8,7 +8,7 @@ using Players;
 using UnityEngine;
 
 namespace Enemies.Armadillo {
-    public class Armadillo : Enemy {
+    public class Armadillo : ShieldedEnemy {
         [SerializeField] internal SpriteRenderer sprite;
         [SerializeField] internal Animator animator;
         [SerializeField] internal Rigidbody2D rb;

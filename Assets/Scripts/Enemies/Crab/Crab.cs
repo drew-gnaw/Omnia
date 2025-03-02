@@ -43,7 +43,7 @@ namespace Enemies.Crab {
         }
 
         public override void Hurt(float damage) {
-            if (invulnerable) return;
+            if (invulnerable) damage = 0;
             base.Hurt(damage);
         }
 

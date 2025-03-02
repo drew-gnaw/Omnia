@@ -12,7 +12,7 @@ public class DamageMarker : MonoBehaviour {
 
     private float start;
 
-    public void initialize(Vector2 position, float value) {
+    public void Initialize(Vector2 position, float value) {
         start = duration;
         textMesh.alpha=0;
 

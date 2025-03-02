@@ -19,7 +19,7 @@ public abstract class WeaponClass : MonoBehaviour
     private bool canAttack = true;
     protected Player playerComponent;
 
-    public void Start() {
+    public virtual void Start() {
         playerComponent = player.GetComponent<Player>();
     }
 
