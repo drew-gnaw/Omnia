@@ -23,8 +23,9 @@ public class Shotgun : WeaponClass {
 
     private Coroutine reloadCoroutine;
 
-    private void Start() {
+    override public void Start() {
         shells = maxShells;
+        base.Start();
     }
 
     protected override void HandleAttack() {
