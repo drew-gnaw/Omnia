@@ -23,7 +23,7 @@ namespace Enemies.Armadillo.Behaviour {
         }
 
         private IEnumerator DoUncurl() {
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(1f);
             self.UseBehaviour(new Walk(self));
         }
     }

@@ -42,7 +42,7 @@ namespace Enemies.Armadillo.Behaviour {
 
         private IEnumerator DoIdle() {
             mode = Mode.Idle;
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(0.5f);
         }
 
         private bool CheckPlayer() {
