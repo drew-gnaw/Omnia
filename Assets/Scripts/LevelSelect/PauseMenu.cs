@@ -5,8 +5,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Utils;
 
-public class PauseMenu : MonoBehaviour
+public class PauseMenu : PersistentSingleton<PauseMenu>
 {
     public static bool IsPaused = false;
     public static bool ScreenShake = true;
@@ -44,6 +45,10 @@ public class PauseMenu : MonoBehaviour
             }
             isDialogueHistoryShowing = value;
         }
+    }
+
+    protected override void OnAwake() {
+        return;
     }
 
     void ShowHistory()
