@@ -1,7 +1,7 @@
 using UnityEngine;
 
 namespace Players.Mixin {
-    public class HandleSprite : MonoBehaviour {
+    public class UseWeaponTransformSprite : MonoBehaviour {
         [SerializeField] internal Player self;
         [SerializeField] internal Transform weapons;
 
