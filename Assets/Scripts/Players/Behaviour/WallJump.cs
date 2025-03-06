@@ -2,12 +2,10 @@ using UnityEngine;
 
 namespace Players.Behaviour {
     public class WallJump : IBehaviour {
-        private static IBehaviour _s;
-
         private readonly Player self;
         private float t;
 
-        private WallJump(Player self) {
+        public WallJump(Player self) {
             this.self = self;
         }
 
@@ -34,12 +32,8 @@ namespace Players.Behaviour {
             self.UseBehaviour(Slide.If(self) ?? Fall.If(self) ?? Move.If(self) ?? Idle.If(self));
         }
 
-        private static IBehaviour AdHoc(Player it) {
-            return _s ??= new WallJump(it);
-        }
-
         public static IBehaviour If(Player it) {
-            return !it.grounded && it.slide.x != 0 && it.jump ? AdHoc(it) : null;
+            return !it.grounded && it.slide.x != 0 && it.jump ? new WallJump(it) : null;
         }
     }
 }

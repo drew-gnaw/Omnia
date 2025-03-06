@@ -36,8 +36,8 @@ public class Shotgun : WeaponClass {
     }
 
     public override void IntroSkill() {
-        // TODO Recoil player and damage markiplier?
         Shoot();
+        player.GetComponent<Player>().UseRecoil(10);
     }
 
     void Update() {
@@ -79,16 +79,17 @@ public class Shotgun : WeaponClass {
             float currentAngle = -halfAngle + (angleStep * i);
             Vector2 direction = Quaternion.Euler(0, 0, currentAngle) * transform.right;
             RaycastHit2D hit = Physics2D.Raycast(origin, direction, range, groundLayer | enemyLayer);
-            
+
             if (hit.collider != null && CollisionUtils.isLayerInMask(hit.collider.gameObject.layer, enemyLayer)) {
                 // Apply damage to the enemy
                 Enemy enemy = hit.collider.GetComponent<Enemy>();
                 if (enemy != null) {
                     float distance = Vector2.Distance(origin, hit.point);
                     enemy.Hurt(DamageDropOff(distance));
+                    player.GetComponent<Player>().OnHit(damage * damageToFlowRatio);
                 }
             }
-            
+
             if (DEBUG_RAYS) {
                 if (hit.collider == null) {
                     Debug.DrawRay(origin, direction * range, Color.red, 1.0f);

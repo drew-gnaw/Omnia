@@ -2,7 +2,11 @@ using Unity.VisualScripting;
 using UnityEngine;
 using Enemies;
 using Omnia.Utils;
+using Players;
+
 using System.Collections;
+using Players;
+
 /*
     The projectile for HarpoonGun
     This class should only be interacted upon by its prefabs and HarpoonGun
@@ -11,6 +15,7 @@ public class HarpoonSpear : MonoBehaviour {
     public LayerMask enemyLayer;
     public LayerMask playerLayer;
     public LayerMask groundLayer;
+    public LayerMask semisolidLayer;
 
     public Collider2D Collider2D;
     public Rigidbody2D Rigidbody2D;
@@ -19,13 +24,26 @@ public class HarpoonSpear : MonoBehaviour {
     private bool collectable;
     private IEnumerator cooldown;
     private HarpoonGun gun;
+    private Player player;
+    private bool playerAbsorb;
+    private IEnumerator absorbCooldown;
 
     // Tracking enemy
-    public Enemy TaggedEnemy { get; private set;}
+    public Enemy TaggedEnemy { get; private set; }
+    public Transform PullTo { get; private set; }
+
+    public bool IsCollectable => collectable;
 
     public void Awake() {
-        this.dropped = false;
-        this.TaggedEnemy = null;
+        dropped = false;
+        TaggedEnemy = null;
+        PullTo = null;
+        playerAbsorb = false;
+
+        player = GameObject.Find("Player")?.GetComponent<Player>();
+        if (player == null) {
+            Debug.LogWarning("Player not found or Player script is not attached to the GameObject.");
+        }
     }
 
     public void OnEnable() {
@@ -57,11 +75,25 @@ public class HarpoonSpear : MonoBehaviour {
         // TODO
     }
 
+    public void ReturnToPlayer() {
+        playerAbsorb = true;
+    }
+
     public void Update() {
         // Rotate based on velocity
         if (!dropped && Rigidbody2D.velocity != Vector2.zero) {
             float angle = Mathf.Atan2(Rigidbody2D.velocity.y, Rigidbody2D.velocity.x) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+        }
+
+        if (playerAbsorb) {
+            transform.position = Vector2
+                .MoveTowards(transform.position, player.Center, gun.spearReturnSpeed * Time.deltaTime);
+
+            // Rotate over Z axis to face away from Player
+            Vector3 difference = transform.position - player.Center;
+            float rotationZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.Euler(0.0f, 0.0f, rotationZ);
         }
     }
 
@@ -75,6 +107,11 @@ public class HarpoonSpear : MonoBehaviour {
         if (CollisionUtils.isLayerInMask(other.gameObject.layer, enemyLayer) && !dropped) {
             HandleEnemyCollision(other.GetComponent<Enemy>());
         }
+
+        if (Collider2D.IsTouchingLayers(semisolidLayer) && !dropped) {
+            HandleSemisolidCollision();
+        }
+
         if (Collider2D.IsTouchingLayers(groundLayer) && !dropped) {
             HandleGroundCollision();
         }
@@ -82,7 +119,10 @@ public class HarpoonSpear : MonoBehaviour {
 
     private void HandlePlayerCollision() {
         Unfreeze();
+        playerAbsorb = false;
         collectable = false;
+        PullTo = null;
+
         // Tell gun to mark this spear as available
         gun.SpearCollected(this);
     }
@@ -90,6 +130,7 @@ public class HarpoonSpear : MonoBehaviour {
     private void HandleEnemyCollision(Enemy enemy) {
         Freeze();
         StartCooldown();
+        StartHarpoonTimer();
 
         TaggedEnemy = enemy;
 
@@ -98,11 +139,20 @@ public class HarpoonSpear : MonoBehaviour {
         hj.connectedBody = TaggedEnemy.GetComponent<Rigidbody2D>();
 
         TaggedEnemy.GetComponent<Enemy>().Hurt(gun.damage);
+        player?.OnHit(gun.damage * gun.damageToFlowRatio);
+    }
+
+    private void HandleSemisolidCollision() {
+        Freeze();
+        PullTo = gameObject.transform;
+        StartCooldown();
+        StartHarpoonTimer();
     }
 
     private void HandleGroundCollision() {
         Freeze();
         StartCooldown();
+        StartHarpoonTimer();
     }
 
     private void HandleEnemyDeath(Enemy enemy) {
@@ -122,7 +172,7 @@ public class HarpoonSpear : MonoBehaviour {
         Rigidbody2D.gravityScale = 1 * gun.harpoonSpearGravityScale;
         Rigidbody2D.freezeRotation = false;
         dropped = false;
-        
+
         Destroy(GetComponent<HingeJoint2D>());
     }
 
@@ -152,5 +202,20 @@ public class HarpoonSpear : MonoBehaviour {
     private IEnumerator DropCooldown() {
         yield return new WaitForSeconds(gun.harpoonSpearPickupCooldown);
         collectable = true;
+    }
+
+    private void StartHarpoonTimer() {
+        if (playerAbsorb) return;
+
+        if (absorbCooldown != null) {
+            StopCoroutine(absorbCooldown);
+        }
+        absorbCooldown = DropHarpoonTimer();
+        StartCoroutine(absorbCooldown);
+    }
+
+    private IEnumerator DropHarpoonTimer() {
+        yield return new WaitForSeconds(gun.harpoonTimer);
+        ReturnToPlayer();
     }
 }

@@ -108,7 +108,10 @@ MonoBehaviour:
     m_Bits: 128
   groundLayer:
     serializedVersion: 2
-    m_Bits: 520
+    m_Bits: 8
+  semisolidLayer:
+    serializedVersion: 2
+    m_Bits: 512
   Collider2D: {fileID: -393871621549028721}
   Rigidbody2D: {fileID: 2207564300050308312}
 --- !u!61 &-393871621549028721

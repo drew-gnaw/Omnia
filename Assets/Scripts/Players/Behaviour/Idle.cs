@@ -2,10 +2,9 @@ using UnityEngine;
 
 namespace Players.Behaviour {
     public class Idle : IBehaviour {
-        private static IBehaviour _s;
         private readonly Player self;
 
-        private Idle(Player self) {
+        public Idle(Player self) {
             this.self = self;
         }
 
@@ -22,15 +21,11 @@ namespace Players.Behaviour {
         }
 
         public void OnUpdate() {
-            self.UseBehaviour(Fall.If(self) ?? Jump.If(self) ?? Move.If(self));
-        }
-
-        public static IBehaviour AdHoc(Player it) {
-            return _s ??= new Idle(it);
+            self.UseBehaviour(Fall.If(self) ?? Jump.If(self) ?? Move.If(self) ?? Roll.If(self));
         }
 
         public static IBehaviour If(Player it) {
-            return it.grounded && it.moving.x == 0 && it.checks[1].IsTouchingLayers(it.ground | it.semisolid) ? AdHoc(it) : null;
+            return it.grounded && it.moving.x == 0 && it.checks[1].IsTouchingLayers(it.ground | it.semisolid) ? new Idle(it) : null;
         }
     }
 }
