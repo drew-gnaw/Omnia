@@ -126,16 +126,13 @@ public class PauseMenu : PersistentSingleton<PauseMenu>
 
     public void LevelSelectScene()
     {
-        IsPaused = false;
-        Time.timeScale = 1f
-            ;
+        ResumeScene();
         SceneInitializer.LoadScene(SceneManager.GetActiveScene().name); //change when level select added
     }
 
     public void ResetScene()
     {
-        IsPaused = false;
-        Time.timeScale = 1f;
+        ResumeScene();
         SceneInitializer.LoadScene(SceneManager.GetActiveScene().name);
     }
 
