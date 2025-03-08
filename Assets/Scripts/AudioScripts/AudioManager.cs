@@ -27,6 +27,7 @@ public class AudioManager : PersistentSingleton<AudioManager>
 
     }
 
+
     //////////////////////////////
     // Background Music Methods //
     //////////////////////////////
@@ -93,6 +94,11 @@ public class AudioManager : PersistentSingleton<AudioManager>
         }
     }
 
+    // Mutes background music
+    public void ToggleBGM() {
+        BGMPlayer.mute = !BGMPlayer.mute;
+    }
+
     // Adjust BGM volume dynamically, allowing for changes
     // during intense scenes or quieter moments
     public void SetBGMVolume(float volume) {
@@ -136,6 +142,11 @@ public class AudioManager : PersistentSingleton<AudioManager>
         }
     }
 
+    // Mutes sound effects
+    public void ToggleSFX() {
+        SFXPlayer.mute = !SFXPlayer.mute;
+    }
+
     /////////////////////
     // Ambient Methods //
     /////////////////////
@@ -164,5 +175,17 @@ public class AudioManager : PersistentSingleton<AudioManager>
         else {
             AmbientPlayer.volume = volume;
         }
+    }
+
+    // Mutes ambient sounds
+    public void ToggleAmbient() {
+        AmbientPlayer.mute = !AmbientPlayer.mute;
+    }
+
+    // Mutes all sounds
+    public void ToggleAudio() {
+        ToggleBGM();
+        ToggleSFX();
+        ToggleAmbient();
     }
 }
