@@ -14,6 +14,11 @@ namespace Utils {
             fadeScreen.color = new Color(fadeScreen.color.r, fadeScreen.color.g, fadeScreen.color.b, 1f);
         }
 
+        public void SetLightScreen()
+        {
+            fadeScreen.color = new Color(fadeScreen.color.r, fadeScreen.color.g, fadeScreen.color.b, 0f);
+        }
+
         public IEnumerator FadeInLightScreen(float duration)
         {
             yield return StartCoroutine(FadeBackground(1f, 0f, duration));
@@ -50,17 +55,26 @@ namespace Utils {
         {
             if (fadeActive) yield break;
             fadeActive = true;
+
             float elapsedTime = 0f;
 
             while (elapsedTime < duration)
             {
                 elapsedTime += Time.deltaTime;
-                float newAlpha = Mathf.Lerp(startAlpha, endAlpha, elapsedTime / duration);
+                float t = elapsedTime / duration;
+
+                // Use an ease-out function to slow the fade at the end
+                float easedT = 1f - Mathf.Pow(1f - t, 3f); // Cubic ease-out
+
+                float newAlpha = Mathf.Lerp(startAlpha, endAlpha, easedT);
                 fadeScreen.color = new Color(fadeScreen.color.r, fadeScreen.color.g, fadeScreen.color.b, newAlpha);
+
                 yield return null;
             }
+
             fadeActive = false;
         }
+
     }
 
 }

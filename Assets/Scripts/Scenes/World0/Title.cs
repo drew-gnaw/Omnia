@@ -11,9 +11,10 @@ namespace Scenes {
         [SerializeField] private GameObject titleSprite;         // Omnia (Sprite)
         [SerializeField] private GameObject subtitleSprite;      // The Journey Upwards (Sprite)
 
-        [SerializeField] private TextMeshProUGUI taglineTMP;     // Causa Fiunt (TMP UI)
-        [SerializeField] private TextMeshProUGUI quoteTMP;       // Everything happens for a reason (TMP UI)
+        [SerializeField] private TextMeshPro taglineTMP;     // Causa Fiunt (TMP UI)
+        [SerializeField] private TextMeshPro quoteTMP;       // Everything happens for a reason (TMP UI)
 
+        [SerializeField] private FadeScreenHandler strongFadeHandler;
         [SerializeField] private float flickerSpeed = 0.1f;
         [SerializeField] private float flickerIntensity = 0.2f;
         [SerializeField] private Color baseColor = Color.white;
@@ -21,6 +22,9 @@ namespace Scenes {
 
         private SpriteRenderer titleSpriteRenderer;
         private SpriteRenderer subtitleSpriteRenderer;
+
+        private string taglineText;
+        private string quoteText;
 
 
 
@@ -32,11 +36,21 @@ namespace Scenes {
 
         }
 
+        private void Awake() {
+            base.Awake();
+            strongFadeHandler.SetDarkScreen();
+            StartCoroutine(strongFadeHandler.FadeInLightScreen(1f));
+        }
+
         private void Start() {
             titleSpriteRenderer = titleSprite.GetComponent<SpriteRenderer>();
             subtitleSpriteRenderer = subtitleSprite.GetComponent<SpriteRenderer>();
 
+            // Text is not displayed at the beginning, but we should store their values.
+            taglineText = taglineTMP.text;
             taglineTMP.text = "";
+
+            quoteText = quoteTMP.text;
             quoteTMP.text = "";
 
         }
@@ -52,12 +66,11 @@ namespace Scenes {
         private IEnumerator StartGameSequence() {
             yield return StartCoroutine(fadeScreen.FadeInDarkScreen(2f));
             yield return new WaitForSeconds(1f);
-            yield return StartCoroutine(FadeInSprite(subtitleSpriteRenderer, 3f));
-            yield return new WaitForSeconds(1f);
-            yield return StartCoroutine(TypewriterEffect(taglineTMP, "Causa Fiunt", 0.05f));
-            yield return new WaitForSeconds(0.5f);
-            yield return StartCoroutine(TypewriterEffect(quoteTMP, "Everything happens for a reason.", 0.05f));
-            yield return new WaitForSeconds(1f);
+            yield return StartCoroutine(TypewriterEffect(taglineTMP, taglineText, 0.15f));
+            yield return new WaitForSeconds(2f);
+            yield return StartCoroutine(TypewriterEffect(quoteTMP, quoteText, 0.1f));
+            yield return new WaitForSeconds(3f);
+            yield return StartCoroutine(strongFadeHandler.FadeInDarkScreen(2f));
             SceneManager.LoadScene("MainScene");
         }
 
@@ -81,7 +94,7 @@ namespace Scenes {
             sprite.color = targetColor;
         }
 
-        private IEnumerator TypewriterEffect(TextMeshProUGUI textMesh, string fullText, float delay) {
+        private IEnumerator TypewriterEffect(TextMeshPro textMesh, string fullText, float delay) {
             textMesh.text = "";
             foreach (char c in fullText) {
                 textMesh.text += c;
