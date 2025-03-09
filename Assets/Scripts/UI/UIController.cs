@@ -43,11 +43,7 @@ namespace UI {
         }
 
         private void OnEnemyDeath(Enemy enemy) {
-            Debug.Log("Me as an enemy is dying ");
-            if (enemies.Remove(enemy, out var ui)) {
-                Debug.Log($"Did i fail to remove or smth {ui}");
-                Destroy(ui.gameObject);
-            }
+            if (enemies.Remove(enemy, out var ui)) Destroy(ui.gameObject);
         }
 
         private void OnEnemySpawn(Enemy enemy) {

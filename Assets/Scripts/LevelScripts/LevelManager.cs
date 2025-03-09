@@ -21,6 +21,10 @@ public class LevelManager : PersistentSingleton<LevelManager> {
     }
 
     private void HandlePlayerDeath() {
+        Restart();
+    }
+
+    public void Restart() {
         SceneInitializer.LoadScene(LevelData.SceneName);
     }
 
@@ -30,6 +34,10 @@ public class LevelManager : PersistentSingleton<LevelManager> {
 
     public void PrevLevel() {
         SceneInitializer.LoadScene(LevelData.PrevLevel.SceneName);
+    }
+
+    public void CustomLevel(LevelData data) {
+        SceneInitializer.LoadScene(data.SceneName);
     }
 }
 

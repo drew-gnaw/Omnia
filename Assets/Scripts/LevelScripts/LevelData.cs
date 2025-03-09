@@ -24,8 +24,8 @@ public abstract class LevelData : Enum<LevelData> {
 
 public class Level_1_1 : LevelData {
     public override string PlainName => "Level 1-1";
-    public override string SceneName => "Puzzle1";
-    public override LevelData NextLevel => Get<MainScene>();
+    public override string SceneName => "W-1-1";
+    public override LevelData NextLevel => Get<PuzzleTestScene>();
     public override LevelData PrevLevel => Get<MainScene>();
 }
 
@@ -33,5 +33,12 @@ public class MainScene : LevelData {
     public override string PlainName => "Test Scene";
     public override string SceneName => "MainScene";
     public override LevelData NextLevel => Get<Level_1_1>();
+    public override LevelData PrevLevel => Get<MainScene>();
+}
+
+public class PuzzleTestScene: LevelData {
+    public override string PlainName => "Puzzle Test Scene";
+    public override string SceneName => "Puzzle1";
+    public override LevelData NextLevel => Get<MainScene>();
     public override LevelData PrevLevel => Get<MainScene>();
 }
