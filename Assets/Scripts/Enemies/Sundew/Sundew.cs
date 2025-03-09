@@ -89,7 +89,7 @@ namespace Enemies.Sundew {
 
         private void UseDetection() {
             if (t != 0) return;
-            t = 0.25f;
+            t = 0.1f;
             detected = Sweep(sprite.transform.position, Vector2.up, 180, distance, 10, ground | player).Any(it => IsOnLayer(it, player));
         }
 

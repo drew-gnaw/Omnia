@@ -80,7 +80,7 @@ public class Shotgun : WeaponClass {
             Vector2 direction = Quaternion.Euler(0, 0, currentAngle) * transform.right;
             RaycastHit2D hit = Physics2D.Raycast(origin, direction, range, groundLayer | enemyLayer);
 
-            if (hit.collider != null && CollisionUtils.isLayerInMask(hit.collider.gameObject.layer, enemyLayer)) {
+            if (hit.collider != null && CollisionUtils.IsLayerInMask(hit.collider.gameObject.layer, enemyLayer)) {
                 // Apply damage to the enemy
                 Enemy enemy = hit.collider.GetComponent<Enemy>();
                 if (enemy != null) {
