@@ -17,7 +17,7 @@ namespace Enemies.Armadillo.Behaviour {
         }
 
         public void OnTick() {
-            self.rb.velocity = new Vector2(self.facing.x * 3, self.rb.velocity.y);
+            self.rb.velocity = new Vector2(self.facing.x * self.rollSpeed, self.rb.velocity.y);
 
             float targetFps = 48f;
             float frameTime = 1f / targetFps; // Target frame time

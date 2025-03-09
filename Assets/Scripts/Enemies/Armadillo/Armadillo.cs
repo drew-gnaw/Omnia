@@ -17,6 +17,8 @@ namespace Enemies.Armadillo {
         [SerializeField] internal BoxCollider2D[] checks;
         [SerializeField] internal Vector2 facing = Vector2.right;
         [SerializeField] internal float hitDistance = 1;
+        [SerializeField] internal float walkSpeed = 1f;
+        [SerializeField] internal float rollSpeed = 4f;
         [SerializeField] private string debugBehaviour;
 
         public void Awake() {
