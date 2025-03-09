@@ -10,7 +10,7 @@ public class Mace : WeaponClass
     
     protected override void HandleAttack()
     {
-        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(AttackPoint.position, Radius, enemyLayer);
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(AttackPoint.position, Radius, hittableLayerMask);
         foreach (Collider2D enemy in hitEnemies)
         {
             enemy.GetComponent<Enemy>().Hurt(damage);

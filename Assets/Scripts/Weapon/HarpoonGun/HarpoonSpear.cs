@@ -12,7 +12,7 @@ using Players;
     This class should only be interacted upon by its prefabs and HarpoonGun
 */
 public class HarpoonSpear : MonoBehaviour {
-    public LayerMask enemyLayer;
+    public LayerMask hittableLayerMask;
     public LayerMask playerLayer;
     public LayerMask groundLayer;
     public LayerMask semisolidLayer;
@@ -104,7 +104,7 @@ public class HarpoonSpear : MonoBehaviour {
         }
         // FIXME: for whatever reason, checking if the spear collider is touching enemy does not always work,
         // other collider ends up as null if they are moving
-        if (CollisionUtils.isLayerInMask(other.gameObject.layer, enemyLayer) && !dropped) {
+        if (CollisionUtils.isLayerInMask(other.gameObject.layer, hittableLayerMask) && !dropped) {
             HandleEnemyCollision(other.GetComponent<Enemy>());
         }
 

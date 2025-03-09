@@ -78,9 +78,9 @@ public class Shotgun : WeaponClass {
         for (int i = 0; i < subDivide; i++) {
             float currentAngle = -halfAngle + (angleStep * i);
             Vector2 direction = Quaternion.Euler(0, 0, currentAngle) * transform.right;
-            RaycastHit2D hit = Physics2D.Raycast(origin, direction, range, groundLayer | enemyLayer);
+            RaycastHit2D hit = Physics2D.Raycast(origin, direction, range, groundLayer | hittableLayerMask);
 
-            if (hit.collider != null && CollisionUtils.isLayerInMask(hit.collider.gameObject.layer, enemyLayer)) {
+            if (hit.collider != null && CollisionUtils.isLayerInMask(hit.collider.gameObject.layer, hittableLayerMask)) {
                 // Apply damage to the enemy
                 Enemy enemy = hit.collider.GetComponent<Enemy>();
                 if (enemy != null) {
@@ -110,7 +110,7 @@ public class Shotgun : WeaponClass {
         for (int i = 0; i < subDivide; i++) {
             float randomAngle = UnityEngine.Random.Range(-blastAngle / 2, blastAngle / 2);
             Vector2 direction = Quaternion.Euler(0, 0, randomAngle) * transform.right;
-            RaycastHit2D hit = Physics2D.Raycast(origin, direction, range, groundLayer | enemyLayer);
+            RaycastHit2D hit = Physics2D.Raycast(origin, direction, range, groundLayer | hittableLayerMask);
 
             LineRenderer line = new GameObject("Tracer").AddComponent<LineRenderer>();
             line.positionCount = 2;

@@ -44,13 +44,13 @@ namespace Players.Behaviour {
             // If roll into wall, pass and enter new state
             if (self.checks[0].IsTouchingLayers(self.ground) || self.checks[2].IsTouchingLayers(self.ground)) {}
             // else check if roll is active or stuck in small space to continue
-            else if (t > 0 || self.checks[3].IsTouchingLayers(self.ground | self.semisolid)) return;
+            else if (t > 0 || self.checks[3].IsTouchingLayers(self.GroundedMask)) return;
 
             self.UseBehaviour(Slide.If(self) ?? Fall.If(self) ?? Move.If(self) ?? Idle.If(self));
         }
 
         public static IBehaviour If(Player it) {
-            return it.roll && it.canRoll && it.grounded && it.checks[1].IsTouchingLayers(it.ground | it.semisolid) ? new Roll(it) : null;
+            return it.roll && it.canRoll && it.grounded && it.checks[1].IsTouchingLayers(it.GroundedMask) ? new Roll(it) : null;
         }
 
         // Probably better to have a separate dedicated collider for rolling state
