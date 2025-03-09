@@ -11,7 +11,7 @@ namespace Enemies.Sundew {
         private Action<Player> action;
 
         public void OnTriggerEnter2D(Collider2D other) {
-            if (!CollisionUtils.isLayerInMask(other.gameObject.layer, mask)) return;
+            if (!CollisionUtils.IsLayerInMask(other.gameObject.layer, mask)) return;
             if (other.TryGetComponent<Player>(out var player)) action(player);
 
             Destroy(gameObject);

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Omnia.Utils;
@@ -15,7 +14,6 @@ namespace Enemies.Common {
 
         private readonly HashSet<Cell2D> obstacles = new();
         private Tilemap[] tiles;
-        private BoundsInt bound;
 
         public void OnEnable() {
             SceneManager.sceneLoaded += OnSceneLoaded;
@@ -26,13 +24,11 @@ namespace Enemies.Common {
         }
 
         protected override void OnAwake() {
-            tiles = FindObjectsOfType<Tilemap>().Where(it => CollisionUtils.isLayerInMask(it.gameObject.layer, solid)).ToArray();
-            bound = tiles.Select(CompressAndGet).Aggregate(MaxBound);
+            tiles = FindObjectsOfType<Tilemap>().Where(it => CollisionUtils.IsLayerInMask(it.gameObject.layer, solid)).ToArray();
             obstacles.Clear();
-
-            var positions = bound.allPositionsWithin;
-            foreach (var position in positions) {
-                if (tiles.Any(it => it.HasTile(position))) obstacles.Add((Cell2D)position);
+            foreach (var p in CompressedBoundsAllPositions(tiles)) {
+                var p2 = (Cell2D)p;
+                if (tiles.Any(it => it.HasTile(p))) obstacles.Add(p2);
             }
         }
 
@@ -40,80 +36,72 @@ namespace Enemies.Common {
             OnAwake();
         }
 
-        public List<Vector2> FindPath(Vector2 a, Vector2 b) {
-            if (tiles.Length < 1) return new List<Vector2>();
+        private List<Vector3> DoFindPath(Vector3 a, Vector3 b) {
+            if (tiles.Length == 0) return new List<Vector3>();
             var basis = tiles[0];
 
             var a0 = (Cell2D)basis.WorldToCell(a);
             var b0 = (Cell2D)basis.WorldToCell(b);
-            return AStar(a0, b0).ConvertAll(it => (Vector2)basis.GetCellCenterWorld((Cell3D)it));
+            return AStar(a0, b0).ConvertAll(it => basis.GetCellCenterWorld((Cell3D)it));
         }
 
-        private List<Vector2Int> AStar(Vector2Int start, Vector2Int target) {
-            HashSet<Vector2Int> closedSet = new HashSet<Vector2Int>();
-            PriorityQueue<Vector2Int> openSet = new PriorityQueue<Vector2Int>();
-            Dictionary<Vector2Int, Vector2Int> cameFrom = new Dictionary<Vector2Int, Vector2Int>();
-            Dictionary<Vector2Int, float> gScore = new Dictionary<Vector2Int, float> { [start] = 0 };
-            Dictionary<Vector2Int, float> fScore = new Dictionary<Vector2Int, float> { [start] = Heuristic(start, target) };
+        private List<Cell2D> AStar(Cell2D a, Cell2D b) {
+            var predecessor = new Dictionary<Cell2D, Cell2D>();
+            var gs = new Dictionary<Cell2D, float> { [a] = 0 };
+            var fs = new Dictionary<Cell2D, float> { [a] = Heuristic(a, b) };
 
-            openSet.Enqueue(start, fScore[start]);
+            var todo = new Heapish<Cell2D>((c1, c2) => Mathf.Approximately(fs[c1], fs[c2]) ? gs[c1] < gs[c2] : fs[c1] < fs[c2]);
+            todo.Push(a);
+            var visited = new HashSet<Cell2D>();
 
-            while (openSet.Count > 0) {
-                Vector2Int current = openSet.Dequeue();
-                if (current == target)
-                    return ReconstructPath(cameFrom, current);
+            while (todo.Size != 0) {
+                var c = todo.Pop();
+                if (c == b) return ReconstructPath(predecessor, b);
+                visited.Add(c);
 
-                closedSet.Add(current);
-                foreach (Vector2Int neighbor in GetNeighbors(current)) {
-                    if (closedSet.Contains(neighbor) || IsObstacle(neighbor))
-                        continue;
+                foreach (var n in Next(c)) {
+                    if (visited.Contains(n) || obstacles.Contains(n)) continue;
+                    var candidateScore = gs[c] + Cell2D.Distance(c, n);
+                    if (gs.ContainsKey(n) && candidateScore >= gs[n]) continue;
 
-                    float tentativeGScore = gScore[current] + Vector2Int.Distance(current, neighbor);
-                    if (!gScore.ContainsKey(neighbor) || tentativeGScore < gScore[neighbor]) {
-                        cameFrom[neighbor] = current;
-                        gScore[neighbor] = tentativeGScore;
-                        fScore[neighbor] = tentativeGScore + Heuristic(neighbor, target);
-                        openSet.Enqueue(neighbor, fScore[neighbor]);
-                    }
+                    fs[n] = candidateScore + Heuristic(n, b);
+                    gs[n] = candidateScore;
+                    todo.Push(n);
+                    predecessor[n] = c;
                 }
             }
 
-            return new List<Vector2Int>(); // No path found
+            return new List<Cell2D>();
         }
 
-        private float Heuristic(Vector2Int a, Vector2Int b) {
-            return Vector2Int.Distance(a, b);
+        private static List<Cell2D> ReconstructPath(Dictionary<Cell2D, Cell2D> predecessor, Cell2D c) {
+            var path = new List<Cell2D> { c };
+            for (var p = c; predecessor.ContainsKey(p); p = predecessor[p]) path.Add(p);
+
+            return path.Reverse<Cell2D>().ToList();
         }
 
-        private List<Vector2Int> GetNeighbors(Vector2Int node) {
-            return new List<Vector2Int> {
-                new Vector2Int(node.x + 1, node.y),
-                new Vector2Int(node.x - 1, node.y),
-                new Vector2Int(node.x, node.y + 1),
-                new Vector2Int(node.x, node.y - 1)
-            };
-        }
+        private static float Heuristic(Cell2D a, Cell2D b) => Cell2D.Distance(a, b);
 
-        private List<Vector2Int> ReconstructPath(Dictionary<Vector2Int, Vector2Int> cameFrom, Vector2Int current) {
-            List<Vector2Int> path = new List<Vector2Int> { current };
-            while (cameFrom.ContainsKey(current)) {
-                current = cameFrom[current];
-                path.Add(current);
+        private static Cell2D[] Next(Cell2D c) => new[] {
+            new Cell2D(c.x + 1, c.y),
+            new Cell2D(c.x - 1, c.y),
+            new Cell2D(c.x, c.y + 1),
+            new Cell2D(c.x, c.y - 1)
+        };
+
+        private static BoundsInt.PositionEnumerator CompressedBoundsAllPositions(Tilemap[] tiles) {
+            if (tiles.Length == 0) return new BoundsInt.PositionEnumerator();
+
+            var bounds = tiles[0].cellBounds;
+            foreach (var t in tiles) {
+                t.CompressBounds();
+                bounds.SetMinMax(Cell3D.Min(bounds.min, t.cellBounds.min), Cell3D.Max(bounds.max, t.cellBounds.max));
             }
 
-            path.Reverse();
-            return path;
+            return bounds.allPositionsWithin;
         }
 
-        private static BoundsInt CompressAndGet(Tilemap it) {
-            it.CompressBounds();
-            return it.cellBounds;
-        }
-
-        private static BoundsInt MaxBound(BoundsInt a, BoundsInt b) {
-            var min = new Cell3D(Math.Min(a.xMin, b.xMin), Math.Min(a.yMin, b.yMin));
-            var max = new Cell3D(Math.Max(a.xMax, b.xMax), Math.Max(a.yMax, b.yMax));
-            return new BoundsInt(min, max - min);
-        }
+        public static List<Vector3> FindPath(Vector2 a, Vector2 b) => Instance.DoFindPath(a, b);
     }
 }

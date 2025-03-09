@@ -12,7 +12,7 @@ namespace Enemies.BirdSpawner.Behaviour {
 
         public void OnEnter() {
             cdt = self.cooldown;
-            self.SpawnBird();
+            self.SpawnNewBird();
         }
 
         public void OnExit() {

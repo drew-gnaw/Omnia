@@ -6,13 +6,13 @@ namespace Enemies.Bird.Animation {
         }
     }
 
-    public class DiveAnimation : AnimationState {
-        public DiveAnimation(Animator animator) : base("BirdDive", animator) {
+    public class AlertAnimation : AnimationState {
+        public AlertAnimation(Animator animator) : base("BirdAlert", animator) {
         }
     }
 
-    public class BombAnimation : AnimationState {
-        public BombAnimation(Animator animator) : base("BirdBomb", animator) {
+    public class AttackAnimation : AnimationState {
+        public AttackAnimation(Animator animator) : base("BirdAttack", animator) {
         }
     }
 }

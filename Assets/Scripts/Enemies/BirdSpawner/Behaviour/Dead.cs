@@ -1,9 +1,9 @@
 namespace Enemies.BirdSpawner.Behaviour {
-    public class Broken : IBehaviour {
+    public class Dead : IBehaviour {
         private readonly BirdSpawner self;
         private int layer;
 
-        public Broken(BirdSpawner self) {
+        public Dead(BirdSpawner self) {
             this.self = self;
         }
 

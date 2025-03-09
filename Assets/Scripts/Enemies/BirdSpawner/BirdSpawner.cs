@@ -13,17 +13,10 @@ namespace Enemies.BirdSpawner {
         [SerializeField] internal SpriteRenderer sprite;
         [SerializeField] internal Animator animator;
         [SerializeField] internal LayerMask bg;
-        [SerializeField] internal GameObject bird;
-
-        [SerializeField] internal string debugBehaviour;
+        [SerializeField] internal GameObject spawnable;
 
         public void Awake() {
             UseBehaviour(new Idle(this));
-        }
-
-        public override void UseBehaviour(IBehaviour it) {
-            base.UseBehaviour(it);
-            debugBehaviour = it.GetType().Name;
         }
 
         public override void Hurt(float damage) {
@@ -31,17 +24,16 @@ namespace Enemies.BirdSpawner {
             currentHealth = Mathf.Clamp(currentHealth - damage, 0, maximumHealth);
 
             /* Become inactive on "death" without being destroyed. */
-            if (currentHealth == 0) UseBehaviour(new Broken(this));
+            if (currentHealth == 0) UseBehaviour(new Dead(this));
         }
 
         public void SetLayer(LayerMask it) {
             gameObject.layer = MathUtils.LayerIndexOf(it);
         }
 
-        public void SpawnBird() {
-            var instance = Instantiate(bird, sprite.transform.position, Quaternion.identity).GetComponent<Bird.Bird>().Of(() => spawns++);
+        public void SpawnNewBird() {
             spawns--;
-            instance.rb.velocity = Random.insideUnitCircle.normalized * instance.speed;
+            Instantiate(spawnable, sprite.transform.position, Quaternion.identity).GetComponent<Bird.Bird>().NotifyOnDestroy = _ => spawns++;
         }
 
         protected override void UseAnimation(StateMachine stateMachine) {
@@ -52,7 +44,7 @@ namespace Enemies.BirdSpawner {
 
             stateMachine.AddAnyTransition(idle, new FuncPredicate(() => behaviour is Idle));
             stateMachine.AddAnyTransition(barf, new FuncPredicate(() => behaviour is Attack));
-            stateMachine.AddAnyTransition(dead, new FuncPredicate(() => behaviour is Broken));
+            stateMachine.AddAnyTransition(dead, new FuncPredicate(() => behaviour is Dead));
 
             stateMachine.SetState(idle);
             animationStateMachine = stateMachine;

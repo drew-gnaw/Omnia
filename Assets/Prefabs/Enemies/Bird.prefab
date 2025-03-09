@@ -155,27 +155,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maximumHealth: 10
   currentHealth: 10
-  attack: 5
-  knockbackForce: 25
-  knockbackAngle: 45
-  staggerDurationS: 5
-  detectionRadius: 50
+  attack: 20
+  knockbackForce: 20
+  knockbackAngle: 0
+  staggerDurationS: 0
+  detectionRadius: 10
   fuse: 5
-  triggerDistance: 0.5
-  explosionRadius: 1
-  delay: 0.5
+  triggerDistance: 0.75
+  explosionRadius: 1.5
+  delay: 1
   speed: 15
   sprite: {fileID: 9202038865644320477}
   animator: {fileID: 6149703548532306918}
   rb: {fileID: 7893308943432753642}
+  explosion: {fileID: 0}
   ground:
     serializedVersion: 2
     m_Bits: 8
   player:
     serializedVersion: 2
     m_Bits: 128
-  facing: {x: 0, y: 0}
-  debugBehaviour: 
+  targetInstance: {fileID: 0}
 --- !u!50 &7893308943432753642
 Rigidbody2D:
   serializedVersion: 4
@@ -191,7 +191,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 0
+  m_GravityScale: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
