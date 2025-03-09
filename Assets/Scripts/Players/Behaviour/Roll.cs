@@ -1,6 +1,4 @@
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 namespace Players.Behaviour {
     public class Roll : IBehaviour {
@@ -25,7 +23,6 @@ namespace Players.Behaviour {
             direction = Mathf.Sign(Mathf.Abs(self.rb.velocity.x) > self.rollThreshold ? self.rb.velocity.x : self.facing.x);
 
             self.OnRoll();
-            self.UseAnimation("PlayerSlide");
         }
 
         public void OnExit() {
@@ -46,7 +43,7 @@ namespace Players.Behaviour {
             // else check if roll is active or stuck in small space to continue
             else if (t > 0 || self.checks[3].IsTouchingLayers(self.ground | self.semisolid)) return;
 
-            self.UseBehaviour(Slide.If(self) ?? Fall.If(self) ?? Move.If(self) ?? Idle.If(self));
+            self.UseBehaviour(Slide.If(self) ?? Fall.If(self) ?? Jump.If(self) ?? Move.If(self) ?? Idle.If(self));
         }
 
         public static IBehaviour If(Player it) {
