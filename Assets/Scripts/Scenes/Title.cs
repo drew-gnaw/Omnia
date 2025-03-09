@@ -17,6 +17,7 @@ namespace Scenes {
         [SerializeField] private Color flickerColor = new Color(1f, 0.85f, 0.6f);
 
         private SpriteRenderer titleSpriteRenderer;
+        private SpriteRenderer subtitleSpriteRenderer;
 
 
         public void QuitGame() {
@@ -28,24 +29,37 @@ namespace Scenes {
         }
 
         private void Start() {
-            quitButton.interactable = false;
             titleSpriteRenderer = omniaText.GetComponent<SpriteRenderer>();
+            subtitleSpriteRenderer = omniaSubtitle.GetComponent<SpriteRenderer>();
+
+            Color transparentColor = subtitleSpriteRenderer.color;
+            transparentColor.a = 0f;
+            subtitleSpriteRenderer.color = transparentColor;
         }
 
         public void StartGame() {
             Debug.Log("starting game...");
+            StartCoroutine(FadeInSubtitle(5f));
         }
 
-
-        private float cycleScaling = 2f; // Higher the number, the faster one phase is
-        private float bobbingAmount = 0.1f; //Amplitude
-        private float timer = 0;
-        private float verticalOffset = 0;
-
-        //Makes the game over text bob up and down!
         void Update() {
-            float flicker = 1f + Random.Range(-flickerIntensity, flickerIntensity);
+            float flicker = flickerSpeed + Random.Range(-flickerIntensity, flickerIntensity);
             titleSpriteRenderer.color = Color.Lerp(baseColor, flickerColor, flicker);
+        }
+
+        private IEnumerator FadeInSubtitle(float duration) {
+            float elapsedTime = 0f;
+            Color startColor = subtitleSpriteRenderer.color;
+            Color targetColor = startColor;
+            targetColor.a = 1f;
+
+            while (elapsedTime < duration) {
+                elapsedTime += Time.deltaTime;
+                subtitleSpriteRenderer.color = Color.Lerp(startColor, targetColor, elapsedTime / duration);
+                yield return null;
+            }
+
+            subtitleSpriteRenderer.color = targetColor;
         }
     }
 }
