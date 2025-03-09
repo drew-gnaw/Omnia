@@ -11,6 +11,7 @@ namespace Players.Mixin {
 
         public void Update() {
             self.sprite.flipX = self.facing.x == 0 ? self.sprite.flipX : self.facing.x < 0;
+            weapons.gameObject.SetActive(self.IsAttackEnabled());
 
             var flip = self.sprite.flipX ? -1 : 1;
             weapons.localPosition = new Vector3(weaponsPosition.x * flip, weaponsPosition.y, weapons.localPosition.z);

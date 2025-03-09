@@ -210,6 +210,10 @@ namespace Players {
             return Math.Abs(rb.velocity.x) > moveSpeed && Math.Sign(rb.velocity.x) == Math.Sign(moving.x);
         }
 
+        internal bool IsAttackEnabled() {
+            return behaviour is not Roll and not Pull;
+        }
+
         // Called by Behaviour.Roll to handle the cooldown timer
         internal void OnRoll() {
             canRoll = false;
@@ -217,9 +221,8 @@ namespace Players {
         }
 
         private void DoAttack() {
-            if (!fire) return;
+            if (!fire || !IsAttackEnabled()) return;
             fire = false;
-            Debug.Log("attacking");
             weapons[selectedWeapon].Attack();
         }
 
