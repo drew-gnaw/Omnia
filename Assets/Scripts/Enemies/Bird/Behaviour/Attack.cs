@@ -30,13 +30,13 @@ namespace Enemies.Bird.Behaviour {
         }
 
         public void OnTick() {
-            if (IsNear(self.targetInstance.sprite.transform.position) || t < self.fuse - 0.5f && self.rb.IsTouchingLayers(self.ground | self.player)) {
+            if (IsNear(self.targetInstance.sprite.transform.position)) {
                 self.OnExplode();
             } else {
-                var next = path.ElementAtOrDefault(path.FindLastIndex(IsNear) + 1);
+                var next = path.LastOrDefault(IsNear);
                 if (next == default) return;
-                var into = next - self.transform.position;
-                self.rb.velocity = Vector2.MoveTowards(self.rb.velocity, into.normalized * self.speed, 0.5f);
+                var direction = next - self.transform.position;
+                self.rb.velocity = Vector2.MoveTowards(self.rb.velocity, direction.normalized * self.speed, 1f);
             }
         }
 
