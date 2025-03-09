@@ -27,7 +27,6 @@ public class Level_1_1 : LevelData {
     public override string SceneName => "Puzzle1";
     public override LevelData NextLevel => Get<MainScene>();
     public override LevelData PrevLevel => Get<MainScene>();
-
 }
 
 public class MainScene : LevelData {
