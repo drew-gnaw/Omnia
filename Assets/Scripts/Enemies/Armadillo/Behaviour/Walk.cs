@@ -23,7 +23,7 @@ namespace Enemies.Armadillo.Behaviour {
         public void OnTick() {
             self.rb.velocity = new Vector2(mode == Mode.Idle ? 0 : self.facing.x * 1, self.rb.velocity.y);
 
-            if (CheckPlayer()) self.UseBehaviour(new Rush(self));
+            if (CheckPlayer()) self.UseBehaviour(new Alert(self));
         }
 
         public void OnUpdate() {

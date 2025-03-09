@@ -11,6 +11,11 @@ namespace Enemies.Armadillo.Animation {
         }
     }
 
+    public class AlertAnimation : AnimationState {
+        public AlertAnimation(Animator animator) : base("ArmadilloAlert", animator) {
+        }
+    }
+
     public class RushAnimation : AnimationState {
         public RushAnimation(Animator animator) : base("ArmadilloRush", animator) {
         }

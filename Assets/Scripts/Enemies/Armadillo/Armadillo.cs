@@ -17,6 +17,7 @@ namespace Enemies.Armadillo {
         [SerializeField] internal BoxCollider2D[] checks;
         [SerializeField] internal Vector2 facing = Vector2.right;
         [SerializeField] internal float hitDistance = 1;
+        [SerializeField] private string debugBehaviour;
 
         public void Awake() {
             UseBehaviour(new Walk(this));
@@ -43,15 +44,22 @@ namespace Enemies.Armadillo {
             }
         }
 
+        override public void UseBehaviour(IBehaviour behaviour) {
+            base.UseBehaviour(behaviour);
+            debugBehaviour = behaviour.GetType().Name;
+        }
+
         protected override void UseAnimation(StateMachine stateMachine) {
             var idle = new IdleAnimation(animator);
             var walk = new WalkAnimation(animator);
+            var alert = new AlertAnimation(animator);
             var rush = new RushAnimation(animator);
             var stun = new StunAnimation(animator);
             var uncurl = new UncurlAnimation(animator);
 
             stateMachine.AddAnyTransition(idle, new FuncPredicate(() => behaviour is Walk && rb.velocity.x == 0)); // Stay standing up
             stateMachine.AddAnyTransition(walk, new FuncPredicate(() => behaviour is Walk && rb.velocity.x != 0));
+            stateMachine.AddAnyTransition(alert, new FuncPredicate(() => behaviour is Alert));
             stateMachine.AddAnyTransition(rush, new FuncPredicate(() => behaviour is Rush && rb.velocity.x != 0));
             stateMachine.AddAnyTransition(stun, new FuncPredicate(() => behaviour is Stun));
             stateMachine.AddAnyTransition(uncurl, new FuncPredicate(() => behaviour is Uncurl));
