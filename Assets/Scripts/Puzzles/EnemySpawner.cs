@@ -1,17 +1,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Omnia.Utils;
-using Enemies; // Assuming CountdownTimer is in this namespace
+using Enemies;
 
-public class EnemyPipe : MonoBehaviour {
+public class EnemySpawner : MonoBehaviour {
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private int maxSpawns;
     [SerializeField] private float spawnCoolDown;
     [SerializeField] private Enemy prefab;
     [SerializeField] private SpawnAnimation spawnAnimationPrefab;
 
+    private readonly List<Enemy> ownedEnemies = new();
     private CountdownTimer spawnTimer;
-    private List<Enemy> ownedEnemies = new List<Enemy>();
 
     private void Start() {
         TrySpawn();
