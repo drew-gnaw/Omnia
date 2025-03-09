@@ -18,10 +18,14 @@ namespace Enemies.Armadillo.Behaviour {
 
         public void OnTick() {
             self.rb.velocity = new Vector2(self.facing.x * 3, self.rb.velocity.y);
-            float targetFps = 24f;
-            float frameTime = 1f / targetFps; // Time per frame for 24fps
+
+            float targetFps = 48f;
+            float frameTime = 1f / targetFps; // Target frame time
             float speed = Mathf.Abs(self.rb.velocity.x);
-            float rotationAmount = -self.facing.x * 360f * speed * frameTime;
+
+            // Use Time.deltaTime to adjust based on actual frame rate
+            float rotationAmount = -self.facing.x * 360f * speed * frameTime * (Time.deltaTime / frameTime);
+
             self.sprite.transform.Rotate(0f, 0f, rotationAmount);
 
             if (CheckHit()) {
@@ -29,6 +33,7 @@ namespace Enemies.Armadillo.Behaviour {
                 UseStun();
             }
         }
+
 
         public void OnUpdate() {
         }
