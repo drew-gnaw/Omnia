@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Utils;
 
 
 namespace Scenes {
@@ -11,10 +12,24 @@ namespace Scenes {
     {
         public Button[] buttons;
         public GameObject levelButtons;
+        [SerializeField] protected FadeScreenHandler fadeScreen;
+
+        protected virtual void Awake()
+        {
+            ButtonArray();
+            fadeScreen.SetDarkScreen();
+            StartCoroutine(fadeScreen.FadeInLightScreen(1f));
+        }
 
         public void OpenScene(string s)
         {
-            SceneInitializer.LoadScene(s);
+            StartCoroutine(FadeLevelIn(s));
+        }
+
+        IEnumerator FadeLevelIn(string levelName)
+        {
+            yield return StartCoroutine(fadeScreen.FadeInDarkScreen(0.8f));
+            SceneManager.LoadScene(levelName);
         }
 
         void ButtonArray()
@@ -27,5 +42,6 @@ namespace Scenes {
             }
         }
     }
+
 
 }
