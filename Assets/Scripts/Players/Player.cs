@@ -211,7 +211,7 @@ namespace Players {
         }
 
         internal bool IsAttackEnabled() {
-            return behaviour is not Roll and not Pull;
+            return behaviour is not Roll;
         }
 
         // Called by Behaviour.Roll to handle the cooldown timer
