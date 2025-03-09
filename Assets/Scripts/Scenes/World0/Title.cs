@@ -8,9 +8,11 @@ using Utils;
 
 namespace Scenes {
     public class Title : LevelSelect {
-        [SerializeField] private GameObject omniaText;
-        [SerializeField] private GameObject omniaSubtitle;
-        [SerializeField] private GameObject omniaSubtitle2;
+        [SerializeField] private GameObject titleSprite;         // Omnia (Sprite)
+        [SerializeField] private GameObject subtitleSprite;      // The Journey Upwards (Sprite)
+
+        [SerializeField] private TextMeshProUGUI taglineTMP;     // Causa Fiunt (TMP UI)
+        [SerializeField] private TextMeshProUGUI quoteTMP;       // Everything happens for a reason (TMP UI)
 
         [SerializeField] private float flickerSpeed = 0.1f;
         [SerializeField] private float flickerIntensity = 0.2f;
@@ -19,11 +21,7 @@ namespace Scenes {
 
         private SpriteRenderer titleSpriteRenderer;
         private SpriteRenderer subtitleSpriteRenderer;
-        private SpriteRenderer subtitle2SpriteRenderer;
 
-        // TITLE:       Omnia
-        // SUBTITLE:    The Journey Upwards
-        // SUBTITLE2:   Everything happens for a reason
 
 
         public void QuitGame() {
@@ -35,14 +33,12 @@ namespace Scenes {
         }
 
         private void Start() {
-            titleSpriteRenderer = omniaText.GetComponent<SpriteRenderer>();
-            subtitleSpriteRenderer = omniaSubtitle.GetComponent<SpriteRenderer>();
-            subtitle2SpriteRenderer = omniaSubtitle2.GetComponent<SpriteRenderer>();
+            titleSpriteRenderer = titleSprite.GetComponent<SpriteRenderer>();
+            subtitleSpriteRenderer = subtitleSprite.GetComponent<SpriteRenderer>();
 
-            Color transparentColor = subtitleSpriteRenderer.color;
-            transparentColor.a = 0f;
-            subtitleSpriteRenderer.color = transparentColor;
-            subtitle2SpriteRenderer.color = transparentColor;
+            taglineTMP.text = "";
+            quoteTMP.text = "";
+
         }
 
         public void StartGame() {
@@ -58,7 +54,9 @@ namespace Scenes {
             yield return new WaitForSeconds(1f);
             yield return StartCoroutine(FadeInSprite(subtitleSpriteRenderer, 3f));
             yield return new WaitForSeconds(1f);
-            yield return StartCoroutine(FadeInSprite(subtitle2SpriteRenderer, 3f));
+            yield return StartCoroutine(TypewriterEffect(taglineTMP, "Causa Fiunt", 0.05f));
+            yield return new WaitForSeconds(0.5f);
+            yield return StartCoroutine(TypewriterEffect(quoteTMP, "Everything happens for a reason.", 0.05f));
             yield return new WaitForSeconds(1f);
             SceneManager.LoadScene("MainScene");
         }
@@ -81,6 +79,14 @@ namespace Scenes {
             }
 
             sprite.color = targetColor;
+        }
+
+        private IEnumerator TypewriterEffect(TextMeshProUGUI textMesh, string fullText, float delay) {
+            textMesh.text = "";
+            foreach (char c in fullText) {
+                textMesh.text += c;
+                yield return new WaitForSeconds(delay);
+            }
         }
     }
 }
