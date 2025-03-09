@@ -149,6 +149,7 @@ public class DialogueManager : PersistentSingleton<DialogueManager>
     void OnSceneChange(Scene s, LoadSceneMode m)
     {
         EndDialogue();
+        //dialogueHistory.Clear();
     }
 
     void EndDialogue()
