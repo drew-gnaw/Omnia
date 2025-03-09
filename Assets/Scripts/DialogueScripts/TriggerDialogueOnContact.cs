@@ -15,9 +15,6 @@ public class TriggerDialogueOnContact : MonoBehaviour
             if (!triggered) {
                 triggered = true;
                 StartCoroutine(DialogueManager.Instance.StartDialogue(dialogueWrapper.Dialogue));
-            } else {
-                // test scene changes
-                SceneInitializer.LoadScene("MainScene");
             }
         }
     }

@@ -12,9 +12,8 @@ namespace Players.Behaviour {
         public void OnEnter() {
             t = self.jumpLockoutTime;
 
-            self.UseExternalVelocity(new Vector2(self.slide.x * self.moveSpeed * -1, self.jumpSpeed), self.jumpLockoutTime);
             self.jump = false;
-            self.UseAnimation("PlayerJump");
+            self.UseExternalVelocity(new Vector2(self.slide.x * self.moveSpeed * -1, self.jumpSpeed), self.jumpLockoutTime);
         }
 
         public void OnExit() {

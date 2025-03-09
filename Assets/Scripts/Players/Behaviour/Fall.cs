@@ -9,7 +9,6 @@ namespace Players.Behaviour {
         }
 
         public void OnEnter() {
-            self.UseAnimation("PlayerFall");
         }
 
         public void OnExit() {
