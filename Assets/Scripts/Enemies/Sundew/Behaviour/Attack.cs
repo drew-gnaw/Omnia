@@ -10,7 +10,7 @@ namespace Enemies.Sundew.Behaviour {
         }
 
         public void OnEnter() {
-            t = self.reload;
+            t = self.reload / 2; // Simply to complete the attack animation
 
             self.FireProjectiles();
         }
@@ -25,11 +25,11 @@ namespace Enemies.Sundew.Behaviour {
             t = Mathf.Max(0, t - Time.deltaTime);
             if (t != 0) return;
 
-            self.UseBehaviour(WindUp.If(self) ?? Hide.If(self));
+            self.UseBehaviour(Reload.If(self));
         }
 
         public static IBehaviour If(Sundew it) {
-            return new Attack(it);
+            return it.detected ? new Attack(it) : null;
         }
     }
 }

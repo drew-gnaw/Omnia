@@ -21,7 +21,7 @@ namespace Enemies.Sundew.Behaviour {
         }
 
         public void OnUpdate() {
-            self.UseBehaviour(Reveal.If(self));
+            self.UseBehaviour(WindUp.If(self));
         }
 
         public static IBehaviour AsDefaultOf(Sundew it) {

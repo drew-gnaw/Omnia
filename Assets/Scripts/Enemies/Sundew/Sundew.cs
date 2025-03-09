@@ -66,17 +66,15 @@ namespace Enemies.Sundew {
 
         protected override void UseAnimation(StateMachine stateMachine) {
             var idle = new IdleAnimation(animator);
-            var attack = new AttackAnimation(animator);
-            var hide = new HideAnimation(animator);
-            var reveal = new RevealAnimation(animator);
             var windUp = new WindUpAnimation(animator);
+            var attack = new AttackAnimation(animator);
+            var reload = new ReloadAnimation(animator);
             var stagger = new StaggerAnimation(animator);
 
             stateMachine.AddAnyTransition(idle, new FuncPredicate(() => behaviour is Idle));
-            stateMachine.AddAnyTransition(attack, new FuncPredicate(() => behaviour is Attack));
-            stateMachine.AddAnyTransition(hide, new FuncPredicate(() => behaviour is Hide));
-            stateMachine.AddAnyTransition(reveal, new FuncPredicate(() => behaviour is Reveal));
             stateMachine.AddAnyTransition(windUp, new FuncPredicate(() => behaviour is WindUp));
+            stateMachine.AddAnyTransition(attack, new FuncPredicate(() => behaviour is Attack));
+            stateMachine.AddAnyTransition(reload, new FuncPredicate(() => behaviour is Reload));
             stateMachine.AddAnyTransition(stagger, new FuncPredicate(() => behaviour is Stagger));
 
             stateMachine.SetState(idle);
