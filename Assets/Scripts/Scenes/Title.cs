@@ -11,7 +11,6 @@ namespace Scenes {
         [SerializeField] private GameObject omniaText;
         [SerializeField] private GameObject omniaSubtitle;
         [SerializeField] private GameObject omniaSubtitle2;
-        [SerializeField] private Button quitButton;
 
         [SerializeField] private float flickerSpeed = 0.1f;
         [SerializeField] private float flickerIntensity = 0.2f;
@@ -47,7 +46,10 @@ namespace Scenes {
         }
 
         public void StartGame() {
-            Debug.Log(buttons);
+            foreach (Button b in buttons)
+            {
+                b.interactable = false;
+            }
             StartCoroutine(StartGameSequence());
         }
 
