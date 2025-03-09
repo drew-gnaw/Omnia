@@ -417,6 +417,7 @@ GameObject:
   - component: {fileID: 2761024857814508083}
   - component: {fileID: 6402661582757285898}
   - component: {fileID: 1129889265447086856}
+  - component: {fileID: 8980240123754482055}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -621,6 +622,27 @@ MonoBehaviour:
   self: {fileID: 6725967550211918722}
   playerCollider: {fileID: 6160612355849141162}
   semisolidCollider: {fileID: 0}
+--- !u!95 &8980240123754482055
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5710193498280292276}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 02b90db85112d744fbeb2c9ed3e5a5d5, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &7341513922277732889
 GameObject:
   m_ObjectHideFlags: 0
