@@ -21,9 +21,9 @@ namespace Enemies.Armadillo.Behaviour {
         }
 
         public void OnTick() {
-            self.rb.velocity = new Vector2(mode == Mode.Idle ? 0 : self.facing.x * 1, self.rb.velocity.y);
+            self.rb.velocity = new Vector2(mode == Mode.Idle ? 0 : self.facing.x * self.walkSpeed, self.rb.velocity.y);
 
-            if (CheckPlayer()) self.UseBehaviour(new Rush(self));
+            if (CheckPlayer()) self.UseBehaviour(new Alert(self));
         }
 
         public void OnUpdate() {
@@ -42,7 +42,7 @@ namespace Enemies.Armadillo.Behaviour {
 
         private IEnumerator DoIdle() {
             mode = Mode.Idle;
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(0.5f);
         }
 
         private bool CheckPlayer() {

@@ -9,7 +9,6 @@ namespace Players.Behaviour {
         }
 
         public void OnEnter() {
-            self.UseAnimation("PlayerIdle");
         }
 
         public void OnExit() {

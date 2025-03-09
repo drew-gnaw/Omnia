@@ -17,8 +17,6 @@ namespace Players.Behaviour {
         public void OnEnter() {
             t = Vector2.Distance(self.transform.position, target.position) / self.pullSpeed;
             direction = target.position - self.transform.position;
-
-            self.UseAnimation("PlayerIdle");
         }
 
         public void OnExit() {
