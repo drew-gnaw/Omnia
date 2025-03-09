@@ -468,6 +468,9 @@ MonoBehaviour:
   semisolid:
     serializedVersion: 2
     m_Bits: 512
+  destructable:
+    serializedVersion: 2
+    m_Bits: 2048
   checks:
   - {fileID: 114218580143928455}
   - {fileID: 3119127342257128012}

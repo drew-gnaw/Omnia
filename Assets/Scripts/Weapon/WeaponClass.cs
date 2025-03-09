@@ -7,7 +7,7 @@ public abstract class WeaponClass : MonoBehaviour
 {
     public GameObject player;
     [Header("Reference Layers")]
-    public LayerMask enemyLayer;
+    public LayerMask hittableLayerMask; //Typically Enemies and Destructables
     public LayerMask groundLayer;
     public LayerMask playerLayer;
 

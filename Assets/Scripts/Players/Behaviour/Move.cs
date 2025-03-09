@@ -25,7 +25,7 @@ namespace Players.Behaviour {
         }
 
         public static IBehaviour If(Player it) {
-            return it.grounded && it.moving.x != 0 && it.checks[1].IsTouchingLayers(it.ground | it.semisolid) ? new Move(it) : null;
+            return it.grounded && it.moving.x != 0 && it.checks[1].IsTouchingLayers(it.GroundedMask) ? new Move(it) : null;
         }
     }
 }

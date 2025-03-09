@@ -16,6 +16,8 @@ namespace Players {
         [SerializeField] internal CapsuleCollider2D cc;
         [SerializeField] internal LayerMask ground;
         [SerializeField] internal LayerMask semisolid;
+        [SerializeField] internal LayerMask destructable;
+        public LayerMask GroundedMask => ground | semisolid | destructable;
         [SerializeField] internal BoxCollider2D[] checks;
 
         [SerializeField] internal float maximumHealth;

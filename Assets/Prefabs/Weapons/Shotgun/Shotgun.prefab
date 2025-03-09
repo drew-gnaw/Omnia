@@ -130,9 +130,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  enemyLayer:
+  hittableLayerMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 2112
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
@@ -141,6 +141,7 @@ MonoBehaviour:
     m_Bits: 128
   damage: 10
   attackCooldown: 0
+  damageToFlowRatio: 1
   maxShells: 6
   reloadTime: 1
   blastAngle: 45
