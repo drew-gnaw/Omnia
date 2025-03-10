@@ -134,6 +134,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: SceneInitializer
       objectReference: {fileID: 0}
+    - target: {fileID: 3913066680617439840, guid: dec067d666e464088a06b526d65856c9, type: 3}
+      propertyPath: managers.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3913066680617439840, guid: dec067d666e464088a06b526d65856c9, type: 3}
+      propertyPath: managers.Array.data[4]
+      value: 
+      objectReference: {fileID: 4883409523034971244, guid: e73900af4eaf1443989339fff7eb7353, type: 3}
     - target: {fileID: 5473875346563200313, guid: dec067d666e464088a06b526d65856c9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -412,7 +420,7 @@ MonoBehaviour:
   m_BoundingVolume: {fileID: 0}
   m_BoundingShape2D: {fileID: 1418023921}
   m_ConfineScreenEdges: 1
-  m_Damping: 10
+  m_Damping: 0
 --- !u!1001 &706077474
 PrefabInstance:
   m_ObjectHideFlags: 0
