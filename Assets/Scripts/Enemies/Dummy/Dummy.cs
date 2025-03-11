@@ -7,6 +7,7 @@ namespace Enemies.Dummy {
         public override void Hurt(float damage) {
             base.Hurt(damage);
             Debug.Log(this + " took damage " + damage);
+            LevelManager.Instance.NextLevel(); //Test Scene changes by killing this dude
         }
 
         protected override void UseAnimation(StateMachine stateMachine) {

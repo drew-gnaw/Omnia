@@ -16,6 +16,7 @@ TagManager:
   - Background
   - Semisolid
   - Minimap
+  - Destructable
   - 
   - 
   - 
@@ -24,8 +25,7 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
+  - LevelBoundary
   - 
   - 
   - 
@@ -46,6 +46,9 @@ TagManager:
     locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Puzzle
+    uniqueID: 3908046391
     locked: 0
   - name: UI
     uniqueID: 405064753
