@@ -71,7 +71,7 @@ namespace Scenes {
             yield return StartCoroutine(TypewriterEffect(quoteTMP, quoteText, 0.1f));
             yield return new WaitForSeconds(3f);
             yield return StartCoroutine(strongFadeHandler.FadeInDarkScreen(2f));
-            SceneManager.LoadScene("MainScene");
+            SceneManager.LoadScene("4_Tutorial");
         }
 
         void Update() {
