@@ -495,20 +495,12 @@ PrefabInstance:
     m_TransformParent: {fileID: 970156644}
     m_Modifications:
     - target: {fileID: 2157272981753954215, guid: 6f3a6004e073d451da5cfcfe0449ce25, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 2157272981753954215, guid: 6f3a6004e073d451da5cfcfe0449ce25, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 2157272981753954215, guid: 6f3a6004e073d451da5cfcfe0449ce25, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2157272981753954215, guid: 6f3a6004e073d451da5cfcfe0449ce25, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.856
       objectReference: {fileID: 0}
     - target: {fileID: 2157272981753954215, guid: 6f3a6004e073d451da5cfcfe0449ce25, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1387,10 +1379,6 @@ PrefabInstance:
       propertyPath: cam
       value: 
       objectReference: {fileID: 519420031}
-    - target: {fileID: 6725967550211918722, guid: a0a8f7069068e40faa87eaf58c7b7cda, type: 3}
-      propertyPath: animator
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 6725967550211918722, guid: a0a8f7069068e40faa87eaf58c7b7cda, type: 3}
       propertyPath: rollThreshold
       value: 1

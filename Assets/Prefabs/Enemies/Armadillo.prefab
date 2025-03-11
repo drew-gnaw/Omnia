@@ -366,7 +366,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.25, y: 0.25, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 285959956619106809}
@@ -374,6 +374,7 @@ Transform:
   - {fileID: 6616579202525318692}
   - {fileID: 4665689983905372635}
   - {fileID: 8177014607445457755}
+  - {fileID: 1688725278849003421}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6491317554158063245
@@ -410,6 +411,8 @@ MonoBehaviour:
   - {fileID: 579300327616539976}
   facing: {x: 1, y: 0}
   hitDistance: 2
+  walkSpeed: 1
+  rollSpeed: 4
   debugBehaviour: 
 --- !u!50 &7893308943432753642
 Rigidbody2D:
