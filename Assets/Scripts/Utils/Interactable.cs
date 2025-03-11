@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Interactable : MonoBehaviour
 {
+    private bool interactable = true;
     private bool inRange = false;
     private IInteractable mainScript;
     [SerializeField] private SpriteRenderer buttonIcon;
@@ -14,7 +15,7 @@ public class Interactable : MonoBehaviour
         Rigidbody2D rb = collision.attachedRigidbody;
         if (rb != null && rb.gameObject.CompareTag("Player")) {
             inRange = true;
-            buttonIcon.enabled = true;
+            buttonIcon.enabled = interactable;
         }
     }
 
@@ -31,7 +32,7 @@ public class Interactable : MonoBehaviour
     }
 
     void Update() {
-        if (mainScript == null) return;
+        if (mainScript == null || !interactable) return;
         if (inRange && Input.GetKeyDown(KeyCode.E)) {
             inRange = false;
             buttonIcon.enabled = false;
@@ -42,5 +43,9 @@ public class Interactable : MonoBehaviour
     void OnDestroy() {
         mainScript = null;
         buttonIcon = null;
+    }
+
+    public void SetEnable(bool enable) {
+        interactable = enable;
     }
 }
