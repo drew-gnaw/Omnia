@@ -9,16 +9,23 @@ namespace Scenes {
     public class Tutorial : MonoBehaviour {
         [SerializeField] private FadeScreenHandler fadeScreen;
 
+        [SerializeField] private Dinky dinky;
+        [SerializeField] private GameObject player;
         [SerializeField] private GameObject dummy1Obj;
         [SerializeField] private GameObject dummy2Obj;
         [SerializeField] private GameObject dummy3Obj;
 
+        [SerializeField] private Transform dinkyAppearTransform;
+
         [SerializeField] private DialogueWrapper beginDialogue;
         [SerializeField] private DialogueWrapper thirdDummyDialogue;
+        [SerializeField] private DialogueWrapper pullToDummyDialogue;
 
         private Dummy dummy1;
         private Dummy dummy2;
         private Dummy dummy3;
+
+        private Collider2D playerCollider;
 
         private int dummiesHit = 0;
         private bool thirdDialogueTriggered = false;
@@ -30,12 +37,15 @@ namespace Scenes {
 
             dummy1.OnHurt += HandleDummy1Hurt;
             dummy2.OnHurt += HandleDummy2Hurt;
+            dummy3.OnHurt += HandleDummy3Hurt;
 
             StartCoroutine(BeginSequence());
         }
 
         private IEnumerator BeginSequence() {
             yield return StartCoroutine(fadeScreen.FadeInLightScreen(1f));
+            dinky.Appear(dinkyAppearTransform);
+            yield return new WaitForSeconds(1.5f);
             yield return StartCoroutine(DialogueManager.Instance.StartDialogue(beginDialogue.Dialogue));
 
             HighlightManager.Instance.HighlightGameObject(dummy1Obj);
@@ -65,6 +75,19 @@ namespace Scenes {
         private IEnumerator ThirdDummySequence() {
             yield return new WaitForSeconds(0.5f);
             yield return StartCoroutine(DialogueManager.Instance.StartDialogue(thirdDummyDialogue.Dialogue));
+
+            HighlightManager.Instance.HighlightGameObject(dummy3Obj);
+        }
+
+        private void HandleDummy3Hurt() {
+            if (!thirdDialogueTriggered) return;
+            dummy3.OnHurt -= HandleDummy3Hurt;
+            StartCoroutine(PullToDummySequence());
+
+        }
+
+        private IEnumerator PullToDummySequence() {
+            yield return StartCoroutine(DialogueManager.Instance.StartDialogue(pullToDummyDialogue.Dialogue));
         }
     }
 }
