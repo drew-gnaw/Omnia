@@ -6,9 +6,9 @@ namespace UI
 {
     public class HighlightManager : PersistentSingleton<HighlightManager>
     {
-        [SerializeField] private Material highlightMaterial; // Material for UI highlighting
-        [SerializeField] private GameObject reticlePrefab; // Prefab for the reticle sprite for GameObjects
-        [SerializeField] private float rotationSpeed = 30f; // Speed of rotation in degrees per second
+        [SerializeField] private Material highlightMaterial;
+        [SerializeField] private GameObject reticlePrefab;
+        [SerializeField] private float rotationSpeed = 30f;
 
         private int cutoutPosID;
         private int cutoutSizeID;
@@ -24,96 +24,104 @@ namespace UI
             HideHighlight();
         }
 
-        // Update is called every frame for rotation of reticles
         private void Update()
         {
             RotateReticles();
         }
 
-        #region UI Highlighting (Cutout)
-
-        // Highlight a UI element by setting its position and size in screen space (cutout)
         public void HighlightUI(Vector2 screenPosition, float size = 0.2f)
         {
-            // Convert screen position to normalized UV coordinates (0 to 1)
             Vector2 uv = new Vector2(screenPosition.x / Screen.width, screenPosition.y / Screen.height);
-
-            // Apply UV position and size to shader
             highlightMaterial.SetVector(cutoutPosID, uv);
             highlightMaterial.SetFloat(cutoutSizeID, size);
         }
 
-        // Hide the UI highlighting (set the size to 0)
         public void HideHighlight()
         {
             highlightMaterial.SetFloat(cutoutSizeID, 0f);
         }
 
-        #endregion
-
-        #region GameObject Highlighting (Reticle)
-
-        // Highlights a GameObject by displaying a reticle at its position
         public void HighlightGameObject(GameObject target)
         {
             if (!highlightedObjects.Contains(target))
             {
                 highlightedObjects.Add(target);
 
-                // Create a new reticle for the highlighted GameObject
-                GameObject reticleObj = Instantiate(reticlePrefab, target.transform.position, Quaternion.identity);
-                Transform reticleTransform = reticleObj.GetComponent<Transform>();
+                GameObject reticleObj = Instantiate(reticlePrefab, target.transform);
+                Transform reticleTransform = reticleObj.transform;
 
-                // Add the reticle to the list of reticles for rotation
                 reticles.Add(reticleTransform);
+                reticleTransform.localPosition = Vector3.zero;
 
-                // Set its layer order, z-index, or sorting order if needed
-                reticleTransform.SetAsLastSibling();
+                ReticleCleanup cleanup = reticleObj.AddComponent<ReticleCleanup>();
+                cleanup.Init(target, this);
             }
         }
 
-        // Unhighlights a GameObject by removing its reticle
         public void UnhighlightGameObject(GameObject target)
         {
-            if (highlightedObjects.Contains(target))
+            int index = highlightedObjects.IndexOf(target);
+            if (index >= 0)
             {
-                highlightedObjects.Remove(target);
+                highlightedObjects.RemoveAt(index);
 
-                // Find and destroy the reticle associated with this GameObject
-                int index = highlightedObjects.IndexOf(target);
-                if (index >= 0 && index < reticles.Count)
+                if (index < reticles.Count)
                 {
-                    Destroy(reticles[index].gameObject); // Destroy reticle GameObject
-                    reticles.RemoveAt(index); // Remove from the list of reticles
+                    if (reticles[index] != null)
+                    {
+                        Destroy(reticles[index].gameObject);
+                    }
+                    reticles.RemoveAt(index);
                 }
             }
         }
 
-        // Rotate all active reticles slowly
         private void RotateReticles()
         {
-            foreach (Transform reticle in reticles)
+            for (int i = reticles.Count - 1; i >= 0; i--)
             {
-                reticle.Rotate(Vector3.forward, rotationSpeed * Time.deltaTime);
+                if (reticles[i] == null)
+                {
+                    reticles.RemoveAt(i);
+                }
+                else
+                {
+                    reticles[i].Rotate(Vector3.forward, rotationSpeed * Time.deltaTime);
+                }
             }
         }
 
-        #endregion
-
-        // Optionally, clear all highlights (UI and GameObjects)
         public void ClearAllHighlights()
         {
-            // Clear GameObject highlights (reticles)
-            foreach (var target in highlightedObjects)
+            foreach (var reticle in reticles)
             {
-                UnhighlightGameObject(target);
+                if (reticle != null) Destroy(reticle.gameObject);
             }
-
-            // Clear UI highlight
-            HideHighlight();
 
             highlightedObjects.Clear();
             reticles.Clear();
+
+            HideHighlight();
+        }
+    }
+
+    public class ReticleCleanup : MonoBehaviour
+    {
+        private GameObject target;
+        private HighlightManager manager;
+
+        public void Init(GameObject target, HighlightManager manager)
+        {
+            this.target = target;
+            this.manager = manager;
+        }
+
+        private void OnDestroy()
+        {
+            if (target != null)
+            {
+                manager?.UnhighlightGameObject(target);
+            }
         }
     }
 }
