@@ -41,7 +41,7 @@ namespace Puzzle {
         private void Redraw() {
             spriteRenderer.sprite = (IsActive) ? downState : upState;
             spriteRenderer.color = SignalColor.Color;
-            symbolRenderer.gameObject.SetActive(IsActive);
+            symbolRenderer.gameObject.SetActive(!IsActive);
             symbolRenderer.sprite = SignalColor.GetSymbol(assets);
             symbolRenderer.gameObject.transform.rotation = Quaternion.identity;
         }
