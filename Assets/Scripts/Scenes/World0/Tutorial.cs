@@ -21,7 +21,8 @@ namespace Scenes {
 
         private IEnumerator BeginSequence() {
             yield return StartCoroutine(fadeScreen.FadeInLightScreen(1f));
-            StartCoroutine(DialogueManager.Instance.StartDialogue(beginDialogue.Dialogue));
+            yield return StartCoroutine(DialogueManager.Instance.StartDialogue(beginDialogue.Dialogue));
+
             HighlightManager.Instance.HighlightObject(dummy1);
         }
     }
