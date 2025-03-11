@@ -23,7 +23,6 @@ namespace Scenes {
             yield return StartCoroutine(fadeScreen.FadeInLightScreen(1f));
             yield return StartCoroutine(DialogueManager.Instance.StartDialogue(beginDialogue.Dialogue));
 
-            Debug.Log(HighlightManager.Instance);
             HighlightManager.Instance.HighlightGameObject(dummy1);
             HighlightManager.Instance.HighlightGameObject(dummy2);
         }
