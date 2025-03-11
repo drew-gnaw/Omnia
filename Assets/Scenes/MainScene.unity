@@ -1709,6 +1709,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 519420031}
     - target: {fileID: 6725967550211918722, guid: a0a8f7069068e40faa87eaf58c7b7cda, type: 3}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 1317116860}
+    - target: {fileID: 6725967550211918722, guid: a0a8f7069068e40faa87eaf58c7b7cda, type: 3}
       propertyPath: rollThreshold
       value: 1
       objectReference: {fileID: 0}
@@ -1853,7 +1857,7 @@ Animator:
   m_GameObject: {fileID: 1267488004}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 02b90db85112d744fbeb2c9ed3e5a5d5, type: 2}
+  m_Controller: {fileID: 9100000, guid: 86932170fa71747e896232d69b1eca0f, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
