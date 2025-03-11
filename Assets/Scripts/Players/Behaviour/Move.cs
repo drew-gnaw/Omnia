@@ -9,7 +9,6 @@ namespace Players.Behaviour {
         }
 
         public void OnEnter() {
-            self.UseAnimation("PlayerRun");
         }
 
         public void OnExit() {

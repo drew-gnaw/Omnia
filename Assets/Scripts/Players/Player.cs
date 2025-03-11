@@ -1,12 +1,14 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
+using Omnia.State;
 using Omnia.Utils;
+using Players.Animation;
 using Players.Behaviour;
 using Puzzle;
 using UI;
 using UnityEngine;
 using Utils;
+using If = Omnia.State.FuncPredicate;
 
 namespace Players {
     public class Player : MonoBehaviour {
@@ -79,11 +81,13 @@ namespace Players {
         private CountdownTimer rollCooldownTimer;
 
         private IBehaviour behaviour;
+        private StateMachine animationStateMachine;
 
         public Vector3 Center => transform.position + new Vector3(0, 1, 0);
 
         public void Awake() {
             UseBehaviour(new Idle(this));
+            UseAnimation(new StateMachine());
         }
 
         public void Start() {
@@ -97,23 +101,17 @@ namespace Players {
             rollCooldownTimer = new CountdownTimer(rollCooldown);
             canRoll = true;
 
-            Transform weaponsTransform = transform.Find("Weapons");
-            if (weaponsTransform != null) {
-                weapons = weaponsTransform.GetComponentsInChildren<WeaponClass>();
-            } else {
-                Debug.LogError("Weapons object not found as a child of the player!");
-            }
-
             Spawn?.Invoke();
         }
 
         public void Update() {
             currentLockout = Mathf.Clamp(currentLockout - Time.deltaTime, 0, maximumLockout);
             behaviour?.OnUpdate();
+            animationStateMachine.Update();
+
             UpdateCombatTimer();
             UpdateRollCooldownTimer();
 
-            sprite.flipX = facing.x == 0 ? sprite.flipX : facing.x < 0;
             currentHurtInvulnerability = Mathf.Max(0, currentHurtInvulnerability - Time.deltaTime);
         }
 
@@ -122,6 +120,7 @@ namespace Players {
             DoAttack();
             DoSkill();
             behaviour?.OnTick();
+            animationStateMachine.FixedUpdate();
         }
 
         public void UsePull(Transform target) {
@@ -198,10 +197,6 @@ namespace Players {
             behaviour?.OnEnter();
         }
 
-        public void UseAnimation(string it) {
-            animator.Play(it);
-        }
-
         public void UseExternalVelocity(Vector2 velocity, float lockout) {
             rb.velocity = velocity;
             currentLockout = maximumLockout = lockout;
@@ -218,6 +213,10 @@ namespace Players {
             return Math.Abs(rb.velocity.x) > moveSpeed && Math.Sign(rb.velocity.x) == Math.Sign(moving.x);
         }
 
+        internal bool IsAttackEnabled() {
+            return behaviour is not Roll;
+        }
+
         // Called by Behaviour.Roll to handle the cooldown timer
         internal void OnRoll() {
             canRoll = false;
@@ -225,9 +224,8 @@ namespace Players {
         }
 
         private void DoAttack() {
-            if (!fire) return;
+            if (!fire || !IsAttackEnabled()) return;
             fire = false;
-            Debug.Log("attacking");
             weapons[selectedWeapon].Attack();
         }
 
@@ -282,6 +280,29 @@ namespace Players {
                 sprite.enabled = true;
                 yield return new WaitForSeconds(0.10f);
             }
+        }
+
+        private void UseAnimation(StateMachine stateMachine) {
+            var idleAnimation = new IdleAnimation(animator);
+            var moveAnimation = new MoveAnimation(animator);
+            var jumpAnimation = new JumpAnimation(animator);
+            var fallAnimation = new FallAnimation(animator);
+            var rollAnimation = new RollAnimation(animator);
+            var slideLAnimation = new SlideLAnimation(animator);
+            var slideRAnimation = new SlideRAnimation(animator);
+            var moveBackwardAnimation = new MoveBackwardAnimation(animator);
+
+            stateMachine.AddAnyTransition(moveAnimation, new If(() => behaviour is Idle or Move && moving.x != 0 && Math.Sign(facing.x) == Math.Sign(moving.x)));
+            stateMachine.AddAnyTransition(idleAnimation, new If(() => behaviour is Idle && moving.x == 0));
+            stateMachine.AddAnyTransition(jumpAnimation, new If(() => behaviour is Jump or WallJump or Pull));
+            stateMachine.AddAnyTransition(fallAnimation, new If(() => behaviour is Fall));
+            stateMachine.AddAnyTransition(rollAnimation, new If(() => behaviour is Roll));
+            stateMachine.AddAnyTransition(slideLAnimation, new If(() => behaviour is Slide && Math.Sign(facing.x) != Math.Sign(slide.x)));
+            stateMachine.AddAnyTransition(slideRAnimation, new If(() => behaviour is Slide && Math.Sign(facing.x) == Math.Sign(slide.x)));
+            stateMachine.AddAnyTransition(moveBackwardAnimation, new If(() => behaviour is Move && Math.Sign(facing.x) != Math.Sign(moving.x)));
+
+            stateMachine.SetState(idleAnimation);
+            animationStateMachine = stateMachine;
         }
     }
 }
