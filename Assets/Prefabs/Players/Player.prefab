@@ -394,6 +394,7 @@ GameObject:
   - component: {fileID: 2761024857814508083}
   - component: {fileID: 6402661582757285898}
   - component: {fileID: 1129889265447086856}
+  - component: {fileID: 8980240123754482055}
   - component: {fileID: 1527714499327898025}
   - component: {fileID: 7013774369828041354}
   m_Layer: 7
@@ -447,6 +448,9 @@ MonoBehaviour:
   semisolid:
     serializedVersion: 2
     m_Bits: 512
+  destructable:
+    serializedVersion: 2
+    m_Bits: 2048
   checks:
   - {fileID: 114218580143928455}
   - {fileID: 3119127342257128012}

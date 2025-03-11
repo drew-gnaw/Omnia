@@ -104,6 +104,10 @@ PrefabInstance:
       propertyPath: m_Offset.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6149703548532306918, guid: 6f3a6004e073d451da5cfcfe0449ce25, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 042ea8b53cdef1e48975efc5ab7261c5, type: 2}
     - target: {fileID: 6491317554158063245, guid: 6f3a6004e073d451da5cfcfe0449ce25, type: 3}
       propertyPath: hitDistance
       value: 3
