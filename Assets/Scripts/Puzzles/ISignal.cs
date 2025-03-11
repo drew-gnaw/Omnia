@@ -13,9 +13,19 @@ namespace Puzzle {
 
     public abstract class SignalColor : Enum<SignalColor> {
         public abstract Color Color { get; }
-        public class Red : SignalColor { public override Color Color => Color.red; }
-        public class Green : SignalColor { public override Color Color => Color.green; }
-        public class Blue : SignalColor { public override Color Color => Color.blue; }
+        public abstract Sprite GetSymbol(PuzzleAssets assets);
         public static SignalColor Parse(Type type) => ParseFromType(type);
+    }
+    public class Red : SignalColor {
+        public override Color Color => Color.red;
+        public override Sprite GetSymbol(PuzzleAssets assets) => assets.downSymbol;
+    }
+    public class Green : SignalColor {
+        public override Color Color => Color.green;
+        public override Sprite GetSymbol(PuzzleAssets assets) => assets.upSymbol;
+    }
+    public class Blue : SignalColor {
+        public override Color Color => Color.blue;
+        public override Sprite GetSymbol(PuzzleAssets assets) => assets.leftSymbol;
     }
 }
