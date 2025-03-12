@@ -112604,7 +112604,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Elite Armadillo
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6150675602155955691, guid: e62dd6acf483e8449b838c9dece327af, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

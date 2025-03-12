@@ -18,14 +18,18 @@ namespace Enemies
             base.Start();
         }
 
-        override public void Hurt(float damage)
+        override public void Hurt(float damage, bool stagger = true)
         {
             if (shieldHealth <= 0)
             {
                 base.Hurt(damage);
             } else {
                 shieldHealth = Mathf.Max(shieldHealth - damage, 0);
-                base.Hurt(0f);
+                // This is a workaround to prevent the actual health from being hurt
+                // while applying the other effects of Enemy's hurt
+                var health = currentHealth;
+                base.Hurt(damage, false);
+                currentHealth = health;
             }
         }
     }

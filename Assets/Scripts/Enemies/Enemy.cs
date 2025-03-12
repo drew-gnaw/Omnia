@@ -8,6 +8,10 @@ namespace Enemies {
     public abstract class Enemy : MonoBehaviour {
         public static event Action<Enemy> Spawn;
         public static event Action<Enemy> Death;
+        /**
+         * The Damage event should be reserved for behaviours like UI
+         * Any other behaviours dependent on the actual damage and health changes should be handled in the Hurt method
+         */
         public static event Action<Enemy, float> Damage;
 
         [SerializeField] internal float maximumHealth;
@@ -28,12 +32,19 @@ namespace Enemies {
             UseAnimation(new StateMachine());
         }
 
-        public virtual void Hurt(float damage) {
+        /**
+         * By default, the enemy will stagger upon taking damage.
+         * If the specific enemies behaviour should not stagger or the damage applied should not stagger
+         * the stagger parameter should be used
+         */
+        public virtual void Hurt(float damage, bool stagger = true) {
             currentHealth = Mathf.Clamp(currentHealth - damage, 0, maximumHealth);
             Damage?.Invoke(this, damage);
 
             if (currentHealth == 0) Die();
 
+            // Don't stagger if specified
+            if (!stagger) return;
             // Currently the enemy just attempts its previous behaviour after stagger
             if (staggerDurationS <= 0) return;
             // Also prevent staggering if damage is 0

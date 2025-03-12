@@ -1,8 +1,6 @@
-using System.Collections;
 using System.Linq;
 using Enemies.Crab.Animation;
 using Enemies.Crab.Behaviour;
-using JetBrains.Annotations;
 using Omnia.State;
 using Players;
 using UnityEngine;
@@ -24,8 +22,6 @@ namespace Enemies.Crab {
         [SerializeField] private Transform leftAttackPosition;
         [SerializeField] private Transform rightAttackPosition;
 
-        private IBehaviour behaviour;
-        private StateMachine animationStateMachine;
         private bool invulnerable;
 
         public void Awake() {
@@ -33,16 +29,7 @@ namespace Enemies.Crab {
             UseAnimation(new StateMachine());
         }
 
-        public void Update() {
-            animationStateMachine?.Update();
-        }
-
-        public void FixedUpdate() {
-            behaviour?.OnTick();
-            animationStateMachine?.FixedUpdate();
-        }
-
-        public override void Hurt(float damage) {
+        public override void Hurt(float damage, bool stagger = true) {
             if (invulnerable) damage = 0;
             base.Hurt(damage);
         }
@@ -87,12 +74,6 @@ namespace Enemies.Crab {
             direction = new Vector2(MathUtils.RoundX(dir.x), 0);
             sprite.flipX = dir.x < 0;
             crabAttackArea.transform.position = dir.x < 0 ? leftAttackPosition.position : dir.x > 0 ? rightAttackPosition.position : Vector3.zero;
-        }
-
-        public void UseBehaviour(IBehaviour it) {
-            behaviour?.OnExit();
-            behaviour = it;
-            behaviour?.OnEnter();
         }
 
         protected override void UseAnimation(StateMachine stateMachine) {
