@@ -25,7 +25,19 @@ namespace Players {
         [SerializeField] internal float maximumHealth;
         [SerializeField] internal float currentHealth;
         [SerializeField] internal float maximumFlow;
-        [SerializeField] internal float currentFlow;
+
+        // flow is a property that broadcasts an event whenever it is changed.
+        private float _currentFlow;
+        public float CurrentFlow {
+            get => _currentFlow;
+            set {
+                if (_currentFlow != value) {
+                    _currentFlow = value;
+                    OnFlowChanged?.Invoke(_currentFlow);
+                }
+            }
+        }
+
         [SerializeField] internal float moveSpeed;
         [SerializeField] internal float jumpSpeed;
         [SerializeField] internal float pullSpeed;
@@ -73,6 +85,8 @@ namespace Players {
         public event Action Spawn;
         public static event Action Death;
 
+        public static event Action<float> OnFlowChanged;
+
         private float currentLockout;
         private float maximumLockout;
         private float currentHurtInvulnerability;
@@ -93,7 +107,7 @@ namespace Players {
         public void Start() {
             currentHealth = maximumHealth;
 
-            currentFlow = 0;
+            CurrentFlow = 0;
 
             combatTimer = new CountdownTimer(combatCooldown);
 
@@ -152,21 +166,21 @@ namespace Players {
 
         public void OnHit(float flowAmount) {
             combatTimer.Start();
-            currentFlow = Mathf.Min(currentFlow + flowAmount, maximumFlow);
+            CurrentFlow = Mathf.Min(CurrentFlow + flowAmount, maximumFlow);
         }
 
         public void ConsumeAllFlow() {
-            if (currentFlow > 0) {
-                float healthGain = currentFlow * FLOW_TO_HP_RATIO;
+            if (CurrentFlow > 0) {
+                float healthGain = CurrentFlow * FLOW_TO_HP_RATIO;
                 currentHealth = Mathf.Clamp(currentHealth + healthGain, 0, maximumHealth);
-                currentFlow = 0;
+                CurrentFlow = 0;
             }
         }
 
         public void DrainFlowOverTime(float drainRate) {
-            if (currentFlow > 0) {
-                float flowToDrain = Mathf.Min(currentFlow, drainRate * Time.deltaTime);
-                currentFlow -= flowToDrain;
+            if (CurrentFlow > 0) {
+                float flowToDrain = Mathf.Min(CurrentFlow, drainRate * Time.deltaTime);
+                CurrentFlow -= flowToDrain;
 
                 float healthGain = flowToDrain * FLOW_TO_HP_RATIO;
                 currentHealth = Mathf.Clamp(currentHealth + healthGain, 0, maximumHealth);
@@ -234,7 +248,7 @@ namespace Players {
 
                 weapons[selectedWeapon].SetSpriteActive(true);
 
-                if (Mathf.Approximately(currentFlow, maximumFlow)) {
+                if (Mathf.Approximately(CurrentFlow, maximumFlow)) {
                     ConsumeAllFlow();
                     weapons[selectedWeapon].IntroSkill();
                 }
