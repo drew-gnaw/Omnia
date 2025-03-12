@@ -9,7 +9,7 @@ namespace Enemies.Dummy {
             // nothing...
         }
 
-        public override void Hurt(float damage) {
+        public override void Hurt(float damage, bool stagger = true) {
             base.Hurt(damage);
             OnHurt?.Invoke();
         }
