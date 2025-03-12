@@ -29,7 +29,7 @@ public class Dinky : MonoBehaviour, IInteractable
     }
 
     public void Disappear() {
-        interactable.SetEnable(false);
+        interactable?.SetEnable(false);
         animator.Play(disappearState);
         animating = true;
     }

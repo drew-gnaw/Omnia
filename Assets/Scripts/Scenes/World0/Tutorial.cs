@@ -21,6 +21,8 @@ namespace Scenes {
         [SerializeField] private DialogueWrapper beginDialogue;
         [SerializeField] private DialogueWrapper thirdDummyDialogue;
         [SerializeField] private DialogueWrapper pullToDummyDialogue;
+        [SerializeField] private DialogueWrapper dinkyScaredDialogue;
+        [SerializeField] private DialogueWrapper dinkyGoneDialogue;
 
         private Dummy dummy1;
         private Dummy dummy2;
@@ -122,6 +124,16 @@ namespace Scenes {
             yield return new WaitUntil(() => rb.position.y < -4.5f);
 
             ScreenShakeManager.Instance.Shake(10f);
+
+            yield return new WaitForSeconds(0.7f);
+
+            yield return StartCoroutine(DialogueManager.Instance.StartDialogue(dinkyScaredDialogue.Dialogue));
+            
+            yield return new WaitForSeconds(0.3f);
+            dinky.Disappear();
+            yield return new WaitForSeconds(1f);
+
+            yield return StartCoroutine(DialogueManager.Instance.StartDialogue(dinkyGoneDialogue.Dialogue));
         }
 
 
