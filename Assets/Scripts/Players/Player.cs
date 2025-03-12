@@ -92,7 +92,6 @@ namespace Players {
 
         public void Start() {
             currentHealth = maximumHealth;
-            UIController.Instance.UpdatePlayerHealth(currentHealth, maximumHealth);
 
             currentFlow = 0;
 
@@ -144,8 +143,6 @@ namespace Players {
 
             combatTimer.Start();
             currentHealth = Mathf.Clamp(currentHealth - damage, 0, maximumHealth);
-            UIController.Instance.UpdatePlayerHealth(currentHealth, maximumHealth);
-
             currentHurtInvulnerability = hurtInvulnerabilityTime;
             UseExternalVelocity(velocity, lockout);
             StartCoroutine(DoHurtInvincibilityFlicker());
@@ -156,7 +153,6 @@ namespace Players {
         public void OnHit(float flowAmount) {
             combatTimer.Start();
             currentFlow = Mathf.Min(currentFlow + flowAmount, maximumFlow);
-            UIController.Instance.UpdatePlayerFlow(currentFlow, maximumFlow);
         }
 
         public void ConsumeAllFlow() {
@@ -164,8 +160,6 @@ namespace Players {
                 float healthGain = currentFlow * FLOW_TO_HP_RATIO;
                 currentHealth = Mathf.Clamp(currentHealth + healthGain, 0, maximumHealth);
                 currentFlow = 0;
-                UIController.Instance.UpdatePlayerHealth(currentHealth, maximumHealth);
-                UIController.Instance.UpdatePlayerFlow(currentFlow, maximumFlow);
             }
         }
 
@@ -176,9 +170,6 @@ namespace Players {
 
                 float healthGain = flowToDrain * FLOW_TO_HP_RATIO;
                 currentHealth = Mathf.Clamp(currentHealth + healthGain, 0, maximumHealth);
-
-                UIController.Instance.UpdatePlayerHealth(currentHealth, maximumHealth);
-                UIController.Instance.UpdatePlayerFlow(currentFlow, maximumFlow);
             }
         }
 
