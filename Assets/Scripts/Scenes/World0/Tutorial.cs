@@ -121,7 +121,7 @@ namespace Scenes {
             // dummy hits ground
             yield return new WaitUntil(() => rb.position.y > -4.5f);
 
-            StartCoroutine(ScreenShakeManager.Instance.Shake(1f, 5f));
+            ScreenShakeManager.Instance.Shake(10f);
             Debug.Log("done");
         }
 
