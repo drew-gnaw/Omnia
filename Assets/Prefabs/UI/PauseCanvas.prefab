@@ -2204,7 +2204,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 97cbf00de92cdc34b88c6344f4895cd7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 386e594a8149e45059395a2fba99236a, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2385,6 +2385,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d96dc7c10c3149840acac4e10c9fb507, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  root: 1
+  persistent: 1
   pauseMenuPanel: {fileID: 8958764952309228486}
   pauseCanvas: {fileID: 5658175525564596529}
   history: {fileID: 7300271561199917966}
@@ -2589,7 +2591,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: a521f5d737a37594a9b90f3c4c633656, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7a210b7d9c3174504ada4b5db5da7662, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2798,7 +2800,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 4629e8fb493d17440a252016ee847406, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9d21b0b54d7824289acd3ab0485d1e04, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

@@ -8,6 +8,8 @@ namespace Puzzle {
         private SerializableType signalColour;
         [SerializeField] BoxCollider2D boxCollider;
         [SerializeField] SpriteRenderer spriteRenderer;
+        [SerializeField] SpriteRenderer symbolRenderer;
+        [SerializeField] PuzzleAssets assets;
         [SerializeField] Sprite downState;
         [SerializeField] Sprite upState;
 #nullable enable
@@ -39,6 +41,9 @@ namespace Puzzle {
         private void Redraw() {
             spriteRenderer.sprite = (IsActive) ? downState : upState;
             spriteRenderer.color = SignalColor.Color;
+            symbolRenderer.gameObject.SetActive(!IsActive);
+            symbolRenderer.sprite = SignalColor.GetSymbol(assets);
+            symbolRenderer.gameObject.transform.rotation = Quaternion.identity;
         }
     }
 }

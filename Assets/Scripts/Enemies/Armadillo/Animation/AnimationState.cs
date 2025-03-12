@@ -11,6 +11,11 @@ namespace Enemies.Armadillo.Animation {
         }
     }
 
+    public class AlertAnimation : AnimationState {
+        public AlertAnimation(Animator animator) : base("ArmadilloAlert", animator) {
+        }
+    }
+
     public class RushAnimation : AnimationState {
         public RushAnimation(Animator animator) : base("ArmadilloRush", animator) {
         }
@@ -20,10 +25,9 @@ namespace Enemies.Armadillo.Animation {
         public StunAnimation(Animator animator) : base("ArmadilloStun", animator) {
         }
     }
-    
-    public class StaggerAnimation : AnimationState {
-        // TODO replace with proper stagger animation
-        public StaggerAnimation(Animator animator) : base("ArmadilloIdle", animator) {
+
+    public class UncurlAnimation : AnimationState {
+        public UncurlAnimation(Animator animator) : base("ArmadilloUncurl", animator) {
         }
     }
 }
