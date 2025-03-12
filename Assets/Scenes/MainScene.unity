@@ -1809,6 +1809,7 @@ MonoBehaviour:
   - {fileID: 487545388327062563, guid: e884e4f1d4961491aaa57945428f759b, type: 3}
   - {fileID: 1631646899124418994, guid: 2d2d8564f9485fa4c94d7312e0c528b4, type: 3}
   - {fileID: 7157472551080849247, guid: e529af90261235d498ad6837df8c7173, type: 3}
+  - {fileID: 8654011918668383699, guid: d7ad28660305d9a438e4fc6f01578041, type: 3}
   canvas: {fileID: 778998303}
   defaultHealthColor: {r: 1, g: 0, b: 0, a: 1}
   buffHealthColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
@@ -112591,11 +112592,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6150675602155955691, guid: e62dd6acf483e8449b838c9dece327af, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7280074729958297432, guid: e62dd6acf483e8449b838c9dece327af, type: 3}
+      propertyPath: maxShieldHealth
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 8080409027652284001, guid: e62dd6acf483e8449b838c9dece327af, type: 3}
       propertyPath: m_Name
       value: Elite Armadillo
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6150675602155955691, guid: e62dd6acf483e8449b838c9dece327af, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
