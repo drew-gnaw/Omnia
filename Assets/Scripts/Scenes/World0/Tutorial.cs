@@ -119,10 +119,9 @@ namespace Scenes {
             rb.angularVelocity = spinForce;
 
             // dummy hits ground
-            yield return new WaitUntil(() => rb.position.y > -4.5f);
+            yield return new WaitUntil(() => rb.position.y < -4.5f);
 
             ScreenShakeManager.Instance.Shake(10f);
-            Debug.Log("done");
         }
 
 
