@@ -5,7 +5,6 @@ using Omnia.Utils;
 using Players;
 
 using System.Collections;
-using Players;
 
 /*
     The projectile for HarpoonGun
