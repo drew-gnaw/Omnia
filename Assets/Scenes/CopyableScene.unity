@@ -493,6 +493,7 @@ MonoBehaviour:
   m_BoundingShape2D: {fileID: 207238041}
   m_Damping: 0.5
   m_MaxWindowSize: -1
+  m_Padding: 0
 --- !u!1001 &706077474
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -920,6 +921,7 @@ MonoBehaviour:
   - {fileID: 487545388327062563, guid: e884e4f1d4961491aaa57945428f759b, type: 3}
   - {fileID: 1631646899124418994, guid: 2d2d8564f9485fa4c94d7312e0c528b4, type: 3}
   - {fileID: 7157472551080849247, guid: e529af90261235d498ad6837df8c7173, type: 3}
+  - {fileID: 8654011918668383699, guid: d7ad28660305d9a438e4fc6f01578041, type: 3}
   canvas: {fileID: 778998303}
   defaultHealthColor: {r: 1, g: 0, b: 0, a: 1}
   buffHealthColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
