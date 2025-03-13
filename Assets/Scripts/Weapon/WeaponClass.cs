@@ -16,6 +16,10 @@ public abstract class WeaponClass : MonoBehaviour
     public float attackCooldown; // seconds
     public float damageToFlowRatio = 1; // determines the rate at which damage is translated into flow.
 
+    [SerializeField] public int maxAmmoCount;
+
+    public int currentAmmoCount;
+
     private bool canAttack = true;
     protected Player playerComponent;
 

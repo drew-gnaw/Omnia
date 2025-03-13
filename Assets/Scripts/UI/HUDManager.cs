@@ -14,6 +14,10 @@ namespace UI {
         [SerializeField] private GameObject halfHeartPrefab;
         [SerializeField] private GameObject emptyHeartPrefab;
 
+        [SerializeField] private Transform ammoContainer;
+        [SerializeField] private GameObject ammoPrefab;
+        [SerializeField] private GameObject emptyAmmoPrefab;
+
         [SerializeField] private Slider flowSlider;
         private Coroutine flowAnimationCoroutine;
 

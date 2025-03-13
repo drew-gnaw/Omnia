@@ -5,12 +5,13 @@ using Players;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Pool;
+using UnityEngine.Serialization;
 
 public class HarpoonGun : WeaponClass
 {
 
+    [FormerlySerializedAs("harpoons")]
     [Header("HarpoonGun Stats")]
-    [SerializeField] public int harpoons;
     [SerializeField] public float harpoonVelocity;
     [SerializeField] public float harpoonSpearGravityScale;
     [SerializeField] public float harpoonSpearPickupCooldown; // seconds
@@ -47,15 +48,15 @@ public class HarpoonGun : WeaponClass
                 Destroy(spear.gameObject);
             },
             true,
-            harpoons,
-            harpoons
+            maxAmmoCount,
+            maxAmmoCount
         );
         base.Start();
     }
 
     protected override void HandleAttack()
     {
-        if (firedSpears.Count >= harpoons) {
+        if (firedSpears.Count >= maxAmmoCount) {
             // Do nothing
             return;
         }
