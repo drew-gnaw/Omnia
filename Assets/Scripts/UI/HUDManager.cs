@@ -11,6 +11,8 @@ namespace UI {
 
         [SerializeField] private Transform healthContainer;
         [SerializeField] private GameObject heartPrefab;
+        [SerializeField] private GameObject halfHeartPrefab;
+        [SerializeField] private GameObject emptyHeartPrefab;
 
         [SerializeField] private Slider flowSlider;
         private Coroutine flowAnimationCoroutine;
@@ -29,6 +31,10 @@ namespace UI {
 
         public void UpdateHealth(int currentHealth) {
             int numberOfHearts = (int)Mathf.Ceil(player.maximumHealth / 2);
+            bool halfHeart = numberOfHearts % 2 == 1;
+
+            for (int i = 0; i < numberOfHearts; i++) {
+            }
         }
 
         public void UpdateFlow(float targetFlow) {

@@ -138,8 +138,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   root: 1
   persistent: 1
+  player: {fileID: 0}
   healthContainer: {fileID: 1259367060579067387}
   heartPrefab: {fileID: 4885711954112943314, guid: 1bec0dc3f73da4568aaa134f68d5accd, type: 3}
+  halfHeartPrefab: {fileID: 4885711954112943314, guid: 07635045b8ba34884b0017bc560fa637, type: 3}
+  emptyHeartPrefab: {fileID: 0}
   flowSlider: {fileID: 5230763831521073360}
 --- !u!1 &3807443878800560875
 GameObject:
@@ -370,7 +373,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 0
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 7884213932973896708}
   m_FillRect: {fileID: 4487847490565700685}
   m_HandleRect: {fileID: 0}
   m_Direction: 0
