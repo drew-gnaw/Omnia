@@ -1,4 +1,5 @@
 using UnityEngine;
+using Utils;
 
 namespace Enemies.Bird.Behaviour {
     public class Idle : IBehaviour {
@@ -10,17 +11,17 @@ namespace Enemies.Bird.Behaviour {
         }
 
         public void OnEnter() {
-            self.rb.gravityScale = 1;
         }
 
         public void OnExit() {
         }
 
         public void OnTick() {
+            self.rb.velocity = MathUtils.Lerpish(self.rb.velocity, Vector2.zero, Time.fixedDeltaTime * self.airAcceleration);
+
             if (t != 0) return;
             t = 0.1f;
-
-            if (self.IsTargetDetected(out var target)) self.UseBehaviour(new Alert(self));
+            if (self.IsTargetDetected()) self.UseBehaviour(new Alert(self));
         }
 
         public void OnUpdate() {

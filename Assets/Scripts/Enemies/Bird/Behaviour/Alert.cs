@@ -1,4 +1,5 @@
 using UnityEngine;
+using Utils;
 
 namespace Enemies.Bird.Behaviour {
     public class Alert : IBehaviour {
@@ -17,6 +18,7 @@ namespace Enemies.Bird.Behaviour {
         }
 
         public void OnTick() {
+            self.rb.velocity = MathUtils.Lerpish(self.rb.velocity, Vector2.zero, Time.fixedDeltaTime * self.airAcceleration);
         }
 
         public void OnUpdate() {

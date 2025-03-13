@@ -15,6 +15,7 @@ namespace Enemies.Bird {
         [SerializeField] internal float explosionRadius;
         [SerializeField] internal float delay;
         [SerializeField] internal float speed;
+        [SerializeField] internal float airAcceleration;
 
         [SerializeField] internal SpriteRenderer sprite;
         [SerializeField] internal Animator animator;
@@ -41,10 +42,9 @@ namespace Enemies.Bird {
             Hurt(maximumHealth);
         }
 
-        public bool IsTargetDetected(out Player it) {
-            it = targetInstance;
-            return it && Sweep(transform.position, it.sprite.transform.position - sprite.transform.position, 45, detectionRadius, 5, ground | player).Any(hit => IsOnLayer(hit, player));
-        }
+        public bool IsTargetDetected() =>
+            targetInstance &&
+            Sweep(transform.position, targetInstance.sprite.transform.position - sprite.transform.position, 45, detectionRadius, 5, ground | player).Any(hit => IsOnLayer(hit, player));
 
         private void Attack() {
             var hit = Physics2D.OverlapCircle(transform.position, explosionRadius, player);

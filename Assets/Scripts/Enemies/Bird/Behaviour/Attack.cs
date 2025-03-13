@@ -3,25 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using Enemies.Common;
 using UnityEngine;
+using Utils;
 
 namespace Enemies.Bird.Behaviour {
     public class Attack : IBehaviour {
         private readonly Bird self;
-
-        private Coroutine co;
-        private float t;
         private List<Vector3> path;
+        private float t;
+        private Coroutine co;
 
         public Attack(Bird self) {
             this.self = self;
         }
 
         public void OnEnter() {
-            self.rb.gravityScale = 0;
-            t = self.fuse;
             path = PathToTarget();
-
-            self.rb.velocity = Vector2.up;
+            t = self.fuse;
             co = self.StartCoroutine(DoRecalculatePathToTarget());
         }
 
@@ -36,7 +33,8 @@ namespace Enemies.Bird.Behaviour {
                 var next = path.LastOrDefault(IsNear);
                 if (next == default) return;
                 var direction = next - self.transform.position;
-                self.rb.velocity = Vector2.MoveTowards(self.rb.velocity, direction.normalized * self.speed, 1f);
+
+                self.rb.velocity = MathUtils.Lerpish(self.rb.velocity, direction.normalized * self.speed, Time.fixedDeltaTime * self.airAcceleration);
             }
         }
 

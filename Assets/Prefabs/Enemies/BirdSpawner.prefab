@@ -160,14 +160,13 @@ MonoBehaviour:
   knockbackAngle: 0
   staggerDurationS: 0
   cooldown: 5
-  spawns: 1
+  spawns: 3
   sprite: {fileID: 9202038865644320477}
   animator: {fileID: 6149703548532306918}
   bg:
     serializedVersion: 2
     m_Bits: 256
   spawnable: {fileID: 5710193498280292276, guid: b1961d03c1fff419ca277115aafff06c, type: 3}
-  debugBehaviour: 
 --- !u!50 &7893308943432753642
 Rigidbody2D:
   serializedVersion: 4

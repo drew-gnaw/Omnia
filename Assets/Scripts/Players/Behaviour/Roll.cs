@@ -20,7 +20,7 @@ namespace Players.Behaviour {
             ShrinkCollider();
 
             // If player is moving above threshold, roll in that direction, else roll in facing direction
-            direction = Mathf.Sign(Mathf.Abs(self.rb.velocity.x) > self.rollThreshold ? self.rb.velocity.x : self.facing.x);
+            direction = Mathf.Sign(Mathf.Abs(self.rb.velocity.x) > self.rollThreshold ? self.rb.velocity.x : self.moving.x != 0 ? self.moving.x : self.facing.x);
 
             self.OnRoll();
         }
