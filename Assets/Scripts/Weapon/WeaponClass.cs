@@ -24,7 +24,10 @@ public abstract class WeaponClass : MonoBehaviour
         set {
             if (_currentAmmo != value) {
                 _currentAmmo = value;
-                OnAmmoChanged?.Invoke(_currentAmmo);
+                Debug.Log("Changed current ammo to " + value);
+                if (gameObject.activeInHierarchy) {
+                    OnAmmoChanged?.Invoke(_currentAmmo);
+                }
             }
         }
     }
@@ -36,6 +39,7 @@ public abstract class WeaponClass : MonoBehaviour
 
     public virtual void Start() {
         playerComponent = player.GetComponent<Player>();
+        CurrentAmmo = maxAmmoCount;
     }
 
     public void Attack() {

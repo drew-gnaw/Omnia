@@ -98,6 +98,7 @@ namespace Players {
 
         public static event Action<float> OnFlowChanged;
         public static event Action<int> OnHealthChanged;
+        public static event Action<int> OnWeaponChanged;
 
         private float currentLockout;
         private float maximumLockout;
@@ -265,7 +266,7 @@ namespace Players {
                     weapons[selectedWeapon].IntroSkill();
                 }
 
-                Debug.Log($"Swapped to weapon {targetWeapon}");
+                OnWeaponChanged?.Invoke(targetWeapon);
             }
         }
 

@@ -18,9 +18,16 @@ namespace UI {
         [SerializeField] private GameObject ammoPrefab;
         [SerializeField] private GameObject emptyAmmoPrefab;
 
+        [SerializeField] private Sprite harpoonGunSprite;
+        [SerializeField] private Sprite harpoonGunTipSprite;
+        [SerializeField] private Sprite shotgunSprite;
+        [SerializeField] private Sprite shotgunTipSprite;
+
+        [SerializeField] private Image weaponRenderer;
+        [SerializeField] private Image weaponTipRenderer;
+
         [SerializeField] private Slider flowSlider;
         private Coroutine flowAnimationCoroutine;
-
 
         protected override void OnAwake() {
             gameObject.SetActive(true);
@@ -34,14 +41,18 @@ namespace UI {
 
             Player.OnFlowChanged += UpdateFlow;
             Player.OnHealthChanged += UpdateHealth;
+            Player.OnWeaponChanged += SetWeaponSprites;
+            WeaponClass.OnAmmoChanged += UpdateAmmo;
         }
 
         private void OnDisable() {
             Player.OnFlowChanged -= UpdateFlow;
             Player.OnHealthChanged -= UpdateHealth;
+            Player.OnWeaponChanged -= SetWeaponSprites;
+            WeaponClass.OnAmmoChanged -= UpdateAmmo;
         }
 
-        public void UpdateHealth(int currentHealth) {
+        private void UpdateHealth(int currentHealth) {
             foreach (Transform child in healthContainer) {
                 Destroy(child.gameObject);
             }
@@ -64,12 +75,32 @@ namespace UI {
             }
         }
 
-        public void UpdateFlow(float targetFlow) {
+        private void UpdateFlow(float targetFlow) {
             if (flowAnimationCoroutine != null) {
                 StopCoroutine(flowAnimationCoroutine);
             }
 
             flowAnimationCoroutine = StartCoroutine(SlideFlowValue(targetFlow));
+        }
+
+        private void UpdateAmmo(int currentAmmo) {
+            if (!player.weapons[player.selectedWeapon]) {
+                Debug.LogWarning("HUDManager: No ammo available for selected weapon.");
+            }
+
+            foreach (Transform child in ammoContainer) {
+                Destroy(child.gameObject);
+            }
+
+            int maxAmmo = player.weapons[player.selectedWeapon].maxAmmoCount;
+
+            for (int i = 0; i < maxAmmo; i++) {
+                if (i < currentAmmo) {
+                    Instantiate(ammoPrefab, ammoContainer);
+                } else {
+                    Instantiate(emptyAmmoPrefab, ammoContainer);
+                }
+            }
         }
 
         private IEnumerator SlideFlowValue(float targetFlow) {
@@ -86,6 +117,22 @@ namespace UI {
 
             // Ensure it ends at the exact target value
             flowSlider.value = targetFlow;
+        }
+
+        private void SetWeaponSprites(int targetWeapon) {
+            switch (targetWeapon) {
+                case 0:
+                    weaponRenderer.sprite = harpoonGunSprite;
+                    weaponTipRenderer.sprite = harpoonGunTipSprite;
+                    break;
+                case 1:
+                    weaponRenderer.sprite = shotgunSprite;
+                    weaponTipRenderer.sprite = shotgunTipSprite;
+                    break;
+                default:
+                    Debug.LogWarning("Tried to update HUD to invalid weapon: " + targetWeapon);
+                    break;
+            }
         }
 
         private float EaseOutQuad(float t) {
