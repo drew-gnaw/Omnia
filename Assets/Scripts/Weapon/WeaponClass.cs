@@ -18,6 +18,13 @@ public abstract class WeaponClass : MonoBehaviour
 
     [SerializeField] public int maxAmmoCount;
 
+    private bool IsActive {
+        get {
+            SpriteRenderer sr = GetComponentInChildren<SpriteRenderer>();
+            return sr != null && sr.enabled;
+        }
+    }
+
     private int _currentAmmo;
     public int CurrentAmmo {
         get => _currentAmmo;
@@ -25,7 +32,7 @@ public abstract class WeaponClass : MonoBehaviour
             if (_currentAmmo != value) {
                 _currentAmmo = value;
                 Debug.Log("Changed current ammo to " + value);
-                if (gameObject.activeInHierarchy) {
+                if (IsActive) {
                     OnAmmoChanged?.Invoke(_currentAmmo);
                 }
             }
