@@ -38,10 +38,25 @@ namespace UI {
         }
 
         public void UpdateHealth(int currentHealth) {
-            int numberOfHearts = (int)Mathf.Ceil(player.maximumHealth / 2);
-            bool halfHeart = numberOfHearts % 2 == 1;
+            foreach (Transform child in healthContainer) {
+                Destroy(child.gameObject);
+            }
 
-            for (int i = 0; i < numberOfHearts; i++) {
+            int maxHearts = player.maximumHealth / 2;
+            int fullHearts = currentHealth / 2;
+            bool hasHalfHeart = currentHealth % 2 == 1;
+
+            for (int i = 0; i < maxHearts; i++) {
+                if (i < fullHearts) {
+                    // Add a full heart
+                    Instantiate(heartPrefab, healthContainer);
+                } else if (hasHalfHeart && i == fullHearts) {
+                    // Add a half heart if there's an odd health value
+                    Instantiate(halfHeartPrefab, healthContainer);
+                } else {
+                    // Fill the rest with empty hearts
+                    Instantiate(emptyHeartPrefab, healthContainer);
+                }
             }
         }
 
