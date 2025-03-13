@@ -22,7 +22,7 @@ namespace Enemies.Armadillo.Behaviour {
         }
 
         public void OnTick() {
-            if (mode == Mode.Idle) self.UseBehaviour(new Walk(self));
+            if (mode == Mode.Idle) self.UseBehaviour(new Uncurl(self));
         }
 
         public void OnUpdate() {

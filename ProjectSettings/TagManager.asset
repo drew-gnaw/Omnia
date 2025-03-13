@@ -16,6 +16,8 @@ TagManager:
   - Background
   - Semisolid
   - Minimap
+  - Destructable
+  - Border
   - 
   - 
   - 
@@ -23,9 +25,7 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
-  - 
+  - LevelBoundary
   - 
   - 
   - 
@@ -41,8 +41,17 @@ TagManager:
   - name: Background
     uniqueID: 2355017471
     locked: 0
+  - name: Character Dialogue Sprites
+    uniqueID: 1227230773
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: NPC
+    uniqueID: 138752989
+    locked: 0
+  - name: Puzzle
+    uniqueID: 3908046391
     locked: 0
   - name: UI
     uniqueID: 405064753

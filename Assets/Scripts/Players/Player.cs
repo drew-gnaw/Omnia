@@ -4,6 +4,7 @@ using Omnia.State;
 using Omnia.Utils;
 using Players.Animation;
 using Players.Behaviour;
+using Puzzle;
 using UI;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -18,6 +19,8 @@ namespace Players {
         [SerializeField] internal BoxCollider2D hitbox;
         [SerializeField] internal LayerMask ground;
         [SerializeField] internal LayerMask semisolid;
+        [SerializeField] internal LayerMask destructable;
+        public LayerMask GroundedMask => ground | semisolid | destructable;
         [SerializeField] internal BoxCollider2D[] checks;
 
         [SerializeField] internal float maximumHealth;
@@ -69,7 +72,7 @@ namespace Players {
         public const float FLOW_TO_HP_RATIO = 0.2f;
 
         public event Action Spawn;
-        public event Action Death;
+        public static event Action Death;
 
         private float currentLockout;
         private float maximumLockout;
@@ -180,7 +183,7 @@ namespace Players {
             }
         }
 
-        private void Die() {
+        public void Die() {
             Death?.Invoke();
         }
 

@@ -19,7 +19,7 @@ namespace Enemies.BirdSpawner {
             UseBehaviour(new Idle(this));
         }
 
-        public override void Hurt(float damage) {
+        public override void Hurt(float damage, bool stagger = true) {
             if (currentHealth == 0) return;
             currentHealth = Mathf.Clamp(currentHealth - damage, 0, maximumHealth);
 

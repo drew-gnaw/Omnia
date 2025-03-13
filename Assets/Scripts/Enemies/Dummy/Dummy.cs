@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Enemies.Dummy {
     public class Dummy : Enemy, IInteractable {
         [SerializeField] private DialogueWrapper dummyDialogue;
-        public override void Hurt(float damage) {
+        public override void Hurt(float damage, bool stagger = true) {
             base.Hurt(damage);
             Debug.Log(this + " took damage " + damage);
         }
