@@ -7,28 +7,28 @@ using Utils;
 
 namespace UI {
     public class HUDManager : PersistentSingleton<HUDManager> {
+        [SerializeField] private Player player;
+
         [SerializeField] private Transform healthContainer;
         [SerializeField] private GameObject heartPrefab;
 
         [SerializeField] private Slider flowSlider;
         private Coroutine flowAnimationCoroutine;
+
+
         protected override void OnAwake() {
             gameObject.SetActive(true);
             Player.OnFlowChanged += UpdateFlow;
+            Player.OnHealthChanged += UpdateHealth;
         }
 
         private void OnDisable() {
             Player.OnFlowChanged -= UpdateFlow;
+            Player.OnHealthChanged -= UpdateHealth;
         }
 
-        public void UpdateHealth(int currentHealth, int maxHealth) {
-            for (int i = 0; i < healthContainer.childCount; i++) {
-                healthContainer.GetChild(i).gameObject.SetActive(i < currentHealth);
-            }
-
-            while (healthContainer.childCount < maxHealth) {
-                Instantiate(heartPrefab, healthContainer);
-            }
+        public void UpdateHealth(int currentHealth) {
+            int numberOfHearts = (int)Mathf.Ceil(player.maximumHealth / 2);
         }
 
         public void UpdateFlow(float targetFlow) {
@@ -56,7 +56,7 @@ namespace UI {
         }
 
         private float EaseOutQuad(float t) {
-            return -t * (t - 2f); 
+            return -t * (t - 2f);
         }
 
     }

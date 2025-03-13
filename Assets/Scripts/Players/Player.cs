@@ -22,11 +22,22 @@ namespace Players {
         public LayerMask GroundedMask => ground | semisolid | destructable;
         [SerializeField] internal BoxCollider2D[] checks;
 
-        [SerializeField] internal float maximumHealth;
-        [SerializeField] internal float currentHealth;
+        // Health is an integer. 1=HP = half a heart, meaning a full heart is 2HP.
+        [SerializeField] internal int maximumHealth;
         [SerializeField] internal float maximumFlow;
 
-        // flow is a property that broadcasts an event whenever it is changed.
+        // health and flow are properties that broadcast an event whenever they are changed.
+        private int _currentHealth;
+        public int CurrentHealth {
+            get => _currentHealth;
+            set {
+                if (_currentHealth != value) {
+                    _currentHealth = value;
+                    OnHealthChanged?.Invoke(_currentHealth);
+                }
+            }
+        }
+
         private float _currentFlow;
         public float CurrentFlow {
             get => _currentFlow;
@@ -86,6 +97,7 @@ namespace Players {
         public static event Action Death;
 
         public static event Action<float> OnFlowChanged;
+        public static event Action<int> OnHealthChanged;
 
         private float currentLockout;
         private float maximumLockout;
@@ -105,7 +117,7 @@ namespace Players {
         }
 
         public void Start() {
-            currentHealth = maximumHealth;
+            CurrentHealth = maximumHealth;
 
             CurrentFlow = 0;
 
@@ -156,12 +168,12 @@ namespace Players {
             }
 
             combatTimer.Start();
-            currentHealth = Mathf.Clamp(currentHealth - damage, 0, maximumHealth);
+            CurrentHealth = (int)Mathf.Clamp(CurrentHealth - damage, 0, maximumHealth);
             currentHurtInvulnerability = hurtInvulnerabilityTime;
             UseExternalVelocity(velocity, lockout);
             StartCoroutine(DoHurtInvincibilityFlicker());
 
-            if (currentHealth == 0) Die();
+            if (CurrentHealth == 0) Die();
         }
 
         public void OnHit(float flowAmount) {
@@ -171,8 +183,8 @@ namespace Players {
 
         public void ConsumeAllFlow() {
             if (CurrentFlow > 0) {
-                float healthGain = CurrentFlow * FLOW_TO_HP_RATIO;
-                currentHealth = Mathf.Clamp(currentHealth + healthGain, 0, maximumHealth);
+                // float healthGain = CurrentFlow * FLOW_TO_HP_RATIO;
+                // CurrentHealth = Mathf.Clamp(CurrentHealth + healthGain, 0, maximumHealth);
                 CurrentFlow = 0;
             }
         }
@@ -182,8 +194,8 @@ namespace Players {
                 float flowToDrain = Mathf.Min(CurrentFlow, drainRate * Time.deltaTime);
                 CurrentFlow -= flowToDrain;
 
-                float healthGain = flowToDrain * FLOW_TO_HP_RATIO;
-                currentHealth = Mathf.Clamp(currentHealth + healthGain, 0, maximumHealth);
+                // float healthGain = flowToDrain * FLOW_TO_HP_RATIO;
+                // CurrentHealth = Mathf.Clamp(CurrentHealth + healthGain, 0, maximumHealth);
             }
         }
 

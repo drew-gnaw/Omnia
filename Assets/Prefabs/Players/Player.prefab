@@ -394,7 +394,6 @@ GameObject:
   - component: {fileID: 2761024857814508083}
   - component: {fileID: 6402661582757285898}
   - component: {fileID: 1129889265447086856}
-  - component: {fileID: 8980240123754482055}
   - component: {fileID: 1527714499327898025}
   - component: {fileID: 7013774369828041354}
   m_Layer: 7
@@ -456,10 +455,8 @@ MonoBehaviour:
   - {fileID: 3119127342257128012}
   - {fileID: 2089878435842221790}
   - {fileID: 3552720443867880701}
-  maximumHealth: 100
-  currentHealth: 100
+  maximumHealth: 6
   maximumFlow: 100
-  currentFlow: 0
   moveSpeed: 7
   jumpSpeed: 7
   pullSpeed: 12
