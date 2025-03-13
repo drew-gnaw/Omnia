@@ -18,7 +18,18 @@ public abstract class WeaponClass : MonoBehaviour
 
     [SerializeField] public int maxAmmoCount;
 
-    public int currentAmmoCount;
+    private int _currentAmmo;
+    public int CurrentAmmo {
+        get => _currentAmmo;
+        set {
+            if (_currentAmmo != value) {
+                _currentAmmo = value;
+                OnAmmoChanged?.Invoke(_currentAmmo);
+            }
+        }
+    }
+
+    public static event Action<int> OnAmmoChanged;
 
     private bool canAttack = true;
     protected Player playerComponent;

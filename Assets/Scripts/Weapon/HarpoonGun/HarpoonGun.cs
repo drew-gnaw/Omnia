@@ -63,6 +63,7 @@ public class HarpoonGun : WeaponClass
         HarpoonSpear spear = harpoonSpearPool.Get();
         spear.Fire(this);
         firedSpears.AddFirst(spear);
+        CurrentAmmo--;
     }
 
     public override void UseSkill()
@@ -108,12 +109,14 @@ public class HarpoonGun : WeaponClass
     public void SpearCollected(HarpoonSpear spear) {
         harpoonSpearPool.Release(spear);
         firedSpears.Remove(spear);
+        CurrentAmmo++;
     }
 
     public void SpearCollectAll() {
         foreach (var spear in firedSpears) {
             SpearCollected(spear);
         }
+        CurrentAmmo = maxAmmoCount;
     }
 
     private void HandleWeaponRotation() {
