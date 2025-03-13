@@ -20,6 +20,14 @@ namespace UI {
 
         protected override void OnAwake() {
             gameObject.SetActive(true);
+
+            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+            if (playerObj != null) {
+                player = playerObj.GetComponent<Player>();
+            } else {
+                Debug.LogError("HUDManager: No GameObject with tag 'Player' found!");
+            }
+
             Player.OnFlowChanged += UpdateFlow;
             Player.OnHealthChanged += UpdateHealth;
         }
