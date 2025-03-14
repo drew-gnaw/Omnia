@@ -471,6 +471,7 @@ MonoBehaviour:
   weaponRecoilLockoutTime: 0.2
   wallJumpLockoutTime: 0
   combatCooldown: 5
+  skillCooldown: 5
   flowDrainRate: 10
   hurtInvulnerabilityTime: 1
   weapons:
@@ -606,7 +607,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   self: {fileID: 6725967550211918722}
-  playerCollider: {fileID: 0}
   semisolidCollider: {fileID: 0}
 --- !u!114 &1527714499327898025
 MonoBehaviour:
@@ -779,6 +779,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3989308426405327203, guid: efa9c0dcd785c994e9b60cd2c68cbec9, type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5713062283198653993, guid: efa9c0dcd785c994e9b60cd2c68cbec9, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6090924249510559695, guid: efa9c0dcd785c994e9b60cd2c68cbec9, type: 3}

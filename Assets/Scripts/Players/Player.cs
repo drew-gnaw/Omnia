@@ -64,6 +64,7 @@ namespace Players {
         [SerializeField] internal float weaponRecoilLockoutTime;
         [SerializeField] internal float wallJumpLockoutTime;
         [SerializeField] internal float combatCooldown;
+        [SerializeField] internal float skillCooldown;
         [SerializeField] internal float flowDrainRate;
         [SerializeField] internal float hurtInvulnerabilityTime;
 
@@ -100,6 +101,7 @@ namespace Players {
         public static event Action<float> OnFlowChanged;
         public static event Action<int> OnHealthChanged;
         public static event Action<int> OnWeaponChanged;
+        public static event Action<float> OnSkillCooldownUpdated;
 
         private float currentLockout;
         private float maximumLockout;
@@ -107,6 +109,7 @@ namespace Players {
 
         private CountdownTimer combatTimer;
         private CountdownTimer rollCooldownTimer;
+        private CountdownTimer skillCooldownTimer;
 
         private IBehaviour behaviour;
         private StateMachine animationStateMachine;
@@ -124,20 +127,26 @@ namespace Players {
             CurrentFlow = 0;
 
             combatTimer = new CountdownTimer(combatCooldown);
-
             rollCooldownTimer = new CountdownTimer(rollCooldown);
+            skillCooldownTimer = new CountdownTimer(skillCooldown);
+
             canRoll = true;
 
+            // initially fill out the skill bar
+            OnSkillCooldownUpdated?.Invoke(1);
             Spawn?.Invoke();
         }
 
         public void Update() {
+            Debug.Log("Is running: "+skillCooldownTimer.IsRunning);
+            Debug.Log("Progress: "+skillCooldownTimer.Progress);
             currentLockout = Mathf.Clamp(currentLockout - Time.deltaTime, 0, maximumLockout);
             behaviour?.OnUpdate();
             animationStateMachine.Update();
 
             UpdateCombatTimer();
             UpdateRollCooldownTimer();
+            UpdateSkillCooldownTimer();
 
             currentHurtInvulnerability = Mathf.Max(0, currentHurtInvulnerability - Time.deltaTime);
         }
@@ -249,9 +258,14 @@ namespace Players {
         }
 
         private void DoSkill() {
+            if (skillCooldownTimer.IsRunning) {
+                OnSkillCooldownUpdated?.Invoke(skillCooldownTimer.Progress);
+                return;
+            }
             if (!skill) return;
             skill = false;
             weapons[selectedWeapon].UseSkill();
+            skillCooldownTimer.Start();
         }
 
         public void DoSwap(int targetWeapon) {
@@ -288,6 +302,10 @@ namespace Players {
             if (!rollCooldownTimer.IsRunning) {
                 canRoll = true;
             }
+        }
+
+        private void UpdateSkillCooldownTimer() {
+            skillCooldownTimer.Tick(Time.deltaTime);
         }
 
         /* This is kind of lazy but it works. */

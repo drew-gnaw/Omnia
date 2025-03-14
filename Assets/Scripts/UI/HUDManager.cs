@@ -1,18 +1,21 @@
 using System;
 using System.Collections;
 using Players;
+using Players.Mixin;
 using UnityEngine;
 using UnityEngine.UI;
 using Utils;
 
 namespace UI {
     public class HUDManager : PersistentSingleton<HUDManager> {
-        [SerializeField] private Player player;
+        private Player player;
 
         [SerializeField] private Transform healthContainer;
         [SerializeField] private GameObject heartPrefab;
         [SerializeField] private GameObject halfHeartPrefab;
         [SerializeField] private GameObject emptyHeartPrefab;
+
+        [SerializeField] private Slider skillCooldownSlider;
 
         [SerializeField] private Transform ammoContainer;
         [SerializeField] private GameObject ammoPrefab;
@@ -43,6 +46,7 @@ namespace UI {
             Player.OnHealthChanged += UpdateHealth;
             Player.OnWeaponChanged += SetWeaponSprites;
             WeaponClass.OnAmmoChanged += UpdateAmmo;
+            Player.OnSkillCooldownUpdated += UpdateSkillCooldown;
         }
 
         private void OnDisable() {
@@ -50,6 +54,7 @@ namespace UI {
             Player.OnHealthChanged -= UpdateHealth;
             Player.OnWeaponChanged -= SetWeaponSprites;
             WeaponClass.OnAmmoChanged -= UpdateAmmo;
+            Player.OnSkillCooldownUpdated -= UpdateSkillCooldown;
         }
 
         private void UpdateHealth(int currentHealth) {
@@ -101,6 +106,11 @@ namespace UI {
                     Instantiate(emptyAmmoPrefab, ammoContainer);
                 }
             }
+        }
+
+        // progress is a float where 0 <= progress <= 1
+        private void UpdateSkillCooldown(float progress) {
+            skillCooldownSlider.value = progress;
         }
 
         private IEnumerator SlideFlowValue(float targetFlow) {
