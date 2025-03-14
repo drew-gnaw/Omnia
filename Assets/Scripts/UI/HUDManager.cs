@@ -120,6 +120,8 @@ namespace UI {
         }
 
         private void SetWeaponSprites(int targetWeapon) {
+            UpdateAmmo(player.weapons[player.selectedWeapon].CurrentAmmo);
+
             switch (targetWeapon) {
                 case 0:
                     weaponRenderer.sprite = harpoonGunSprite;

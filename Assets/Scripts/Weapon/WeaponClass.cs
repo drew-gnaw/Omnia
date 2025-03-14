@@ -31,7 +31,6 @@ public abstract class WeaponClass : MonoBehaviour
         set {
             if (_currentAmmo != value) {
                 _currentAmmo = value;
-                Debug.Log("Changed current ammo to " + value);
                 if (IsActive) {
                     OnAmmoChanged?.Invoke(_currentAmmo);
                 }
