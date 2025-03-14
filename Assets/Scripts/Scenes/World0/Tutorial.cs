@@ -128,12 +128,14 @@ namespace Scenes {
             yield return new WaitForSeconds(0.7f);
 
             yield return StartCoroutine(DialogueManager.Instance.StartDialogue(dinkyScaredDialogue.Dialogue));
-            
+
             yield return new WaitForSeconds(0.3f);
             dinky.Disappear();
             yield return new WaitForSeconds(1f);
 
             yield return StartCoroutine(DialogueManager.Instance.StartDialogue(dinkyGoneDialogue.Dialogue));
+            yield return new WaitForSeconds(1f);
+            StartCoroutine(fadeScreen.FadeInDarkScreen(3f));
         }
 
 
