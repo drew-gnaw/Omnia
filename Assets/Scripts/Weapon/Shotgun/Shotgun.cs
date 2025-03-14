@@ -3,7 +3,6 @@ using System.Collections;
 using Enemies;
 using Omnia.Utils;
 using Players;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -74,7 +73,7 @@ public class Shotgun : WeaponClass {
             Vector2 direction = Quaternion.Euler(0, 0, currentAngle) * transform.right;
             RaycastHit2D hit = Physics2D.Raycast(origin, direction, range, groundLayer | hittableLayerMask);
 
-            if (hit.collider != null && CollisionUtils.isLayerInMask(hit.collider.gameObject.layer, hittableLayerMask)) {
+            if (hit.collider != null && CollisionUtils.IsLayerInMask(hit.collider.gameObject.layer, hittableLayerMask)) {
                 // Apply damage to the enemy
                 Enemy enemy = hit.collider.GetComponent<Enemy>();
                 if (enemy != null) {
