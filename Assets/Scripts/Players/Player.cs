@@ -7,6 +7,7 @@ using Players.Behaviour;
 using Puzzle;
 using UI;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Utils;
 using If = Omnia.State.FuncPredicate;
 
@@ -15,17 +16,40 @@ namespace Players {
         [SerializeField] internal SpriteRenderer sprite;
         [SerializeField] internal Animator animator;
         [SerializeField] internal Rigidbody2D rb;
-        [SerializeField] internal CapsuleCollider2D cc;
+        [SerializeField] internal BoxCollider2D hitbox;
         [SerializeField] internal LayerMask ground;
         [SerializeField] internal LayerMask semisolid;
         [SerializeField] internal LayerMask destructable;
         public LayerMask GroundedMask => ground | semisolid | destructable;
         [SerializeField] internal BoxCollider2D[] checks;
 
-        [SerializeField] internal float maximumHealth;
-        [SerializeField] internal float currentHealth;
+        // Health is an integer. 1=HP = half a heart, meaning a full heart is 2HP.
+        [SerializeField] internal int maximumHealth;
         [SerializeField] internal float maximumFlow;
-        [SerializeField] internal float currentFlow;
+
+        // health and flow are properties that broadcast an event whenever they are changed.
+        private int _currentHealth;
+        public int CurrentHealth {
+            get => _currentHealth;
+            set {
+                if (_currentHealth != value) {
+                    _currentHealth = value;
+                    OnHealthChanged?.Invoke(_currentHealth);
+                }
+            }
+        }
+
+        private float _currentFlow;
+        public float CurrentFlow {
+            get => _currentFlow;
+            set {
+                if (_currentFlow != value) {
+                    _currentFlow = value;
+                    OnFlowChanged?.Invoke(_currentFlow);
+                }
+            }
+        }
+
         [SerializeField] internal float moveSpeed;
         [SerializeField] internal float jumpSpeed;
         [SerializeField] internal float pullSpeed;
@@ -40,6 +64,7 @@ namespace Players {
         [SerializeField] internal float weaponRecoilLockoutTime;
         [SerializeField] internal float wallJumpLockoutTime;
         [SerializeField] internal float combatCooldown;
+        [SerializeField] internal float skillCooldown;
         [SerializeField] internal float flowDrainRate;
         [SerializeField] internal float hurtInvulnerabilityTime;
 
@@ -73,12 +98,18 @@ namespace Players {
         public event Action Spawn;
         public static event Action Death;
 
+        public static event Action<float> OnFlowChanged;
+        public static event Action<int> OnHealthChanged;
+        public static event Action<int> OnWeaponChanged;
+        public static event Action<float> OnSkillCooldownUpdated;
+
         private float currentLockout;
         private float maximumLockout;
         private float currentHurtInvulnerability;
 
         private CountdownTimer combatTimer;
         private CountdownTimer rollCooldownTimer;
+        private CountdownTimer skillCooldownTimer;
 
         private IBehaviour behaviour;
         private StateMachine animationStateMachine;
@@ -91,26 +122,31 @@ namespace Players {
         }
 
         public void Start() {
-            currentHealth = maximumHealth;
-            UIController.Instance.UpdatePlayerHealth(currentHealth, maximumHealth);
+            CurrentHealth = maximumHealth;
 
-            currentFlow = 0;
+            CurrentFlow = 0;
 
             combatTimer = new CountdownTimer(combatCooldown);
-
             rollCooldownTimer = new CountdownTimer(rollCooldown);
+            skillCooldownTimer = new CountdownTimer(skillCooldown);
+
             canRoll = true;
 
+            // initially fill out the skill bar
+            OnSkillCooldownUpdated?.Invoke(1);
             Spawn?.Invoke();
         }
 
         public void Update() {
+            Debug.Log("Is running: "+skillCooldownTimer.IsRunning);
+            Debug.Log("Progress: "+skillCooldownTimer.Progress);
             currentLockout = Mathf.Clamp(currentLockout - Time.deltaTime, 0, maximumLockout);
             behaviour?.OnUpdate();
             animationStateMachine.Update();
 
             UpdateCombatTimer();
             UpdateRollCooldownTimer();
+            UpdateSkillCooldownTimer();
 
             currentHurtInvulnerability = Mathf.Max(0, currentHurtInvulnerability - Time.deltaTime);
         }
@@ -143,42 +179,34 @@ namespace Players {
             }
 
             combatTimer.Start();
-            currentHealth = Mathf.Clamp(currentHealth - damage, 0, maximumHealth);
-            UIController.Instance.UpdatePlayerHealth(currentHealth, maximumHealth);
-
+            CurrentHealth = (int)Mathf.Clamp(CurrentHealth - damage, 0, maximumHealth);
             currentHurtInvulnerability = hurtInvulnerabilityTime;
             UseExternalVelocity(velocity, lockout);
             StartCoroutine(DoHurtInvincibilityFlicker());
 
-            if (currentHealth == 0) Die();
+            if (CurrentHealth == 0) Die();
         }
 
         public void OnHit(float flowAmount) {
             combatTimer.Start();
-            currentFlow = Mathf.Min(currentFlow + flowAmount, maximumFlow);
-            UIController.Instance.UpdatePlayerFlow(currentFlow, maximumFlow);
+            CurrentFlow = Mathf.Min(CurrentFlow + flowAmount, maximumFlow);
         }
 
         public void ConsumeAllFlow() {
-            if (currentFlow > 0) {
-                float healthGain = currentFlow * FLOW_TO_HP_RATIO;
-                currentHealth = Mathf.Clamp(currentHealth + healthGain, 0, maximumHealth);
-                currentFlow = 0;
-                UIController.Instance.UpdatePlayerHealth(currentHealth, maximumHealth);
-                UIController.Instance.UpdatePlayerFlow(currentFlow, maximumFlow);
+            if (CurrentFlow > 0) {
+                // float healthGain = CurrentFlow * FLOW_TO_HP_RATIO;
+                // CurrentHealth = Mathf.Clamp(CurrentHealth + healthGain, 0, maximumHealth);
+                CurrentFlow = 0;
             }
         }
 
         public void DrainFlowOverTime(float drainRate) {
-            if (currentFlow > 0) {
-                float flowToDrain = Mathf.Min(currentFlow, drainRate * Time.deltaTime);
-                currentFlow -= flowToDrain;
+            if (CurrentFlow > 0) {
+                float flowToDrain = Mathf.Min(CurrentFlow, drainRate * Time.deltaTime);
+                CurrentFlow -= flowToDrain;
 
-                float healthGain = flowToDrain * FLOW_TO_HP_RATIO;
-                currentHealth = Mathf.Clamp(currentHealth + healthGain, 0, maximumHealth);
-
-                UIController.Instance.UpdatePlayerHealth(currentHealth, maximumHealth);
-                UIController.Instance.UpdatePlayerFlow(currentFlow, maximumFlow);
+                // float healthGain = flowToDrain * FLOW_TO_HP_RATIO;
+                // CurrentHealth = Mathf.Clamp(CurrentHealth + healthGain, 0, maximumHealth);
             }
         }
 
@@ -230,9 +258,14 @@ namespace Players {
         }
 
         private void DoSkill() {
+            if (skillCooldownTimer.IsRunning) {
+                OnSkillCooldownUpdated?.Invoke(skillCooldownTimer.Progress);
+                return;
+            }
             if (!skill) return;
             skill = false;
             weapons[selectedWeapon].UseSkill();
+            skillCooldownTimer.Start();
         }
 
         public void DoSwap(int targetWeapon) {
@@ -243,12 +276,12 @@ namespace Players {
 
                 weapons[selectedWeapon].SetSpriteActive(true);
 
-                if (Mathf.Approximately(currentFlow, maximumFlow)) {
+                if (Mathf.Approximately(CurrentFlow, maximumFlow)) {
                     ConsumeAllFlow();
                     weapons[selectedWeapon].IntroSkill();
                 }
 
-                Debug.Log($"Swapped to weapon {targetWeapon}");
+                OnWeaponChanged?.Invoke(targetWeapon);
             }
         }
 
@@ -269,6 +302,10 @@ namespace Players {
             if (!rollCooldownTimer.IsRunning) {
                 canRoll = true;
             }
+        }
+
+        private void UpdateSkillCooldownTimer() {
+            skillCooldownTimer.Tick(Time.deltaTime);
         }
 
         /* This is kind of lazy but it works. */

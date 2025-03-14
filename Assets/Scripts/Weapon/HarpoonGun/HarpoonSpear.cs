@@ -103,7 +103,7 @@ public class HarpoonSpear : MonoBehaviour {
         }
         // FIXME: for whatever reason, checking if the spear collider is touching enemy does not always work,
         // other collider ends up as null if they are moving
-        if (CollisionUtils.isLayerInMask(other.gameObject.layer, hittableLayerMask) && !dropped) {
+        if (CollisionUtils.IsLayerInMask(other.gameObject.layer, hittableLayerMask) && !dropped) {
             HandleEnemyCollision(other.GetComponent<Enemy>());
         }
 

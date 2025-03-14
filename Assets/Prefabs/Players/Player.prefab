@@ -390,11 +390,10 @@ GameObject:
   - component: {fileID: 2157272981753954215}
   - component: {fileID: 6725967550211918722}
   - component: {fileID: 1006114366540754684}
-  - component: {fileID: 6160612355849141162}
+  - component: {fileID: 2669207822768002954}
   - component: {fileID: 2761024857814508083}
   - component: {fileID: 6402661582757285898}
   - component: {fileID: 1129889265447086856}
-  - component: {fileID: 8980240123754482055}
   - component: {fileID: 1527714499327898025}
   - component: {fileID: 7013774369828041354}
   m_Layer: 7
@@ -441,7 +440,7 @@ MonoBehaviour:
   sprite: {fileID: 5090888766550979113}
   animator: {fileID: 7013774369828041354}
   rb: {fileID: 1006114366540754684}
-  cc: {fileID: 6160612355849141162}
+  hitbox: {fileID: 2669207822768002954}
   ground:
     serializedVersion: 2
     m_Bits: 8
@@ -456,10 +455,8 @@ MonoBehaviour:
   - {fileID: 3119127342257128012}
   - {fileID: 2089878435842221790}
   - {fileID: 3552720443867880701}
-  maximumHealth: 100
-  currentHealth: 100
+  maximumHealth: 6
   maximumFlow: 100
-  currentFlow: 0
   moveSpeed: 7
   jumpSpeed: 7
   pullSpeed: 12
@@ -474,6 +471,7 @@ MonoBehaviour:
   weaponRecoilLockoutTime: 0.2
   wallJumpLockoutTime: 0
   combatCooldown: 5
+  skillCooldown: 5
   flowDrainRate: 10
   hurtInvulnerabilityTime: 1
   weapons:
@@ -523,8 +521,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!70 &6160612355849141162
-CapsuleCollider2D:
+--- !u!61 &2669207822768002954
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -556,8 +554,18 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0.75}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
   m_Size: {x: 0.5, y: 1.5}
-  m_Direction: 0
+  m_EdgeRadius: 0
 --- !u!114 &2761024857814508083
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -599,7 +607,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   self: {fileID: 6725967550211918722}
-  playerCollider: {fileID: 6160612355849141162}
   semisolidCollider: {fileID: 0}
 --- !u!114 &1527714499327898025
 MonoBehaviour:
@@ -772,6 +779,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3989308426405327203, guid: efa9c0dcd785c994e9b60cd2c68cbec9, type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5713062283198653993, guid: efa9c0dcd785c994e9b60cd2c68cbec9, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6090924249510559695, guid: efa9c0dcd785c994e9b60cd2c68cbec9, type: 3}
