@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Players;
 using Players.Mixin;
 using UnityEngine;
@@ -30,6 +31,8 @@ namespace UI {
         [SerializeField] private Image weaponTipRenderer;
 
         [SerializeField] private Slider flowSlider;
+        [SerializeField] private Image lowHealthEffect;
+        private Coroutine lowHealthCoroutine;
         private Coroutine flowAnimationCoroutine;
 
         protected override void OnAwake() {
@@ -66,18 +69,24 @@ namespace UI {
             int fullHearts = currentHealth / 2;
             bool hasHalfHeart = currentHealth % 2 == 1;
 
+            List<GameObject> heartObjects = new List<GameObject>();
+
             for (int i = 0; i < maxHearts; i++) {
+                GameObject heartInstance;
+
                 if (i < fullHearts) {
-                    // Add a full heart
-                    Instantiate(heartPrefab, healthContainer);
+                    heartInstance = Instantiate(heartPrefab, healthContainer);
                 } else if (hasHalfHeart && i == fullHearts) {
-                    // Add a half heart if there's an odd health value
-                    Instantiate(halfHeartPrefab, healthContainer);
+                    heartInstance = Instantiate(halfHeartPrefab, healthContainer);
                 } else {
-                    // Fill the rest with empty hearts
-                    Instantiate(emptyHeartPrefab, healthContainer);
+                    heartInstance = Instantiate(emptyHeartPrefab, healthContainer);
                 }
+
+                heartObjects.Add(heartInstance);
             }
+
+            StartCoroutine(FlashHearts(heartObjects));
+            HandleLowHealthEffect(currentHealth);
         }
 
         private void UpdateFlow(float targetFlow) {
@@ -145,6 +154,53 @@ namespace UI {
                     Debug.LogWarning("Tried to update HUD to invalid weapon: " + targetWeapon);
                     break;
             }
+        }
+
+        private IEnumerator FlashHearts(List<GameObject> hearts) {
+            Color originalColor = Color.white;
+            Color flashColor = Color.red;
+
+            foreach (GameObject heart in hearts) {
+                Image heartImage = heart.GetComponent<Image>();
+                if (heartImage != null) {
+                    heartImage.color = flashColor;
+                }
+            }
+
+            yield return new WaitForSeconds(0.1f);  // Short flash duration
+
+            foreach (GameObject heart in hearts) {
+                Image heartImage = heart.GetComponent<Image>();
+                if (heartImage != null) {
+                    heartImage.color = originalColor;
+                }
+            }
+        }
+
+        private void HandleLowHealthEffect(int currentHealth) {
+            float targetAlpha = currentHealth <= 2 ? 0.1f : 0f;
+
+            if (lowHealthCoroutine != null) {
+                StopCoroutine(lowHealthCoroutine);
+            }
+
+            lowHealthCoroutine = StartCoroutine(FadeLowHealthEffect(targetAlpha));
+        }
+
+        private IEnumerator FadeLowHealthEffect(float targetAlpha) {
+            float startAlpha = lowHealthEffect.color.a;
+            float duration = 0.5f;
+            float timeElapsed = 0f;
+
+            while (timeElapsed < duration) {
+                float newAlpha = Mathf.Lerp(startAlpha, targetAlpha, timeElapsed / duration);
+                lowHealthEffect.color = new Color(1f, 0f, 0f, newAlpha);  // Red with transparency
+                timeElapsed += Time.deltaTime;
+                yield return null;
+            }
+
+            // Ensure exact target alpha at the end
+            lowHealthEffect.color = new Color(1f, 0f, 0f, targetAlpha);
         }
 
         private float EaseOutQuad(float t) {

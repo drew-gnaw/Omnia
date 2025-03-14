@@ -93,7 +93,8 @@ namespace Players {
         [SerializeField] internal Transform buffsParent;
 
         // Describes the ratio at which flow is converted into HP.
-        public const float FLOW_TO_HP_RATIO = 0.2f;
+        public const int SWAP_HEAL = 2;
+
 
         public event Action Spawn;
         public static event Action Death;
@@ -138,8 +139,6 @@ namespace Players {
         }
 
         public void Update() {
-            Debug.Log("Is running: "+skillCooldownTimer.IsRunning);
-            Debug.Log("Progress: "+skillCooldownTimer.Progress);
             currentLockout = Mathf.Clamp(currentLockout - Time.deltaTime, 0, maximumLockout);
             behaviour?.OnUpdate();
             animationStateMachine.Update();
@@ -194,21 +193,10 @@ namespace Players {
 
         public void ConsumeAllFlow() {
             if (CurrentFlow > 0) {
-                // float healthGain = CurrentFlow * FLOW_TO_HP_RATIO;
-                // CurrentHealth = Mathf.Clamp(CurrentHealth + healthGain, 0, maximumHealth);
                 CurrentFlow = 0;
             }
         }
 
-        public void DrainFlowOverTime(float drainRate) {
-            if (CurrentFlow > 0) {
-                float flowToDrain = Mathf.Min(CurrentFlow, drainRate * Time.deltaTime);
-                CurrentFlow -= flowToDrain;
-
-                // float healthGain = flowToDrain * FLOW_TO_HP_RATIO;
-                // CurrentHealth = Mathf.Clamp(CurrentHealth + healthGain, 0, maximumHealth);
-            }
-        }
 
         public void Die() {
             Death?.Invoke();
@@ -279,6 +267,7 @@ namespace Players {
                 if (Mathf.Approximately(CurrentFlow, maximumFlow)) {
                     ConsumeAllFlow();
                     weapons[selectedWeapon].IntroSkill();
+                    CurrentHealth += SWAP_HEAL;
                 }
 
                 OnWeaponChanged?.Invoke(targetWeapon);
@@ -290,10 +279,6 @@ namespace Players {
 
         private void UpdateCombatTimer() {
             combatTimer.Tick(Time.deltaTime);
-
-            if (!combatTimer.IsRunning) {
-                DrainFlowOverTime(flowDrainRate);
-            }
         }
 
         private void UpdateRollCooldownTimer() {
