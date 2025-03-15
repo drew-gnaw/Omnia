@@ -13,7 +13,20 @@ MonoBehaviour:
   m_Name: PickupDialogue
   m_EditorClassIdentifier: 
   dialogue:
+  - bodyText: What's this?
+    speakerName: Jamie
+    displayingImage: {fileID: 21300000, guid: 092a1591720d645c5993e5e2c781803f, type: 3}
+    broadcastAnEvent: 0
+  - bodyText: Looks like some kind of... gun?
+    speakerName: Jamie
+    displayingImage: {fileID: 21300000, guid: e97d70049b5514d0dbe229dc7380a76b, type: 3}
+    broadcastAnEvent: 0
   - bodyText: You picked up the Scrap Gun!
     speakerName: Tutorial
     displayingImage: {fileID: 0}
+    broadcastAnEvent: 0
+  - bodyText: I only know one person crafty enough to make something like this out
+      of scrap...
+    speakerName: Jamie
+    displayingImage: {fileID: 21300000, guid: e45f1839db2784540934541013900a29, type: 3}
     broadcastAnEvent: 0
