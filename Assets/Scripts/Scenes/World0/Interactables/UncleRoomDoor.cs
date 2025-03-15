@@ -21,7 +21,8 @@ public class UncleRoomDoor : MonoBehaviour, IInteractable
         if (!ShotgunPickup.pickedUp) {
             yield return DialogueManager.Instance.StartDialogue(notPickedUpDialogue.Dialogue);
         } else {
-            SceneInitializer.LoadScene("6_City");
+            // placeholder
+            SceneInitializer.LoadScene("5_City");
         }
     }
 }
