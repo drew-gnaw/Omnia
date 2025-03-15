@@ -395,6 +395,7 @@ MonoBehaviour:
   knockbackForce: 10
   knockbackAngle: 45
   staggerDurationS: 1
+  maxShieldHealth: 0
   sprite: {fileID: 9202038865644320477}
   animator: {fileID: 6149703548532306918}
   rb: {fileID: 7893308943432753642}
@@ -411,8 +412,11 @@ MonoBehaviour:
   - {fileID: 579300327616539976}
   facing: {x: 1, y: 0}
   hitDistance: 2
-  walkSpeed: 1
-  rollSpeed: 4
+  walkSpeed: 2
+  rollSpeed: 6
+  uncurlTime: 0.5
+  stunTime: 1
+  detectionRange: 7
   debugBehaviour: 
 --- !u!50 &7893308943432753642
 Rigidbody2D:
