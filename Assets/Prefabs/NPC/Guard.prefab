@@ -290,7 +290,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2157272981753954215}
-  - component: {fileID: 4759351338973967856}
+  - component: {fileID: 6003211033878307125}
   m_Layer: 6
   m_Name: Guard
   m_TagString: Untagged
@@ -316,7 +316,7 @@ Transform:
   - {fileID: 4613637724884931080}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4759351338973967856
+--- !u!114 &6003211033878307125
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -325,7 +325,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5710193498280292276}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc030969e25adfa48a9d4b251e4419e7, type: 3}
+  m_Script: {fileID: 11500000, guid: e780219d7b814de186e3868380c6cecc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  npcDialogue: {fileID: 11400000, guid: 503c6055ebc1801459827a9a0bbf5cbf, type: 2}
+  npcDialogue: {fileID: 11400000, guid: fc6367a187981904783d375ba59233cd, type: 2}
