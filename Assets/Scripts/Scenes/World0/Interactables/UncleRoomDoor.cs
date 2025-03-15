@@ -8,7 +8,7 @@ public class UncleRoomDoor : MonoBehaviour, IInteractable
     [SerializeField] private DialogueWrapper notPickedUpDialogue;
     [SerializeField] private FadeScreenHandler fadeScreen;
 
-    public static bool readyToLeave = false;
+
 
     public void Start() {
         fadeScreen.SetLightScreen();
@@ -18,7 +18,7 @@ public class UncleRoomDoor : MonoBehaviour, IInteractable
     }
 
     private IEnumerator InteractCoroutine() {
-        if (!readyToLeave) {
+        if (!ShotgunPickup.pickedUp) {
             yield return DialogueManager.Instance.StartDialogue(notPickedUpDialogue.Dialogue);
         } else {
             SceneInitializer.LoadScene("6_City");
