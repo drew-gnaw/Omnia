@@ -46,7 +46,9 @@ namespace Enemies.Armadillo.Behaviour {
         }
 
         private bool CheckPlayer() {
-            return Enemy.Sweep(self.sprite.transform.position, self.facing, 45, 5, 5, self.ground | self.player).Any(it => Enemy.IsOnLayer(it, self.player));
+            int detectionAngle = 45;
+            int rayCount = 5;
+            return Enemy.Sweep(self.sprite.transform.position, self.facing, detectionAngle, self.detectionRange, rayCount, self.ground | self.player).Any(it => Enemy.IsOnLayer(it, self.player));
         }
 
         private Vector2 GetDirection() {
