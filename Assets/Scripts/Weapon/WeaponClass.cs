@@ -16,11 +16,36 @@ public abstract class WeaponClass : MonoBehaviour
     public float attackCooldown; // seconds
     public float damageToFlowRatio = 1; // determines the rate at which damage is translated into flow.
 
+    [SerializeField] public int maxAmmoCount;
+
+    private bool IsActive {
+        get {
+            SpriteRenderer sr = GetComponentInChildren<SpriteRenderer>();
+            return sr != null && sr.enabled;
+        }
+    }
+
+    private int _currentAmmo;
+    public int CurrentAmmo {
+        get => _currentAmmo;
+        set {
+            if (_currentAmmo != value) {
+                _currentAmmo = value;
+                if (IsActive) {
+                    OnAmmoChanged?.Invoke(_currentAmmo);
+                }
+            }
+        }
+    }
+
+    public static event Action<int> OnAmmoChanged;
+
     private bool canAttack = true;
     protected Player playerComponent;
 
     public virtual void Start() {
         playerComponent = player.GetComponent<Player>();
+        CurrentAmmo = maxAmmoCount;
     }
 
     public void Attack() {
