@@ -1257,6 +1257,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pickupDialogue: {fileID: 11400000, guid: d28e39dd7fd959f44aa9a21cc4bd4922, type: 2}
   makeInteractable: {fileID: 1178337836}
+  shotgunSprite: {fileID: 298790892}
 --- !u!1 &970156643
 GameObject:
   m_ObjectHideFlags: 0
@@ -21568,8 +21569,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1939949825
-  m_SortingLayer: -2
+  m_SortingLayerID: -548689327
+  m_SortingLayer: 4
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: e0af6377da807464d8051b04856f5df1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
