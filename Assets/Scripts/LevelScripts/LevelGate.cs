@@ -9,7 +9,7 @@ public class LevelGate : MonoBehaviour
     [TypeFilter(typeof(LevelData))]
     [SerializeField] private SerializableType customLevelData;
     [SerializeField] GateBehaviour gateBehaviour;
-    private LevelData LevelData { get => LevelData.Parse(customLevelData.GetType()); }
+    private LevelData LevelData { get => LevelData.Parse(customLevelData.Type); }
     public enum GateBehaviour { NextLevel, PrevLevel, RestartLevel, CustomLevel }
 
     private void OnTriggerEnter2D(Collider2D collision) {

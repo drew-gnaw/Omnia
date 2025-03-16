@@ -973,6 +973,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1005283266}
     m_Modifications:
+    - target: {fileID: 1468266531477013713, guid: ba0651d388999e445bd1aa17fce25842, type: 3}
+      propertyPath: gateBehaviour
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1468266531477013713, guid: ba0651d388999e445bd1aa17fce25842, type: 3}
+      propertyPath: customLevelData.assemblyQualifiedName
+      value: Level_1_S, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      objectReference: {fileID: 0}
     - target: {fileID: 6606181839919195947, guid: ba0651d388999e445bd1aa17fce25842, type: 3}
       propertyPath: m_LocalPosition.x
       value: 14.5
