@@ -52,8 +52,11 @@ namespace Enemies.Sundew {
                 var d = distance - i * spread;
                 var x = d * g / (y * 2);
 
-                FireProjectile(new Vector2(x, y));
-                FireProjectile(new Vector2(x * -1, y));
+                var direction = transform.right;
+                var rotatedX = x * direction.x - y * direction.y;
+                var rotatedY = x * direction.y + y * direction.x;
+                FireProjectile(new Vector2(rotatedX, rotatedY));
+                FireProjectile(new Vector2(rotatedX * -1, rotatedY));
             }
         }
 
@@ -88,7 +91,7 @@ namespace Enemies.Sundew {
         private void UseDetection() {
             if (t != 0) return;
             t = 0.1f;
-            detected = Sweep(sprite.transform.position, Vector2.up, 180, distance, 10, ground | player).Any(it => IsOnLayer(it, player));
+            detected = Sweep(sprite.transform.position, transform.up, 180, distance, 10, ground | player).Any(it => IsOnLayer(it, player));
         }
 
         private void Attack(Player it) {
