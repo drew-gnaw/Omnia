@@ -43,16 +43,15 @@ namespace Puzzle {
         void Update() {
             UpdateCountdownTick();
             AnimateHandle();
-            HandleProgressEvent();
+            HandleProgressUpdate();
         }
 
-        private void HandleProgressEvent() {
-            if (!broadcastProgress) return;
-
+        private void HandleProgressUpdate() {
             float newProgress = GetProgress();
             if (newProgress != Progress) {
                 Progress = newProgress;
-                ProgressEvent?.Invoke(this);
+                if (broadcastProgress)
+                    ProgressEvent?.Invoke(this);
             }
         }
 
