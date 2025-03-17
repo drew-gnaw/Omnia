@@ -50,7 +50,8 @@ namespace Enemies {
             // Also prevent staggering if damage is 0
             if (damage == 0) return;
 
-            // Previous behavious should be set here to avoid softlocking the enemy
+            // Previous behavious should be set here to avoid softlocking the enemy;
+            if (behaviour is Stagger) return;
             prevBehaviour = behaviour;
             UseBehaviour(Stagger.If(this));
         }
