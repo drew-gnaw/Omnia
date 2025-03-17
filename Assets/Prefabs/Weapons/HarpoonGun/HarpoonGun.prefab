@@ -46,9 +46,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  enemyLayer:
+  hittableLayerMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 0
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
@@ -58,7 +58,7 @@ MonoBehaviour:
   damage: 35
   attackCooldown: 0
   damageToFlowRatio: 1
-  harpoons: 3
+  maxAmmoCount: 3
   harpoonVelocity: 20
   harpoonSpearGravityScale: 1
   harpoonSpearPickupCooldown: 1

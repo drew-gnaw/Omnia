@@ -455,10 +455,8 @@ MonoBehaviour:
   - {fileID: 3119127342257128012}
   - {fileID: 2089878435842221790}
   - {fileID: 3552720443867880701}
-  maximumHealth: 100
-  currentHealth: 100
+  maximumHealth: 6
   maximumFlow: 100
-  currentFlow: 0
   moveSpeed: 7
   jumpSpeed: 7
   pullSpeed: 12
@@ -473,6 +471,7 @@ MonoBehaviour:
   weaponRecoilLockoutTime: 0.2
   wallJumpLockoutTime: 0
   combatCooldown: 5
+  skillCooldown: 5
   flowDrainRate: 10
   hurtInvulnerabilityTime: 1
   weapons:
@@ -780,6 +779,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3989308426405327203, guid: efa9c0dcd785c994e9b60cd2c68cbec9, type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5713062283198653993, guid: efa9c0dcd785c994e9b60cd2c68cbec9, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6090924249510559695, guid: efa9c0dcd785c994e9b60cd2c68cbec9, type: 3}
