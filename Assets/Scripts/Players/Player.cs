@@ -7,6 +7,7 @@ using Players.Behaviour;
 using Puzzle;
 using UI;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Utils;
 using If = Omnia.State.FuncPredicate;
 
@@ -15,7 +16,7 @@ namespace Players {
         [SerializeField] internal SpriteRenderer sprite;
         [SerializeField] internal Animator animator;
         [SerializeField] internal Rigidbody2D rb;
-        [SerializeField] internal CapsuleCollider2D cc;
+        [SerializeField] internal BoxCollider2D hitbox;
         [SerializeField] internal LayerMask ground;
         [SerializeField] internal LayerMask semisolid;
         [SerializeField] internal LayerMask destructable;

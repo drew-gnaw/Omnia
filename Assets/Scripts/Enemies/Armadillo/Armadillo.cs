@@ -19,6 +19,9 @@ namespace Enemies.Armadillo {
         [SerializeField] internal float hitDistance = 1;
         [SerializeField] internal float walkSpeed = 1f;
         [SerializeField] internal float rollSpeed = 4f;
+        [SerializeField] internal float uncurlTime = 1f;
+        [SerializeField] internal float stunTime = 1f;
+        [SerializeField] internal float detectionRange = 5f;
         [SerializeField] private string debugBehaviour;
 
         public void Awake() {
