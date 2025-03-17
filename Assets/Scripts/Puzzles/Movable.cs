@@ -1,27 +1,17 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.Callbacks;
 using UnityEngine;
 
 namespace Puzzle {
-    public class Gate : MonoBehaviour, IReceiver {
+    public class Movabale : MonoBehaviour, IReceiver {
         [TypeFilter(typeof(ReceiverBehaviour))]
         [SerializeField] private SerializableType behaviour;
-        [SerializeField] private GateType gateType = GateType.Horizontal;
         [SerializeField] private List<InterfaceReference<ISignal>> signals;
         [SerializeField] private List<SpriteRenderer> gears;
-        [SerializeField] private float moveDistance = 3.0f;
-        [SerializeField] private float moveDuration = 0.5f;
+        [SerializeField] private List<Vector2> positions;
         [SerializeField] private AnimationCurve easeCurve;
-#nullable enable
-        public enum GateType { Horizontal, Vertical }
         public ReceiverBehaviour ReceiverBehaviour => ReceiverBehaviour.Parse(behaviour);
-        private Vector3 StartPos { get; set; }
-        private Vector3 TargetPos => StartPos + ((gateType == GateType.Horizontal) ? Vector3.right : Vector3.up) * moveDistance;
-        private bool isSliding = false;
-        private bool desiredOpenState = false; // Desired state, used in case signal switches while gate is moving.
+        private int positionIndex = 0;
         private List<ISignal> signalList = new();
         private Rigidbody2D rb;
         
@@ -30,7 +20,6 @@ namespace Puzzle {
         }
 
         private void Start() {
-            StartPos = transform.position;
             rb = GetComponent<Rigidbody2D>();
             Redraw();
 
@@ -61,17 +50,16 @@ namespace Puzzle {
         }
 
         private void SignalReceived(ISignal signal) {
-            bool newState = ReceiverBehaviour.Accept(signalList);
-            if (newState == desiredOpenState) return;
-            desiredOpenState = newState;
-
-            if (!isSliding) {
-                StartCoroutine(SlideToState(desiredOpenState));
-            }
+            Move(ReceiverBehaviour.Accept(signalList));
         }
 
-        private IEnumerator SlideToState(bool open) {
-            isSliding = true;
+        
+        private Vector2 getNextPosition() {
+            positionIndex = (positionIndex + 1) % positions.Count;
+            return positions[positionIndex];
+        }
+
+        private void Move(bool open) {
             Vector3 initialPos = transform.position;
             Vector3 finalPos = open ? TargetPos : StartPos;
 
