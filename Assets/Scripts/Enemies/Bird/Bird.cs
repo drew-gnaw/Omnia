@@ -37,7 +37,7 @@ namespace Enemies.Bird {
         }
 
         public void OnExplode() {
-            // Instantiate(explosion, transform.position, transform.rotation);
+            Instantiate(explosion, transform.position, transform.rotation);
             Attack();
             Hurt(maximumHealth);
         }
@@ -55,14 +55,10 @@ namespace Enemies.Bird {
         }
 
         protected override void UseAnimation(StateMachine stateMachine) {
-            return;
             var idleAnim = new IdleAnimation(animator);
-            var alertAnim = new AlertAnimation(animator);
-            var attackAnim = new AttackAnimation(animator);
-
             stateMachine.AddAnyTransition(idleAnim, new FuncPredicate(() => behaviour is Idle));
-            stateMachine.AddAnyTransition(alertAnim, new FuncPredicate(() => behaviour is Alert));
-            stateMachine.AddAnyTransition(attackAnim, new FuncPredicate(() => behaviour is Attack));
+            stateMachine.AddAnyTransition(new AlertAnimation(animator), new FuncPredicate(() => behaviour is Alert));
+            stateMachine.AddAnyTransition(new AttackAnimation(animator), new FuncPredicate(() => behaviour is Attack));
 
             stateMachine.SetState(idleAnim);
             animationStateMachine = stateMachine;
