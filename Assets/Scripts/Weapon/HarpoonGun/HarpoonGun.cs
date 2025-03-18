@@ -67,16 +67,13 @@ public class HarpoonGun : WeaponClass
         HarpoonSpear spear = harpoonSpearPool.Get();
         spear.Fire(this);
         firedSpears.AddFirst(spear);
-<<<<<<< HEAD
 
-        // Create a rope
         GameObject ropeObject = new GameObject("HarpoonRope");
         HarpoonRope rope = ropeObject.AddComponent<HarpoonRope>();
         rope.Initialize(gunBarrelTransform.right, gunBarrelTransform, spear.transform, harpoonRopePrefab); 
-        spear.rope = rope; // Store reference in spear
-=======
+        spear.rope = rope; 
         CurrentAmmo--;
->>>>>>> main
+
     }
 
     public override void UseSkill()
