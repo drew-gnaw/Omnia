@@ -39,8 +39,8 @@ public class Opening : LevelData {
 public class Birthday : LevelData {
     public override string PlainName => "Birthday";
     public override string SceneName => "3_Birthday";
-    public override LevelData NextLevel => Get<Opening>();
-    public override LevelData PrevLevel => Get<Tutorial>();
+    public override LevelData NextLevel => Get<Tutorial>();
+    public override LevelData PrevLevel => Get<Opening>();
 }
 
 public class Tutorial : LevelData {

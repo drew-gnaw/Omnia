@@ -16,6 +16,7 @@ namespace Scenes {
             yield return StartCoroutine(fadeScreen.FadeInLightScreen(2f));
             yield return StartCoroutine(DialogueManager.Instance.StartDialogue(birthdayDialogue.Dialogue));
             yield return StartCoroutine(fadeScreen.FadeInDarkScreen(2f));
+            LevelManager.Instance.NextLevel();
         }
 
     }
