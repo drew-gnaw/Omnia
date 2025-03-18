@@ -16,5 +16,10 @@ namespace Utils {
             if (value <= -0.5) return -1;
             return 0;
         }
+
+        public static Vector2 Lerpish(Vector2 a, Vector2 b, float t, float eps = 0.01f) {
+            var x = Vector2.Lerp(a, b, t);
+            return Vector2.Distance(x, b) < eps ? b : x;
+        }
     }
 }

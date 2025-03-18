@@ -21,9 +21,9 @@ namespace Enemies.Armadillo.Behaviour {
         }
 
         public void OnTick() {
-            self.rb.velocity = new Vector2(mode == Mode.Idle ? 0 : self.facing.x * 1, self.rb.velocity.y);
+            self.rb.velocity = new Vector2(mode == Mode.Idle ? 0 : self.facing.x * self.walkSpeed, self.rb.velocity.y);
 
-            if (CheckPlayer()) self.UseBehaviour(new Rush(self));
+            if (CheckPlayer()) self.UseBehaviour(new Alert(self));
         }
 
         public void OnUpdate() {
@@ -42,11 +42,13 @@ namespace Enemies.Armadillo.Behaviour {
 
         private IEnumerator DoIdle() {
             mode = Mode.Idle;
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(0.5f);
         }
 
         private bool CheckPlayer() {
-            return Enemy.Sweep(self.sprite.transform.position, self.facing, 45, 5, 5, self.ground | self.player).Any(it => Enemy.IsOnLayer(it, self.player));
+            int detectionAngle = 45;
+            int rayCount = 5;
+            return Enemy.Sweep(self.sprite.transform.position, self.facing, detectionAngle, self.detectionRange, rayCount, self.ground | self.player).Any(it => Enemy.IsOnLayer(it, self.player));
         }
 
         private Vector2 GetDirection() {

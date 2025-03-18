@@ -12,6 +12,8 @@ namespace Puzzle {
         [SerializeField] private LayerMask playerLayer;
         [SerializeField] private SpriteRenderer handle;
         [SerializeField] private SpriteRenderer baseRenderer;
+        [SerializeField] private SpriteRenderer symbolRenderer;
+        [SerializeField] private PuzzleAssets assets;
         [SerializeField] private Sprite ticks;
         [SerializeField] private Transform pivotPoint;
 #nullable enable
@@ -61,6 +63,8 @@ namespace Puzzle {
         private void Draw() {
             handle.color = SignalColor.Color;
             baseRenderer.color = SignalColor.Color;
+            symbolRenderer.sprite = SignalColor.GetSymbol(assets);
+            symbolRenderer.gameObject.transform.rotation = Quaternion.identity;
         }
 
         private void UpdateCountdownTick() {

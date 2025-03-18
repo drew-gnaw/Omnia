@@ -12,9 +12,8 @@ namespace Players.Behaviour {
         public void OnEnter() {
             t = self.jumpLockoutTime;
 
-            self.UseExternalVelocity(new Vector2(self.rb.velocity.x, self.jumpSpeed), 0);
             self.jump = false;
-            self.UseAnimation("PlayerJump");
+            self.UseExternalVelocity(new Vector2(self.rb.velocity.x, self.jumpSpeed), 0);
         }
 
         public void OnExit() {

@@ -17,12 +17,12 @@ namespace Players.Buff {
 
         public override void ApplyBuff() {
             Buff.OnDamageTaken.AddLast(ReduceDamage);
-            UIController.Instance.SetHealthBarColor(UIController.Instance.buffHealthColor);
+            //UIController.Instance.SetHealthBarColor(UIController.Instance.buffHealthColor);
         }
 
         public override void RevokeBuff() {
             Buff.OnDamageTaken.Remove(ReduceDamage);
-            UIController.Instance.SetHealthBarColor(UIController.Instance.defaultHealthColor);
+            //UIController.Instance.SetHealthBarColor(UIController.Instance.defaultHealthColor);
         }
     }
 }
