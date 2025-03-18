@@ -36,6 +36,11 @@ namespace Enemies.Bird {
             targetInstance ??= FindObjectsOfType<Player>().FirstOrDefault();
         }
 
+        public override void Update() {
+            base.Update();
+            sprite.flipX = rb.velocity.x == 0 ? sprite.flipX : rb.velocity.x > 0;
+        }
+
         public void OnExplode() {
             Instantiate(explosion, transform.position, transform.rotation);
             Attack();

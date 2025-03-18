@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using Enemies.Armadillo.Animation;
 using Enemies.Armadillo.Behaviour;
@@ -14,62 +13,53 @@ namespace Enemies.Armadillo {
         [SerializeField] internal Rigidbody2D rb;
         [SerializeField] internal LayerMask ground;
         [SerializeField] internal LayerMask player;
-        [SerializeField] internal BoxCollider2D[] checks;
+        [SerializeField] internal Collider2D[] checks;
         [SerializeField] internal Vector2 facing = Vector2.right;
-        [SerializeField] internal float hitDistance = 1;
-        [SerializeField] internal float walkSpeed = 1f;
-        [SerializeField] internal float rollSpeed = 4f;
-        [SerializeField] internal float uncurlTime = 1f;
-        [SerializeField] internal float stunTime = 1f;
-        [SerializeField] internal float detectionRange = 5f;
-        [SerializeField] private string debugBehaviour;
+
+        [SerializeField] internal float attackRadius = 0.5f;
+        [SerializeField] internal float moveSpeed = 1.0f;
+        [SerializeField] internal float rollSpeed = 4.0f;
+        [SerializeField] internal float idleDuration = 0.5f;
+        [SerializeField] internal float alertTime = 1.0f;
+        [SerializeField] internal float recoilTime = 1.0f;
+        [SerializeField] internal float uncurlTime = 1.0f;
+        [SerializeField] internal float detectionRange = 5.0f;
+        [SerializeField] internal float recoilAngle = 45;
+        [SerializeField] internal float recoilSpeed = 5.0f;
 
         public void Awake() {
-            UseBehaviour(new Walk(this));
+            UseBehaviour(new Idle(this));
         }
 
-        override public void Update() {
+        public override void Update() {
             base.Update();
             sprite.flipX = facing.x == 0 ? sprite.flipX : facing.x > 0;
         }
 
-        override public void FixedUpdate() {
-            base.FixedUpdate();
+        public void Attack(Player it) {
+            var direction = new Vector2(facing.x * Mathf.Cos(recoilAngle * Mathf.Deg2Rad), Mathf.Sin(recoilAngle * Mathf.Deg2Rad));
+            it.Hurt(attack, direction.normalized * knockbackForce, 1);
         }
 
-        public void Attack(GameObject it) {
-            Player targetPlayer = it.GetComponent<Player>();
-            if (targetPlayer != null) {
-                float radians = knockbackAngle * Mathf.Deg2Rad;
-                Vector2 knockback = new Vector2(Mathf.Cos(radians), Mathf.Sin(radians)) * knockbackForce;
-
-                knockback.x *= Mathf.Sign(facing.x);
-
-                targetPlayer.Hurt(attack, knockback, 1);
-            }
+        public bool IsReversing() {
+            var c = checks.Select(it => it.IsTouchingLayers(ground)).ToArray();
+            var l = c[0] || !c[1];
+            var r = c[3] || !c[2];
+            return (facing.x > 0 && l && !r) || (facing.x < 0 && !l && r);
         }
 
-        override public void UseBehaviour(IBehaviour behaviour) {
-            base.UseBehaviour(behaviour);
-            debugBehaviour = behaviour.GetType().Name;
-        }
+        public bool IsTargetDetected() => Sweep(sprite.transform.position, facing, 45, detectionRange, 5, ground | player).Any(hit => IsOnLayer(hit, player));
 
         protected override void UseAnimation(StateMachine stateMachine) {
-            var idle = new IdleAnimation(animator);
-            var walk = new WalkAnimation(animator);
-            var alert = new AlertAnimation(animator);
-            var rush = new RushAnimation(animator);
-            var stun = new StunAnimation(animator);
-            var uncurl = new UncurlAnimation(animator);
+            var idleAnim = new IdleAnimation(animator);
+            stateMachine.AddAnyTransition(idleAnim, new FuncPredicate(() => behaviour is Idle));
+            stateMachine.AddAnyTransition(new MoveAnimation(animator), new FuncPredicate(() => behaviour is Move));
+            stateMachine.AddAnyTransition(new AlertAnimation(animator), new FuncPredicate(() => behaviour is Alert));
+            stateMachine.AddAnyTransition(new RollAnimation(animator), new FuncPredicate(() => behaviour is Roll));
+            stateMachine.AddAnyTransition(new RecoilAnimation(animator), new FuncPredicate(() => behaviour is Recoil));
+            stateMachine.AddAnyTransition(new UncurlAnimation(animator), new FuncPredicate(() => behaviour is Uncurl));
 
-            stateMachine.AddAnyTransition(idle, new FuncPredicate(() => behaviour is Walk && rb.velocity.x == 0)); // Stay standing up
-            stateMachine.AddAnyTransition(walk, new FuncPredicate(() => behaviour is Walk && rb.velocity.x != 0));
-            stateMachine.AddAnyTransition(alert, new FuncPredicate(() => behaviour is Alert));
-            stateMachine.AddAnyTransition(rush, new FuncPredicate(() => behaviour is Rush && rb.velocity.x != 0));
-            stateMachine.AddAnyTransition(stun, new FuncPredicate(() => behaviour is Stun));
-            stateMachine.AddAnyTransition(uncurl, new FuncPredicate(() => behaviour is Uncurl));
-
-            stateMachine.SetState(walk);
+            stateMachine.SetState(idleAnim);
             animationStateMachine = stateMachine;
         }
     }

@@ -17,7 +17,7 @@ namespace Enemies.Bird.Behaviour {
         }
 
         public void OnEnter() {
-            path = PathToTarget();
+            path = CalculatePath();
             t = self.fuse;
             co = self.StartCoroutine(DoRecalculatePathToTarget());
         }
@@ -46,16 +46,13 @@ namespace Enemies.Bird.Behaviour {
         }
 
         private IEnumerator DoRecalculatePathToTarget() {
-            yield return new WaitForSeconds(0.1f);
-
-            while (self.isActiveAndEnabled) {
-                path = PathToTarget();
+            for (; self; path = CalculatePath()) {
                 yield return new WaitForSeconds(0.1f);
             }
         }
 
         private bool IsNear(Vector3 it) => Vector2.Distance(self.transform.position, it) < self.triggerDistance;
 
-        private List<Vector3> PathToTarget() => Pathfinder.FindPath(self.transform.position, self.targetInstance.sprite.transform.position);
+        private List<Vector3> CalculatePath() => Pathfinder.FindPath(self.transform.position, self.targetInstance.sprite.transform.position);
     }
 }
