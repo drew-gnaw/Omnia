@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
+
 public class Dinky : MonoBehaviour, IInteractable
 {
     [SerializeField] private Interactable interactable;
@@ -8,7 +10,7 @@ public class Dinky : MonoBehaviour, IInteractable
     [SerializeField] private string idleState;
     [SerializeField] private string appearState;
     [SerializeField] private string disappearState;
-    [SerializeField] private DialogueWrapper tempDialogue;
+    [FormerlySerializedAs("tempDialogue")] [SerializeField] private DialogueWrapper interactDialogue;
 
     // Not sure this is how it should be handled, could stay this simple if Dinky's interactions are totally linear
     [SerializeField] private List<Transform> locations;
@@ -36,7 +38,7 @@ public class Dinky : MonoBehaviour, IInteractable
 
     public void Interact() {
         // This is a demo of how Dinky could interact
-        StartCoroutine(DialogueManager.Instance.StartDialogue(tempDialogue.Dialogue));
+        StartCoroutine(DialogueManager.Instance.StartDialogue(interactDialogue.Dialogue));
         // I think a list of observers in DialogueManager is worth looking into if other classes are interested
         // in listening to the end of the dialogue, otherwise this will probably be fine
 
