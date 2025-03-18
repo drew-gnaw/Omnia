@@ -66,9 +66,9 @@ namespace Scenes {
         private IEnumerator StartGameSequence() {
             yield return StartCoroutine(fadeScreen.FadeInDarkScreen(2f));
             yield return new WaitForSeconds(1f);
-            yield return StartCoroutine(TypewriterEffect(taglineTMP, taglineText, 0.15f));
+            yield return StartCoroutine(Typewriter.TypewriterEffect(taglineTMP, taglineText, 0.15f));
             yield return new WaitForSeconds(2f);
-            yield return StartCoroutine(TypewriterEffect(quoteTMP, quoteText, 0.1f));
+            yield return StartCoroutine(Typewriter.TypewriterEffect(quoteTMP, quoteText, 0.1f));
             yield return new WaitForSeconds(3f);
             yield return StartCoroutine(strongFadeHandler.FadeInDarkScreen(2f));
             SceneManager.LoadScene("4_Tutorial");
@@ -94,12 +94,6 @@ namespace Scenes {
             sprite.color = targetColor;
         }
 
-        private IEnumerator TypewriterEffect(TextMeshPro textMesh, string fullText, float delay) {
-            textMesh.text = "";
-            foreach (char c in fullText) {
-                textMesh.text += c;
-                yield return new WaitForSeconds(delay);
-            }
-        }
+
     }
 }
