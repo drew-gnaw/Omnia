@@ -3,15 +3,14 @@ using System.Collections;
 using Enemies;
 using Omnia.Utils;
 using Players;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Shotgun : WeaponClass {
 
     private const bool DEBUG_RAYS = true;
 
     [Header("Shotgun Stats")]
-    [SerializeField] public int maxShells;
     [SerializeField] public float reloadTime; // Seconds
     [SerializeField] public float blastAngle; // Deg, The total angle with the halfway point being player's aim
     [SerializeField] public float range;
@@ -19,14 +18,7 @@ public class Shotgun : WeaponClass {
 
     [SerializeField] private Material tracerMaterial;
 
-    public int shells { get; private set; }
-
     private Coroutine reloadCoroutine;
-
-    override public void Start() {
-        shells = maxShells;
-        base.Start();
-    }
 
     protected override void HandleAttack() {
         Shoot();
@@ -59,11 +51,11 @@ public class Shotgun : WeaponClass {
     }
 
     private void Shoot() {
-        if (shells <= 0) {
+        if (CurrentAmmo <= 0) {
             return;
         }
 
-        --shells;
+        --CurrentAmmo;
 
         HandleRayCasts();
 
@@ -81,7 +73,7 @@ public class Shotgun : WeaponClass {
             Vector2 direction = Quaternion.Euler(0, 0, currentAngle) * transform.right;
             RaycastHit2D hit = Physics2D.Raycast(origin, direction, range, groundLayer | hittableLayerMask);
 
-            if (hit.collider != null && CollisionUtils.isLayerInMask(hit.collider.gameObject.layer, hittableLayerMask)) {
+            if (hit.collider != null && CollisionUtils.IsLayerInMask(hit.collider.gameObject.layer, hittableLayerMask)) {
                 // Apply damage to the enemy
                 Enemy enemy = hit.collider.GetComponent<Enemy>();
                 if (enemy != null) {
@@ -124,19 +116,18 @@ public class Shotgun : WeaponClass {
         }
     }
     private void HandleReload() {
-        Debug.Log("Shotgun shells: " + shells);
 
         if (reloadCoroutine != null) {
             StopCoroutine(reloadCoroutine);
         }
-        if (shells < maxShells) {
+        if (CurrentAmmo < maxAmmoCount) {
             reloadCoroutine = StartCoroutine(Reload());
         }
     }
 
     private IEnumerator Reload() {
         yield return new WaitForSeconds(reloadTime);
-        shells += 1;
+        CurrentAmmo += 1;
         reloadCoroutine = null;
         HandleReload();
     }

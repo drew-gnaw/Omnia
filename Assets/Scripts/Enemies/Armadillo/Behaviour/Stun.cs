@@ -29,7 +29,7 @@ namespace Enemies.Armadillo.Behaviour {
         }
 
         private IEnumerator DoStun() {
-            yield return new WaitForSeconds(3);
+            yield return new WaitForSeconds(self.stunTime);
             mode = Mode.Idle;
         }
 
