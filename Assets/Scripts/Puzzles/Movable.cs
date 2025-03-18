@@ -1,19 +1,22 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Puzzle {
     public class Movabale : MonoBehaviour, IReceiver {
         [TypeFilter(typeof(ReceiverBehaviour))]
         [SerializeField] private SerializableType behaviour;
         [SerializeField] private List<InterfaceReference<ISignal>> signals;
-        [SerializeField] private List<SpriteRenderer> gears;
         [SerializeField] private List<Vector2> positions;
-        [SerializeField] private AnimationCurve easeCurve;
+        [SerializeField] private float moveSpeed = 10f;
         public ReceiverBehaviour ReceiverBehaviour => ReceiverBehaviour.Parse(behaviour);
         private int positionIndex = 0;
         private List<ISignal> signalList = new();
         private Rigidbody2D rb;
+        private Vector2 targetPosition;
+        private Coroutine movingCoroutine;
         
         void Awake() {
             signalList = signals?.Unbox() ?? new();
@@ -21,12 +24,7 @@ namespace Puzzle {
 
         private void Start() {
             rb = GetComponent<Rigidbody2D>();
-            Redraw();
-
-            List<float> gearInitial = CalculateFinalPosition(false);
-            for (int i = 0; i < gears.Count; i++) {
-                gears[i].transform.rotation = Quaternion.Euler(0, 0, gearInitial[i]);
-            }
+            targetPosition = positions.First();
         }
 
         private void OnEnable() {
@@ -41,68 +39,31 @@ namespace Puzzle {
             }
         }
 
-        private void Redraw() {
-            for (int i = 0; i < gears.Count; i++) {
-                if (i < signalList.Count) {
-                    gears[i].color = signalList[i].SignalColor.Color;
-                }
-            }
-        }
-
         private void SignalReceived(ISignal signal) {
-            Move(ReceiverBehaviour.Accept(signalList));
+            Debug.Log("Signal received: " + ReceiverBehaviour.Accept(signalList));
+            bool move = ReceiverBehaviour.Accept(signalList);
+            if (movingCoroutine != null) {
+                StopCoroutine(movingCoroutine);
+            }
+
+            if (move) {
+                movingCoroutine = StartCoroutine(Move());
+            }
         }
 
-        
-        private Vector2 getNextPosition() {
+        private void getNextPosition() {
             positionIndex = (positionIndex + 1) % positions.Count;
-            return positions[positionIndex];
+            targetPosition = positions[positionIndex];
         }
 
-        private void Move(bool open) {
-            Vector3 initialPos = transform.position;
-            Vector3 finalPos = open ? TargetPos : StartPos;
-
-            List<float> initialRotations = gears.Select(it => it.transform.rotation.z).ToList();
-            List<float> finalRotations = CalculateFinalPosition(open);
-            float timer = 0f;
-            bool movingRight = open;
-
-            while (timer < moveDuration) {
-                timer += Time.deltaTime;
-                float t = timer / moveDuration;
-                float easedT = easeCurve.Evaluate(t);
-                // Use rigidbody to move to respect the physics engine's collisions
-                rb.MovePosition(Vector3.Lerp(initialPos, finalPos, easedT)); // Move gate
-
-                for (int i = 0; i < gears.Count; i++) {
-                    float angle = Mathf.Lerp(initialRotations[i], finalRotations[i], easedT); // Move gears
-                    gears[i].transform.rotation = Quaternion.Euler(0, 0, angle);
-                }
-
-                yield return null;
+        private IEnumerator Move() {
+            Debug.Log("move");
+            rb.MovePosition(Vector2.MoveTowards(rb.position, targetPosition, moveSpeed * Time.deltaTime));
+            yield return null;
+            if (rb.position == targetPosition) {
+                getNextPosition();
             }
-
-            rb.MovePosition(finalPos);
-            isSliding = false;
-
-            if (desiredOpenState != open) {
-                StartCoroutine(SlideToState(desiredOpenState));
-            }
-        }
-
-        private List<float> CalculateFinalPosition(bool movingRight) {
-            float rotationAmount = 180f; // Between [0, 180] (no support for more than 360 degree turn for now)
-            List<float> rotations = new();
-
-            for (int i = 0; i < gears.Count; i++) {
-                // Even indexed gears turn in the direction of gate movement
-                float directionMultiplier = (i % 2 == 0) ? 1f : -1f;
-                float gearRotation = movingRight ? rotationAmount : -rotationAmount;
-                rotations.Add(gearRotation * directionMultiplier);
-            }
-
-            return rotations;
+            movingCoroutine = StartCoroutine(Move());
         }
     }
 }
