@@ -63,6 +63,8 @@ public class HarpoonSpear : MonoBehaviour {
         transform.position = gun.transform.position;
         transform.rotation = gun.transform.rotation;
 
+        AudioManager.Instance.PlaySFX(FMODEvents.Instance.harpoonLaunch, transform.position);
+
         Rigidbody2D.velocity = gun.transform.right * gun.harpoonVelocity;
     }
 

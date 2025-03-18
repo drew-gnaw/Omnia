@@ -34,6 +34,14 @@ public class AudioManager : PersistentSingleton<AudioManager>
     public void SetMasterVolume(float value) {
         float volume = Mathf.Clamp(value, 0f, 1f); // Ensure volume is between 0 and 1
         masterBus.setVolume(volume);
+        Debug.Log("Volume set to: " + volume);
+    }
+
+    public void ToggleAudio()
+    {
+        isMuted = !isMuted;
+        float volume = isMuted ? 0f : 1f;
+        masterBus.setVolume(volume);
     }
 
     //////////////////////////////
@@ -69,8 +77,8 @@ public class AudioManager : PersistentSingleton<AudioManager>
     // Sound Effects Methods //
     ///////////////////////////
 
-    public void PlaySFX(EventReference eventReference) {
-        RuntimeManager.PlayOneShot(eventReference);
+    public void PlaySFX(EventReference eventReference, Vector3 worldPos) {
+        RuntimeManager.PlayOneShot(eventReference, worldPos);
     }
 
     /////////////////////
@@ -91,12 +99,5 @@ public class AudioManager : PersistentSingleton<AudioManager>
             ambientInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
             ambientInstance.release();
         }
-    }
-
-    public void ToggleAudio()
-    {
-        isMuted = !isMuted;
-        float volume = isMuted ? 0f : 1f;
-        masterBus.setVolume(volume);
     }
 }
