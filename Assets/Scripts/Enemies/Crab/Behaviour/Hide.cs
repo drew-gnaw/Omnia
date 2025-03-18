@@ -3,32 +3,27 @@ using UnityEngine;
 
 namespace Enemies.Crab.Behaviour {
     public class Hide : IBehaviour {
-        private Crab self;
-        private float reloadTimer;
+        private readonly Crab self;
+        private float t;
 
         public Hide(Crab crab) {
             self = crab;
-            reloadTimer = self.reload;
         }
 
         public void OnEnter() {
-            self.SetInvulnerable(true);
+            t = self.reloadTime;
         }
 
         public void OnExit() {
         }
 
         public void OnTick() {
-            // Don't begin popping up if the crab is "reloading"
-            if (reloadTimer > 0) {
-                reloadTimer = Math.Max(0, reloadTimer - Time.deltaTime);
-                return;
-            }
-
+            if (t != 0) return;
             self.UseBehaviour(new Idle(self));
         }
 
         public void OnUpdate() {
+            t = Math.Max(0, t - Time.deltaTime);
         }
     }
 }
