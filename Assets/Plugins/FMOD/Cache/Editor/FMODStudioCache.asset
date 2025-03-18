@@ -1,5 +1,79 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-5946064120818977093
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Desktop/Harpoon.bank
+  m_EditorClassIdentifier: 
+  Path: Assets/Sound/Build/Desktop/Harpoon.bank
+  Name: Desktop/Harpoon
+  StudioPath: bank:/Harpoon
+  lastModified: 638768036980000000
+  FileSizes: []
+  Exists: 1
+--- !u!114 &-2366752571055230005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Harpoon_Retract
+  m_EditorClassIdentifier: 
+  Path: event:/Harpoon_Retract
+  Guid:
+    Data1: -498153344
+    Data2: 1109053402
+    Data3: 446812340
+    Data4: -1897778539
+  Banks:
+  - {fileID: -5946064120818977093}
+  - {fileID: 2062972983531835344}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-2030558873529807144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Harpoon_Launch
+  m_EditorClassIdentifier: 
+  Path: event:/Harpoon_Launch
+  Guid:
+    Data1: -1244234156
+    Data2: 1175076429
+    Data3: 803337101
+    Data4: -275011592
+  Banks:
+  - {fileID: -5946064120818977093}
+  - {fileID: 2062972983531835344}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15,13 +89,17 @@ MonoBehaviour:
   EditorBanks:
   - {fileID: 8354595967700047045}
   - {fileID: 2062972983531835344}
-  EditorEvents: []
+  - {fileID: -5946064120818977093}
+  EditorEvents:
+  - {fileID: 2327823131181661933}
+  - {fileID: -2030558873529807144}
+  - {fileID: -2366752571055230005}
   EditorParameters: []
   MasterBanks:
   - {fileID: 2062972983531835344}
   StringsBanks:
   - {fileID: 8354595967700047045}
-  cacheTime: 638778284613546700
+  cacheTime: 638768038380000000
   cacheVersion: 131846
 --- !u!114 &2062972983531835344
 MonoBehaviour:
@@ -38,9 +116,37 @@ MonoBehaviour:
   Path: Assets/Sound/Build/Desktop/Master.bank
   Name: Desktop/Master
   StudioPath: bank:/Master
-  lastModified: 638778284613536387
+  lastModified: 638768038380000000
   FileSizes: []
   Exists: 1
+--- !u!114 &2327823131181661933
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Harpoon_Hit
+  m_EditorClassIdentifier: 
+  Path: event:/Harpoon_Hit
+  Guid:
+    Data1: 69226319
+    Data2: 1319051919
+    Data3: 626251397
+    Data4: -635576876
+  Banks:
+  - {fileID: -5946064120818977093}
+  - {fileID: 2062972983531835344}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &8354595967700047045
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -56,8 +162,8 @@ MonoBehaviour:
   Path: Assets/Sound/Build/Desktop/Master.strings.bank
   Name: Desktop/Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638778284613546700
+  lastModified: 638768038380000000
   FileSizes:
   - Name: 
-    Value: 712
+    Value: 898
   Exists: 1
