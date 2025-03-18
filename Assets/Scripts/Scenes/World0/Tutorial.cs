@@ -48,7 +48,7 @@ namespace Scenes {
         }
 
         private IEnumerator BeginSequence() {
-            yield return StartCoroutine(fadeScreen.FadeInLightScreen(1f));
+            //yield return StartCoroutine(fadeScreen.FadeInLightScreen(1f));
             dinky.Appear(dinkyAppearTransform);
             yield return new WaitForSeconds(1.5f);
             yield return StartCoroutine(DialogueManager.Instance.StartDialogue(beginDialogue.Dialogue));
@@ -135,7 +135,7 @@ namespace Scenes {
 
             yield return StartCoroutine(DialogueManager.Instance.StartDialogue(dinkyGoneDialogue.Dialogue));
             yield return new WaitForSeconds(1f);
-            StartCoroutine(fadeScreen.FadeInDarkScreen(3f));
+            LevelManager.Instance.NextLevel();
         }
 
 

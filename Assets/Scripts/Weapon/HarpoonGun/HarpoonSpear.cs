@@ -210,7 +210,12 @@ public class HarpoonSpear : MonoBehaviour {
             StopCoroutine(absorbCooldown);
         }
         absorbCooldown = DropHarpoonTimer();
-        StartCoroutine(absorbCooldown);
+
+        try {
+            StartCoroutine(absorbCooldown);
+        } catch (System.Exception e) {
+            Debug.LogError($"Failed to start coroutine: {e.Message}");
+        }
     }
 
     private IEnumerator DropHarpoonTimer() {
