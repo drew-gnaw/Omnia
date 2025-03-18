@@ -15,6 +15,7 @@ namespace Scenes {
 
         public void Start() {
             StartCoroutine(BeginSequence());
+            Dinky.OnInteract += EndScene;
         }
 
         // this is garbage code. it should be taken out and shot. but i really don't feel like adding more events
@@ -33,6 +34,10 @@ namespace Scenes {
 
         private IEnumerator ShotgunTutorialSequence() {
             yield return StartCoroutine(DialogueManager.Instance.StartDialogue(shotgunDialogue.Dialogue));
+        }
+
+        private void EndScene() {
+            LevelManager.Instance.NextLevel();
         }
     }
 }

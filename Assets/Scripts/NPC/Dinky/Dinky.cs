@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 public class Dinky : MonoBehaviour, IInteractable
 {
@@ -14,6 +16,8 @@ public class Dinky : MonoBehaviour, IInteractable
 
     // Not sure this is how it should be handled, could stay this simple if Dinky's interactions are totally linear
     [SerializeField] private List<Transform> locations;
+
+    public static event Action OnInteract;
 
     private Animator animator;
 
@@ -38,11 +42,16 @@ public class Dinky : MonoBehaviour, IInteractable
 
     public void Interact() {
         // This is a demo of how Dinky could interact
-        StartCoroutine(DialogueManager.Instance.StartDialogue(interactDialogue.Dialogue));
+        StartCoroutine(StartDialogue());
         // I think a list of observers in DialogueManager is worth looking into if other classes are interested
         // in listening to the end of the dialogue, otherwise this will probably be fine
 
         //StartCoroutine(dinkyReappearElsewhere());
+    }
+
+    private IEnumerator StartDialogue() {
+        yield return StartCoroutine(DialogueManager.Instance.StartDialogue(interactDialogue.Dialogue));
+        OnInteract?.Invoke();
     }
 
     // demo of dinky behaviour
