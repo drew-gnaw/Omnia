@@ -88,7 +88,7 @@ public class City2 : LevelData {
 public class ArmadilloRoom2 : LevelData {
     public override string PlainName => "Armadillo Room 2";
     public override string SceneName => "10_ArmadilloRoom2";
-    public override LevelData NextLevel => Get<Level_1_1>();
+    public override LevelData NextLevel => Get<Level_1_2>();
     public override LevelData PrevLevel => Get<City2>();
 }
 
