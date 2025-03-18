@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Enemies.Common.Behaviour {
@@ -6,7 +5,7 @@ namespace Enemies.Common.Behaviour {
         private readonly Enemy self;
         private float t;
 
-        private Stagger(Enemy self) {
+        public Stagger(Enemy self) {
             this.self = self;
         }
 
@@ -25,10 +24,6 @@ namespace Enemies.Common.Behaviour {
             if (t != 0) return;
 
             self.UseBehaviour(self.prevBehaviour);
-        }
-
-        public static IBehaviour If(Enemy it) {
-            return new Stagger(it);
         }
     }
 }
