@@ -92,6 +92,9 @@ namespace Players {
 
         [SerializeField] internal Transform buffsParent;
 
+        // if this is false, disable swapping.
+        [SerializeField] internal bool hasShotgun;
+
         // Describes the ratio at which flow is converted into HP.
         public const int SWAP_HEAL = 2;
 
@@ -257,6 +260,7 @@ namespace Players {
         }
 
         public void DoSwap(int targetWeapon) {
+            if (!hasShotgun) return;
             if (selectedWeapon != targetWeapon) {
                 weapons[selectedWeapon].SetSpriteActive(false);
 
