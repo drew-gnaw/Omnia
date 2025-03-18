@@ -53,7 +53,7 @@ namespace Enemies {
             // Previous behavious should be set here to avoid softlocking the enemy;
             if (behaviour is Stagger) return;
             prevBehaviour = behaviour;
-            UseBehaviour(Stagger.If(this));
+            UseBehaviour(new Stagger(this));
         }
 
         /**
