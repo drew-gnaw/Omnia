@@ -1,12 +1,18 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using FMODUnity;
+using FMOD.Studio;
 using Utils;
 
 public class AudioManager : PersistentSingleton<AudioManager>
 {
-    public AudioSource BGMPlayer, SFXPlayer, AmbientPlayer;
-    private AudioList bgmTracks, sfxTracks, ambientTracks;
+    private EventInstance bgmInstance;
+    private EventInstance ambientInstance;
+
+    private Bus masterBus;
+    private Bus sfxBus;
+    private bool isMuted = false;
 
     public void OnEnable() {
         SceneManager.sceneLoaded += OnSceneChange;
@@ -16,176 +22,81 @@ public class AudioManager : PersistentSingleton<AudioManager>
         SceneManager.sceneLoaded -= OnSceneChange;
     }
 
-    protected override void OnAwake() {
-        ambientTracks = Resources.LoadAll<AudioList>("AudioResources")[0];
-        bgmTracks = Resources.LoadAll<AudioList>("AudioResources")[1];
-        sfxTracks = Resources.LoadAll<AudioList>("AudioResources")[2];
-    }
-
-    void OnSceneChange(Scene scene, LoadSceneMode mode)
+    protected override void OnAwake()
     {
-
+        masterBus = RuntimeManager.GetBus("bus:/");
     }
 
+    void OnSceneChange(Scene scene, LoadSceneMode mode) {
+        // Optionally, you can change BGM or ambient sound based on scene
+    }
+
+    public void SetMasterVolume(float value) {
+        float volume = Mathf.Clamp(value, 0f, 1f); // Ensure volume is between 0 and 1
+        masterBus.setVolume(volume);
+    }
 
     //////////////////////////////
     // Background Music Methods //
     //////////////////////////////
 
-    // Starts playing the specified background track in a loop.
-    // If the track is already playing, does nothing
-    public void PlayBGM(string trackName) {
-        AudioClip track = bgmTracks.GetClipByName(trackName);
-        if (!BGMPlayer.isPlaying || BGMPlayer.clip != track) {
-            BGMPlayer.clip = track;
-            BGMPlayer.loop = true;
-            BGMPlayer.Play();
+    // Play a new FMOD event as background music
+    public void PlayBGM(EventReference eventReference) {
+        if (bgmInstance.isValid()) {
+            bgmInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            bgmInstance.release();
         }
+        bgmInstance = RuntimeManager.CreateInstance(eventReference);
+        bgmInstance.start();
     }
 
-    // Smoothly transition from current track to specified new track. Use crossfading for seamless ecperience
-    public void SwitchBGM(string newTrackName) {
-        float initialVolume = BGMPlayer.volume;
-
-        AudioClip track = bgmTracks.GetClipByName(newTrackName);
-        if (BGMPlayer.clip != track) {
-            StartCoroutine(BGMFadeOut(initialVolume));
-            BGMPlayer.Stop();
-            BGMPlayer.clip = track;
-            BGMPlayer.Play();
-            StartCoroutine(BGMFadeIn(initialVolume));
-        }
-
-        BGMPlayer.volume = initialVolume;
+    // Switch to a different FMOD event with fade-out and fade-in
+    public void SwitchBGM(string newEventPath) {
+        StartCoroutine(BGMTransition(newEventPath));
     }
 
-    // Coroutine to fade BGM out from initial volume
-    private IEnumerator BGMFadeOut(float initialVolume) {
-        for (float t = 0; t < 1f; t += Time.deltaTime) {
-            BGMPlayer.volume = Mathf.Lerp(initialVolume, 0f, t);
-            yield return null;
+    private IEnumerator BGMTransition(string newEventPath) {
+        if (bgmInstance.isValid()) {
+            bgmInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            yield return new WaitForSeconds(1f); // Wait for fade-out duration
+            bgmInstance.release();
         }
-    }
-    // Coroutine to fade BGM in to target volume
-    private IEnumerator BGMFadeIn(float targetVolume) {
-        for (float t = 0; t < 1f; t += Time.deltaTime) {
-            BGMPlayer.volume = Mathf.Lerp(0f, targetVolume, t);
-            yield return null;
-        }
-    }
-
-    // Stop the current background music entirely.
-    // Fade out if a transition effect is needed
-    public void StopBGM() {
-        StartCoroutine(BGMFadeOut(BGMPlayer.volume));
-        BGMPlayer.Stop();
-    }
-
-    // Pauses background music
-    public void PauseBGM() {
-        if (BGMPlayer.isPlaying) {
-            BGMPlayer.Pause();
-        }
-    }
-    // Resumes background music
-    public void ResumeBGM() {
-        if (!BGMPlayer.isPlaying) {
-            BGMPlayer.Play();
-        }
-    }
-
-    // Mutes background music
-    public void ToggleBGM() {
-        BGMPlayer.mute = !BGMPlayer.mute;
-    }
-
-    // Adjust BGM volume dynamically, allowing for changes
-    // during intense scenes or quieter moments
-    public void SetBGMVolume(float volume) {
-        if (volume < 0f) {
-            BGMPlayer.volume = 0f;
-        }
-        else if (volume > 1f) {
-            BGMPlayer.volume = 1f;
-        }
-        else {
-            BGMPlayer.volume = volume;
-        }
+        bgmInstance = RuntimeManager.CreateInstance(newEventPath);
+        bgmInstance.start();
     }
 
     ///////////////////////////
     // Sound Effects Methods //
     ///////////////////////////
 
-    // Plays a specific sound effect by looking it up in AudioList
-    // Ideal for short one-time sounds like footsteps, item pickups, enemy attacks
-    public void PlaySFX(string soundName) {
-        SFXPlayer.PlayOneShot(sfxTracks.GetClipByName(soundName));
-    }
-
-    // Stop any currently playing sound effects immediately
-    // Useful for stopping all SFX during pause or special event
-    public void StopSFX() {
-        SFXPlayer.Stop();
-    }
-
-    // Adjusts the volume of all sound effects globally
-    public void SetSFXVolume(float volume) {
-        if (volume < 0f) {
-            SFXPlayer.volume = 0f;
-        }
-        else if (volume > 1f) {
-            SFXPlayer.volume = 1f;
-        }
-        else {
-            SFXPlayer.volume = volume;
-        }
-    }
-
-    // Mutes sound effects
-    public void ToggleSFX() {
-        SFXPlayer.mute = !SFXPlayer.mute;
+    public void PlaySFX(EventReference eventReference) {
+        RuntimeManager.PlayOneShot(eventReference);
     }
 
     /////////////////////
     // Ambient Methods //
     /////////////////////
 
-    // Starts an ambient sound by looking it up in the AudioList
-    // Typically loops and continues until stopped or replaced
-    public void PlayAmbient(string ambientName) {
-        AmbientPlayer.clip = ambientTracks.GetClipByName(ambientName);
-        AmbientPlayer.loop = true;
-        AmbientPlayer.Play();
+    public void PlayAmbient(string eventPath) {
+        if (ambientInstance.isValid()) {
+            ambientInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            ambientInstance.release();
+        }
+        ambientInstance = RuntimeManager.CreateInstance(eventPath);
+        ambientInstance.start();
     }
 
-    // Stops any currently playing ambient sound
     public void StopAmbient() {
-        AmbientPlayer.Stop(); // want fade by default?
-    }
-
-    // Adjust the volume of all ambient sounds globally
-    public void SetAmbientVolume(float volume) {
-        if (volume < 0f) {
-            AmbientPlayer.volume = 0f;
-        }
-        else if (volume > 1f) {
-            AmbientPlayer.volume = 1f;
-        }
-        else {
-            AmbientPlayer.volume = volume;
+        if (ambientInstance.isValid()) {
+            ambientInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            ambientInstance.release();
         }
     }
 
-    // Mutes ambient sounds
-    public void ToggleAmbient() {
-        AmbientPlayer.mute = !AmbientPlayer.mute;
-    }
-
-    // Mutes all sounds
-    public void ToggleAudio() {
-        ToggleBGM();
-        ToggleSFX();
-        ToggleAmbient();
+    public void ToggleAudio()
+    {
+        isMuted = !isMuted;
+        float volume = isMuted ? 0f : 1f;
+        masterBus.setVolume(volume);
     }
 }

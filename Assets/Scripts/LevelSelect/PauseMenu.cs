@@ -143,9 +143,7 @@ public class PauseMenu : PersistentSingleton<PauseMenu>
 
     public void MusicVolume()
     {
-        AudioManager.Instance.SetBGMVolume(musicSlider.value);
-        AudioManager.Instance.SetSFXVolume(musicSlider.value);
-        AudioManager.Instance.SetAmbientVolume(musicSlider.value);
+        AudioManager.Instance.SetMasterVolume(musicSlider.value);
 
     }
 
