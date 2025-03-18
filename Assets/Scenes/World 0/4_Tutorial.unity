@@ -1345,6 +1345,10 @@ PrefabInstance:
       propertyPath: cam
       value: 
       objectReference: {fileID: 519420031}
+    - target: {fileID: 6725967550211918722, guid: a0a8f7069068e40faa87eaf58c7b7cda, type: 3}
+      propertyPath: hasShotgun
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3683,7 +3687,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15646a33275f465b9fc83af14f539daa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadeScreen: {fileID: 0}
   dinky: {fileID: 1215970529}
   dummy1Obj: {fileID: 1358407370}
   dummy2Obj: {fileID: 809369180}
