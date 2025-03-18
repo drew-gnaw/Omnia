@@ -67,7 +67,7 @@ public class ArmadilloRoom : LevelData {
 public class UncleRoom : LevelData {
     public override string PlainName => "Uncle Room";
     public override string SceneName => "7_UncleRoom";
-    public override LevelData NextLevel => Get<City>();
+    public override LevelData NextLevel => Get<DinkyWasted>();
     public override LevelData PrevLevel => Get<ArmadilloRoom>();
 }
 
@@ -81,8 +81,8 @@ public class DinkyWasted : LevelData {
 public class City2 : LevelData {
     public override string PlainName => "City 2";
     public override string SceneName => "9_City2";
-    public override LevelData NextLevel => Get<City>();
-    public override LevelData PrevLevel => Get<Opening>();
+    public override LevelData NextLevel => Get<ArmadilloRoom2>();
+    public override LevelData PrevLevel => Get<DinkyWasted>();
 }
 
 public class ArmadilloRoom2 : LevelData {
