@@ -6,7 +6,7 @@ using Utils;
 public class UncleRoomDoor : MonoBehaviour, IInteractable
 {
     [SerializeField] private DialogueWrapper notPickedUpDialogue;
-    
+
     public virtual void Interact() {
         StartCoroutine(InteractCoroutine());
     }
