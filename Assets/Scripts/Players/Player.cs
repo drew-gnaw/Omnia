@@ -191,6 +191,7 @@ namespace Players {
 
         public void OnHit(float flowAmount) {
             combatTimer.Start();
+            if (!hasShotgun) return;
             CurrentFlow = Mathf.Min(CurrentFlow + flowAmount, maximumFlow);
         }
 
