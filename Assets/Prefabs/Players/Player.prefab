@@ -257,8 +257,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1017642853
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: -738686465, guid: 8f52459ea1fed44fb99541f1d999cb9f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -458,7 +458,7 @@ MonoBehaviour:
   maximumHealth: 6
   maximumFlow: 100
   moveSpeed: 7
-  jumpSpeed: 7
+  jumpSpeed: 8
   pullSpeed: 12
   rollSpeed: 8
   rollDuration: 0.4
