@@ -12,6 +12,7 @@ namespace Scenes {
         }
 
         private IEnumerator BeginSequence() {
+            yield return new WaitForSeconds(0.5f);
             yield return StartCoroutine(DialogueManager.Instance.StartDialogue(beginDialogue.Dialogue));
         }
 
