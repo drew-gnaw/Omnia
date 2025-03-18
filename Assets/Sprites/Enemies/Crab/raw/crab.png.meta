@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e96028462570b498b99c046e2a497c11
+guid: 12ebc63e4ed504dbd9ce43423e56af1f
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,12 +97,96 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: armadillo-walk_0
+      name: crab_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 192
+        width: 64
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a96b572e995164b839a4f3fac2f7d200
+      internalID: 736834304
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crab_1
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 192
+        width: 64
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8c4574cd43e61454cb79e5d4695f960d
+      internalID: -1464635642
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crab_2
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 192
+        width: 64
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f94774770ab5942c89bd89b1ce517664
+      internalID: 485436719
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crab_3
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 192
+        width: 64
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d9f384b5e961d4490b411f0ddc5de3f5
+      internalID: 78505026
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crab_4
       rect:
         serializedVersion: 2
         x: 0
         y: 128
-        width: 96
+        width: 64
         height: 40
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -111,19 +195,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e56158807fb69465f83166a59ebb7c0b
-      internalID: -667986141
+      spriteID: 10d4bd532d4a441dda0d413a7b9fbf90
+      internalID: 1984165713
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: armadillo-walk_1
+      name: crab_5
       rect:
         serializedVersion: 2
-        x: 96
+        x: 64
         y: 128
-        width: 96
+        width: 64
         height: 40
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -132,19 +216,40 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 324e0000faf624a908d1fa58251963e2
-      internalID: -209071622
+      spriteID: db182232a8fc8450196c2baf3bf6faab
+      internalID: -238469219
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: armadillo-walk_2
+      name: crab_6
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 128
+        width: 64
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 470cfc8f528244c69a5ee0abdbf06dff
+      internalID: 919587625
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crab_7
       rect:
         serializedVersion: 2
         x: 192
         y: 128
-        width: 96
+        width: 64
         height: 40
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -153,19 +258,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 83f4b60223db746d3a8abeaa4124357f
-      internalID: 910295257
+      spriteID: a8d4a2c9fe7ca4f11b97544723f268d4
+      internalID: -1272409110
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: armadillo-walk_3
+      name: crab_8
       rect:
         serializedVersion: 2
         x: 0
         y: 64
-        width: 96
+        width: 64
         height: 40
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -174,19 +279,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e644c0b661f6440938cc04389e5bc9c9
-      internalID: 44020302
+      spriteID: 8b07c20552f6f4778a57d1f487d7cf9f
+      internalID: 1842714693
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: armadillo-walk_4
+      name: crab_9
       rect:
         serializedVersion: 2
-        x: 96
+        x: 64
         y: 64
-        width: 96
+        width: 64
         height: 40
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -195,19 +300,40 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: eb1940f19023b476b8f8cc73c556f958
-      internalID: -1139676268
+      spriteID: 4485bb73b74de4c2fbb6469fabb0245e
+      internalID: -2130917770
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: armadillo-walk_5
+      name: crab_10
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 64
+        width: 64
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 49cce622d287b4c31980a66513ba49fa
+      internalID: 365820037
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crab_11
       rect:
         serializedVersion: 2
         x: 192
         y: 64
-        width: 96
+        width: 64
         height: 40
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -216,19 +342,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 37c4f45fa25854016a0ae4f657a947bb
-      internalID: 1267854982
+      spriteID: ba344372f6a814f008cb43a4b82fa0c6
+      internalID: 1092635723
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: armadillo-walk_6
+      name: crab_12
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 96
+        width: 64
         height: 40
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -237,19 +363,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 46b11e4352bc74bb4a16e83df3b7ad82
-      internalID: 1058595898
+      spriteID: 0cfe9fe00eeb94d1a9f972139adb2abf
+      internalID: -69218213
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: armadillo-walk_7
+      name: crab_13
       rect:
         serializedVersion: 2
-        x: 96
+        x: 64
         y: 0
-        width: 96
+        width: 64
         height: 40
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -258,8 +384,50 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3b0720cea1db742c7b37d9945f78c482
-      internalID: -1436238733
+      spriteID: e2f6ba887aeb0499a90f7aa920624ef1
+      internalID: -1039542407
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crab_14
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 0
+        width: 64
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5301f08ab7b814f9f9b989f0aba4b5ef
+      internalID: -1480739197
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crab_15
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 0
+        width: 64
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 89585b1d0b4054e8eaeb3d67e49828ca
+      internalID: -1224319936
       vertices: []
       indices: 
       edges: []
@@ -275,14 +443,22 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      armadillo-walk_0: -667986141
-      armadillo-walk_1: -209071622
-      armadillo-walk_2: 910295257
-      armadillo-walk_3: 44020302
-      armadillo-walk_4: -1139676268
-      armadillo-walk_5: 1267854982
-      armadillo-walk_6: 1058595898
-      armadillo-walk_7: -1436238733
+      crab_0: 736834304
+      crab_1: -1464635642
+      crab_10: 365820037
+      crab_11: 1092635723
+      crab_12: -69218213
+      crab_13: -1039542407
+      crab_14: -1480739197
+      crab_15: -1224319936
+      crab_2: 485436719
+      crab_3: 78505026
+      crab_4: 1984165713
+      crab_5: -238469219
+      crab_6: 919587625
+      crab_7: -1272409110
+      crab_8: 1842714693
+      crab_9: -2130917770
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
