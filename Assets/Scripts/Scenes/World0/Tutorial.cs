@@ -7,8 +7,6 @@ using Utils;
 
 namespace Scenes {
     public class Tutorial : MonoBehaviour {
-        [SerializeField] private FadeScreenHandler fadeScreen;
-
         [SerializeField] private Dinky dinky;
         [SerializeField] private GameObject dummy1Obj;
         [SerializeField] private GameObject dummy2Obj;
