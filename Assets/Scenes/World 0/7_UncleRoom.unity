@@ -698,7 +698,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   notPickedUpDialogue: {fileID: 11400000, guid: 182a216a21f545548befb106d643facf, type: 2}
-  fadeScreen: {fileID: 0}
 --- !u!1 &682334518
 GameObject:
   m_ObjectHideFlags: 0
@@ -1262,6 +1261,7 @@ MonoBehaviour:
   pickupDialogue: {fileID: 11400000, guid: d28e39dd7fd959f44aa9a21cc4bd4922, type: 2}
   makeInteractable: {fileID: 1178337836}
   shotgunSprite: {fileID: 298790892}
+  player: {fileID: 1975500272}
 --- !u!1 &970156643
 GameObject:
   m_ObjectHideFlags: 0
@@ -21484,6 +21484,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2157272981753954215, guid: a0a8f7069068e40faa87eaf58c7b7cda, type: 3}
   m_PrefabInstance: {fileID: 706077474}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1975500272 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6725967550211918722, guid: a0a8f7069068e40faa87eaf58c7b7cda, type: 3}
+  m_PrefabInstance: {fileID: 706077474}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46697037cc144cbdb2b4e901be9aa2ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2127775287
 GameObject:
   m_ObjectHideFlags: 0
