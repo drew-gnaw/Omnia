@@ -19,12 +19,13 @@ namespace Scenes {
         [SerializeField] private Image Panel2;
         [SerializeField] private Image Panel3;
 
-
         [SerializeField] private Image Ekey;
 
+        [SerializeField] private float EkeyFadeTime = 1f;
+        [SerializeField] private float EkeyDelayTime = 3f;
+
         private bool canPressE = false;
-        private float EkeyFadeTime = 1f;
-        private float EkeyDelayTime = 3f;
+
         private int progress = 0;
         // Progress is an integer representing how far in the scene we are.
         // 0 = Looking at text1
@@ -71,8 +72,8 @@ namespace Scenes {
         }
 
         private IEnumerator BeginSequence() {
-            StartCoroutine(fadeScreen.FadeInLightScreen(1f));
-            panBackground.PanTo(panTarget, 30f);
+            StartCoroutine(fadeScreen.FadeInLightScreen(2f));
+            panBackground.PanTo(panTarget, 40f);
             yield return Fade(Text1, 1.5f, fadeIn: true);
 
             yield return new WaitForSeconds(EkeyDelayTime);
@@ -83,7 +84,7 @@ namespace Scenes {
 
         private IEnumerator ShowNextText() {
             StartCoroutine(Fade(Ekey, EkeyFadeTime, fadeIn: false));
-            yield return Fade(Text1, 2f, fadeIn: false);
+            yield return Fade(Text1, EkeyFadeTime, fadeIn: false);
             yield return Fade(Text2, 2f, fadeIn: true);
 
             yield return new WaitForSeconds(EkeyDelayTime);
@@ -94,8 +95,8 @@ namespace Scenes {
 
         private IEnumerator HideSecondText() {
             StartCoroutine(Fade(Ekey, EkeyFadeTime, fadeIn: false));
-            StartCoroutine(Fade(panBackground.gameObject.GetComponent<SpriteRenderer>(), 2f, fadeIn: false));
-            yield return Fade(Text2, 2f, fadeIn: false);
+            StartCoroutine(Fade(panBackground.gameObject.GetComponent<SpriteRenderer>(), EkeyFadeTime, fadeIn: false));
+            yield return Fade(Text2, EkeyFadeTime, fadeIn: false);
 
             yield return Fade(Panel1, 2f, fadeIn: true);
 
