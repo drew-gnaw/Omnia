@@ -31,6 +31,9 @@ public class HarpoonSpear : MonoBehaviour {
     public Enemy TaggedEnemy { get; private set; }
     public Transform PullTo { get; private set; }
 
+    // The rope in question
+    public HarpoonRope rope { get; set; }
+
     public bool IsCollectable => collectable;
 
     public void Awake() {
