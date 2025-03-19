@@ -6,8 +6,8 @@ namespace Enemies.Armadillo.Animation {
         }
     }
 
-    public class WalkAnimation : AnimationState {
-        public WalkAnimation(Animator animator) : base("ArmadilloWalk", animator) {
+    public class MoveAnimation : AnimationState {
+        public MoveAnimation(Animator animator) : base("ArmadilloMove", animator) {
         }
     }
 
@@ -16,13 +16,13 @@ namespace Enemies.Armadillo.Animation {
         }
     }
 
-    public class RushAnimation : AnimationState {
-        public RushAnimation(Animator animator) : base("ArmadilloRush", animator) {
+    public class RollAnimation : AnimationState {
+        public RollAnimation(Animator animator) : base("ArmadilloRoll", animator) {
         }
     }
 
-    public class StunAnimation : AnimationState {
-        public StunAnimation(Animator animator) : base("ArmadilloStun", animator) {
+    public class RecoilAnimation : AnimationState {
+        public RecoilAnimation(Animator animator) : base("ArmadilloRecoil", animator) {
         }
     }
 

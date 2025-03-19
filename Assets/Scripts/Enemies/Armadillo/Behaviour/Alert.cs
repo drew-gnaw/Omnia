@@ -2,7 +2,7 @@
 
 namespace Enemies.Armadillo.Behaviour {
     public class Alert : IBehaviour {
-        private Armadillo self;
+        private readonly Armadillo self;
         private float t;
 
         public Alert(Armadillo self) {
@@ -10,20 +10,20 @@ namespace Enemies.Armadillo.Behaviour {
         }
 
         public void OnEnter() {
-            t = 1f;
+            t = self.alertTime;
         }
 
         public void OnExit() {
         }
 
         public void OnTick() {
+            self.rb.velocity = new Vector2(0, self.rb.velocity.y);
+            if (t != 0) return;
+            self.UseBehaviour(new Roll(self));
         }
 
         public void OnUpdate() {
             t = Mathf.Max(0, t - Time.deltaTime);
-            if (t != 0) return;
-
-            self.UseBehaviour(new Rush(self));
         }
     }
 }

@@ -572,7 +572,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.648465, y: 3.5311298, z: -10}
+  m_LocalPosition: {x: 6.6458244, y: 3.5311298, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -647,8 +647,6 @@ MonoBehaviour:
   - {fileID: 7157472551080849247, guid: e529af90261235d498ad6837df8c7173, type: 3}
   - {fileID: 8654011918668383699, guid: d7ad28660305d9a438e4fc6f01578041, type: 3}
   canvas: {fileID: 644677415}
-  defaultHealthColor: {r: 1, g: 0, b: 0, a: 1}
-  buffHealthColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!4 &611544916
 Transform:
   m_ObjectHideFlags: 0

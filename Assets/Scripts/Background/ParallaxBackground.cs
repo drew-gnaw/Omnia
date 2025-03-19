@@ -1,27 +1,20 @@
 ﻿using UnityEngine;
 
-public class ParallaxBackground : MonoBehaviour
-{
-    [SerializeField] private Transform player; // Reference to the player’s transform
-    [SerializeField] private float parallaxEffectMultiplier = 0.5f; // Speed of the parallax effect
+public class ParallaxBackground : MonoBehaviour {
+    private Vector3 lastCameraPosition;
+    private Transform cameraTransform;
 
-    private Vector3 lastPlayerPosition;
+    [SerializeField, Range(0f, 1f)]
+    private float parallaxFactor = 0.5f; // 0 = Static, 1 = Moves with Camera
 
-    private void Start()
-    {
-        // Initialize the last position to the player's initial position
-        lastPlayerPosition = player.position;
+    private void Start() {
+        cameraTransform = Camera.main.transform;
+        lastCameraPosition = cameraTransform.position;
     }
 
-    private void Update()
-    {
-        // Calculate the difference in player movement
-        Vector3 deltaMovement = player.position - lastPlayerPosition;
-
-        // Move the background by a fraction of the player's movement
-        transform.position += new Vector3(deltaMovement.x * parallaxEffectMultiplier, 0, 0);
-
-        // Update the last position for the next frame
-        lastPlayerPosition = player.position;
+    private void LateUpdate() {
+        Vector3 deltaMovement = cameraTransform.position - lastCameraPosition;
+        transform.position += deltaMovement * parallaxFactor;
+        lastCameraPosition = cameraTransform.position;
     }
 }
