@@ -16,7 +16,8 @@ public class Shotgun : WeaponClass {
     [SerializeField] public float range;
     [SerializeField] public int subDivide; // Number of raycasts that divide up the damage
 
-    [SerializeField] private Material tracerMaterial;
+    [SerializeField] private GameObject tracerPrefab;
+    [SerializeField] private Transform muzzlePosition;
 
     private Coroutine reloadCoroutine;
 
@@ -97,22 +98,13 @@ public class Shotgun : WeaponClass {
         return Math.Max(damage / subDivide * (1 - distance / range), 0);
     }
 
-    // TODO TEMP TRACER until assets consolidated
     private void HandleTracers() {
-        Vector2 origin = transform.position;
         for (int i = 0; i < subDivide; i++) {
             float randomAngle = UnityEngine.Random.Range(-blastAngle / 2, blastAngle / 2);
-            Vector2 direction = Quaternion.Euler(0, 0, randomAngle) * transform.right;
-            RaycastHit2D hit = Physics2D.Raycast(origin, direction, range, groundLayer | hittableLayerMask);
-
-            LineRenderer line = new GameObject("Tracer").AddComponent<LineRenderer>();
-            line.positionCount = 2;
-            line.SetPosition(0, origin);
-            line.SetPosition(1, hit.collider != null ? hit.point : direction * range + origin);
-            line.startWidth = 0.01f;
-            line.endWidth = 0.01f;
-            line.material = tracerMaterial;
-            Destroy(line.gameObject, 0.1f);
+            Vector2 direction = Quaternion.Euler(0, 0, randomAngle) * muzzlePosition.right;
+            
+            var tracer = Instantiate(tracerPrefab).GetComponent<Tracer>();
+            tracer.Initialize(muzzlePosition.position, direction);
         }
     }
     private void HandleReload() {

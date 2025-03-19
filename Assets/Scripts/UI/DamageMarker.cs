@@ -17,7 +17,7 @@ public class DamageMarker : MonoBehaviour {
         textMesh.alpha=0;
 
         transform.position = position;
-        textMesh.text = value.ToString();
+        textMesh.text = Mathf.Round(value).ToString();
         
         var initVelocity = new Vector2(
             Random.Range(-maxInitialVelocity, maxInitialVelocity),
