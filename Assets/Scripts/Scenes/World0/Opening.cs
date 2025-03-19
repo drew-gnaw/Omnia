@@ -24,6 +24,7 @@ namespace Scenes {
 
         private bool canPressE = false;
         private float EkeyFadeTime = 1f;
+        private float EkeyDelayTime = 3f;
         private int progress = 0;
         // Progress is an integer representing how far in the scene we are.
         // 0 = Looking at text1
@@ -53,6 +54,16 @@ namespace Scenes {
                         StartCoroutine(HideSecondText());
                         break;
                     case 2:
+                        StartCoroutine(ShowSecondPanel());
+                        break;
+                    case 3:
+                        StartCoroutine(ShowThirdPanel());
+                        break;
+                    case 4:
+                        StartCoroutine(ExitSequence());
+                        break;
+                    default:
+                        Debug.LogWarning("Hey man we fucked up real bad");
                         break;
                 }
                 progress++;
@@ -64,7 +75,7 @@ namespace Scenes {
             panBackground.PanTo(panTarget, 30f);
             yield return Fade(Text1, 1.5f, fadeIn: true);
 
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(EkeyDelayTime);
 
             yield return Fade(Ekey, EkeyFadeTime, fadeIn: true);
             canPressE = true;
@@ -75,7 +86,7 @@ namespace Scenes {
             yield return Fade(Text1, 2f, fadeIn: false);
             yield return Fade(Text2, 2f, fadeIn: true);
 
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(EkeyDelayTime);
 
             yield return Fade(Ekey, EkeyFadeTime, fadeIn: true);
             canPressE = true;
@@ -88,9 +99,34 @@ namespace Scenes {
 
             yield return Fade(Panel1, 2f, fadeIn: true);
 
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(EkeyDelayTime);
             yield return Fade(Ekey, EkeyFadeTime, fadeIn: true);
             canPressE = true;
+        }
+
+        private IEnumerator ShowSecondPanel() {
+            StartCoroutine(Fade(Ekey, EkeyFadeTime, fadeIn: false));
+
+            yield return Fade(Panel2, 2f, fadeIn: true);
+
+            yield return new WaitForSeconds(EkeyDelayTime);
+            yield return Fade(Ekey, EkeyFadeTime, fadeIn: true);
+            canPressE = true;
+        }
+
+        private IEnumerator ShowThirdPanel() {
+            StartCoroutine(Fade(Ekey, EkeyFadeTime, fadeIn: false));
+
+            yield return Fade(Panel3, 2f, fadeIn: true);
+
+            yield return new WaitForSeconds(EkeyDelayTime);
+            yield return Fade(Ekey, EkeyFadeTime, fadeIn: true);
+            canPressE = true;
+        }
+
+        private IEnumerator ExitSequence() {
+            yield return StartCoroutine(fadeScreen.FadeInDarkScreen(2f));
+            LevelManager.Instance.NextLevel();
         }
 
         private IEnumerator Fade(Object obj, float duration, bool fadeIn) {
