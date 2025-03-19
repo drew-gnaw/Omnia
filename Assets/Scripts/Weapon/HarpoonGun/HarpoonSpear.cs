@@ -5,7 +5,6 @@ using Omnia.Utils;
 using Players;
 
 using System.Collections;
-using Players;
 
 /*
     The projectile for HarpoonGun
@@ -104,7 +103,7 @@ public class HarpoonSpear : MonoBehaviour {
         }
         // FIXME: for whatever reason, checking if the spear collider is touching enemy does not always work,
         // other collider ends up as null if they are moving
-        if (CollisionUtils.isLayerInMask(other.gameObject.layer, hittableLayerMask) && !dropped) {
+        if (CollisionUtils.IsLayerInMask(other.gameObject.layer, hittableLayerMask) && !dropped) {
             HandleEnemyCollision(other.GetComponent<Enemy>());
         }
 
@@ -211,7 +210,12 @@ public class HarpoonSpear : MonoBehaviour {
             StopCoroutine(absorbCooldown);
         }
         absorbCooldown = DropHarpoonTimer();
-        StartCoroutine(absorbCooldown);
+
+        try {
+            StartCoroutine(absorbCooldown);
+        } catch (System.Exception e) {
+            Debug.LogError($"Failed to start coroutine: {e.Message}");
+        }
     }
 
     private IEnumerator DropHarpoonTimer() {

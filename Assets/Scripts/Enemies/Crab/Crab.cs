@@ -1,8 +1,6 @@
-using System.Collections;
 using System.Linq;
 using Enemies.Crab.Animation;
 using Enemies.Crab.Behaviour;
-using JetBrains.Annotations;
 using Omnia.State;
 using Players;
 using UnityEngine;
@@ -11,105 +9,49 @@ using Utils;
 namespace Enemies.Crab {
     public class Crab : Enemy {
         [SerializeField] internal SpriteRenderer sprite;
-        [SerializeField] internal Vector2 direction; // Where the player has been detected
-        [SerializeField] private Animator animator;
-        [SerializeField] private float playerDetectionDistance;
-        [SerializeField] private LayerMask player;
+        [SerializeField] internal Animator animator;
+        [SerializeField] internal Rigidbody2D rb;
+        [SerializeField] internal LayerMask ground;
+        [SerializeField] internal LayerMask player;
+        [SerializeField] internal LayerMask bg;
+        [SerializeField] internal Vector2 facing = Vector2.zero;
 
-        [Header("Crab Properties")]
-        [SerializeField] internal float windup; // the time that the alert phase lasts
-        [SerializeField] internal float vulnerableTime; //  the time after the attack that the crab is still vulnerable.
-        [SerializeField] internal float reload; // the minimum time in between retreating and popping back out.
-        [SerializeField] internal BoxCollider2D crabAttackArea;
-        [SerializeField] private Transform leftAttackPosition;
-        [SerializeField] private Transform rightAttackPosition;
-
-        private IBehaviour behaviour;
-        private StateMachine animationStateMachine;
-        private bool invulnerable;
+        [SerializeField] internal float detectionRange;
+        [SerializeField] internal float windupTime;
+        [SerializeField] internal float vulnerableTime;
+        [SerializeField] internal float reloadTime;
+        [SerializeField] internal float attackRadius;
+        [SerializeField] internal Transform[] attackPositions;
 
         public void Awake() {
             UseBehaviour(new Idle(this));
-            UseAnimation(new StateMachine());
         }
 
-        public void Update() {
-            animationStateMachine?.Update();
+        public Vector2 IsTargetDetectedWithDirection() {
+            var hit = Sweep(sprite.transform.position, Vector2.up, 180, detectionRange, 17, ground | player).FirstOrDefault(hit => IsOnLayer(hit, player));
+            if (!hit) return default;
+            return hit.transform.position.x > transform.position.x ? Vector2.right : Vector2.left;
         }
 
-        public void FixedUpdate() {
-            behaviour?.OnTick();
-            animationStateMachine?.FixedUpdate();
-        }
-
-        public override void Hurt(float damage) {
-            if (invulnerable) return;
-            base.Hurt(damage);
-        }
-
-        // Returns the direction of the player relative to the enemy given that a detection raycast hit the player
-        public Vector2 CheckPlayer() {
-            RaycastHit2D[] hits = Enemy.Sweep(sprite.transform.position, Vector2.up, 180, playerDetectionDistance, 10, player)
-                .Where(hit => Enemy.IsOnLayer(hit, player)).ToArray();
-
-            if (hits.Length == 0) return Vector2.zero;
-            return (hits[0].point - (Vector2)sprite.transform.position).normalized;
-        }
-
-        // Returns the Player if the player is in the crab's attack area collider, null if not.
-        public Player GetPlayerWithinAttackArea() {
-            Vector2 attackPosition = crabAttackArea.transform.position;
-            Vector2 attackSize = crabAttackArea.size;
-
-            Collider2D c = Physics2D.OverlapBox(attackPosition, attackSize, 0, player);
-            if (c == null) return null;
-
-            Player p = c.GetComponent<Player>();
-            return p;
+        public void SetLayer(LayerMask layer) {
+            gameObject.layer = MathUtils.LayerIndexOf(layer);
         }
 
         public void Attack(Player it) {
-            float dir = Mathf.Sign(it.transform.position.x - transform.position.x);
-
-            float radians = knockbackAngle * Mathf.Deg2Rad;
-            Vector2 knockback = new Vector2(Mathf.Cos(radians), Mathf.Sin(radians)) * knockbackForce;
-
-            knockback.x *= dir;
-
-            it.Hurt(attack, knockback, 1);
-        }
-
-        public void SetInvulnerable(bool i) {
-            invulnerable = i;
-        }
-
-        public void SetDirection(Vector2 dir) {
-            direction = new Vector2(MathUtils.RoundX(dir.x), 0);
-            sprite.flipX = dir.x < 0;
-            crabAttackArea.transform.position = dir.x < 0 ? leftAttackPosition.position : dir.x > 0 ? rightAttackPosition.position : Vector3.zero;
-        }
-
-        public void UseBehaviour(IBehaviour it) {
-            behaviour?.OnExit();
-            behaviour = it;
-            behaviour?.OnEnter();
+            var direction = new Vector2(facing.x * Mathf.Cos(knockbackAngle * Mathf.Deg2Rad), Mathf.Sin(knockbackAngle * Mathf.Deg2Rad));
+            it.Hurt(attack, direction.normalized * knockbackAngle, 1);
         }
 
         protected override void UseAnimation(StateMachine stateMachine) {
-            var idle = new IdleAnimation(animator);
-            var center = new CenterPopOutAnimation(animator); // Temporarily unused
-            var directional = new DirectionalPopOutAnimation(animator);
-            var directionalHide = new DirectionalHideAnimation(animator);
+            var idleAnim = new IdleAnimation(animator);
+            stateMachine.AddAnyTransition(idleAnim, new FuncPredicate(() => behaviour is Idle));
+            stateMachine.AddAnyTransition(new HideLAnimation(animator), new FuncPredicate(() => behaviour is Hide && facing.x < 0));
+            stateMachine.AddAnyTransition(new HideRAnimation(animator), new FuncPredicate(() => behaviour is Hide && facing.x > 0));
+            stateMachine.AddAnyTransition(new PopOutLAnimation(animator), new FuncPredicate(() => behaviour is Alert or Pinch && facing.x < 0));
+            stateMachine.AddAnyTransition(new PopOutRAnimation(animator), new FuncPredicate(() => behaviour is Alert or Pinch && facing.x > 0));
 
-            stateMachine.AddAnyTransition(idle, new FuncPredicate(() => behaviour is Idle));
-            stateMachine.AddAnyTransition(directional, new FuncPredicate(() => behaviour is Alert));
-            stateMachine.AddAnyTransition(directional, new FuncPredicate(() => behaviour is Attack)); // No attack animation implemented
-            stateMachine.AddAnyTransition(directionalHide, new FuncPredicate(() => behaviour is Hide));
-
-            stateMachine.SetState(idle);
+            stateMachine.SetState(idleAnim);
             animationStateMachine = stateMachine;
         }
-
-
     }
 }

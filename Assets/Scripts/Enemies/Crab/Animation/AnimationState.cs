@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Enemies.Crab.Animation {
@@ -8,18 +6,23 @@ namespace Enemies.Crab.Animation {
         }
     }
 
-    public class CenterPopOutAnimation : AnimationState {
-        public CenterPopOutAnimation(Animator animator) : base("CrabCenterPopOut", animator) {
+    public class PopOutLAnimation : AnimationState {
+        public PopOutLAnimation(Animator animator) : base("CrabPopOutL", animator) {
         }
     }
 
-    public class DirectionalPopOutAnimation : AnimationState {
-        public DirectionalPopOutAnimation(Animator animator) : base("CrabDirectionalPopOut", animator) {
+    public class PopOutRAnimation : AnimationState {
+        public PopOutRAnimation(Animator animator) : base("CrabPopOutR", animator) {
         }
     }
 
-    public class DirectionalHideAnimation : AnimationState {
-        public DirectionalHideAnimation(Animator animator) : base("CrabDirectionalHide", animator) {
+    public class HideLAnimation : AnimationState {
+        public HideLAnimation(Animator animator) : base("CrabHideL", animator) {
+        }
+    }
+
+    public class HideRAnimation : AnimationState {
+        public HideRAnimation(Animator animator) : base("CrabHideR", animator) {
         }
     }
 }
