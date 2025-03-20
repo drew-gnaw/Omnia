@@ -70,8 +70,9 @@ public class HarpoonSpear : MonoBehaviour {
         if (TaggedEnemy == null) {
             return;
         }
-
-        // TODO
+        Vector2 difference = (player.Center - transform.position).normalized;
+        TaggedEnemy.GetComponent<Rigidbody2D>().AddForce(difference * gun.pullPower);
+        ReturnToPlayer();
     }
 
     public void ReturnToPlayer() {

@@ -18,6 +18,7 @@ public class HarpoonGun : WeaponClass
     [SerializeField] public float collectionRadius;
     [SerializeField] public float harpoonTimer; // seconds
     [SerializeField] public float spearReturnSpeed;
+    [SerializeField] public float pullPower;
 
     [Header("HarpoonGun References")]
     public GameObject harpoonSpearPrefab;
