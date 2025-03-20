@@ -7,19 +7,17 @@ namespace Enemies.Sundew {
     public class SundewProjectile : MonoBehaviour {
         [SerializeField] internal Rigidbody2D rb;
         [SerializeField] internal LayerMask mask;
+        [SerializeField] internal float time;
 
-        private Action<Player> action;
+        public Action<Player, SundewProjectile> NotifyOnHit;
+
+        public void Start() => Destroy(gameObject, time);
 
         public void OnTriggerEnter2D(Collider2D other) {
             if (!CollisionUtils.IsLayerInMask(other.gameObject.layer, mask)) return;
-            if (other.TryGetComponent<Player>(out var player)) action(player);
-
             Destroy(gameObject);
-        }
 
-        public SundewProjectile Of(Action<Player> fn) {
-            action = fn;
-            return this;
+            if (other.TryGetComponent<Player>(out var player)) NotifyOnHit?.Invoke(player, this);
         }
     }
 }

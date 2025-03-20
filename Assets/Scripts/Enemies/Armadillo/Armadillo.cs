@@ -37,8 +37,7 @@ namespace Enemies.Armadillo {
         }
 
         public void Attack(Player it) {
-            var direction = new Vector2(facing.x * Mathf.Cos(recoilAngle * Mathf.Deg2Rad), Mathf.Sin(recoilAngle * Mathf.Deg2Rad));
-            it.Hurt(attack, direction.normalized * knockbackForce, 1);
+            it.Hurt(attack, knockbackForce * new Vector2(facing.x * Mathf.Cos(knockbackAngle * Mathf.Deg2Rad), Mathf.Sin(knockbackAngle * Mathf.Deg2Rad)), 1);
         }
 
         public bool IsReversing() {
