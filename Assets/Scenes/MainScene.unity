@@ -1360,6 +1360,10 @@ PrefabInstance:
       propertyPath: m_Offset.y
       value: 0.0625
       objectReference: {fileID: 0}
+    - target: {fileID: 4417831262655790534, guid: a0a8f7069068e40faa87eaf58c7b7cda, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 5710193498280292276, guid: a0a8f7069068e40faa87eaf58c7b7cda, type: 3}
       propertyPath: m_Name
       value: Player
@@ -1397,8 +1401,20 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7908806746659322254, guid: a0a8f7069068e40faa87eaf58c7b7cda, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7908806746659322254, guid: a0a8f7069068e40faa87eaf58c7b7cda, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8036901591630452332, guid: a0a8f7069068e40faa87eaf58c7b7cda, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8155336528769587422, guid: a0a8f7069068e40faa87eaf58c7b7cda, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2686506879466193411, guid: a0a8f7069068e40faa87eaf58c7b7cda, type: 3}

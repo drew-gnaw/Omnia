@@ -28,4 +28,8 @@ namespace Puzzle {
         public override Color Color => Color.blue;
         public override Sprite GetSymbol(PuzzleAssets assets) => assets.leftSymbol;
     }
+    public class Yellow : SignalColor {
+        public override Color Color => Color.yellow;
+        public override Sprite GetSymbol(PuzzleAssets assets) => assets.downSymbol;
+    }
 }

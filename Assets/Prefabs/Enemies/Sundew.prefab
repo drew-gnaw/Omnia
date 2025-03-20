@@ -444,16 +444,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maximumHealth: 60
   currentHealth: 60
-  attack: 33
+  attack: 1
   knockbackForce: 10
   knockbackAngle: 45
   staggerDurationS: 1
   windup: 1
   reload: 1
   spread: 0.05
+  lag: 0
+  count: 6
   projectileAngle: 90
   projectileSpeed: 7
-  count: 6
   sprite: {fileID: 1495548087428681450}
   animator: {fileID: 6149703548532306918}
   rb: {fileID: 7893308943432753642}

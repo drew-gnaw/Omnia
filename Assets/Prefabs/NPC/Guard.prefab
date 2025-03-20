@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2665970434319035237}
   - component: {fileID: 7741403599785964390}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -71,7 +71,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 405064753
-  m_SortingLayer: 5
+  m_SortingLayer: 6
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 9f07bb9310eac403b9f41ee80148ced0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 285959956619106809}
   - component: {fileID: 9202038865644320477}
   - component: {fileID: 6149703548532306918}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Graphics
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -156,7 +156,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 138752989
-  m_SortingLayer: 1
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 6e14f06e309202a40a3a06bc685993be, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -201,7 +201,7 @@ GameObject:
   - component: {fileID: 4613637724884931080}
   - component: {fileID: 6958529750629595631}
   - component: {fileID: 6019806576371800203}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: InteractableObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -291,7 +291,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2157272981753954215}
   - component: {fileID: 6003211033878307125}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Guard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
