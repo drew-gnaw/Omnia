@@ -38,8 +38,7 @@ namespace Enemies.Crab {
         }
 
         public void Attack(Player it) {
-            var direction = new Vector2(facing.x * Mathf.Cos(knockbackAngle * Mathf.Deg2Rad), Mathf.Sin(knockbackAngle * Mathf.Deg2Rad));
-            it.Hurt(attack, direction.normalized * knockbackAngle, 1);
+            it.Hurt(attack, knockbackAngle * new Vector2(facing.x * Mathf.Cos(knockbackAngle * Mathf.Deg2Rad), Mathf.Sin(knockbackAngle * Mathf.Deg2Rad)), 1);
         }
 
         protected override void UseAnimation(StateMachine stateMachine) {

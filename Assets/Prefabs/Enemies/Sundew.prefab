@@ -405,6 +405,7 @@ GameObject:
   - component: {fileID: 8387723225425041366}
   - component: {fileID: 7893308943432753642}
   - component: {fileID: 3889079982024592863}
+  - component: {fileID: 8036100221257340832}
   m_Layer: 6
   m_Name: Sundew
   m_TagString: Untagged
@@ -443,16 +444,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maximumHealth: 60
   currentHealth: 60
-  attack: 33
+  attack: 1
   knockbackForce: 10
   knockbackAngle: 45
   staggerDurationS: 1
-  distance: 6
   windup: 1
   reload: 1
-  spread: 1
-  arc: 3
-  count: 3
+  spread: 0.05
+  lag: 0
+  count: 6
+  projectileAngle: 90
+  projectileSpeed: 7
   sprite: {fileID: 1495548087428681450}
   animator: {fileID: 6149703548532306918}
   rb: {fileID: 7893308943432753642}
@@ -462,12 +464,7 @@ MonoBehaviour:
   player:
     serializedVersion: 2
     m_Bits: 128
-  bg:
-    serializedVersion: 2
-    m_Bits: 256
   projectile: {fileID: 5710193498280292276, guid: 405681e7663724b52868906c5592258e, type: 3}
-  detected: 0
-  debugBehaviour: 
 --- !u!50 &7893308943432753642
 Rigidbody2D:
   serializedVersion: 4
@@ -540,6 +537,31 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!233 &8036100221257340832
+HingeJoint2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5710193498280292276}
+  m_Enabled: 1
+  serializedVersion: 4
+  m_EnableCollision: 0
+  m_ConnectedRigidBody: {fileID: 0}
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_BreakAction: 3
+  m_AutoConfigureConnectedAnchor: 1
+  m_Anchor: {x: 0, y: 0}
+  m_ConnectedAnchor: {x: -3.5, y: 8}
+  m_UseMotor: 0
+  m_Motor:
+    m_MotorSpeed: 0
+    m_MaximumMotorForce: 10000
+  m_UseLimits: 0
+  m_AngleLimits:
+    m_LowerAngle: 0
+    m_UpperAngle: 360
 --- !u!1 &5835766883576181620
 GameObject:
   m_ObjectHideFlags: 0

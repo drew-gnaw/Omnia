@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 995852555036158291}
   - component: {fileID: 5713062283198653993}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -70,8 +70,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1017642853
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 5ed5348bee1f9e14d9503a1494029a0f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -84,6 +84,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &3462271349234480812
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8611914734659493474}
+  m_Layer: 7
+  m_Name: Muzzle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8611914734659493474
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3462271349234480812}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.913, y: 0.059, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3940832265663412997}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3989308426405327203
 GameObject:
   m_ObjectHideFlags: 0
@@ -94,7 +125,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3940832265663412997}
   - component: {fileID: 6090924249510559695}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Shotgun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -115,6 +146,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 995852555036158291}
+  - {fileID: 8611914734659493474}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6090924249510559695
@@ -147,4 +179,5 @@ MonoBehaviour:
   blastAngle: 45
   range: 20
   subDivide: 10
-  tracerMaterial: {fileID: 2100000, guid: 1d3df2f9aafa4b24f8d0b9906591e286, type: 2}
+  tracerPrefab: {fileID: 707735981989619155, guid: 3a3476e9cc759644a9cb5e4d1134c20f, type: 3}
+  muzzlePosition: {fileID: 8611914734659493474}

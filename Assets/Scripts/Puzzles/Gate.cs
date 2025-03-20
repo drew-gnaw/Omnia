@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.Callbacks;
 using UnityEngine;
 
 namespace Puzzle {
@@ -22,6 +23,7 @@ namespace Puzzle {
         private bool isSliding = false;
         private bool desiredOpenState = false; // Desired state, used in case signal switches while gate is moving.
         private List<ISignal> signalList = new();
+        private Rigidbody2D rb;
         
         void Awake() {
             signalList = signals?.Unbox() ?? new();
@@ -29,6 +31,7 @@ namespace Puzzle {
 
         private void Start() {
             StartPos = transform.position;
+            rb = GetComponent<Rigidbody2D>();
             Redraw();
 
             List<float> gearInitial = CalculateFinalPosition(false);
@@ -81,7 +84,8 @@ namespace Puzzle {
                 timer += Time.deltaTime;
                 float t = timer / moveDuration;
                 float easedT = easeCurve.Evaluate(t);
-                transform.position = Vector3.Lerp(initialPos, finalPos, easedT); // Move gate
+                // Use rigidbody to move to respect the physics engine's collisions
+                rb.MovePosition(Vector3.Lerp(initialPos, finalPos, easedT)); // Move gate
 
                 for (int i = 0; i < gears.Count; i++) {
                     float angle = Mathf.Lerp(initialRotations[i], finalRotations[i], easedT); // Move gears
@@ -91,7 +95,7 @@ namespace Puzzle {
                 yield return null;
             }
 
-            transform.position = finalPos;
+            rb.MovePosition(finalPos);
             isSliding = false;
 
             if (desiredOpenState != open) {
