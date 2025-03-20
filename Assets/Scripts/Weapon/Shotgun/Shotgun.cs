@@ -2,9 +2,12 @@ using System;
 using System.Collections;
 using Enemies;
 using Omnia.Utils;
+using Utils;
 using Players;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
+using MathUtils = Utils.MathUtils;
 
 public class Shotgun : WeaponClass {
 
@@ -15,9 +18,8 @@ public class Shotgun : WeaponClass {
     [SerializeField] public float blastAngle; // Deg, The total angle with the halfway point being player's aim
     [SerializeField] public float range;
     [SerializeField] public int subDivide; // Number of raycasts that divide up the damage
-
-    [SerializeField] private GameObject tracerPrefab;
-    [SerializeField] private Transform muzzlePosition;
+    [SerializeField] public Transform muzzlePosition;
+    [SerializeField] public GameObject tracerPrefab;
 
     private Coroutine reloadCoroutine;
 
@@ -100,11 +102,11 @@ public class Shotgun : WeaponClass {
 
     private void HandleTracers() {
         for (int i = 0; i < subDivide; i++) {
-            float randomAngle = UnityEngine.Random.Range(-blastAngle / 2, blastAngle / 2);
+            float randomAngle = MathUtils.RandomGaussian(-blastAngle / 2, blastAngle / 2);
             Vector2 direction = Quaternion.Euler(0, 0, randomAngle) * muzzlePosition.right;
-            
-            var tracer = Instantiate(tracerPrefab).GetComponent<Tracer>();
-            tracer.Initialize(muzzlePosition.position, direction);
+
+            Tracer tracer = Instantiate(tracerPrefab, muzzlePosition.position, Quaternion.identity).GetComponent<Tracer>();
+            tracer.Initialize(muzzlePosition.position, direction, range, hittableLayerMask | groundLayer);
         }
     }
     private void HandleReload() {

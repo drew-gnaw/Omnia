@@ -1,32 +1,66 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Players;
+using Unity.VisualScripting;
 using UnityEngine;
+using MathUtils = Utils.MathUtils;
 
-public class Tracer : MonoBehaviour
-{
-    [SerializeField] private LayerMask hittableLayerMask;
-    // Pair of distance and time
-    private List<Tuple<float, float>> thresholds = new List<Tuple<float, float>>
-    {
-        new Tuple<float, float>(1f, 0.05f),
-        new Tuple<float, float>(3.3f, 0.1f),
-        new Tuple<float, float>(8.5f, 0.15f),
-    };
+public class Tracer : MonoBehaviour {
+    [SerializeField] public Material tracerMaterial;
+    [SerializeField] public float tracerEndDuration;
+    [SerializeField] public float tracerStartWidth;
+    [SerializeField] public float tracerEndWidth;
+    [SerializeField] public float minTracerStartOffset;
+    [SerializeField] public float maxTracerStartOffset;
+    [SerializeField] public float tracerSpeed;
 
-    // This is a really bad work around, this is coupling the distance and the time of the
-    // tracer animation at which it will be that distance long
-    // really really really consider animating in-game rather than using animated assets
-    // raycasts will help
-    public void Initialize(Vector2 origin, Vector2 direction)
-    {
-        RaycastHit2D hit = Physics2D.Raycast(origin, direction, hittableLayerMask);
-        float distance = hit ? hit.distance : thresholds.First().Item1;
 
-        var killTime = thresholds.LastOrDefault(t => distance >= t.Item1)?.Item2 ?? thresholds.First().Item2;
+    bool initialized = false;
+    private LineRenderer lineRenderer;
+    private float trailEndTime;
+    private Vector2 endPosition;
 
-        transform.position = origin;
-        transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg);
-        Destroy(gameObject, killTime);
+    public void Initialize(Vector2 origin, Vector2 direction, float range, LayerMask hittableLayerMask) {
+        trailEndTime = tracerEndDuration;
+
+        Vector2 startPosition = origin + direction * Random.Range(minTracerStartOffset, maxTracerStartOffset);
+
+        RaycastHit2D hit = Physics2D.Raycast(origin, direction, range, hittableLayerMask);
+        endPosition = hit.collider != null ? hit.point : origin + (direction * range);
+
+        lineRenderer = gameObject.AddComponent<LineRenderer>();
+        lineRenderer.material = tracerMaterial;
+        lineRenderer.startWidth = tracerStartWidth;
+        lineRenderer.endWidth = tracerEndWidth;
+        lineRenderer.positionCount = 2;
+        lineRenderer.SetPosition(0, startPosition);
+        lineRenderer.SetPosition(1, startPosition);
+
+        initialized = true;
+    }
+
+    public void Update() {
+        if (!initialized) return;
+
+        trailEndTime = Mathf.Max(trailEndTime - Time.deltaTime, 0);
+
+
+        if ((Vector2) lineRenderer.GetPosition(0) == endPosition) {
+            Destroy(gameObject);
+        }
+        if (trailEndTime <= 0) {
+            lineRenderer
+                .SetPosition(
+                    0,
+                    Vector2.MoveTowards(
+                        (Vector2)lineRenderer.GetPosition(0), endPosition, tracerSpeed * Time.deltaTime
+                    )
+                );
+        }
+        lineRenderer
+            .SetPosition(
+                1, 
+                Vector2.MoveTowards(
+                    (Vector2) lineRenderer.GetPosition(1), endPosition, tracerSpeed * Time.deltaTime
+                )
+            );
     }
 }
