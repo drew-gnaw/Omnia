@@ -45,10 +45,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tracerMaterial: {fileID: 2100000, guid: 1d3df2f9aafa4b24f8d0b9906591e286, type: 2}
-  tracerDuration: 1
-  tracerEndDuration: 0.2
-  tracerStartWidth: 0.01
-  tracerEndWidth: 0.05
+  tracerEndDuration: 0.05
+  tracerStartWidth: 0.05
+  tracerEndWidth: 0.005
   minTracerStartOffset: 0.5
   maxTracerStartOffset: 1.5
-  tracerSpeed: 50
+  tracerSpeed: 100
