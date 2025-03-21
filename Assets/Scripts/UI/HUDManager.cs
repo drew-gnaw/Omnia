@@ -170,6 +170,7 @@ namespace UI {
             yield return new WaitForSeconds(0.1f);  // Short flash duration
 
             foreach (GameObject heart in hearts) {
+                if (heart == null) continue;
                 Image heartImage = heart.GetComponent<Image>();
                 if (heartImage != null) {
                     heartImage.color = originalColor;

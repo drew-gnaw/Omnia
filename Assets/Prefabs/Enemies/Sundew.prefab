@@ -445,7 +445,7 @@ MonoBehaviour:
   maximumHealth: 50
   currentHealth: 50
   attack: 1
-  knockbackForce: 10
+  knockbackForce: 8
   knockbackAngle: 45
   staggerDurationS: 1
   windup: 1
@@ -454,7 +454,7 @@ MonoBehaviour:
   lag: 0
   count: 6
   projectileAngle: 90
-  projectileSpeed: 7
+  projectileSpeed: 6
   randomAttackDelayOffset: 0.5
   sprite: {fileID: 1495548087428681450}
   animator: {fileID: 6149703548532306918}

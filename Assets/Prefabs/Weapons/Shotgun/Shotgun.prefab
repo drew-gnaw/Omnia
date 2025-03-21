@@ -171,13 +171,13 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 128
-  damage: 50
+  damage: 60
   attackCooldown: 0
   damageToFlowRatio: 1
-  maxAmmoCount: 6
-  reloadTime: 1
-  blastAngle: 45
-  range: 20
-  subDivide: 10
+  maxAmmoCount: 3
+  reloadTime: 3
+  blastAngle: 30
+  range: 15
+  subDivide: 8
   muzzlePosition: {fileID: 8611914734659493474}
   tracerPrefab: {fileID: 8976097384762832605, guid: 3a3476e9cc759644a9cb5e4d1134c20f, type: 3}
