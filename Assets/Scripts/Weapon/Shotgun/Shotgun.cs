@@ -23,6 +23,11 @@ public class Shotgun : WeaponClass {
     [SerializeField] internal GameObject tracer;
     [SerializeField] internal GameObject barrelPosition;
 
+    [SerializeField] internal float skillForce;
+
+    [SerializeField] private float skillLockDuration = 1f;
+    private float skillLockTimer = 0f;
+
     private Coroutine reloadCoroutine;
 
     protected override void HandleAttack() {
@@ -30,7 +35,15 @@ public class Shotgun : WeaponClass {
     }
 
     public override void UseSkill() {
-        // TODO Skill
+        transform.rotation = Quaternion.Euler(0, 0, 270);
+        skillLockTimer = skillLockDuration;
+
+        Shoot();
+
+        Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
+        if (rb != null) {
+            rb.velocity = new Vector2(rb.velocity.x, skillForce);
+        }
     }
 
     public override void IntroSkill() {
@@ -38,8 +51,12 @@ public class Shotgun : WeaponClass {
         player.GetComponent<Player>().UseRecoil(10);
     }
 
-    void Update() {
-        HandleWeaponRotation();
+    private void Update() {
+        if (skillLockTimer > 0) {
+            skillLockTimer -= Time.deltaTime;
+        } else {
+            HandleWeaponRotation();
+        }
     }
 
     private void HandleWeaponRotation() {
