@@ -123,6 +123,7 @@ public class Level_1_S : LevelData {
     public override LevelData NextLevel => Get<Level_1_B>();
     public override LevelData PrevLevel => Get<Level_1_B>();
 }
+
 public class MainScene : LevelData {
     public override string PlainName => "Test Scene";
     public override string SceneName => "MainScene";
