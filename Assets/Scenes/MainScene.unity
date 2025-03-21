@@ -1393,6 +1393,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1090028059}
     - target: {fileID: 6725967550211918722, guid: a0a8f7069068e40faa87eaf58c7b7cda, type: 3}
+      propertyPath: weapons.Array.data[0]
+      value: 
+      objectReference: {fileID: 1267488006}
+    - target: {fileID: 6725967550211918722, guid: a0a8f7069068e40faa87eaf58c7b7cda, type: 3}
+      propertyPath: weapons.Array.data[1]
+      value: 
+      objectReference: {fileID: 1267488005}
+    - target: {fileID: 6725967550211918722, guid: a0a8f7069068e40faa87eaf58c7b7cda, type: 3}
       propertyPath: weapons.Array.data[2]
       value: 
       objectReference: {fileID: 0}
@@ -1437,6 +1445,28 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5710193498280292276, guid: a0a8f7069068e40faa87eaf58c7b7cda, type: 3}
   m_PrefabInstance: {fileID: 1267488002}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1267488005 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1016169061012764450, guid: a0a8f7069068e40faa87eaf58c7b7cda, type: 3}
+  m_PrefabInstance: {fileID: 1267488002}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00c1b0db80d363246b293fe7f28eac76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1267488006 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8474927021672394680, guid: a0a8f7069068e40faa87eaf58c7b7cda, type: 3}
+  m_PrefabInstance: {fileID: 1267488002}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66e2a3f91143d1346b18d6f7f30a2705, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1272325448
 GameObject:
   m_ObjectHideFlags: 0
@@ -112083,7 +112113,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1939949825
-  m_SortingLayer: -2
+  m_SortingLayer: -3
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: a37e3493fd1fcaa4892b18a0e833785e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
