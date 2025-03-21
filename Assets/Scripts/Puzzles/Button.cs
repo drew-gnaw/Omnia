@@ -26,6 +26,7 @@ namespace Puzzle {
         }
 
         void OnTriggerEnter2D(Collider2D other) {
+            Debug.Log("Other is colldiingn button" + other.gameObject.name);
             if (CollisionUtils.IsLayerInMask(other.gameObject.layer, excludedLayers)) {
                 return;
             }

@@ -1,3 +1,4 @@
+using NPC;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,22 +10,26 @@ namespace Puzzle {
         [TypeFilter(typeof(ReceiverBehaviour))]
         [SerializeField] private SerializableType behaviour;
         [SerializeField] private List<InterfaceReference<ISignal>> signals;
-        [SerializeField] private List<Vector2> positions;
+        [SerializeField] private Transform destPosition;
         [SerializeField] private float moveSpeed = 10f;
         public ReceiverBehaviour ReceiverBehaviour => ReceiverBehaviour.Parse(behaviour);
         private int positionIndex = 0;
         private List<ISignal> signalList = new();
         private Rigidbody2D rb;
-        private Vector2 targetPosition;
-        private Coroutine movingCoroutine;
-        
+        private List<Vector3> checkPointLocation = new();
+        private Vector3 targetPosition;
+        private bool shouldMove;
+
+
         void Awake() {
             signalList = signals?.Unbox() ?? new();
         }
 
         private void Start() {
             rb = GetComponent<Rigidbody2D>();
-            targetPosition = positions.First();
+            checkPointLocation.Add(gameObject.transform.position);
+            checkPointLocation.Add(destPosition.position);
+            targetPosition = checkPointLocation.First();
         }
 
         private void OnEnable() {
@@ -40,30 +45,22 @@ namespace Puzzle {
         }
 
         private void SignalReceived(ISignal signal) {
-            Debug.Log("Signal received: " + ReceiverBehaviour.Accept(signalList));
-            bool move = ReceiverBehaviour.Accept(signalList);
-            if (movingCoroutine != null) {
-                StopCoroutine(movingCoroutine);
-            }
-
-            if (move) {
-                movingCoroutine = StartCoroutine(Move());
-            }
+            shouldMove = ReceiverBehaviour.Accept(signalList);
         }
 
         private void getNextPosition() {
-            positionIndex = (positionIndex + 1) % positions.Count;
-            targetPosition = positions[positionIndex];
+            positionIndex = (positionIndex + 1) % checkPointLocation.Count;
+            targetPosition = checkPointLocation[positionIndex];
+        }
+        private void FixedUpdate() {
+            if (shouldMove) {
+                rb.MovePosition(Vector2.MoveTowards(rb.position, targetPosition, moveSpeed * Time.fixedDeltaTime));
+
+                if (Vector2.Distance(rb.position, targetPosition) < 0.01f) {
+                    getNextPosition();
+                }
+            }
         }
 
-        private IEnumerator Move() {
-            Debug.Log("move");
-            rb.MovePosition(Vector2.MoveTowards(rb.position, targetPosition, moveSpeed * Time.deltaTime));
-            yield return null;
-            if (rb.position == targetPosition) {
-                getNextPosition();
-            }
-            movingCoroutine = StartCoroutine(Move());
-        }
     }
 }
