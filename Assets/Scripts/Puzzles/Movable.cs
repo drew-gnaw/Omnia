@@ -1,4 +1,5 @@
 using NPC;
+using Players;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,10 @@ namespace Puzzle {
         [SerializeField] private SerializableType behaviour;
         [SerializeField] private List<InterfaceReference<ISignal>> signals;
         [SerializeField] private Transform destPosition;
+        [SerializeField] private Transform startPosOverride;
         [SerializeField] private float moveSpeed = 10f;
         [SerializeField] private List<HingeJoint2D> boundToThis;
+        [SerializeField] private LayerMask playerMask;
         public ReceiverBehaviour ReceiverBehaviour => ReceiverBehaviour.Parse(behaviour);
         private int positionIndex = 0;
         private List<ISignal> signalList = new();
@@ -21,14 +24,37 @@ namespace Puzzle {
         private Vector3 targetPosition;
         private bool shouldMove;
 
+        private PlayerFeetBehaviour playerFeet;
+        private bool isOnPlatform;
+
 
         void Awake() {
             signalList = signals?.Unbox() ?? new();
         }
+        public float GetPlatformSpeed() {
+            return moveSpeed;
+        }
+
+        public Vector2 GetDestination() {
+            return targetPosition;
+        }
+        private void OnTriggerEnter2D(Collider2D collision) {
+            if (collision.GetComponent<PlayerFeetBehaviour>() != null) {
+                playerFeet = collision.GetComponent<PlayerFeetBehaviour>();
+                isOnPlatform = true;
+            }
+        }
+
+        private void OnTriggerExit2D(Collider2D collision) {
+            if (collision.GetComponent<PlayerFeetBehaviour>() != null) {
+                playerFeet = null;
+                isOnPlatform = false;
+            }
+        }
 
         private void Start() {
             rb = GetComponent<Rigidbody2D>();
-            checkPointLocation.Add(gameObject.transform.position);
+            checkPointLocation.Add(startPosOverride != null ? startPosOverride.position :  gameObject.transform.position);
             checkPointLocation.Add(destPosition.position);
             targetPosition = checkPointLocation.First();
         }
@@ -56,10 +82,15 @@ namespace Puzzle {
         private void FixedUpdate() {
             if (shouldMove) {
                 rb.MovePosition(Vector2.MoveTowards(rb.position, targetPosition, moveSpeed * Time.fixedDeltaTime));
+                if (isOnPlatform && playerFeet != null) {
+                    Debug.Log("Im player shmoving"); 
+                    playerFeet.SetPlayerTransform(Vector2.MoveTowards(playerFeet.GetPlayerTransform(), targetPosition, Time.fixedDeltaTime * moveSpeed));
+                }
 
                 if (Vector2.Distance(rb.position, targetPosition) < 0.01f) {
                     getNextPosition();
                 }
+
             }
         }
 
