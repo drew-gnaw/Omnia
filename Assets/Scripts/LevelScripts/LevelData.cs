@@ -114,7 +114,7 @@ public class Level_1_3 : LevelData {
 public class Level_1_B : LevelData {
     public override string PlainName => "Level 1-B";
     public override string SceneName => "W-1-B";
-    public override LevelData NextLevel => Get<PuzzleTestScene>();
+    public override LevelData NextLevel => Get<Level_1_S>();
     public override LevelData PrevLevel => Get<Level_1_3>();
 }
 public class Level_1_S : LevelData {
@@ -133,6 +133,13 @@ public class MainScene : LevelData {
 public class PuzzleTestScene: LevelData {
     public override string PlainName => "Puzzle Test Scene";
     public override string SceneName => "Puzzle1";
+    public override LevelData NextLevel => Get<MainScene>();
+    public override LevelData PrevLevel => Get<MainScene>();
+}
+
+public class Level_2_1 : LevelData {
+    public override string PlainName => "Level 2-1";
+    public override string SceneName => "World2-Room1";
     public override LevelData NextLevel => Get<MainScene>();
     public override LevelData PrevLevel => Get<MainScene>();
 }

@@ -1,31 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1102 &-8488629257261466397
-AnimatorState:
-  serializedVersion: 6
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: CrabPopOutL
-  m_Speed: 1
-  m_CycleOffset: 0
-  m_Transitions: []
-  m_StateMachineBehaviours: []
-  m_Position: {x: 50, y: 50, z: 0}
-  m_IKOnFeet: 0
-  m_WriteDefaultValues: 1
-  m_Mirror: 0
-  m_SpeedParameterActive: 0
-  m_MirrorParameterActive: 0
-  m_CycleOffsetParameterActive: 0
-  m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 4b78686313d77446093be8b85314f368, type: 2}
-  m_Tag: 
-  m_SpeedParameter: 
-  m_MirrorParameter: 
-  m_CycleOffsetParameter: 
-  m_TimeParameter: 
 --- !u!1102 &-1603341189138328033
 AnimatorState:
   serializedVersion: 6
@@ -81,7 +55,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: CrabHideR
+  m_Name: CrabHide
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -113,14 +87,8 @@ AnimatorStateMachine:
     m_State: {fileID: -1603341189138328033}
     m_Position: {x: 372.3565, y: 2.4960938, z: 0}
   - serializedVersion: 1
-    m_State: {fileID: -8488629257261466397}
-    m_Position: {x: 370, y: 50, z: 0}
-  - serializedVersion: 1
     m_State: {fileID: 8193643079165172847}
     m_Position: {x: 370, y: 100, z: 0}
-  - serializedVersion: 1
-    m_State: {fileID: 5619834105170744259}
-    m_Position: {x: 370, y: 150, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 558635499762318573}
     m_Position: {x: 370, y: 200, z: 0}
@@ -134,32 +102,6 @@ AnimatorStateMachine:
   m_ExitPosition: {x: 800, y: 120, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: -1603341189138328033}
---- !u!1102 &5619834105170744259
-AnimatorState:
-  serializedVersion: 6
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: CrabHideL
-  m_Speed: 1
-  m_CycleOffset: 0
-  m_Transitions: []
-  m_StateMachineBehaviours: []
-  m_Position: {x: 50, y: 50, z: 0}
-  m_IKOnFeet: 0
-  m_WriteDefaultValues: 1
-  m_Mirror: 0
-  m_SpeedParameterActive: 0
-  m_MirrorParameterActive: 0
-  m_CycleOffsetParameterActive: 0
-  m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: daf0964e4ca814578b9b438154572b72, type: 2}
-  m_Tag: 
-  m_SpeedParameter: 
-  m_MirrorParameter: 
-  m_CycleOffsetParameter: 
-  m_TimeParameter: 
 --- !u!1102 &8193643079165172847
 AnimatorState:
   serializedVersion: 6
@@ -167,7 +109,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: CrabPopOutR
+  m_Name: CrabPopOut
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
