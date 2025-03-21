@@ -18,8 +18,10 @@ public class Shotgun : WeaponClass {
     [SerializeField] public float blastAngle; // Deg, The total angle with the halfway point being player's aim
     [SerializeField] public float range;
     [SerializeField] public int subDivide; // Number of raycasts that divide up the damage
-    [SerializeField] public Transform muzzlePosition;
-    [SerializeField] public GameObject tracerPrefab;
+
+    [SerializeField] internal GameObject muzzleFlash;
+    [SerializeField] internal GameObject tracer;
+    [SerializeField] internal GameObject barrelPosition;
 
     private Coroutine reloadCoroutine;
 
@@ -62,6 +64,8 @@ public class Shotgun : WeaponClass {
 
         HandleRayCasts();
 
+        HandleMuzzleFlash();
+
         HandleTracers();
 
         HandleReload();
@@ -100,17 +104,21 @@ public class Shotgun : WeaponClass {
         return Math.Max(damage / subDivide * (1 - distance / range), 0);
     }
 
+    private void HandleMuzzleFlash() {
+        Instantiate(muzzleFlash, barrelPosition.transform.position, transform.rotation);
+    }
+
     private void HandleTracers() {
+        Vector2 origin = barrelPosition.transform.position;
         for (int i = 0; i < subDivide; i++) {
             float randomAngle = MathUtils.RandomGaussian(-blastAngle / 2, blastAngle / 2);
-            Vector2 direction = Quaternion.Euler(0, 0, randomAngle) * muzzlePosition.right;
+            Vector2 direction = Quaternion.Euler(0, 0, randomAngle) * transform.right;
 
-            Tracer tracer = Instantiate(tracerPrefab, muzzlePosition.position, Quaternion.identity).GetComponent<Tracer>();
-            tracer.Initialize(muzzlePosition.position, direction, range, hittableLayerMask | groundLayer);
+            Tracer instance = Instantiate(tracer, origin, Quaternion.identity).GetComponent<Tracer>();
+            instance.Initialize(origin, direction, range, hittableLayerMask | groundLayer);
         }
     }
     private void HandleReload() {
-
         if (reloadCoroutine != null) {
             StopCoroutine(reloadCoroutine);
         }

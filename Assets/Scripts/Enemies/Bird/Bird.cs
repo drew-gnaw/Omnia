@@ -30,10 +30,8 @@ namespace Enemies.Bird {
         public void OnDestroy() => NotifyOnDestroy?.Invoke(this);
 
         public void Awake() {
-            UseBehaviour(new Idle(this));
-
-            /* TODO: perf cost? */
             targetInstance ??= FindObjectsOfType<Player>().FirstOrDefault();
+            UseBehaviour(new Idle(this));
         }
 
         public override void Update() {
