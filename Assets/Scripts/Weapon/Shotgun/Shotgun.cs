@@ -18,10 +18,10 @@ public class Shotgun : WeaponClass {
     [SerializeField] public float blastAngle; // Deg, The total angle with the halfway point being player's aim
     [SerializeField] public float range;
     [SerializeField] public int subDivide; // Number of raycasts that divide up the damage
-    [SerializeField] public GameObject muzzleFlash;
-    [SerializeField] public GameObject tracerPrefab;
-    [SerializeField] public Animator muzzleAnimator;
-    [SerializeField] public string muzzleAnimation;
+
+    [SerializeField] internal GameObject muzzleFlash;
+    [SerializeField] internal GameObject tracer;
+    [SerializeField] internal GameObject barrelPosition;
 
     private Coroutine reloadCoroutine;
 
@@ -105,17 +105,17 @@ public class Shotgun : WeaponClass {
     }
 
     private void HandleMuzzleFlash() {
-        muzzleAnimator.Play(muzzleAnimation);
+        Instantiate(muzzleFlash, barrelPosition.transform.position, transform.rotation);
     }
 
     private void HandleTracers() {
-        Vector2 origin = transform.position;
+        Vector2 origin = barrelPosition.transform.position;
         for (int i = 0; i < subDivide; i++) {
             float randomAngle = MathUtils.RandomGaussian(-blastAngle / 2, blastAngle / 2);
             Vector2 direction = Quaternion.Euler(0, 0, randomAngle) * transform.right;
 
-            Tracer tracer = Instantiate(tracerPrefab, origin, Quaternion.identity).GetComponent<Tracer>();
-            tracer.Initialize(origin, direction, range, hittableLayerMask | groundLayer);
+            Tracer instance = Instantiate(tracer, origin, Quaternion.identity).GetComponent<Tracer>();
+            instance.Initialize(origin, direction, range, hittableLayerMask | groundLayer);
         }
     }
     private void HandleReload() {
