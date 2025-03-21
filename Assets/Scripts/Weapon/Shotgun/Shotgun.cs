@@ -26,7 +26,7 @@ public class Shotgun : WeaponClass {
     [SerializeField] internal float skillForce;
 
     [SerializeField] private float skillLockDuration = 1f;
-    [SerializeField] private float introDelayTime = 1f;
+    [SerializeField] private float introDelayTime = 0.5f;
 
     private float skillLockTimer = 0f;
 
@@ -55,8 +55,10 @@ public class Shotgun : WeaponClass {
     private IEnumerator IntroCoroutine() {
         yield return new WaitForSeconds(introDelayTime);
         Shoot();
+        Shoot();
+        Shoot();
         player.GetComponent<Player>().UseRecoil(10);
-        ScreenShakeManager.Instance.Shake();
+        ScreenShakeManager.Instance.Shake(3f);
     }
 
     private void Update() {
