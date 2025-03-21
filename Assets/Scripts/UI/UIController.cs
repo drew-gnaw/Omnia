@@ -24,6 +24,8 @@ namespace UI {
             if (Instance != this) Destroy(gameObject);
 
             enemies = new Dictionary<Enemy, EnemyUI>();
+            canvas = GetComponentInChildren<Canvas>();
+            canvas.worldCamera = Camera.main;
         }
 
         public void OnEnable() {

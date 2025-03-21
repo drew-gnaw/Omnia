@@ -71,9 +71,6 @@ namespace Players {
         [SerializeField] internal WeaponClass[] weapons;
         [SerializeField] internal int selectedWeapon;
 
-        /* TODO: Is this bad? */
-        [SerializeField] internal Camera cam;
-
         [SerializeField] internal Vector2 facing;
         [SerializeField] internal Vector2 moving;
         [SerializeField] internal bool jump;
@@ -98,7 +95,7 @@ namespace Players {
         // Describes the ratio at which flow is converted into HP.
         public const int SWAP_HEAL = 2;
 
-
+        internal Camera cam;
         public event Action Spawn;
         public static event Action Death;
 
@@ -121,6 +118,7 @@ namespace Players {
         public Vector3 Center => transform.position + new Vector3(0, 1, 0);
 
         public void Awake() {
+            cam = Camera.main;
             UseBehaviour(new Idle(this));
             UseAnimation(new StateMachine());
         }
