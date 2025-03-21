@@ -1,5 +1,7 @@
 using UnityEngine;
 using static Puzzle.ISignal;
+using Omnia.Utils;
+using System.Collections.Generic;
 
 namespace Puzzle {
     public class Button : MonoBehaviour, ISignal {
@@ -12,6 +14,7 @@ namespace Puzzle {
         [SerializeField] PuzzleAssets assets;
         [SerializeField] Sprite downState;
         [SerializeField] Sprite upState;
+        [SerializeField] LayerMask excludedLayers;
 #nullable enable
         public event SignalFired? SignalEvent;
         public bool IsActive { get; set; } = false;
@@ -23,6 +26,9 @@ namespace Puzzle {
         }
 
         void OnTriggerEnter2D(Collider2D other) {
+            if (CollisionUtils.IsLayerInMask(other.gameObject.layer, excludedLayers)) {
+                return;
+            }
             objectsInside++;
             IsActive = true;
             Redraw();
@@ -30,6 +36,9 @@ namespace Puzzle {
         }
 
         void OnTriggerExit2D(Collider2D other) {
+            if (CollisionUtils.IsLayerInMask(other.gameObject.layer, excludedLayers)) {
+                return;
+            }
             --objectsInside;
             if (objectsInside <= 0) {
                 IsActive = false;

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6285305121185895517}
   - component: {fileID: 3346402560137263328}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: HarpoonGun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -62,9 +62,10 @@ MonoBehaviour:
   harpoonVelocity: 20
   harpoonSpearGravityScale: 1
   harpoonSpearPickupCooldown: 1
-  collectionRadius: 2
-  harpoonTimer: 5
+  collectionRadius: 1
+  harpoonTimer: 15
   spearReturnSpeed: 10
+  pullPower: 1000
   harpoonSpearPrefab: {fileID: 3775420795739930932, guid: 3287e05fa4feefa43b2d14e7d0d7e6de, type: 3}
 --- !u!1 &7395887500203567774
 GameObject:
@@ -76,7 +77,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5922244361394495977}
   - component: {fileID: 8387760969926062689}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Graphics
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -136,8 +137,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1017642853
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 9fdaa83ad8a704c9eae95a244d2bdb11, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

@@ -2,9 +2,12 @@ using System;
 using System.Collections;
 using Enemies;
 using Omnia.Utils;
+using Utils;
 using Players;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
+using MathUtils = Utils.MathUtils;
 
 public class Shotgun : WeaponClass {
 
@@ -15,8 +18,8 @@ public class Shotgun : WeaponClass {
     [SerializeField] public float blastAngle; // Deg, The total angle with the halfway point being player's aim
     [SerializeField] public float range;
     [SerializeField] public int subDivide; // Number of raycasts that divide up the damage
-
-    [SerializeField] private Material tracerMaterial;
+    [SerializeField] public Transform muzzlePosition;
+    [SerializeField] public GameObject tracerPrefab;
 
     private Coroutine reloadCoroutine;
 
@@ -97,22 +100,13 @@ public class Shotgun : WeaponClass {
         return Math.Max(damage / subDivide * (1 - distance / range), 0);
     }
 
-    // TODO TEMP TRACER until assets consolidated
     private void HandleTracers() {
-        Vector2 origin = transform.position;
         for (int i = 0; i < subDivide; i++) {
-            float randomAngle = UnityEngine.Random.Range(-blastAngle / 2, blastAngle / 2);
-            Vector2 direction = Quaternion.Euler(0, 0, randomAngle) * transform.right;
-            RaycastHit2D hit = Physics2D.Raycast(origin, direction, range, groundLayer | hittableLayerMask);
+            float randomAngle = MathUtils.RandomGaussian(-blastAngle / 2, blastAngle / 2);
+            Vector2 direction = Quaternion.Euler(0, 0, randomAngle) * muzzlePosition.right;
 
-            LineRenderer line = new GameObject("Tracer").AddComponent<LineRenderer>();
-            line.positionCount = 2;
-            line.SetPosition(0, origin);
-            line.SetPosition(1, hit.collider != null ? hit.point : direction * range + origin);
-            line.startWidth = 0.01f;
-            line.endWidth = 0.01f;
-            line.material = tracerMaterial;
-            Destroy(line.gameObject, 0.1f);
+            Tracer tracer = Instantiate(tracerPrefab, muzzlePosition.position, Quaternion.identity).GetComponent<Tracer>();
+            tracer.Initialize(muzzlePosition.position, direction, range, hittableLayerMask | groundLayer);
         }
     }
     private void HandleReload() {
