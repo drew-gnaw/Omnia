@@ -48,6 +48,6 @@ MonoBehaviour:
   tracerEndDuration: 0.1
   tracerStartWidth: 0.01
   tracerEndWidth: 0.05
-  minTracerStartOffset: 1.5
-  maxTracerStartOffset: 3
-  tracerSpeed: 30
+  minTracerStartOffset: 0.1
+  maxTracerStartOffset: 0.5
+  tracerSpeed: 100
