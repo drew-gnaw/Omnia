@@ -12,6 +12,7 @@ namespace Puzzle {
         [SerializeField] private List<InterfaceReference<ISignal>> signals;
         [SerializeField] private Transform destPosition;
         [SerializeField] private float moveSpeed = 10f;
+        [SerializeField] private List<HingeJoint2D> boundToThis;
         public ReceiverBehaviour ReceiverBehaviour => ReceiverBehaviour.Parse(behaviour);
         private int positionIndex = 0;
         private List<ISignal> signalList = new();
