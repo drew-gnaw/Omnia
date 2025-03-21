@@ -9,7 +9,7 @@ public class InventoryManager : PersistentSingleton<InventoryManager>
 {
     [SerializeField] private GameObject inventoryUI; // Reference to Inventory UI Panel
     [SerializeField] private TrinketSlot[] trinketSlots; // Grid of trinket slots
-    [SerializeField] private EquipSlot[] equipSlots; // Equip slots
+    [SerializeField] private TrinketSlot equippedTrinket;
     [SerializeField] private TextMeshProUGUI descriptionText; // Description UI text box
 
     public bool IsInventoryOpen { get; private set; }
@@ -22,6 +22,7 @@ public class InventoryManager : PersistentSingleton<InventoryManager>
     private void Start()
     {
         InitializeTrinketSlots();
+        ClearDescription();
         inventoryUI.SetActive(false);
     }
     private void Update()
@@ -38,11 +39,6 @@ public class InventoryManager : PersistentSingleton<InventoryManager>
         {
             slot.Initialize();
         }
-
-        foreach (var slot in equipSlots)
-        {
-            slot.Initialize();
-        }
     }
 
     public void ToggleInventory()
@@ -56,48 +52,15 @@ public class InventoryManager : PersistentSingleton<InventoryManager>
         if (selectedTrinket.IsEquipped)
             return;
 
-        foreach (EquipSlot slot in equipSlots)
-        {
-            if (!slot.HasTrinket())
-            {
-                slot.Equip(selectedTrinket);
-                selectedTrinket.SetEquipped(true);
-                return;
-            }
-        }
-
-        if (!isShaking) {
-            StartCoroutine(ShakeSlot(equipSlots[0].gameObject));
-        }
+        equippedTrinket?.SetEquipped(false);
+        equippedTrinket = selectedTrinket;
+        selectedTrinket.SetEquipped(true);
     }
 
-    public void UnequipTrinket(EquipSlot slot)
+
+    public void UpdateDescription(string trinketName, string description)
     {
-        slot.Unequip();
-    }
-
-    private IEnumerator ShakeSlot(GameObject slot) {
-        isShaking = true;
-        Vector3 originalPos = slot.transform.position;
-        float duration = 0.2f;
-        float magnitude = 0.2f;
-        float elapsed = 0f;
-
-        while (elapsed < duration)
-        {
-            elapsed += Time.deltaTime;
-            float offset = Mathf.Sin(elapsed * 50) * magnitude;
-            slot.transform.position = originalPos + new Vector3(offset, 0, 0);
-            yield return null;
-        }
-
-        slot.transform.position = originalPos;
-        isShaking = false;
-    }
-
-    public void UpdateDescription(string name, string description)
-    {
-        descriptionText.text = name + "\n" + description;
+        descriptionText.text = trinketName + "\n" + description;
     }
 
     public void ClearDescription()
