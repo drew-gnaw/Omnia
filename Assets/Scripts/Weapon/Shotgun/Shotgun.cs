@@ -28,9 +28,21 @@ public class Shotgun : WeaponClass {
     [SerializeField] private float skillLockDuration = 1f;
     [SerializeField] private float introDelayTime = 1f;
 
+    [SerializeField] private GameObject chargeUpEffectPrefab;
+
+    [SerializeField] private float maxScale = 1.5f; // Maximum size of the charge-up effect
+    [SerializeField] private float chargeDuration = 2f; // How long the charge-up effect takes to reach full size
+    [SerializeField] private Color startColor = Color.white; // Start color of the effect
+    [SerializeField] private Color endColor = Color.yellow;
+
+    private SpriteRenderer spriteRenderer;
+    private float chargeTimer = 0f;
+
     private float skillLockTimer = 0f;
 
     private Coroutine reloadCoroutine;
+
+    private GameObject chargeUpInstance;
 
     protected override void HandleAttack() {
         Shoot();
@@ -53,10 +65,22 @@ public class Shotgun : WeaponClass {
     }
 
     private IEnumerator IntroCoroutine() {
-        yield return new WaitForSeconds(introDelayTime);
-        Shoot();
+
+        chargeUpInstance = Instantiate(chargeUpEffectPrefab, barrelPosition.transform.position, Quaternion.identity);
+        chargeUpInstance.transform.SetParent(barrelPosition.transform);
+
+        float chargeTimer = 0f;
+        while (chargeTimer < introDelayTime)
+        {
+            chargeTimer += Time.deltaTime;
+            yield return null;
+        }
+
+        Shoot(false);
+        Shoot(false);
+        Shoot(false);
         player.GetComponent<Player>().UseRecoil(10);
-        ScreenShakeManager.Instance.Shake();
+        ScreenShakeManager.Instance.Shake(3f);
     }
 
     private void Update() {
@@ -80,12 +104,14 @@ public class Shotgun : WeaponClass {
         }
     }
 
-    private void Shoot() {
-        if (CurrentAmmo <= 0) {
-            return;
-        }
+    private void Shoot(bool consumeAmmo = true) {
+        if (consumeAmmo) {
+            if (CurrentAmmo <= 0) {
+                return;
+            }
 
-        --CurrentAmmo;
+            --CurrentAmmo;
+        }
 
         HandleRayCasts();
 

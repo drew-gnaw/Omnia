@@ -152,6 +152,13 @@ MonoBehaviour:
   tracer: {fileID: 8976097384762832605, guid: 3a3476e9cc759644a9cb5e4d1134c20f, type: 3}
   barrelPosition: {fileID: 8293366980119116200}
   skillForce: 10
+  skillLockDuration: 1
+  introDelayTime: 1
+  chargeUpEffectPrefab: {fileID: 341368337650818737, guid: 139dc1ae37be5438c85adf3773ea9c88, type: 3}
+  maxScale: 1.5
+  chargeDuration: 1
+  startColor: {r: 1, g: 1, b: 1, a: 1}
+  endColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &8293366980119116200
 GameObject:
   m_ObjectHideFlags: 0
