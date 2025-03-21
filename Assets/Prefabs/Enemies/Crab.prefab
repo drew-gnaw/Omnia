@@ -1,67 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3962921351815373849
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5803192067708096604}
-  m_Layer: 6
-  m_Name: Attack A
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5803192067708096604
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3962921351815373849}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.625, y: 0.375, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7723417269471147987}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &4907846332908538643
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7006617138835994515}
-  m_Layer: 6
-  m_Name: Attack B
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7006617138835994515
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4907846332908538643}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.625, y: 0.375, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7723417269471147987}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8136971648347335824
 GameObject:
   m_ObjectHideFlags: 0
@@ -201,8 +139,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4762103073357922001}
-  - {fileID: 5803192067708096604}
-  - {fileID: 7006617138835994515}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6542602472551470509
@@ -225,7 +161,7 @@ MonoBehaviour:
   staggerDurationS: 1
   sprite: {fileID: 2707125335044883048}
   animator: {fileID: 4914822650488268424}
-  rb: {fileID: 0}
+  rb: {fileID: 4347489477469997173}
   ground:
     serializedVersion: 2
     m_Bits: 8
@@ -235,15 +171,12 @@ MonoBehaviour:
   bg:
     serializedVersion: 2
     m_Bits: 256
-  facing: {x: 0, y: 0}
+  targetInstance: {fileID: 0}
   detectionRange: 1.5
   windupTime: 0.5
   vulnerableTime: 1
   reloadTime: 2
-  attackRadius: 0.5
-  attackPositions:
-  - {fileID: 5803192067708096604}
-  - {fileID: 7006617138835994515}
+  attackRadius: 1.5
 --- !u!50 &4347489477469997173
 Rigidbody2D:
   serializedVersion: 4
