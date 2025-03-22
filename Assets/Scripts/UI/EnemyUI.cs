@@ -15,8 +15,9 @@ namespace UI {
         }
 
         public void Update() {
-            slider.value = subject.maximumHealth == 0 ? 0 : subject.currentHealth / subject.maximumHealth;
-            UpdateShield();
+            UpdateHiddenVisibility();
+            UpdateHealthBar();
+            UpdateShieldBar();
         }
 
         public EnemyUI Of(Enemy e) {
@@ -29,13 +30,23 @@ namespace UI {
         }
 
         private Vector2 WorldToUIPoint(Vector2 position, Camera c) {
+            if (!canvas.enabled) return Vector2.zero;
             var p = c.WorldToViewportPoint(position);
             var d = 2 * canvas.scaleFactor;
             return new Vector2(c.pixelWidth * (p.x * 2 - 1) / d, c.pixelHeight * (p.y * 2 - 1) / d);
         }
 
-        private void UpdateShield() {
-            if (!(subject is ShieldedEnemy)) return;
+        private void UpdateHiddenVisibility() {
+            if (subject is not HiddenEnemy) return;
+            canvas.enabled = !((HiddenEnemy) subject).hidden;
+        }
+
+        private void UpdateHealthBar() {
+            slider.value = subject.maximumHealth == 0 ? 0 : subject.currentHealth / subject.maximumHealth;
+        }
+
+        private void UpdateShieldBar() {
+            if (subject is not ShieldedEnemy) return;
             ShieldedEnemy shieldedEnemy = (ShieldedEnemy) subject;
             shield.value = shieldedEnemy.shieldHealth == 0 ? 0 : shieldedEnemy.shieldHealth / shieldedEnemy.maxShieldHealth;
         }

@@ -7,7 +7,7 @@ using UnityEngine;
 using Utils;
 
 namespace Enemies.Crab {
-    public class Crab : Enemy {
+    public class Crab : Enemy, HiddenEnemy {
         [SerializeField] internal SpriteRenderer sprite;
         [SerializeField] internal Animator animator;
         [SerializeField] internal Rigidbody2D rb;
@@ -21,6 +21,8 @@ namespace Enemies.Crab {
         [SerializeField] internal float vulnerableTime;
         [SerializeField] internal float reloadTime;
         [SerializeField] internal float attackRadius;
+
+        bool HiddenEnemy.hidden { get => behaviour is Hide || behaviour is Idle; set { } }
 
         public void Awake() {
             targetInstance ??= FindObjectsOfType<Player>().FirstOrDefault();
