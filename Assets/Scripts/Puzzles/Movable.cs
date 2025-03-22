@@ -83,7 +83,6 @@ namespace Puzzle {
             if (shouldMove) {
                 rb.MovePosition(Vector2.MoveTowards(rb.position, targetPosition, moveSpeed * Time.fixedDeltaTime));
                 if (isOnPlatform && playerFeet != null) {
-                    Debug.Log("Im player shmoving"); 
                     playerFeet.SetPlayerTransform(Vector2.MoveTowards(playerFeet.GetPlayerTransform(), targetPosition, Time.fixedDeltaTime * moveSpeed));
                 }
 
