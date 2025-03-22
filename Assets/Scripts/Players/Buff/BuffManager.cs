@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -6,7 +7,7 @@ using Utils;
 namespace Players.Buff {
     public class BuffManager : PersistentSingleton<BuffManager> {
         private Player player;
-        private List<Buff> activeBuffs;
+        private List<Buff> activeBuffs = new List<Buff>();
 
         protected override void OnAwake() {
             player = GameObject.FindGameObjectWithTag("Player")?.GetComponent<Player>();
@@ -19,52 +20,59 @@ namespace Players.Buff {
         private void OnDisable() {
             SceneManager.sceneLoaded -= OnSceneLoaded;
         }
+
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
             player = GameObject.FindGameObjectWithTag("Player")?.GetComponent<Player>();
             if (player == null) {
                 Debug.LogWarning("Player not found in the new scene.");
             }
+            ReapplyBuffs();
         }
 
-        public void ApplyBuff(Buff buff) {
+        public Buff ApplyBuff(Buff buffPrefab) {
             if (player == null) {
                 Debug.LogWarning("Player reference is missing, cannot apply buff.");
-                return;
+                return null;
             }
 
-            buff.Initialize(player);
-            buff.ApplyBuff();
+            Debug.Log($"Applying buff {buffPrefab.name}");
 
-            if (!activeBuffs.Contains(buff)) {
-                activeBuffs.Add(buff);
-            }
+            // Instantiate the buff under player's buff container
+            Buff buffInstance = Instantiate(buffPrefab, player.buffsParent);
+            buffInstance.Initialize(player);
+            buffInstance.ApplyBuff();
+
+            activeBuffs.Add(buffInstance);
+            return buffInstance;
         }
 
-        public void RemoveBuff(Buff buff) {
+        public void RemoveBuff(Buff buffInstance) {
             if (player == null) {
                 Debug.LogWarning("Player reference is missing, cannot remove buff.");
                 return;
             }
 
-            buff.RevokeBuff();
-
-            if (activeBuffs.Contains(buff)) {
-                activeBuffs.Remove(buff);
-            }
+            buffInstance.RevokeBuff();
+            activeBuffs.Remove(buffInstance);
+            Destroy(buffInstance.gameObject);
         }
 
-        // Optionally: You could create a method to reapply buffs across scene loads
         public void ReapplyBuffs() {
             if (player == null) {
                 Debug.LogWarning("Player reference is missing, cannot reapply buffs.");
                 return;
             }
 
-            // Example logic: Reapply all active buffs
             foreach (Buff activeBuff in activeBuffs) {
+                Debug.Log(activeBuff);
                 activeBuff.Initialize(player);
+                Debug.Log("Applying");
                 activeBuff.ApplyBuff();
             }
+        }
+
+        public void Update() {
+            Debug.Log(activeBuffs[0]);
         }
     }
 }

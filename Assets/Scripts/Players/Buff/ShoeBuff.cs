@@ -10,7 +10,7 @@ namespace Players.Buff {
         }
 
         public override void RevokeBuff() {
-            player.moveSpeed += speedBoost;
+            player.moveSpeed -= speedBoost;
         }
     }
 }
