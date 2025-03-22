@@ -11,8 +11,9 @@ namespace Puzzle {
         [SerializeField] private Transform destPosition;
         [SerializeField] private Transform startPosOverride;
         [SerializeField] private float moveSpeed = 10f;
-        [SerializeField] private GameObject endpointPiece;
+        [SerializeField] private ConveyerEndPiece endpointPiece;
         [SerializeField] private GameObject linePiece;
+        [SerializeField] private PuzzleAssets symbols;
         public ReceiverBehaviour ReceiverBehaviour => ReceiverBehaviour.Parse(behaviour);
         private int positionIndex = 0;
         private List<ISignal> signalList = new();
@@ -59,28 +60,47 @@ namespace Puzzle {
         }
 
         private void Redraw() {
-            if (endpointPiece == null || linePiece == null || checkPointLocation.Count <= 1 || signalList.Count == 0) {
-                Debug.LogWarning($"Missing references in ConveyorBelt script! endpoint: {endpointPiece}, linePiece: {linePiece}, two checkpoints should exist: {checkPointLocation.Count}, should have more than one signals: {signalList.Count}");
+            ClearConveyer();
+            DrawConveyer();
+            SetConveyerColor();
+        }
+        private void ClearConveyer() {
+            foreach (GameObject conveyer in conveyerLineObjects) {
+                Destroy(conveyer);
+            }
+
+            conveyerLineObjects.Clear();
+        }
+        private void DrawConveyer() {
+            if (endpointPiece == null || linePiece == null) {
+                Debug.LogWarning($"Missing conveyer assets: endpoint: {endpointPiece}, linePiece: {linePiece}");
                 return;
             }
 
-            {
-                foreach (GameObject conveyer in conveyerLineObjects) {
-                    Destroy(conveyer.gameObject);
-                }
+            if (checkPointLocation.Count <= 1) {
+                Debug.LogWarning($"Should have more than 1 checkpoint : {checkPointLocation.Count}");
+                return;
+            }
 
-                conveyerLineObjects.Clear();
+            if (signalList.Count == 0) {
+                Debug.LogWarning($"Should have more than one signals: {signalList.Count}");
+                return;
+            }
+
+            void DrawEndPiece(ConveyerEndPiece piece) {
+                conveyerLineObjects.Add(piece.gameObject);
+                piece.SetSymbol(signalList.First().SignalColor.GetSymbol(symbols));
             }
 
             Vector2 start = checkPointLocation.First();
-            Vector2 end = checkPointLocation[1];
+            Vector2 end = checkPointLocation.Last();
             Vector2 direction = (end - start).normalized;
             float distance = Vector2.Distance(start, end);
 
-            GameObject startPiece = Instantiate(endpointPiece, start, Quaternion.identity, transform.parent);
-            GameObject endPiece = Instantiate(endpointPiece, end, Quaternion.identity, transform.parent);
-            conveyerLineObjects.Add(startPiece);
-            conveyerLineObjects.Add(endPiece);
+            ConveyerEndPiece startPiece = Instantiate(endpointPiece, start, Quaternion.identity, transform.parent);
+            ConveyerEndPiece endPiece = Instantiate(endpointPiece, end, Quaternion.identity, transform.parent);
+            DrawEndPiece(startPiece);
+            DrawEndPiece(endPiece);
 
             // Start and End Pieces should face each other
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
@@ -96,8 +116,15 @@ namespace Puzzle {
                 conveyerLineObjects.Add(midPiece);
                 midPiece.transform.rotation = Quaternion.Euler(0, 0, angle);
             }
+        }
 
-            conveyerLineObjects.ForEach(obj => obj.GetComponent<SpriteRenderer>().color = signalList.FirstOrDefault()!.SignalColor.Color);
+        private void SetConveyerColor() {
+            if (signalList.Count == 0) {
+                Debug.LogWarning($"Should have more than one signals: {signalList.Count}");
+                return;
+            }
+
+            conveyerLineObjects.ForEach(obj => obj.GetComponent<SpriteRenderer>().color = signalList.First().SignalColor.Color);
         }
 
         private void OnEnable() {
