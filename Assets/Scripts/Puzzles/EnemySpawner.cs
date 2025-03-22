@@ -7,7 +7,7 @@ public class EnemySpawner : MonoBehaviour {
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private int maxSpawns;
     [SerializeField] private float spawnCoolDown;
-    [SerializeField] private Enemy prefab;
+    [SerializeField] private GameObject prefab;
     [SerializeField] private SpawnAnimation spawnAnimationPrefab;
 
     private readonly List<Enemy> ownedEnemies = new();
@@ -46,7 +46,7 @@ public class EnemySpawner : MonoBehaviour {
 
         Instantiate(spawnAnimationPrefab, spawnPoint.position, spawnPoint.rotation);
 
-        Enemy newEnemy = Instantiate(prefab, spawnPoint.position, spawnPoint.rotation);
+        Enemy newEnemy = Instantiate(prefab, spawnPoint.position, spawnPoint.rotation).GetComponent<Enemy>();
         ownedEnemies.Add(newEnemy);
     }
 
