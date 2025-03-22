@@ -454,7 +454,7 @@ MonoBehaviour:
   lag: 0
   count: 6
   projectileAngle: 90
-  projectileSpeed: 6
+  projectileSpeed: 7
   randomAttackDelayOffset: 0.5
   sprite: {fileID: 1495548087428681450}
   animator: {fileID: 6149703548532306918}
@@ -554,7 +554,7 @@ HingeJoint2D:
   m_BreakAction: 3
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: -3.5, y: 8}
+  m_ConnectedAnchor: {x: 0, y: 0}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 0

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 286749531572541837}
   - component: {fileID: 1346779165125602190}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Graphics
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 7893308943432753642}
   - component: {fileID: 763410622320452316}
   - component: {fileID: 9118924753299099410}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: BossSundewProj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -196,5 +196,5 @@ MonoBehaviour:
   rb: {fileID: 7893308943432753642}
   mask:
     serializedVersion: 2
-    m_Bits: 136
+    m_Bits: 648
   time: 5
