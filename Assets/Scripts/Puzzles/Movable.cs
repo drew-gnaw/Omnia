@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using UI;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -83,7 +84,7 @@ namespace Puzzle {
             }
 
             if (signalList.Count == 0) {
-                Debug.LogWarning($"Should have more than one signals: {signalList.Count}");
+                Debug.LogWarning($"Should have more than zero signals: {signalList.Count}");
                 return;
             }
 
@@ -120,7 +121,7 @@ namespace Puzzle {
 
         private void SetConveyerColor() {
             if (signalList.Count == 0) {
-                Debug.LogWarning($"Should have more than one signals: {signalList.Count}");
+                Debug.LogWarning($"Should have more than zero signals: {signalList.Count}");
                 return;
             }
 

@@ -100,6 +100,7 @@ namespace UI {
         private void UpdateAmmo(int currentAmmo) {
             if (!player.weapons[player.selectedWeapon]) {
                 Debug.LogWarning("HUDManager: No ammo available for selected weapon.");
+                return;
             }
 
             foreach (Transform child in ammoContainer) {
