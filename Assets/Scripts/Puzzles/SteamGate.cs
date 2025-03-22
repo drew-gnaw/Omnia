@@ -42,18 +42,14 @@ namespace Puzzle {
 
         private void SignalReceived(ISignal signal) {
             bool newState = ReceiverBehaviour.Parse(behaviour).Accept(signalList);
+            Debug.Log("my name is " + gameObject.name + " and i will transition into " + newState + " state");
 
             ToggleSteam(newState);
         }
 
         private void ToggleSteam(bool activate) {
-            if (activate) {
-                steamEffect.enabled = !opposite;
-                hazardCollider.enabled = !opposite;
-            } else {
-                steamEffect.enabled = !opposite;
-                hazardCollider.enabled = !opposite;
-            }
+            steamEffect.enabled = activate != opposite;
+            hazardCollider.enabled = activate != opposite;
         }
     }
 }
