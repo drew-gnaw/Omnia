@@ -135,19 +135,19 @@ public class Level_2_2 : LevelData {
 
 public class Level_2_3 : LevelData {
     public override string PlainName => "Level 2-3";
-    public override string SceneName => "W-1-3";
+    public override string SceneName => "W-2-3";
     public override LevelData NextLevel => Get<Level_2_B>();
     public override LevelData PrevLevel => Get<Level_2_2>();
 }
 public class Level_2_B : LevelData {
     public override string PlainName => "Level 2-B";
-    public override string SceneName => "W-1-B";
+    public override string SceneName => "W-2-B";
     public override LevelData NextLevel => Get<Level_2_S>();
     public override LevelData PrevLevel => Get<Level_2_3>();
 }
 public class Level_2_S : LevelData {
     public override string PlainName => "Level 2-S";
-    public override string SceneName => "W-1-S";
+    public override string SceneName => "W-2-S";
     public override LevelData NextLevel => Get<Level_2_B>();
     public override LevelData PrevLevel => Get<Level_2_B>();
 }
