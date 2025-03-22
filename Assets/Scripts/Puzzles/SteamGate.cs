@@ -23,8 +23,8 @@ namespace Puzzle {
         }
 
         private void Start() {
-            steamEffect.enabled = !opposite;
-            hazardCollider.enabled = !opposite;
+            steamEffect.enabled = opposite;
+            hazardCollider.enabled = opposite;
         }
 
         private void OnEnable() {

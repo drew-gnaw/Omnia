@@ -199,10 +199,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9136865585392950977, guid: 3799751a30f7d4a4385f70a2b5dbfd54, type: 3}
-      propertyPath: opposite
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9136865585392950977, guid: 3799751a30f7d4a4385f70a2b5dbfd54, type: 3}
       propertyPath: signals.Array.data[0].underlyingValue
       value: 
       objectReference: {fileID: 1252129574}
@@ -407,6 +403,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3930196275322469419, guid: 3799751a30f7d4a4385f70a2b5dbfd54, type: 3}
       propertyPath: m_FlipY
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9136865585392950977, guid: 3799751a30f7d4a4385f70a2b5dbfd54, type: 3}
+      propertyPath: opposite
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9136865585392950977, guid: 3799751a30f7d4a4385f70a2b5dbfd54, type: 3}
