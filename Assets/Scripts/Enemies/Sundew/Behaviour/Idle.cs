@@ -10,7 +10,8 @@ namespace Enemies.Sundew.Behaviour {
         }
 
         public void OnEnter() {
-            t = self.reload + self.lag;
+            float randomVariance = Random.Range(0f, self.randomAttackDelayOffset);
+            t = self.reload + self.lag + randomVariance;
         }
 
         public void OnExit() {

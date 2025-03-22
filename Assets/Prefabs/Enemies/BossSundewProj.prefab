@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 763410622320452316}
   - component: {fileID: 9118924753299099410}
   m_Layer: 0
-  m_Name: SundewProjectile
+  m_Name: BossSundewProj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -113,7 +113,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2.5, y: 2.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 286749531572541837}
@@ -133,7 +133,7 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0.15
   m_GravityScale: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -197,4 +197,4 @@ MonoBehaviour:
   mask:
     serializedVersion: 2
     m_Bits: 136
-  time: 4
+  time: 5

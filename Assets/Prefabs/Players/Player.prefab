@@ -43,6 +43,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8461806011579378704}
   - component: {fileID: 3119127342257128012}
+  - component: {fileID: 3027503570915798651}
   m_Layer: 0
   m_Name: Check B
   m_TagString: Untagged
@@ -110,6 +111,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.25, y: 0.5}
   m_EdgeRadius: 0
+--- !u!114 &3027503570915798651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1286430720645358875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9df985b169052574c8796bcb82f2fc9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 6725967550211918722}
 --- !u!1 &3214556523934231293
 GameObject:
   m_ObjectHideFlags: 0
@@ -120,6 +134,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1766989497329719528}
   - component: {fileID: 3552720443867880701}
+  - component: {fileID: 5496593307987634815}
   m_Layer: 0
   m_Name: Check D
   m_TagString: Untagged
@@ -187,6 +202,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.25, y: 0.25}
   m_EdgeRadius: 0
+--- !u!114 &5496593307987634815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3214556523934231293}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9df985b169052574c8796bcb82f2fc9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 6725967550211918722}
 --- !u!1 &3573204214676891274
 GameObject:
   m_ObjectHideFlags: 0
@@ -258,7 +286,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1017642853
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: -738686465, guid: 8f52459ea1fed44fb99541f1d999cb9f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -478,7 +506,6 @@ MonoBehaviour:
   - {fileID: 8474927021672394680}
   - {fileID: 1016169061012764450}
   selectedWeapon: 0
-  cam: {fileID: 0}
   facing: {x: 0, y: 0}
   moving: {x: 0, y: 0}
   jump: 0
