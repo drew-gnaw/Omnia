@@ -26,7 +26,7 @@ namespace Players.Buff {
             if (player == null) {
                 Debug.LogWarning("Player not found in the new scene.");
             }
-            ReapplyBuffs();
+            //ReapplyBuffs();
         }
 
         public Buff ApplyBuff(Buff buffPrefab) {
@@ -37,8 +37,8 @@ namespace Players.Buff {
 
             Debug.Log($"Applying buff {buffPrefab.name}");
 
-            // Instantiate the buff under player's buff container
-            Buff buffInstance = Instantiate(buffPrefab, player.buffsParent);
+            // Instantiate the buff under this manager for persistence.
+            Buff buffInstance = Instantiate(buffPrefab, gameObject.transform);
             buffInstance.Initialize(player);
             buffInstance.ApplyBuff();
 
@@ -64,15 +64,9 @@ namespace Players.Buff {
             }
 
             foreach (Buff activeBuff in activeBuffs) {
-                Debug.Log(activeBuff);
                 activeBuff.Initialize(player);
-                Debug.Log("Applying");
                 activeBuff.ApplyBuff();
             }
-        }
-
-        public void Update() {
-            Debug.Log(activeBuffs[0]);
         }
     }
 }

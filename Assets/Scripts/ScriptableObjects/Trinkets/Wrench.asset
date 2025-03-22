@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46708f3e568b40a49a78cf2f4c56d827, type: 3}
   m_Name: Wrench
   m_EditorClassIdentifier: 
-  icon: {fileID: 0}
-  trinketName: 
-  description: 
-  buff: {fileID: 0}
+  icon: {fileID: 21300000, guid: 86647311d6b3c2944a39a50eb1a77550, type: 3}
+  trinketName: Wrench
+  description: Enemies feel squishier when you use this...
+  buffPrefab: {fileID: 9223157071643022141, guid: 8dc8403a246d241d8ac6c50512e086cb, type: 3}
