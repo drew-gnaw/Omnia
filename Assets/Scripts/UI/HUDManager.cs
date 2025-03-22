@@ -38,12 +38,7 @@ namespace UI {
         protected override void OnAwake() {
             gameObject.SetActive(true);
 
-            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
-            if (playerObj != null) {
-                player = playerObj.GetComponent<Player>();
-            } else {
-                Debug.LogError("HUDManager: No GameObject with tag 'Player' found!");
-            }
+            FindPlayer();
 
             Player.OnFlowChanged += UpdateFlow;
             Player.OnHealthChanged += UpdateHealth;
@@ -85,7 +80,7 @@ namespace UI {
                 heartObjects.Add(heartInstance);
             }
 
-            StartCoroutine(FlashHearts(heartObjects));
+            //StartCoroutine(FlashHearts(heartObjects));
             HandleLowHealthEffect(currentHealth);
         }
 
@@ -98,6 +93,7 @@ namespace UI {
         }
 
         private void UpdateAmmo(int currentAmmo) {
+            FindPlayer();
             if (!player.weapons[player.selectedWeapon]) {
                 Debug.LogWarning("HUDManager: No ammo available for selected weapon.");
             }
@@ -205,6 +201,15 @@ namespace UI {
 
         private float EaseOutQuad(float t) {
             return -t * (t - 2f);
+        }
+
+        private void FindPlayer() {
+            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+            if (playerObj != null) {
+                player = playerObj.GetComponent<Player>();
+            } else {
+                Debug.LogError("HUDManager: No GameObject with tag 'Player' found!");
+            }
         }
 
     }
