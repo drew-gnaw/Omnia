@@ -17,9 +17,7 @@ namespace Enemies.Crab.Behaviour {
         }
 
         public void OnTick() {
-            self.facing = self.IsTargetDetectedWithDirection();
-            if (self.facing == default) return;
-            self.UseBehaviour(new Alert(self));
+            if (self.IsTargetDetected()) self.UseBehaviour(new Alert(self));
         }
 
         public void OnUpdate() {

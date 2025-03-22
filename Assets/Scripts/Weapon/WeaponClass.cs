@@ -62,7 +62,9 @@ public abstract class WeaponClass : MonoBehaviour
     public abstract void IntroSkill();
 
     public void SetSpriteActive(bool active) {
-        GetComponentInChildren<SpriteRenderer>().enabled = active;
+        foreach (var sr in GetComponentsInChildren<SpriteRenderer>()) {
+            sr.enabled = active;
+        }
     }
 
     IEnumerator cooldown() {

@@ -14,40 +14,40 @@ namespace Enemies.Crab {
         [SerializeField] internal LayerMask ground;
         [SerializeField] internal LayerMask player;
         [SerializeField] internal LayerMask bg;
-        [SerializeField] internal Vector2 facing = Vector2.zero;
+        [SerializeField] internal Player targetInstance;
 
         [SerializeField] internal float detectionRange;
         [SerializeField] internal float windupTime;
         [SerializeField] internal float vulnerableTime;
         [SerializeField] internal float reloadTime;
         [SerializeField] internal float attackRadius;
-        [SerializeField] internal Transform[] attackPositions;
 
         public void Awake() {
+            targetInstance ??= FindObjectsOfType<Player>().FirstOrDefault();
             UseBehaviour(new Idle(this));
         }
 
-        public Vector2 IsTargetDetectedWithDirection() {
-            var hit = Sweep(sprite.transform.position, Vector2.up, 180, detectionRange, 17, ground | player).FirstOrDefault(hit => IsOnLayer(hit, player));
-            if (!hit) return default;
-            return hit.transform.position.x > transform.position.x ? Vector2.right : Vector2.left;
+        public override void Update() {
+            base.Update();
+            sprite.flipX = targetInstance.rb.position.x < transform.position.x;
+        }
+
+        public void Attack(Player it) {
+            var side = sprite.flipX ? -1 : 1;
+            it.Hurt(attack, knockbackForce * new Vector2(side * Mathf.Cos(knockbackAngle * Mathf.Deg2Rad), Mathf.Sin(knockbackAngle * Mathf.Deg2Rad)), 1);
         }
 
         public void SetLayer(LayerMask layer) {
             gameObject.layer = MathUtils.LayerIndexOf(layer);
         }
 
-        public void Attack(Player it) {
-            it.Hurt(attack, knockbackAngle * new Vector2(facing.x * Mathf.Cos(knockbackAngle * Mathf.Deg2Rad), Mathf.Sin(knockbackAngle * Mathf.Deg2Rad)), 1);
-        }
+        public bool IsTargetDetected() => Sweep(sprite.transform.position, Vector2.up, 180, detectionRange, 17, ground | player).Any(hit => IsOnLayer(hit, player));
 
         protected override void UseAnimation(StateMachine stateMachine) {
             var idleAnim = new IdleAnimation(animator);
             stateMachine.AddAnyTransition(idleAnim, new FuncPredicate(() => behaviour is Idle));
-            stateMachine.AddAnyTransition(new HideLAnimation(animator), new FuncPredicate(() => behaviour is Hide && facing.x < 0));
-            stateMachine.AddAnyTransition(new HideRAnimation(animator), new FuncPredicate(() => behaviour is Hide && facing.x > 0));
-            stateMachine.AddAnyTransition(new PopOutLAnimation(animator), new FuncPredicate(() => behaviour is Alert or Pinch && facing.x < 0));
-            stateMachine.AddAnyTransition(new PopOutRAnimation(animator), new FuncPredicate(() => behaviour is Alert or Pinch && facing.x > 0));
+            stateMachine.AddAnyTransition(new HideAnimation(animator), new FuncPredicate(() => behaviour is Hide));
+            stateMachine.AddAnyTransition(new PopOutAnimation(animator), new FuncPredicate(() => behaviour is Alert or Pinch));
 
             stateMachine.SetState(idleAnim);
             animationStateMachine = stateMachine;

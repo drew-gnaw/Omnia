@@ -92,6 +92,18 @@ namespace Players {
         // if this is false, disable swapping.
         [SerializeField] internal bool hasShotgun;
 
+        private bool _healthBoosted;
+
+        public bool HealthBoosted {
+            get => _healthBoosted;
+            set {
+                if (_healthBoosted != value) {
+                    _healthBoosted = value;
+                    OnHealthBoostChanged?.Invoke(_healthBoosted);
+                }
+            }
+        }
+
         // Describes the ratio at which flow is converted into HP.
         public const int SWAP_HEAL = 2;
 
@@ -103,6 +115,8 @@ namespace Players {
         public static event Action<int> OnHealthChanged;
         public static event Action<int> OnWeaponChanged;
         public static event Action<float> OnSkillCooldownUpdated;
+
+        public static event Action<bool> OnHealthBoostChanged;
 
         private float currentLockout;
         private float maximumLockout;
