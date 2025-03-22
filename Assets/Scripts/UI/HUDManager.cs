@@ -9,7 +9,15 @@ using Utils;
 
 namespace UI {
     public class HUDManager : PersistentSingleton<HUDManager> {
-        private Player player;
+        private Player _p;
+        private Player player {
+            get {
+                if (!_p) {
+                    FindPlayer();
+                }
+                return _p;
+            }
+        }
 
         [SerializeField] private Transform healthContainer;
         [SerializeField] private GameObject heartPrefab;
@@ -206,7 +214,7 @@ namespace UI {
         private void FindPlayer() {
             GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
             if (playerObj != null) {
-                player = playerObj.GetComponent<Player>();
+                _p = playerObj.GetComponent<Player>();
             } else {
                 Debug.LogError("HUDManager: No GameObject with tag 'Player' found!");
             }
