@@ -13,7 +13,7 @@ public class Steam : MonoBehaviour {
     void OnTriggerEnter2D(Collider2D other) {
         if (Collider2d.IsTouchingLayers(playerLayer)) {
             var player = other.gameObject.GetComponent<Player>();
-            if (player != null) player.Die();
+            if (player != null) player.Hurt(99);
         } else if (Collider2d.IsTouchingLayers(enemyLayer)) {
             var enemy = other.gameObject.GetComponent<Enemy>();
             if (enemy != null) enemy.Die();
