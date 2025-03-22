@@ -3,6 +3,25 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Utils;
 
+public static class AudioTracks {
+    // BGM
+    public const string LullabyForAScrapyard = "Omnia - Lullaby For a Scrapyard";
+    public const string CityOfMold = "Omnia - City of Mold";
+    public const string SunkBeneath = "Omnia - Sunk Beneath";
+    public const string JamiesTheme = "Omnia - Jamie_s Theme";
+    public const string TrialBySteel = "Omnia - Trial By Steel";
+    public const string UnclesTheme = "Omnia - Uncle Beau_s Theme";
+    public const string CaveSpeak = "Omnia - Cave Speak";
+    public const string FloraExMachina = "Omnia - Flora Ex Machina";
+    public const string IntoTheWind = "Omnia - Into The Wind";
+    public const string Undersound = "Omnia - Undersound";
+
+    // SFX
+
+
+    // AMBIENT
+}
+
 public class AudioManager : PersistentSingleton<AudioManager>
 {
     public AudioSource BGMPlayer, SFXPlayer, AmbientPlayer;
@@ -36,10 +55,12 @@ public class AudioManager : PersistentSingleton<AudioManager>
     // If the track is already playing, does nothing
     public void PlayBGM(string trackName) {
         AudioClip track = bgmTracks.GetClipByName(trackName);
+        Debug.Log("Playing track " + track);
         if (!BGMPlayer.isPlaying || BGMPlayer.clip != track) {
             BGMPlayer.clip = track;
             BGMPlayer.loop = true;
             BGMPlayer.Play();
+            Debug.Log("Playing on player " + BGMPlayer);
         }
     }
 
