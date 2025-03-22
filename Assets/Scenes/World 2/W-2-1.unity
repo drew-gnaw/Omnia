@@ -3107,10 +3107,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 2066350445}
     m_Modifications:
     - target: {fileID: 1468266531477013713, guid: ba0651d388999e445bd1aa17fce25842, type: 3}
-      propertyPath: gateBehaviour
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1468266531477013713, guid: ba0651d388999e445bd1aa17fce25842, type: 3}
       propertyPath: customLevelData.assemblyQualifiedName
       value: Level_2_1, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       objectReference: {fileID: 0}
@@ -3254,6 +3250,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2127775288}
     m_Modifications:
+    - target: {fileID: 6542602472551470509, guid: 3d917830cfb39914f9863cf5a8cfd91d, type: 3}
+      propertyPath: windupTime
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 7723417269471147987, guid: 3d917830cfb39914f9863cf5a8cfd91d, type: 3}
       propertyPath: m_LocalPosition.x
       value: -4.712

@@ -34,7 +34,7 @@ namespace Enemies.Crab {
 
         public void Attack(Player it) {
             var side = sprite.flipX ? -1 : 1;
-            it.Hurt(attack, knockbackAngle * new Vector2(side * Mathf.Cos(knockbackAngle * Mathf.Deg2Rad), Mathf.Sin(knockbackAngle * Mathf.Deg2Rad)), 1);
+            it.Hurt(attack, knockbackForce * new Vector2(side * Mathf.Cos(knockbackAngle * Mathf.Deg2Rad), Mathf.Sin(knockbackAngle * Mathf.Deg2Rad)), 1);
         }
 
         public void SetLayer(LayerMask layer) {
