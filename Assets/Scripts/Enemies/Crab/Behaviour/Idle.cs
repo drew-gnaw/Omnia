@@ -1,30 +1,23 @@
-using System;
-using System.Collections;
-using UnityEngine;
-
 namespace Enemies.Crab.Behaviour {
     public class Idle : IBehaviour {
         private readonly Crab self;
-        private float reloadTimer;
+        private int layer;
 
-        // If initial, don't set a reload timer so that the Crab is immediately ready
         public Idle(Crab crab) {
             self = crab;
         }
 
         public void OnEnter() {
-            self.SetInvulnerable(true);
+            layer = self.gameObject.layer;
+            self.SetLayer(self.bg);
         }
 
         public void OnExit() {
-            self.SetInvulnerable(false);
+            self.gameObject.layer = layer;
         }
 
         public void OnTick() {
-            Vector2 v = self.CheckPlayer();
-            if (v == Vector2.zero) return;
-            self.SetDirection(v);
-            self.UseBehaviour(new Alert(self));
+            if (self.IsTargetDetected()) self.UseBehaviour(new Alert(self));
         }
 
         public void OnUpdate() {

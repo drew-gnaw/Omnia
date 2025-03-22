@@ -1,11 +1,13 @@
+using System;
 using System.Collections;
+using Players;
 using UnityEngine;
 
 public abstract class WeaponClass : MonoBehaviour
 {
     public GameObject player;
     [Header("Reference Layers")]
-    public LayerMask enemyLayer;
+    public LayerMask hittableLayerMask; //Typically Enemies and Destructables
     public LayerMask groundLayer;
     public LayerMask playerLayer;
 
@@ -14,7 +16,37 @@ public abstract class WeaponClass : MonoBehaviour
     public float attackCooldown; // seconds
     public float damageToFlowRatio = 1; // determines the rate at which damage is translated into flow.
 
+    [SerializeField] public int maxAmmoCount;
+
+    private bool IsActive {
+        get {
+            SpriteRenderer sr = GetComponentInChildren<SpriteRenderer>();
+            return sr != null && sr.enabled;
+        }
+    }
+
+    private int _currentAmmo;
+    public int CurrentAmmo {
+        get => _currentAmmo;
+        set {
+            if (_currentAmmo != value) {
+                _currentAmmo = value;
+                if (IsActive) {
+                    OnAmmoChanged?.Invoke(_currentAmmo);
+                }
+            }
+        }
+    }
+
+    public static event Action<int> OnAmmoChanged;
+
     private bool canAttack = true;
+    protected Player playerComponent;
+
+    public virtual void Start() {
+        playerComponent = player.GetComponent<Player>();
+        CurrentAmmo = maxAmmoCount;
+    }
 
     public void Attack() {
         if (!canAttack) {
@@ -30,7 +62,9 @@ public abstract class WeaponClass : MonoBehaviour
     public abstract void IntroSkill();
 
     public void SetSpriteActive(bool active) {
-        GetComponentInChildren<SpriteRenderer>().enabled = active;
+        foreach (var sr in GetComponentsInChildren<SpriteRenderer>()) {
+            sr.enabled = active;
+        }
     }
 
     IEnumerator cooldown() {

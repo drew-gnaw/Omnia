@@ -9,7 +9,6 @@ namespace Players.Behaviour {
         }
 
         public void OnEnter() {
-            self.UseAnimation("PlayerSlide");
         }
 
         public void OnExit() {
@@ -25,7 +24,7 @@ namespace Players.Behaviour {
         }
 
         public static IBehaviour If(Player it) {
-            return !it.grounded && it.slide.x != 0 && it.checks[it.slide.x > 0 ? 0 : 2].IsTouchingLayers(it.ground) ? new Slide(it) : null;
+            return !it.grounded && it.slide.x != 0 && it.checks[it.slide.x > 0 ? 0 : 2].IsTouchingLayers(it.ground | it.destructable) ? new Slide(it) : null;
         }
     }
 }

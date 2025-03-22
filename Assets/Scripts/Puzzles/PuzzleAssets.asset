@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4b96aa066ed9db4e916e5aa452b6083, type: 3}
+  m_Name: PuzzleAssets
+  m_EditorClassIdentifier: 
+  triangleSymbol: {fileID: 21300000, guid: 40f38b60d8d3f26409faffa3a52b8f2f, type: 3}
+  xSymbol: {fileID: 21300000, guid: 93df8a7d665782e4697fda3478c654e3, type: 3}
+  squareSymbol: {fileID: 21300000, guid: 4c3bcead1775ce540877c066dcf130b2, type: 3}
+  circleSymbol: {fileID: 21300000, guid: 57a077e94005a794f91cec79400c621b, type: 3}

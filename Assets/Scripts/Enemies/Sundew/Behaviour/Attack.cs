@@ -5,13 +5,14 @@ namespace Enemies.Sundew.Behaviour {
         private readonly Sundew self;
         private float t;
 
-        private Attack(Sundew self) {
+        public Attack(Sundew self) {
             this.self = self;
         }
 
         public void OnEnter() {
-            t = self.reload;
+            t = self.windup;
 
+            self.lag = 0;
             self.FireProjectiles();
         }
 
@@ -19,17 +20,12 @@ namespace Enemies.Sundew.Behaviour {
         }
 
         public void OnTick() {
+            if (t != 0) return;
+            self.UseBehaviour(new Idle(self));
         }
 
         public void OnUpdate() {
             t = Mathf.Max(0, t - Time.deltaTime);
-            if (t != 0) return;
-
-            self.UseBehaviour(WindUp.If(self) ?? Hide.If(self));
-        }
-
-        public static IBehaviour If(Sundew it) {
-            return new Attack(it);
         }
     }
 }

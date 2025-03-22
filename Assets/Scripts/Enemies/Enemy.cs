@@ -4,10 +4,15 @@ using UnityEngine;
 using Omnia.State;
 using Enemies.Common.Behaviour;
 
-namespace Enemies{
+namespace Enemies {
     public abstract class Enemy : MonoBehaviour {
         public static event Action<Enemy> Spawn;
         public static event Action<Enemy> Death;
+        /**
+         * The Damage event should be reserved for behaviours like UI
+         * Any other behaviours dependent on the actual damage and health changes should be handled in the Hurt method
+         */
+        public static event Action<Enemy, float> Damage;
 
         [SerializeField] internal float maximumHealth;
         [SerializeField] internal float currentHealth;
@@ -17,7 +22,7 @@ namespace Enemies{
         [SerializeField] internal float staggerDurationS = 1f;
 
         protected IBehaviour behaviour;
-        public IBehaviour prevBehaviour {get; protected set;}
+        public IBehaviour prevBehaviour { get; protected set; }
 
         protected StateMachine animationStateMachine;
 
@@ -27,17 +32,28 @@ namespace Enemies{
             UseAnimation(new StateMachine());
         }
 
-        public virtual void Hurt(float damage) {
+        /**
+         * By default, the enemy will stagger upon taking damage.
+         * If the specific enemies behaviour should not stagger or the damage applied should not stagger
+         * the stagger parameter should be used
+         */
+        public virtual void Hurt(float damage, bool stagger = true) {
             currentHealth = Mathf.Clamp(currentHealth - damage, 0, maximumHealth);
+            Damage?.Invoke(this, damage);
 
             if (currentHealth == 0) Die();
-            
+
+            // Don't stagger if specified
+            if (!stagger) return;
             // Currently the enemy just attempts its previous behaviour after stagger
             if (staggerDurationS <= 0) return;
-            
-            // Previous behavious should be set here to avoid softlocking the enemy
+            // Also prevent staggering if damage is 0
+            if (damage == 0) return;
+
+            // Previous behavious should be set here to avoid softlocking the enemy;
+            if (behaviour is Stagger) return;
             prevBehaviour = behaviour;
-            UseBehaviour(Stagger.If(this));
+            UseBehaviour(new Stagger(this));
         }
 
         /**
@@ -68,7 +84,7 @@ namespace Enemies{
         protected abstract void UseAnimation(StateMachine stateMachine);
 
         /* TODO: This could be a coroutine so enemies can play an animation on death...? */
-        private void Die() {
+        public void Die() {
             Death?.Invoke(this);
             Destroy(gameObject);
         }

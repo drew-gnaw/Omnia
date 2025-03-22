@@ -1,19 +1,18 @@
+using System;
 using Omnia.State;
 using UnityEngine;
 
 namespace Enemies.Dummy {
     public class Dummy : Enemy {
-        public override void Hurt(float damage) {
-            base.Hurt(damage);
-            Debug.Log(this + " took damage " + damage);
-        }
-
-        public override void UseBehaviour(IBehaviour it) {
-            // wit nothin'?
-        }
-
+        public event Action OnHurt;
         protected override void UseAnimation(StateMachine stateMachine) {
-            // wit nothin'?
+            // nothing...
         }
+
+        public override void Hurt(float damage, bool stagger = true) {
+            base.Hurt(damage);
+            OnHurt?.Invoke();
+        }
+
     }
 }

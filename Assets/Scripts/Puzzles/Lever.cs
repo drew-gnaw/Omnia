@@ -1,9 +1,10 @@
 using Omnia.Utils;
 using static Puzzle.ISignal;
+using static Puzzle.IProgress;
 using UnityEngine;
 
 namespace Puzzle {
-    public class Lever : MonoBehaviour, ISignal {
+    public class Lever : MonoBehaviour, ISignal, IProgress {
         [TypeFilter(typeof(SignalColor))]
         [SerializeField] private SerializableType signalColor;
         [SerializeField] private float maxChargeDuration;
@@ -12,12 +13,19 @@ namespace Puzzle {
         [SerializeField] private LayerMask playerLayer;
         [SerializeField] private SpriteRenderer handle;
         [SerializeField] private SpriteRenderer baseRenderer;
+        [SerializeField] private SpriteRenderer symbolRenderer;
+        [SerializeField] private PuzzleAssets assets;
         [SerializeField] private Sprite ticks;
         [SerializeField] private Transform pivotPoint;
+        [SerializeField] private bool broadcastProgress = false;
 #nullable enable
         public SignalColor SignalColor => SignalColor.Parse(signalColor);
         public event SignalFired? SignalEvent;
+        public event ProgressFired? ProgressEvent;
+
         public bool IsActive { get; set; }
+        public float Progress { get; private set;  }
+
         private CountdownTimer leverUptime = new(0);
         private readonly float chargeRate = 180f; //(degrees per second)
         private readonly float radius = 0.2f; // Fixed distance from pivot
@@ -35,6 +43,16 @@ namespace Puzzle {
         void Update() {
             UpdateCountdownTick();
             AnimateHandle();
+            HandleProgressUpdate();
+        }
+
+        private void HandleProgressUpdate() {
+            float newProgress = GetProgress();
+            if (newProgress != Progress) {
+                Progress = newProgress;
+                if (broadcastProgress)
+                    ProgressEvent?.Invoke(this);
+            }
         }
 
         void OnTriggerEnter2D(Collider2D other) {
@@ -52,15 +70,21 @@ namespace Puzzle {
 
             if (objectsInside <= 0) {
                 isCharging = false;
-                float chargeRatio = Mathf.InverseLerp(endAngle, startAngle, currentHandleAngle);
+                float chargeRatio = GetProgress();
                 leverUptime = new CountdownTimer(chargeRatio * maxChargeDuration);
                 leverUptime.Start();
             }
         }
 
+        private float GetProgress() {
+            return Mathf.InverseLerp(endAngle, startAngle, currentHandleAngle);
+        }
+
         private void Draw() {
             handle.color = SignalColor.Color;
             baseRenderer.color = SignalColor.Color;
+            symbolRenderer.sprite = SignalColor.GetSymbol(assets);
+            symbolRenderer.gameObject.transform.rotation = Quaternion.identity;
         }
 
         private void UpdateCountdownTick() {

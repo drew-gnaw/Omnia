@@ -16,5 +16,30 @@ namespace Utils {
             if (value <= -0.5) return -1;
             return 0;
         }
+
+        public static Vector2 Lerpish(Vector2 a, Vector2 b, float t, float eps = 0.01f) {
+            var x = Vector2.Lerp(a, b, t);
+            return Vector2.Distance(x, b) < eps ? b : x;
+        }
+
+        public static float RandomGaussian(float minValue = 0.0f, float maxValue = 1.0f) {
+            float u, v, S;
+
+            do {
+                u = 2.0f * Random.value - 1.0f;
+                v = 2.0f * Random.value - 1.0f;
+                S = u * u + v * v;
+            }
+            while (S >= 1.0f);
+
+            // Standard Normal Distribution
+            float std = u * Mathf.Sqrt(-2.0f * Mathf.Log(S) / S);
+
+            // Normal Distribution centered between the min and max value
+            // and clamped following the "three-sigma rule"
+            float mean = (minValue + maxValue) / 2.0f;
+            float sigma = (maxValue - mean) / 3.0f;
+            return Mathf.Clamp(std * sigma + mean, minValue, maxValue);
+        }
     }
 }
