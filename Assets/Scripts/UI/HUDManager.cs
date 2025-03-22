@@ -104,6 +104,7 @@ namespace UI {
             FindPlayer();
             if (!player.weapons[player.selectedWeapon]) {
                 Debug.LogWarning("HUDManager: No ammo available for selected weapon.");
+                return;
             }
 
             foreach (Transform child in ammoContainer) {
@@ -173,7 +174,7 @@ namespace UI {
 
             yield return new WaitForSeconds(0.1f);  // Short flash duration
 
-            foreach (GameObject heart in hearts) {
+            foreach (GameObject heart in hearts) {;
                 Image heartImage = heart.GetComponent<Image>();
                 if (heartImage != null) {
                     heartImage.color = originalColor;
