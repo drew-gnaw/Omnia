@@ -55,12 +55,10 @@ public class AudioManager : PersistentSingleton<AudioManager>
     // If the track is already playing, does nothing
     public void PlayBGM(string trackName) {
         AudioClip track = bgmTracks.GetClipByName(trackName);
-        Debug.Log("Playing track " + track);
         if (!BGMPlayer.isPlaying || BGMPlayer.clip != track) {
             BGMPlayer.clip = track;
             BGMPlayer.loop = true;
             BGMPlayer.Play();
-            Debug.Log("Playing on player " + BGMPlayer);
         }
     }
 
