@@ -135,10 +135,6 @@ PrefabInstance:
       value: Button (1)
       objectReference: {fileID: 0}
     - target: {fileID: 5683351596568210580, guid: 3f3b5c7d207a73040a5124c46fedf5de, type: 3}
-      propertyPath: excludedLayers.m_Bits
-      value: 584
-      objectReference: {fileID: 0}
-    - target: {fileID: 5683351596568210580, guid: 3f3b5c7d207a73040a5124c46fedf5de, type: 3}
       propertyPath: signalColour.assemblyQualifiedName
       value: Puzzle.Green, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       objectReference: {fileID: 0}
@@ -674,7 +670,7 @@ Transform:
   m_GameObject: {fileID: 435526932}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -12.621035, y: 3.374593, z: -10}
+  m_LocalPosition: {x: -12.515954, y: 2.968506, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1419,10 +1415,6 @@ PrefabInstance:
       value: Button
       objectReference: {fileID: 0}
     - target: {fileID: 5683351596568210580, guid: 3f3b5c7d207a73040a5124c46fedf5de, type: 3}
-      propertyPath: excludedLayers.m_Bits
-      value: 584
-      objectReference: {fileID: 0}
-    - target: {fileID: 5683351596568210580, guid: 3f3b5c7d207a73040a5124c46fedf5de, type: 3}
       propertyPath: signalColour.assemblyQualifiedName
       value: Puzzle.Red, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       objectReference: {fileID: 0}
@@ -1646,11 +1638,12 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 2.643821, y: -9.207574}
+    - - {x: 2.787227, y: -9.093517}
       - {x: 2.6213412, y: 1.2896543}
-      - {x: 2.653891, y: 1.3755593}
-      - {x: -15.368877, y: 1.3114629}
-      - {x: -15.475544, y: -9.166056}
+      - {x: 2.4562058, y: 1.3841443}
+      - {x: 2.7451644, y: 0.8887811}
+      - {x: -15.235254, y: 1.0278649}
+      - {x: -15.323425, y: -9.166056}
   m_UseDelaunayMesh: 0
 --- !u!4 &982605485
 Transform:
@@ -2022,7 +2015,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7908806746659322254, guid: a0a8f7069068e40faa87eaf58c7b7cda, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2686506879466193411, guid: a0a8f7069068e40faa87eaf58c7b7cda, type: 3}
@@ -2159,10 +2152,6 @@ PrefabInstance:
     - target: {fileID: 1573750958427331582, guid: 3f3b5c7d207a73040a5124c46fedf5de, type: 3}
       propertyPath: m_Name
       value: Button (2)
-      objectReference: {fileID: 0}
-    - target: {fileID: 5683351596568210580, guid: 3f3b5c7d207a73040a5124c46fedf5de, type: 3}
-      propertyPath: excludedLayers.m_Bits
-      value: 1049160
       objectReference: {fileID: 0}
     - target: {fileID: 5683351596568210580, guid: 3f3b5c7d207a73040a5124c46fedf5de, type: 3}
       propertyPath: signalColour.assemblyQualifiedName
@@ -26954,8 +26943,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefabs:
   - {fileID: 487545388327062563, guid: e884e4f1d4961491aaa57945428f759b, type: 3}
-  - {fileID: 1631646899124418994, guid: 2d2d8564f9485fa4c94d7312e0c528b4, type: 3}
-  - {fileID: 7157472551080849247, guid: e529af90261235d498ad6837df8c7173, type: 3}
   - {fileID: 8654011918668383699, guid: d7ad28660305d9a438e4fc6f01578041, type: 3}
   canvas: {fileID: 1037845623}
 --- !u!4 &1586570742
