@@ -26,7 +26,7 @@ namespace Players.Buff {
             if (player == null) {
                 Debug.LogWarning("Player not found in the new scene.");
             }
-            //ReapplyBuffs();
+            ReapplyBuffs();
         }
 
         public Buff ApplyBuff(Buff buffPrefab) {
@@ -57,15 +57,11 @@ namespace Players.Buff {
             Destroy(buffInstance.gameObject);
         }
 
+        // Required because the player was destroyed and reinstantiated on scene load, losing buff properties.
         public void ReapplyBuffs() {
-            if (player == null) {
-                Debug.LogWarning("Player reference is missing, cannot reapply buffs.");
-                return;
-            }
-
-            foreach (Buff activeBuff in activeBuffs) {
-                activeBuff.Initialize(player);
-                activeBuff.ApplyBuff();
+            foreach (Buff buff in activeBuffs) {
+                buff.Initialize(player);
+                buff.ApplyBuff();
             }
         }
     }
