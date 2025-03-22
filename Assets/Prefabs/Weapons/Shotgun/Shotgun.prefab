@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 995852555036158291}
   - component: {fileID: 5713062283198653993}
   m_Layer: 7
-  m_Name: Sprite
+  m_Name: Graphics
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26,8 +26,8 @@ Transform:
   m_GameObject: {fileID: 3148284870428446771}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.5, y: 0, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3940832265663412997}
@@ -73,48 +73,17 @@ SpriteRenderer:
   m_SortingLayerID: 1017642853
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 5ed5348bee1f9e14d9503a1494029a0f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c7a635e8d69a5482d8cd2c0e2aeac0a0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 5, y: 1.5}
+  m_Size: {x: 1.875, y: 0.4375}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &3462271349234480812
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8611914734659493474}
-  m_Layer: 7
-  m_Name: Muzzle
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8611914734659493474
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3462271349234480812}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.913, y: 0.059, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3940832265663412997}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3989308426405327203
 GameObject:
   m_ObjectHideFlags: 0
@@ -146,7 +115,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 995852555036158291}
-  - {fileID: 8611914734659493474}
+  - {fileID: 2511448270499546997}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6090924249510559695
@@ -179,5 +148,38 @@ MonoBehaviour:
   blastAngle: 45
   range: 20
   subDivide: 10
-  muzzlePosition: {fileID: 8611914734659493474}
-  tracerPrefab: {fileID: 8976097384762832605, guid: 3a3476e9cc759644a9cb5e4d1134c20f, type: 3}
+  muzzleFlash: {fileID: 6478827744998899019, guid: a4cb330456d0e401f9cdb0e6d99696db, type: 3}
+  tracer: {fileID: 8976097384762832605, guid: 3a3476e9cc759644a9cb5e4d1134c20f, type: 3}
+  barrelPosition: {fileID: 8293366980119116200}
+  skillForce: 10
+--- !u!1 &8293366980119116200
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2511448270499546997}
+  m_Layer: 7
+  m_Name: Barrel Position
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2511448270499546997
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8293366980119116200}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3940832265663412997}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

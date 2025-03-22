@@ -33,6 +33,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2157272981753954215, guid: 6f3a6004e073d451da5cfcfe0449ce25, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2157272981753954215, guid: 6f3a6004e073d451da5cfcfe0449ce25, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2157272981753954215, guid: 6f3a6004e073d451da5cfcfe0449ce25, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -106,7 +114,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5710193498280292276, guid: 6f3a6004e073d451da5cfcfe0449ce25, type: 3}
       propertyPath: m_Name
-      value: Elite Armadillo Variant
+      value: EliteArmadillo Variant
       objectReference: {fileID: 0}
     - target: {fileID: 6073932885878938322, guid: 6f3a6004e073d451da5cfcfe0449ce25, type: 3}
       propertyPath: m_Size.y
@@ -129,6 +137,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 9100000, guid: 042ea8b53cdef1e48975efc5ab7261c5, type: 2}
     - target: {fileID: 6491317554158063245, guid: 6f3a6004e073d451da5cfcfe0449ce25, type: 3}
+      propertyPath: attack
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6491317554158063245, guid: 6f3a6004e073d451da5cfcfe0449ce25, type: 3}
       propertyPath: hitDistance
       value: 5
       objectReference: {fileID: 0}
@@ -143,6 +155,18 @@ PrefabInstance:
     - target: {fileID: 6491317554158063245, guid: 6f3a6004e073d451da5cfcfe0449ce25, type: 3}
       propertyPath: maximumHealth
       value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 6491317554158063245, guid: 6f3a6004e073d451da5cfcfe0449ce25, type: 3}
+      propertyPath: knockbackForce
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6491317554158063245, guid: 6f3a6004e073d451da5cfcfe0449ce25, type: 3}
+      propertyPath: maxShieldHealth
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 6491317554158063245, guid: 6f3a6004e073d451da5cfcfe0449ce25, type: 3}
+      propertyPath: staggerDurationS
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 8992193816802277605, guid: 6f3a6004e073d451da5cfcfe0449ce25, type: 3}
       propertyPath: m_Offset.x

@@ -18,8 +18,17 @@ public class Shotgun : WeaponClass {
     [SerializeField] public float blastAngle; // Deg, The total angle with the halfway point being player's aim
     [SerializeField] public float range;
     [SerializeField] public int subDivide; // Number of raycasts that divide up the damage
-    [SerializeField] public Transform muzzlePosition;
-    [SerializeField] public GameObject tracerPrefab;
+
+    [SerializeField] internal GameObject muzzleFlash;
+    [SerializeField] internal GameObject tracer;
+    [SerializeField] internal GameObject barrelPosition;
+
+    [SerializeField] internal float skillForce;
+
+    [SerializeField] private float skillLockDuration = 1f;
+    [SerializeField] private float introDelayTime = 0.5f;
+
+    private float skillLockTimer = 0f;
 
     private Coroutine reloadCoroutine;
 
@@ -28,16 +37,36 @@ public class Shotgun : WeaponClass {
     }
 
     public override void UseSkill() {
-        // TODO Skill
+        transform.rotation = Quaternion.Euler(0, 0, 270);
+        skillLockTimer = skillLockDuration;
+
+        Shoot();
+
+        Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
+        if (rb != null) {
+            rb.velocity = new Vector2(rb.velocity.x, skillForce);
+        }
     }
 
     public override void IntroSkill() {
-        Shoot();
-        player.GetComponent<Player>().UseRecoil(10);
+        StartCoroutine(IntroCoroutine());
     }
 
-    void Update() {
-        HandleWeaponRotation();
+    private IEnumerator IntroCoroutine() {
+        yield return new WaitForSeconds(introDelayTime);
+        Shoot();
+        Shoot();
+        Shoot();
+        player.GetComponent<Player>().UseRecoil(10);
+        ScreenShakeManager.Instance.Shake(3f);
+    }
+
+    private void Update() {
+        if (skillLockTimer > 0) {
+            skillLockTimer -= Time.deltaTime;
+        } else {
+            HandleWeaponRotation();
+        }
     }
 
     private void HandleWeaponRotation() {
@@ -61,6 +90,8 @@ public class Shotgun : WeaponClass {
         --CurrentAmmo;
 
         HandleRayCasts();
+
+        HandleMuzzleFlash();
 
         HandleTracers();
 
@@ -100,17 +131,21 @@ public class Shotgun : WeaponClass {
         return Math.Max(damage / subDivide * (1 - distance / range), 0);
     }
 
+    private void HandleMuzzleFlash() {
+        Instantiate(muzzleFlash, barrelPosition.transform.position, transform.rotation);
+    }
+
     private void HandleTracers() {
+        Vector2 origin = barrelPosition.transform.position;
         for (int i = 0; i < subDivide; i++) {
             float randomAngle = MathUtils.RandomGaussian(-blastAngle / 2, blastAngle / 2);
-            Vector2 direction = Quaternion.Euler(0, 0, randomAngle) * muzzlePosition.right;
+            Vector2 direction = Quaternion.Euler(0, 0, randomAngle) * transform.right;
 
-            Tracer tracer = Instantiate(tracerPrefab, muzzlePosition.position, Quaternion.identity).GetComponent<Tracer>();
-            tracer.Initialize(muzzlePosition.position, direction, range, hittableLayerMask | groundLayer);
+            Tracer instance = Instantiate(tracer, origin, Quaternion.identity).GetComponent<Tracer>();
+            instance.Initialize(origin, direction, range, hittableLayerMask | groundLayer);
         }
     }
     private void HandleReload() {
-
         if (reloadCoroutine != null) {
             StopCoroutine(reloadCoroutine);
         }
