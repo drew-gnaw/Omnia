@@ -13,6 +13,7 @@ namespace Enemies.Sundew {
         [SerializeField] internal int count;
         [SerializeField] internal float projectileAngle;
         [SerializeField] internal float projectileSpeed;
+        [SerializeField] internal float randomAttackDelayOffset;
 
         [SerializeField] internal SpriteRenderer sprite;
         [SerializeField] internal Animator animator;

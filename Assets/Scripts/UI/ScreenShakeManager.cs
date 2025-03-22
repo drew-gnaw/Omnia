@@ -20,7 +20,7 @@ public class ScreenShakeManager : PersistentSingleton<ScreenShakeManager> {
         if (perlinNoise != null) {
             StartCoroutine(ShakeCoroutine(intensity, duration));
         } else {
-            Debug.LogError("Perlin noise module is missing!");
+          //  Debug.LogError("Perlin noise module is missing!");
         }
     }
 

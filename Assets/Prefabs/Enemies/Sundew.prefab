@@ -211,8 +211,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 770130609
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 749047245, guid: aff355509ebb54151aa956fa76f08267, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -442,10 +442,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1304ed83fe99498591cfe27dc1a8eed5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maximumHealth: 60
-  currentHealth: 60
+  maximumHealth: 50
+  currentHealth: 50
   attack: 1
-  knockbackForce: 10
+  knockbackForce: 8
   knockbackAngle: 45
   staggerDurationS: 1
   windup: 1
@@ -455,6 +455,7 @@ MonoBehaviour:
   count: 6
   projectileAngle: 90
   projectileSpeed: 7
+  randomAttackDelayOffset: 0.5
   sprite: {fileID: 1495548087428681450}
   animator: {fileID: 6149703548532306918}
   rb: {fileID: 7893308943432753642}
@@ -553,7 +554,7 @@ HingeJoint2D:
   m_BreakAction: 3
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: -3.5, y: 8}
+  m_ConnectedAnchor: {x: 0, y: 0}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 0
@@ -632,8 +633,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 770130609
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 238495316, guid: 9e79015717d074825af97334703bb9c1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

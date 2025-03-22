@@ -33,7 +33,7 @@ namespace Players {
             get => _currentHealth;
             set {
                 if (_currentHealth != value) {
-                    _currentHealth = value;
+                    _currentHealth = Mathf.Clamp(value, 0, maximumHealth); ;
                     OnHealthChanged?.Invoke(_currentHealth);
                 }
             }
@@ -193,7 +193,7 @@ namespace Players {
             }
 
             combatTimer.Start();
-            CurrentHealth = (int)Mathf.Clamp(CurrentHealth - damage, 0, maximumHealth);
+            CurrentHealth -= (int) damage; 
             currentHurtInvulnerability = hurtInvulnerabilityTime;
             UseExternalVelocity(velocity, lockout);
             StartCoroutine(DoHurtInvincibilityFlicker());
