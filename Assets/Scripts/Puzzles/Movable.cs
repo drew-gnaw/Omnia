@@ -1,26 +1,24 @@
-using NPC;
-using Players;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace Puzzle {
     public class Movabale : MonoBehaviour, IReceiver {
-        [TypeFilter(typeof(ReceiverBehaviour))]
+        [@TypeFilter(typeof(ReceiverBehaviour))]
         [SerializeField] private SerializableType behaviour;
         [SerializeField] private List<InterfaceReference<ISignal>> signals;
         [SerializeField] private Transform destPosition;
         [SerializeField] private Transform startPosOverride;
         [SerializeField] private float moveSpeed = 10f;
-        [SerializeField] private List<HingeJoint2D> boundToThis;
-        [SerializeField] private LayerMask playerMask;
+        [SerializeField] private GameObject endpointPiece;
+        [SerializeField] private GameObject linePiece;
         public ReceiverBehaviour ReceiverBehaviour => ReceiverBehaviour.Parse(behaviour);
         private int positionIndex = 0;
         private List<ISignal> signalList = new();
         private Rigidbody2D rb;
         private List<Vector3> checkPointLocation = new();
+        private List<GameObject> conveyerLineObjects = new();
         private Vector3 targetPosition;
         private bool shouldMove;
 
@@ -57,6 +55,49 @@ namespace Puzzle {
             checkPointLocation.Add(startPosOverride != null ? startPosOverride.position :  gameObject.transform.position);
             checkPointLocation.Add(destPosition.position);
             targetPosition = checkPointLocation.First();
+            Redraw();
+        }
+
+        private void Redraw() {
+            if (endpointPiece == null || linePiece == null || checkPointLocation.Count <= 1 || signalList.Count == 0) {
+                Debug.LogWarning($"Missing references in ConveyorBelt script! endpoint: {endpointPiece}, linePiece: {linePiece}, two checkpoints should exist: {checkPointLocation.Count}, should have more than one signals: {signalList.Count}");
+                return;
+            }
+
+            {
+                foreach (GameObject conveyer in conveyerLineObjects) {
+                    Destroy(conveyer.gameObject);
+                }
+
+                conveyerLineObjects.Clear();
+            }
+
+            Vector2 start = checkPointLocation.First();
+            Vector2 end = checkPointLocation[1];
+            Vector2 direction = (end - start).normalized;
+            float distance = Vector2.Distance(start, end);
+
+            GameObject startPiece = Instantiate(endpointPiece, start, Quaternion.identity, transform.parent);
+            GameObject endPiece = Instantiate(endpointPiece, end, Quaternion.identity, transform.parent);
+            conveyerLineObjects.Add(startPiece);
+            conveyerLineObjects.Add(endPiece);
+
+            // Start and End Pieces should face each other
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            startPiece.transform.rotation = Quaternion.Euler(0, 0, angle + 180);
+            endPiece.transform.rotation = Quaternion.Euler(0, 0, angle);
+
+            float lineLength = linePiece.GetComponent<SpriteRenderer>().bounds.size.x;
+            int numPieces = Mathf.FloorToInt(distance / lineLength);
+
+            for (int i = 1; i <= numPieces; i++) {
+                Vector2 position = start + direction * (i * lineLength);
+                GameObject midPiece = Instantiate(linePiece, position, Quaternion.identity, transform.parent);
+                conveyerLineObjects.Add(midPiece);
+                midPiece.transform.rotation = Quaternion.Euler(0, 0, angle);
+            }
+
+            conveyerLineObjects.ForEach(obj => obj.GetComponent<SpriteRenderer>().color = signalList.FirstOrDefault()!.SignalColor.Color);
         }
 
         private void OnEnable() {

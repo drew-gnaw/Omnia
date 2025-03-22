@@ -179,10 +179,8 @@ MonoBehaviour:
   destPosition: {fileID: 0}
   startPosOverride: {fileID: 0}
   moveSpeed: 3
-  boundToThis: []
-  playerMask:
-    serializedVersion: 2
-    m_Bits: 0
+  endpointPiece: {fileID: 6833819740901522138, guid: e3bf89224b3aa6a4b9efaedeb1b68ef0, type: 3}
+  linePiece: {fileID: 8026433619672122245, guid: e8ee3fc9b008831459baebda2dd7d5be, type: 3}
 --- !u!1 &5000393426636473629
 GameObject:
   m_ObjectHideFlags: 0
