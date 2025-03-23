@@ -13,6 +13,7 @@ namespace Scenes {
         }
 
         private IEnumerator BeginSequence() {
+            AudioManager.Instance.SwitchBGM(AudioTracks.JamiesTheme);
             yield return StartCoroutine(fadeScreen.FadeInLightScreen(2f));
             yield return StartCoroutine(DialogueManager.Instance.StartDialogue(birthdayDialogue.Dialogue));
             yield return StartCoroutine(fadeScreen.FadeInDarkScreen(2f));

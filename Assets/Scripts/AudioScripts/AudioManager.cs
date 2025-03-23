@@ -62,20 +62,35 @@ public class AudioManager : PersistentSingleton<AudioManager>
         }
     }
 
-    // Smoothly transition from current track to specified new track. Use crossfading for seamless ecperience
+    // Smoothly transition from current track to specified new track. Use crossfading for seamless experience
     public void SwitchBGM(string newTrackName) {
+        AudioClip newTrack = bgmTracks.GetClipByName(newTrackName);
+
+        if (BGMPlayer.clip != newTrack) {
+            StartCoroutine(CrossfadeBGM(newTrack));
+        }
+    }
+
+    private IEnumerator CrossfadeBGM(AudioClip newTrack) {
+        float duration = 1f;  // Crossfade time
         float initialVolume = BGMPlayer.volume;
 
-        AudioClip track = bgmTracks.GetClipByName(newTrackName);
-        if (BGMPlayer.clip != track) {
-            StartCoroutine(BGMFadeOut(initialVolume));
-            BGMPlayer.Stop();
-            BGMPlayer.clip = track;
-            BGMPlayer.Play();
-            StartCoroutine(BGMFadeIn(initialVolume));
+        // Fade out current track
+        for (float t = 0; t < duration; t += Time.deltaTime) {
+            BGMPlayer.volume = Mathf.Lerp(initialVolume, 0f, t / duration);
+            yield return null;
         }
 
-        BGMPlayer.volume = initialVolume;
+        // Switch to new track
+        BGMPlayer.Stop();
+        BGMPlayer.clip = newTrack;
+        BGMPlayer.Play();
+
+        // Fade in new track
+        for (float t = 0; t < duration; t += Time.deltaTime) {
+            BGMPlayer.volume = Mathf.Lerp(0f, initialVolume, t / duration);
+            yield return null;
+        }
     }
 
     // Coroutine to fade BGM out from initial volume
