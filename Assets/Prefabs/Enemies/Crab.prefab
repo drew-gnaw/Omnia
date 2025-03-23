@@ -173,11 +173,11 @@ MonoBehaviour:
     m_Bits: 256
   targetInstance: {fileID: 0}
   detectionRange: 1
-  windupTime: 0.5
+  windupTime: 0.4
   vulnerableTime: 1
   reloadTime: 2
   attackHeight: 0.75
-  attackDistance: 1
+  attackDistance: 1.5
 --- !u!50 &4347489477469997173
 Rigidbody2D:
   serializedVersion: 4
