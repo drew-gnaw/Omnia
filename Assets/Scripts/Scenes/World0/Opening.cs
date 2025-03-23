@@ -15,6 +15,11 @@ namespace Scenes {
         [SerializeField] private TextMeshPro Text1;
         [SerializeField] private TextMeshPro Text2;
 
+        [SerializeField] private TextMeshPro PanelText1;
+        [SerializeField] private TextMeshPro PanelText2;
+        [SerializeField] private TextMeshPro PanelText3;
+        [SerializeField] private TextMeshPro PanelText4;
+
         [SerializeField] private Image Panel1;
         [SerializeField] private Image Panel2;
         [SerializeField] private Image Panel3;
@@ -42,6 +47,10 @@ namespace Scenes {
             SetAlpha(Panel1, 0f);
             SetAlpha(Panel2, 0f);
             SetAlpha(Panel3, 0f);
+            SetAlpha(PanelText1, 0f);
+            SetAlpha(PanelText2, 0f);
+            SetAlpha(PanelText3, 0f);
+            SetAlpha(PanelText4, 0f);
         }
 
         private void Update() {
@@ -98,7 +107,8 @@ namespace Scenes {
             StartCoroutine(Fade(panBackground.gameObject.GetComponent<SpriteRenderer>(), EkeyFadeTime, fadeIn: false));
             yield return Fade(Text2, EkeyFadeTime, fadeIn: false);
 
-            yield return Fade(Panel1, 2f, fadeIn: true);
+            StartCoroutine(Fade(Panel1, 2f, fadeIn: true));
+            yield return Fade(PanelText1, 2f, fadeIn: true);
 
             yield return new WaitForSeconds(EkeyDelayTime);
             yield return Fade(Ekey, EkeyFadeTime, fadeIn: true);
@@ -108,7 +118,9 @@ namespace Scenes {
         private IEnumerator ShowSecondPanel() {
             StartCoroutine(Fade(Ekey, EkeyFadeTime, fadeIn: false));
 
-            yield return Fade(Panel2, 2f, fadeIn: true);
+            StartCoroutine(Fade(Panel2, 2f, fadeIn: true));
+            StartCoroutine(Fade(PanelText2, 2f, fadeIn: true));
+            yield return Fade(PanelText3, 2f, fadeIn: true);
 
             yield return new WaitForSeconds(EkeyDelayTime);
             yield return Fade(Ekey, EkeyFadeTime, fadeIn: true);
@@ -118,6 +130,7 @@ namespace Scenes {
         private IEnumerator ShowThirdPanel() {
             StartCoroutine(Fade(Ekey, EkeyFadeTime, fadeIn: false));
 
+            StartCoroutine(Fade(PanelText4, 2f, fadeIn: true));
             yield return Fade(Panel3, 2f, fadeIn: true);
 
             yield return new WaitForSeconds(EkeyDelayTime);
