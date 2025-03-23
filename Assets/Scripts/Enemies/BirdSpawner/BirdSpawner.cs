@@ -32,7 +32,7 @@ namespace Enemies.BirdSpawner {
         }
 
         public void SpawnNewBird() {
-            var b = Instantiate(spawnable, sprite.transform.position, Quaternion.identity).GetComponent<Bird.Bird>();
+            var b = Instantiate(spawnable, transform.position, Quaternion.identity).GetComponent<Bird.Bird>();
             b.NotifyOnDestroy = _ => spawns++;
             spawns--;
             b.rb.velocity = Random.insideUnitSphere * b.speed;

@@ -40,19 +40,19 @@ namespace Enemies.Bird {
         }
 
         public void OnExplode() {
-            Instantiate(explosion, transform.position, transform.rotation);
+            Instantiate(explosion, transform.position, Quaternion.identity);
             Attack();
             Hurt(maximumHealth);
         }
 
         public bool IsTargetDetected() =>
             targetInstance &&
-            Sweep(transform.position, targetInstance.sprite.transform.position - sprite.transform.position, 45, detectionRadius, 5, ground | player).Any(hit => IsOnLayer(hit, player));
+            Sweep(rb.worldCenterOfMass, targetInstance.rb.worldCenterOfMass - rb.worldCenterOfMass, 45, detectionRadius, 5, ground | player).Any(hit => IsOnLayer(hit, player));
 
         private void Attack() {
-            var hit = Physics2D.OverlapCircle(transform.position, explosionRadius, player);
+            var hit = Physics2D.OverlapCircle(rb.worldCenterOfMass, explosionRadius, player);
             if (!hit || !hit.TryGetComponent<Player>(out var it)) return;
-            var direction = it.sprite.transform.position - transform.position;
+            var direction = it.rb.worldCenterOfMass - rb.worldCenterOfMass;
 
             it.Hurt(attack, direction.normalized * knockbackForce, 5);
         }
