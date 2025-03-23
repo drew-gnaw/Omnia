@@ -15,6 +15,8 @@ namespace Scenes {
         [SerializeField] private PanBackground trekBackground;
         [SerializeField] private Transform trekTarget;
 
+        [SerializeField] private SpriteRenderer deepBackground;
+
         [SerializeField] private TextMeshPro Text1;
         [SerializeField] private TextMeshPro Text2;
 
@@ -26,6 +28,9 @@ namespace Scenes {
         [SerializeField] private TextMeshPro TrekText1;
         [SerializeField] private TextMeshPro TrekText2;
         [SerializeField] private TextMeshPro TrekText3;
+
+        [SerializeField] private TextMeshPro DeepText1;
+        [SerializeField] private TextMeshPro DeepText2;
 
         [SerializeField] private Image Panel1;
         [SerializeField] private Image Panel2;
@@ -46,6 +51,7 @@ namespace Scenes {
         // 3 = Looking at panel2
         // 4 = Looking at panel3
         // 5 = Looking at bottom of trek
+        // 6 = Looking at deep background
 
         public void Start() {
             StartCoroutine(BeginSequence());
@@ -63,6 +69,9 @@ namespace Scenes {
             SetAlpha(TrekText1, 0f);
             SetAlpha(TrekText2, 0f);
             SetAlpha(TrekText3, 0f);
+            SetAlpha(DeepText1, 0f);
+            SetAlpha(DeepText2, 0f);
+            SetAlpha(deepBackground, 0f);
         }
 
         private void Update() {
@@ -85,6 +94,9 @@ namespace Scenes {
                         StartCoroutine(ShowTrek());
                         break;
                     case 5:
+                        StartCoroutine(ShowDeep());
+                        break;
+                    case 6:
                         StartCoroutine(ExitSequence());
                         break;
                     default:
@@ -161,10 +173,11 @@ namespace Scenes {
             StartCoroutine(Fade(PanelText1, EkeyFadeTime, fadeIn: false));
             StartCoroutine(Fade(PanelText2, EkeyFadeTime, fadeIn: false));
             StartCoroutine(Fade(PanelText3, EkeyFadeTime, fadeIn: false));
-            StartCoroutine(Fade(PanelText4, EkeyFadeTime, fadeIn: false));
+            yield return Fade(PanelText4, EkeyFadeTime, fadeIn: false);
+
+            trekBackground.PanTo(trekTarget, 12f);
             yield return Fade(trekBackground.gameObject.GetComponent<SpriteRenderer>(), EkeyFadeTime, fadeIn: true);
 
-            trekBackground.PanTo(trekTarget, 10f);
             yield return Fade(TrekText1, EkeyFadeTime, fadeIn: true);
 
             yield return new WaitForSeconds(3f);
@@ -174,6 +187,25 @@ namespace Scenes {
             yield return new WaitForSeconds(3f);
 
             yield return Fade(TrekText3, EkeyFadeTime, fadeIn: true);
+
+            yield return new WaitForSeconds(3 + EkeyDelayTime);
+            yield return Fade(Ekey, EkeyFadeTime, fadeIn: true);
+            canPressE = true;
+        }
+
+        private IEnumerator ShowDeep() {
+            StartCoroutine(Fade(Ekey, EkeyFadeTime, fadeIn: false));
+            StartCoroutine(Fade(trekBackground.gameObject.GetComponent<SpriteRenderer>(), EkeyFadeTime, fadeIn: false));
+            StartCoroutine(Fade(TrekText1, EkeyFadeTime, fadeIn: false));
+            StartCoroutine(Fade(TrekText2, EkeyFadeTime, fadeIn: false));
+            yield return Fade(TrekText3, EkeyFadeTime, fadeIn: false);
+
+            StartCoroutine(Fade(DeepText1, EkeyFadeTime, fadeIn: true));
+            yield return Fade(deepBackground, EkeyFadeTime, fadeIn: true);
+
+            yield return new WaitForSeconds(3f);
+
+            StartCoroutine(Fade(DeepText2, EkeyFadeTime, fadeIn: true));
 
             yield return new WaitForSeconds(EkeyDelayTime);
             yield return Fade(Ekey, EkeyFadeTime, fadeIn: true);
