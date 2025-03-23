@@ -55,6 +55,7 @@ public class HarpoonSpear : MonoBehaviour {
 
     // Fires the spear in the rotation of the gun with its velocity
     public void Fire(HarpoonGun gun) {
+        AudioManager.Instance.PlaySFX(AudioTracks.HarpoonLaunch);
         this.gun = gun;
 
         gameObject.SetActive(true);
@@ -72,6 +73,7 @@ public class HarpoonSpear : MonoBehaviour {
         }
         Vector2 difference = (player.Center - transform.position).normalized;
         TaggedEnemy.GetComponent<Rigidbody2D>().AddForce(difference * gun.pullPower);
+        AudioManager.Instance.PlaySFX(AudioTracks.HarpoonRetract);
         ReturnToPlayer();
     }
 
@@ -98,6 +100,8 @@ public class HarpoonSpear : MonoBehaviour {
     }
 
     void OnTriggerEnter2D(Collider2D other) {
+
+        AudioManager.Instance.PlaySFX(AudioTracks.HarpoonHit);
 
         if (Collider2D.IsTouchingLayers(playerLayer) && collectable) {
             HandlePlayerCollision();

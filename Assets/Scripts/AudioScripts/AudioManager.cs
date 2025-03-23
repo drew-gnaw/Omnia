@@ -17,6 +17,24 @@ public static class AudioTracks {
     public const string Undersound = "Omnia - Undersound";
 
     // SFX
+    public const string Scrapgun = "Scrapgun";
+    public const string ArmadilloAttack = "Armadillo_Attack";
+    public const string ArmadilloCurl = "Armadillo_curl";
+    public const string ArmadilloOpen = "Armadillo_open";
+    public const string CrabHit = "Crab_hit";
+    public const string CrabSpawn = "Crab_spawn";
+    public const string DinkyMutate = "Dinky_Mutate";
+    public const string HarpoonHit = "Harpoon_Hit";
+    public const string HarpoonLaunch = "Harpoon_Launch";
+    public const string HarpoonRetract = "Harpoon_Retract";
+    public const string JamieLand = "Jamie_land";
+    public const string JamieSlide = "Jamie_Slide";
+    public const string JamieHurt1 = "JamieHurt1";
+    public const string JamieHurt2 = "JamieHurt2";
+    public const string JamieHurt3 = "JamieHurt3";
+    public const string JamieHurt4 = "JamieHurt4";
+    public const string PlantShoot = "Plant_Shoot";
+    public const string Rumble = "Rumble";
 
 
     // AMBIENT
