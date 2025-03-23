@@ -136,8 +136,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3913066680617439840, guid: dec067d666e464088a06b526d65856c9, type: 3}
       propertyPath: managers.Array.size
-      value: 6
+      value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 3913066680617439840, guid: dec067d666e464088a06b526d65856c9, type: 3}
+      propertyPath: managers.Array.data[2]
+      value: 
+      objectReference: {fileID: 8591503019450182587, guid: 8d25b64c33c41434ca2ffa92437ea568, type: 3}
+    - target: {fileID: 3913066680617439840, guid: dec067d666e464088a06b526d65856c9, type: 3}
+      propertyPath: managers.Array.data[3]
+      value: 
+      objectReference: {fileID: 2616134746012579580, guid: a2acf392192308645bc8b080c0687662, type: 3}
+    - target: {fileID: 3913066680617439840, guid: dec067d666e464088a06b526d65856c9, type: 3}
+      propertyPath: managers.Array.data[4]
+      value: 
+      objectReference: {fileID: 4883409523034971244, guid: e73900af4eaf1443989339fff7eb7353, type: 3}
     - target: {fileID: 3913066680617439840, guid: dec067d666e464088a06b526d65856c9, type: 3}
       propertyPath: managers.Array.data[5]
       value: 
