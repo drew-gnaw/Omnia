@@ -269,8 +269,7 @@ namespace Players {
             }
             if (!skill) return;
             skill = false;
-            weapons[selectedWeapon].UseSkill();
-            skillCooldownTimer.Start();
+            if (weapons[selectedWeapon].UseSkill()) skillCooldownTimer.Start();
         }
 
         public void DoSwap(int targetWeapon) {

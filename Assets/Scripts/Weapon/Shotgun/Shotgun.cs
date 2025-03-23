@@ -37,7 +37,7 @@ public class Shotgun : WeaponClass {
         Shoot();
     }
 
-    public override void UseSkill() {
+    public override bool UseSkill() {
         transform.rotation = Quaternion.Euler(0, 0, 270);
         skillLockTimer = skillLockDuration;
 
@@ -47,6 +47,8 @@ public class Shotgun : WeaponClass {
         if (rb != null) {
             rb.velocity = new Vector2(rb.velocity.x, skillForce);
         }
+
+        return true;
     }
 
     public override void IntroSkill() {

@@ -22,6 +22,7 @@ namespace Utils {
             _singleton ??= GetOrCreateSelf();
 
             if (_singleton != this) {
+                OnDestroyDuplicateInstance();
                 Destroy(gameObject);
             } else {
                 if (root) transform.SetParent(null);
@@ -30,7 +31,11 @@ namespace Utils {
             }
         }
 
-        protected abstract void OnAwake();
+        protected virtual void OnDestroyDuplicateInstance() {
+        }
+
+        protected virtual void OnAwake() {
+        }
 
         private static T GetOrCreateSelf() => FindFirstObjectByType<T>() ?? new GameObject(typeof(T).Name).AddComponent<T>();
     }

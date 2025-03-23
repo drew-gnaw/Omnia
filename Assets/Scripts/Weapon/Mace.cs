@@ -7,7 +7,7 @@ public class Mace : WeaponClass
     [Header("Mace Stats")]
     [SerializeField] Transform AttackPoint;
     [SerializeField] float Radius;
-    
+
     protected override void HandleAttack()
     {
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(AttackPoint.position, Radius, hittableLayerMask);
@@ -17,13 +17,12 @@ public class Mace : WeaponClass
         }
     }
 
-    public override void UseSkill()
-    {
-        
+    public override bool UseSkill() {
+        return true;
     }
 
     public override void IntroSkill() {
-        
+
     }
 
     void Update() {
