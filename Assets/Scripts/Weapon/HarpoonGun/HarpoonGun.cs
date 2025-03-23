@@ -82,6 +82,8 @@ public class HarpoonGun : WeaponClass
         }
 
         playerComponent.UsePull(target);
+        AudioManager.Instance.PlaySFX(AudioTracks.HarpoonRetract);
+    }
 
         return true;
     }

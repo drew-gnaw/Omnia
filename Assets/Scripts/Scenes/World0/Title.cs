@@ -53,6 +53,8 @@ namespace Scenes {
             quoteText = quoteTMP.text;
             quoteTMP.text = "";
 
+            AudioManager.Instance.PlayBGM(AudioTracks.LullabyForAScrapyard);
+
         }
 
         public void StartGame() {

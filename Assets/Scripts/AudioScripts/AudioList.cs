@@ -32,6 +32,7 @@ public class AudioList : ScriptableObject {
         bgmTracks = new();
         foreach (AudioClip clip in clipList) {
             bgmTracks[clip.name] = clip;
+            Debug.Log($"Audio clip {clip.name} has been initialized.");
         }
     }
 }

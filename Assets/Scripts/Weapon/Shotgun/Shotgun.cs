@@ -96,6 +96,7 @@ public class Shotgun : WeaponClass {
         if (CurrentAmmo <= 0) {
             return;
         }
+        AudioManager.Instance.PlaySFX(AudioTracks.Scrapgun);
 
         --CurrentAmmo;
 

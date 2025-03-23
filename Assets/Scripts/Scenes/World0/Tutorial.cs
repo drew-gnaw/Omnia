@@ -46,6 +46,7 @@ namespace Scenes {
         }
 
         private IEnumerator BeginSequence() {
+            AudioManager.Instance.SwitchBGM(AudioTracks.SunkBeneath);
             //yield return StartCoroutine(fadeScreen.FadeInLightScreen(1f));
             dinky.Appear(dinkyAppearTransform);
             yield return new WaitForSeconds(1.5f);

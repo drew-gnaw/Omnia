@@ -9,6 +9,7 @@ namespace Scenes {
         [SerializeField] private DialogueWrapper beginDialogue;
         public void Start() {
             StartCoroutine(BeginSequence());
+            AudioManager.Instance.SwitchBGM(AudioTracks.CaveSpeak);
         }
 
         private IEnumerator BeginSequence() {
