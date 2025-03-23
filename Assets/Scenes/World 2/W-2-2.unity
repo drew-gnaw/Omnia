@@ -14389,6 +14389,10 @@ PrefabInstance:
       propertyPath: maxChargeDuration
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 1302209793040489479, guid: a08762acbb5604c4597b58b4cb080193, type: 3}
+      propertyPath: signalColor.assemblyQualifiedName
+      value: Puzzle.Red, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      objectReference: {fileID: 0}
     - target: {fileID: 5728682379991050211, guid: a08762acbb5604c4597b58b4cb080193, type: 3}
       propertyPath: m_Name
       value: Lever
@@ -14478,7 +14482,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 466323356321424458, guid: f4bea54d7ba3e224696a1c316921383e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 6.68
+      value: 6.709
       objectReference: {fileID: 0}
     - target: {fileID: 466323356321424458, guid: f4bea54d7ba3e224696a1c316921383e, type: 3}
       propertyPath: m_LocalPosition.z
