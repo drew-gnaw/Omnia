@@ -12,6 +12,9 @@ namespace Scenes {
         [SerializeField] private PanBackground panBackground;
         [SerializeField] private Transform panTarget;
 
+        [SerializeField] private PanBackground trekBackground;
+        [SerializeField] private Transform trekTarget;
+
         [SerializeField] private TextMeshPro Text1;
         [SerializeField] private TextMeshPro Text2;
 
@@ -19,6 +22,10 @@ namespace Scenes {
         [SerializeField] private TextMeshPro PanelText2;
         [SerializeField] private TextMeshPro PanelText3;
         [SerializeField] private TextMeshPro PanelText4;
+
+        [SerializeField] private TextMeshPro TrekText1;
+        [SerializeField] private TextMeshPro TrekText2;
+        [SerializeField] private TextMeshPro TrekText3;
 
         [SerializeField] private Image Panel1;
         [SerializeField] private Image Panel2;
@@ -37,7 +44,8 @@ namespace Scenes {
         // 1 = Looking at text2
         // 2 = Looking at panel1
         // 3 = Looking at panel2
-        // 3 = Looking at panel3
+        // 4 = Looking at panel3
+        // 5 = Looking at bottom of trek
 
         public void Start() {
             StartCoroutine(BeginSequence());
@@ -51,6 +59,10 @@ namespace Scenes {
             SetAlpha(PanelText2, 0f);
             SetAlpha(PanelText3, 0f);
             SetAlpha(PanelText4, 0f);
+            SetAlpha(trekBackground.gameObject.GetComponent<SpriteRenderer>(), 0);
+            SetAlpha(TrekText1, 0f);
+            SetAlpha(TrekText2, 0f);
+            SetAlpha(TrekText3, 0f);
         }
 
         private void Update() {
@@ -70,6 +82,9 @@ namespace Scenes {
                         StartCoroutine(ShowThirdPanel());
                         break;
                     case 4:
+                        StartCoroutine(ShowTrek());
+                        break;
+                    case 5:
                         StartCoroutine(ExitSequence());
                         break;
                     default:
@@ -132,6 +147,33 @@ namespace Scenes {
 
             StartCoroutine(Fade(PanelText4, 2f, fadeIn: true));
             yield return Fade(Panel3, 2f, fadeIn: true);
+
+            yield return new WaitForSeconds(EkeyDelayTime);
+            yield return Fade(Ekey, EkeyFadeTime, fadeIn: true);
+            canPressE = true;
+        }
+
+        private IEnumerator ShowTrek() {
+            StartCoroutine(Fade(Ekey, EkeyFadeTime, fadeIn: false));
+            StartCoroutine(Fade(Panel1, EkeyFadeTime, fadeIn: false));
+            StartCoroutine(Fade(Panel2, EkeyFadeTime, fadeIn: false));
+            StartCoroutine(Fade(Panel3, EkeyFadeTime, fadeIn: false));
+            StartCoroutine(Fade(PanelText1, EkeyFadeTime, fadeIn: false));
+            StartCoroutine(Fade(PanelText2, EkeyFadeTime, fadeIn: false));
+            StartCoroutine(Fade(PanelText3, EkeyFadeTime, fadeIn: false));
+            StartCoroutine(Fade(PanelText4, EkeyFadeTime, fadeIn: false));
+            yield return Fade(trekBackground.gameObject.GetComponent<SpriteRenderer>(), EkeyFadeTime, fadeIn: true);
+
+            trekBackground.PanTo(trekTarget, 10f);
+            yield return Fade(TrekText1, EkeyFadeTime, fadeIn: true);
+
+            yield return new WaitForSeconds(3f);
+
+            yield return Fade(TrekText2, EkeyFadeTime, fadeIn: true);
+
+            yield return new WaitForSeconds(3f);
+
+            yield return Fade(TrekText3, EkeyFadeTime, fadeIn: true);
 
             yield return new WaitForSeconds(EkeyDelayTime);
             yield return Fade(Ekey, EkeyFadeTime, fadeIn: true);
