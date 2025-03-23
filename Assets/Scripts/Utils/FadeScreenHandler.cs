@@ -1,3 +1,5 @@
+using UnityEngine.UI;
+
 namespace Utils {
     using System.Collections;
     using System.Collections.Generic;
@@ -5,7 +7,7 @@ namespace Utils {
 
     public class FadeScreenHandler : MonoBehaviour
     {
-        [SerializeField] private SpriteRenderer fadeScreen;
+        [SerializeField] private Image fadeScreen;
 
         private bool fadeActive = false;
 

@@ -1,30 +1,30 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Enemies.Armadillo.Behaviour {
     public class Uncurl : IBehaviour {
-        private Armadillo self;
+        private readonly Armadillo self;
+        private float t;
 
         public Uncurl(Armadillo self) {
             this.self = self;
         }
 
         public void OnEnter() {
-            self.StartCoroutine(DoUncurl());
+            t = self.uncurlTime;
         }
 
         public void OnExit() {
         }
 
         public void OnTick() {
+            self.rb.velocity = new Vector2(0, self.rb.velocity.y);
+
+            if (t != 0) return;
+            self.UseBehaviour(new Move(self));
         }
 
         public void OnUpdate() {
-        }
-
-        private IEnumerator DoUncurl() {
-            yield return new WaitForSeconds(self.uncurlTime);
-            self.UseBehaviour(new Walk(self));
+            t = Mathf.Max(0, t - Time.deltaTime);
         }
     }
 }

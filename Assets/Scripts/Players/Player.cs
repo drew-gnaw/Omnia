@@ -33,7 +33,7 @@ namespace Players {
             get => _currentHealth;
             set {
                 if (_currentHealth != value) {
-                    _currentHealth = value;
+                    _currentHealth = Mathf.Clamp(value, 0, maximumHealth); ;
                     OnHealthChanged?.Invoke(_currentHealth);
                 }
             }
@@ -71,9 +71,6 @@ namespace Players {
         [SerializeField] internal WeaponClass[] weapons;
         [SerializeField] internal int selectedWeapon;
 
-        /* TODO: Is this bad? */
-        [SerializeField] internal Camera cam;
-
         [SerializeField] internal Vector2 facing;
         [SerializeField] internal Vector2 moving;
         [SerializeField] internal bool jump;
@@ -92,10 +89,25 @@ namespace Players {
 
         [SerializeField] internal Transform buffsParent;
 
+        // if this is false, disable swapping.
+        [SerializeField] internal bool hasShotgun;
+
+        private bool _healthBoosted;
+
+        public bool HealthBoosted {
+            get => _healthBoosted;
+            set {
+                if (_healthBoosted != value) {
+                    _healthBoosted = value;
+                    OnHealthBoostChanged?.Invoke(_healthBoosted);
+                }
+            }
+        }
+
         // Describes the ratio at which flow is converted into HP.
         public const int SWAP_HEAL = 2;
 
-
+        internal Camera cam;
         public event Action Spawn;
         public static event Action Death;
 
@@ -103,6 +115,8 @@ namespace Players {
         public static event Action<int> OnHealthChanged;
         public static event Action<int> OnWeaponChanged;
         public static event Action<float> OnSkillCooldownUpdated;
+
+        public static event Action<bool> OnHealthBoostChanged;
 
         private float currentLockout;
         private float maximumLockout;
@@ -118,6 +132,7 @@ namespace Players {
         public Vector3 Center => transform.position + new Vector3(0, 1, 0);
 
         public void Awake() {
+            cam = Camera.main;
             UseBehaviour(new Idle(this));
             UseAnimation(new StateMachine());
         }
@@ -135,6 +150,7 @@ namespace Players {
 
             // initially fill out the skill bar
             OnSkillCooldownUpdated?.Invoke(1);
+            OnWeaponChanged?.Invoke(0);
             Spawn?.Invoke();
         }
 
@@ -178,7 +194,7 @@ namespace Players {
             }
 
             combatTimer.Start();
-            CurrentHealth = (int)Mathf.Clamp(CurrentHealth - damage, 0, maximumHealth);
+            CurrentHealth -= (int) damage;
             currentHurtInvulnerability = hurtInvulnerabilityTime;
             UseExternalVelocity(velocity, lockout);
             StartCoroutine(DoHurtInvincibilityFlicker());
@@ -188,6 +204,7 @@ namespace Players {
 
         public void OnHit(float flowAmount) {
             combatTimer.Start();
+            if (!hasShotgun) return;
             CurrentFlow = Mathf.Min(CurrentFlow + flowAmount, maximumFlow);
         }
 
@@ -252,11 +269,11 @@ namespace Players {
             }
             if (!skill) return;
             skill = false;
-            weapons[selectedWeapon].UseSkill();
-            skillCooldownTimer.Start();
+            if (weapons[selectedWeapon].UseSkill()) skillCooldownTimer.Start();
         }
 
         public void DoSwap(int targetWeapon) {
+            if (!hasShotgun) return;
             if (selectedWeapon != targetWeapon) {
                 weapons[selectedWeapon].SetSpriteActive(false);
 

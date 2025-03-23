@@ -58,11 +58,13 @@ public abstract class WeaponClass : MonoBehaviour
 
     protected abstract void HandleAttack();
 
-    public abstract void UseSkill();
+    public abstract bool UseSkill();
     public abstract void IntroSkill();
 
     public void SetSpriteActive(bool active) {
-        GetComponentInChildren<SpriteRenderer>().enabled = active;
+        foreach (var sr in GetComponentsInChildren<SpriteRenderer>()) {
+            sr.enabled = active;
+        }
     }
 
     IEnumerator cooldown() {

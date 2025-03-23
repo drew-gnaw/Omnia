@@ -18,8 +18,8 @@ TagManager:
   - Minimap
   - Destructable
   - Border
-  - 
-  - 
+  - NPC
+  - EnemyProjectile
   - 
   - 
   - 
@@ -44,14 +44,26 @@ TagManager:
   - name: Character Dialogue Sprites
     uniqueID: 1227230773
     locked: 0
+  - name: Behind Ground
+    uniqueID: 1374874599
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Enemy
+    uniqueID: 770130609
     locked: 0
   - name: NPC
     uniqueID: 138752989
     locked: 0
+  - name: Player
+    uniqueID: 1017642853
+    locked: 0
   - name: Puzzle
     uniqueID: 3908046391
+    locked: 0
+  - name: Foreground
+    uniqueID: 3746277969
     locked: 0
   - name: UI
     uniqueID: 405064753

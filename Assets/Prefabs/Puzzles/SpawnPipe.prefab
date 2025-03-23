@@ -73,7 +73,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -386920905
-  m_SortingLayer: 1
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: ecb80967f763536428bf1289b43b6802, type: 3}
   m_Color: {r: 0.5384331, g: 0, b: 1, a: 1}
@@ -100,8 +100,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnPoint: {fileID: 1724999162820417965}
   maxSpawns: 1
-  spawnCoolDown: 5
-  prefab: {fileID: 6491317554158063245, guid: 6f3a6004e073d451da5cfcfe0449ce25, type: 3}
+  spawnCoolDown: 3
+  prefab: {fileID: 0}
   spawnAnimationPrefab: {fileID: 3513069354802665914, guid: 82e7f705dc585b0498a53cea112146da, type: 3}
 --- !u!1 &4968367588561365521
 GameObject:

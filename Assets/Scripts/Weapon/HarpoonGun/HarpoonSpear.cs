@@ -73,8 +73,9 @@ public class HarpoonSpear : MonoBehaviour {
         if (TaggedEnemy == null) {
             return;
         }
-
-        // TODO
+        Vector2 difference = (player.Center - transform.position).normalized;
+        TaggedEnemy.GetComponent<Rigidbody2D>().AddForce(difference * gun.pullPower);
+        ReturnToPlayer();
     }
 
     public void ReturnToPlayer() {
@@ -111,11 +112,11 @@ public class HarpoonSpear : MonoBehaviour {
         }
 
         if (Collider2D.IsTouchingLayers(semisolidLayer) && !dropped) {
-            HandleSemisolidCollision();
+            HandleSemisolidCollision(other.gameObject);
         }
 
         if (Collider2D.IsTouchingLayers(groundLayer) && !dropped) {
-            HandleGroundCollision();
+            HandleGroundCollision(other.gameObject);
         }
     }
 
@@ -124,6 +125,7 @@ public class HarpoonSpear : MonoBehaviour {
         playerAbsorb = false;
         collectable = false;
         PullTo = null;
+        TaggedEnemy = null;
 
         // Tell gun to mark this spear as available
         gun.SpearCollected(this);
@@ -135,26 +137,32 @@ public class HarpoonSpear : MonoBehaviour {
         StartHarpoonTimer();
 
         TaggedEnemy = enemy;
-
-        // HingeJoints are created during runtime as it can't be disabled
-        HingeJoint2D hj = this.AddComponent<HingeJoint2D>();
-        hj.connectedBody = TaggedEnemy.GetComponent<Rigidbody2D>();
-
+        AttachToRigidBody(TaggedEnemy.GetComponent<Rigidbody2D>());
         TaggedEnemy.GetComponent<Enemy>().Hurt(gun.damage);
         player?.OnHit(gun.damage * gun.damageToFlowRatio);
     }
 
-    private void HandleSemisolidCollision() {
+    private void HandleSemisolidCollision(GameObject semi) {
         Freeze();
+        AttachToRigidBody(semi.GetComponent<Rigidbody2D>());
         PullTo = gameObject.transform;
         StartCooldown();
         StartHarpoonTimer();
     }
 
-    private void HandleGroundCollision() {
+    private void HandleGroundCollision(GameObject ground) {
         Freeze();
+        AttachToRigidBody(ground.GetComponent<Rigidbody2D>());
         StartCooldown();
         StartHarpoonTimer();
+    }
+
+    // To make the spear move, the hit object should have a rigidbody
+    private void AttachToRigidBody(Rigidbody2D rb) {
+        if (!rb) return;
+        // HingeJoints are created during runtime as it can't be disabled
+        HingeJoint2D hj = this.AddComponent<HingeJoint2D>();
+        hj.connectedBody = rb;
     }
 
     private void HandleEnemyDeath(Enemy enemy) {
@@ -213,7 +221,12 @@ public class HarpoonSpear : MonoBehaviour {
             StopCoroutine(absorbCooldown);
         }
         absorbCooldown = DropHarpoonTimer();
-        StartCoroutine(absorbCooldown);
+
+        try {
+            StartCoroutine(absorbCooldown);
+        } catch (System.Exception e) {
+            Debug.LogError($"Failed to start coroutine: {e.Message}");
+        }
     }
 
     private IEnumerator DropHarpoonTimer() {

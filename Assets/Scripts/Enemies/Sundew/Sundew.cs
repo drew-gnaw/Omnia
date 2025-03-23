@@ -1,113 +1,54 @@
-using System.Linq;
 using Enemies.Sundew.Behaviour;
 using Enemies.Sundew.Animation;
-using Enemies.Common.Behaviour;
 using Omnia.State;
 using Players;
 using UnityEngine;
-using Utils;
 
 namespace Enemies.Sundew {
     public class Sundew : Enemy {
-        [SerializeField] internal float distance;
         [SerializeField] internal float windup;
         [SerializeField] internal float reload;
         [SerializeField] internal float spread;
-        [SerializeField] internal float arc;
-        [SerializeField] internal float count;
+        [SerializeField] internal float lag;
+        [SerializeField] internal int count;
+        [SerializeField] internal float projectileAngle;
+        [SerializeField] internal float projectileSpeed;
+        [SerializeField] internal float randomAttackDelayOffset;
 
         [SerializeField] internal SpriteRenderer sprite;
         [SerializeField] internal Animator animator;
         [SerializeField] internal Rigidbody2D rb;
         [SerializeField] internal LayerMask ground;
         [SerializeField] internal LayerMask player;
-        [SerializeField] internal LayerMask bg;
         [SerializeField] internal GameObject projectile;
 
-        [SerializeField] internal bool detected;
-
-        [SerializeField] internal string debugBehaviour;
-
-        private float t;
-
         public void Awake() {
-            UseBehaviour(Idle.AsDefaultOf(this));
-        }
-
-        override public void Update() {
-            base.Update();
-            t = Mathf.Max(0, t - Time.deltaTime);
-        }
-
-        override public void FixedUpdate() {
-            base.FixedUpdate();
-            UseDetection();
+            UseBehaviour(new Idle(this));
         }
 
         public void FireProjectiles() {
-            var g = Mathf.Abs(Physics2D.gravity.y);
-            var y = Mathf.Sqrt(arc * g * 2);
-
-            for (var i = 0; i < count; i++) {
-                var d = distance - i * spread;
-                var x = d * g / (y * 2);
-
-                FireProjectile(new Vector2(x, y));
-                FireProjectile(new Vector2(x * -1, y));
-            }
+            var step = count == 1 ? 0 : projectileAngle / (count - 1);
+            var initial = projectileAngle / 2;
+            for (var a = initial * -1; a <= initial; a += step) FireProjectile(Quaternion.Euler(0, 0, a) * Vector2.up);
         }
 
-        override public void UseBehaviour(IBehaviour it) {
-            if (it == null) return;
-            debugBehaviour = it.GetType().Name;
+        private void FireProjectile(Vector2 direction) {
+            var p = Instantiate(projectile, rb.worldCenterOfMass, Quaternion.identity).GetComponent<SundewProjectile>();
+            p.NotifyOnHit = Attack;
+            p.rb.velocity = projectileSpeed * Vector2.Lerp(transform.rotation * direction.normalized, Random.insideUnitSphere, spread);
+        }
 
-            base.UseBehaviour(it);
+        private void Attack(Player it, SundewProjectile by) {
+            it.Hurt(attack, knockbackForce * new Vector2(Mathf.Sign(by.rb.velocity.x) * Mathf.Cos(knockbackAngle * Mathf.Deg2Rad), Mathf.Sin(knockbackAngle * Mathf.Deg2Rad)), 1);
         }
 
         protected override void UseAnimation(StateMachine stateMachine) {
-            var idle = new IdleAnimation(animator);
-            var windUp = new WindUpAnimation(animator);
-            var attack = new AttackAnimation(animator);
-            var reload = new ReloadAnimation(animator);
-            var stagger = new StaggerAnimation(animator);
+            var idleAnim = new IdleAnimation(animator);
+            stateMachine.AddAnyTransition(idleAnim, new FuncPredicate(() => behaviour is Idle));
+            stateMachine.AddAnyTransition(new AttackAnimation(animator), new FuncPredicate(() => behaviour is Attack));
 
-            stateMachine.AddAnyTransition(idle, new FuncPredicate(() => behaviour is Idle));
-            stateMachine.AddAnyTransition(windUp, new FuncPredicate(() => behaviour is WindUp));
-            stateMachine.AddAnyTransition(attack, new FuncPredicate(() => behaviour is Attack));
-            stateMachine.AddAnyTransition(reload, new FuncPredicate(() => behaviour is Reload));
-            stateMachine.AddAnyTransition(stagger, new FuncPredicate(() => behaviour is Stagger));
-
-            stateMachine.SetState(idle);
+            stateMachine.SetState(idleAnim);
             animationStateMachine = stateMachine;
-        }
-
-        public void SetLayer(LayerMask it) {
-            gameObject.layer = MathUtils.LayerIndexOf(it);
-        }
-
-        private void UseDetection() {
-            if (t != 0) return;
-            t = 0.1f;
-            detected = Sweep(sprite.transform.position, Vector2.up, 180, distance, 10, ground | player).Any(it => IsOnLayer(it, player));
-        }
-
-        private void Attack(Player it) {
-            float direction = Mathf.Sign(it.transform.position.x - transform.position.x);
-
-            float radians = knockbackAngle * Mathf.Deg2Rad;
-            Vector2 knockback = new Vector2(Mathf.Cos(radians), Mathf.Sin(radians)) * knockbackForce;
-
-            knockback.x *= direction;
-
-            it.Hurt(attack, knockback, 1);
-        }
-
-        private void FireProjectile(Vector2 velocity) {
-            var instance = Instantiate(projectile, sprite.transform.position, sprite.transform.rotation).GetComponent<SundewProjectile>().Of(Attack);
-            var noise = new Vector2(Random.Range(0.25f * -1, 0.25f), Random.Range(0.25f * -1, 0.25f));
-
-            instance.rb.velocity = velocity + noise;
-            Destroy(instance.gameObject, windup + reload);
         }
     }
 }

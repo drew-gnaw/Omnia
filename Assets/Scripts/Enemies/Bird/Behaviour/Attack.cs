@@ -17,7 +17,7 @@ namespace Enemies.Bird.Behaviour {
         }
 
         public void OnEnter() {
-            path = PathToTarget();
+            path = CalculatePath();
             t = self.fuse;
             co = self.StartCoroutine(DoRecalculatePathToTarget());
         }
@@ -27,12 +27,12 @@ namespace Enemies.Bird.Behaviour {
         }
 
         public void OnTick() {
-            if (IsNear(self.targetInstance.sprite.transform.position)) {
+            if (IsNear(self.targetInstance.rb.worldCenterOfMass)) {
                 self.OnExplode();
             } else {
-                var next = path.LastOrDefault(IsNear);
+                Vector2 next = path.LastOrDefault(it => IsNear(it));
                 if (next == default) return;
-                var direction = next - self.transform.position;
+                var direction = next - self.rb.worldCenterOfMass;
 
                 self.rb.velocity = MathUtils.Lerpish(self.rb.velocity, direction.normalized * self.speed, Time.fixedDeltaTime * self.airAcceleration);
             }
@@ -46,16 +46,13 @@ namespace Enemies.Bird.Behaviour {
         }
 
         private IEnumerator DoRecalculatePathToTarget() {
-            yield return new WaitForSeconds(0.1f);
-
-            while (self.isActiveAndEnabled) {
-                path = PathToTarget();
+            for (; self; path = CalculatePath()) {
                 yield return new WaitForSeconds(0.1f);
             }
         }
 
-        private bool IsNear(Vector3 it) => Vector2.Distance(self.transform.position, it) < self.triggerDistance;
+        private bool IsNear(Vector2 it) => Vector2.Distance(self.rb.worldCenterOfMass, it) < self.triggerDistance;
 
-        private List<Vector3> PathToTarget() => Pathfinder.FindPath(self.transform.position, self.targetInstance.sprite.transform.position);
+        private List<Vector3> CalculatePath() => Pathfinder.FindPath(self.rb.worldCenterOfMass, self.targetInstance.rb.worldCenterOfMass);
     }
 }

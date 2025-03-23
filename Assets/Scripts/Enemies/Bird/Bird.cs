@@ -30,39 +30,38 @@ namespace Enemies.Bird {
         public void OnDestroy() => NotifyOnDestroy?.Invoke(this);
 
         public void Awake() {
-            UseBehaviour(new Idle(this));
-
-            /* TODO: perf cost? */
             targetInstance ??= FindObjectsOfType<Player>().FirstOrDefault();
+            UseBehaviour(new Idle(this));
+        }
+
+        public override void Update() {
+            base.Update();
+            sprite.flipX = rb.velocity.x == 0 ? sprite.flipX : rb.velocity.x > 0;
         }
 
         public void OnExplode() {
-            // Instantiate(explosion, transform.position, transform.rotation);
+            Instantiate(explosion, transform.position, Quaternion.identity);
             Attack();
             Hurt(maximumHealth);
         }
 
         public bool IsTargetDetected() =>
             targetInstance &&
-            Sweep(transform.position, targetInstance.sprite.transform.position - sprite.transform.position, 45, detectionRadius, 5, ground | player).Any(hit => IsOnLayer(hit, player));
+            Sweep(rb.worldCenterOfMass, targetInstance.rb.worldCenterOfMass - rb.worldCenterOfMass, 45, detectionRadius, 5, ground | player).Any(hit => IsOnLayer(hit, player));
 
         private void Attack() {
-            var hit = Physics2D.OverlapCircle(transform.position, explosionRadius, player);
+            var hit = Physics2D.OverlapCircle(rb.worldCenterOfMass, explosionRadius, player);
             if (!hit || !hit.TryGetComponent<Player>(out var it)) return;
-            var direction = it.sprite.transform.position - transform.position;
+            var direction = it.rb.worldCenterOfMass - rb.worldCenterOfMass;
 
             it.Hurt(attack, direction.normalized * knockbackForce, 5);
         }
 
         protected override void UseAnimation(StateMachine stateMachine) {
-            return;
             var idleAnim = new IdleAnimation(animator);
-            var alertAnim = new AlertAnimation(animator);
-            var attackAnim = new AttackAnimation(animator);
-
             stateMachine.AddAnyTransition(idleAnim, new FuncPredicate(() => behaviour is Idle));
-            stateMachine.AddAnyTransition(alertAnim, new FuncPredicate(() => behaviour is Alert));
-            stateMachine.AddAnyTransition(attackAnim, new FuncPredicate(() => behaviour is Attack));
+            stateMachine.AddAnyTransition(new AlertAnimation(animator), new FuncPredicate(() => behaviour is Alert));
+            stateMachine.AddAnyTransition(new AttackAnimation(animator), new FuncPredicate(() => behaviour is Attack));
 
             stateMachine.SetState(idleAnim);
             animationStateMachine = stateMachine;
