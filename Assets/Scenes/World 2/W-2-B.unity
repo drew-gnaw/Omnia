@@ -353,7 +353,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4774809283147415622, guid: 60c329ee0656c824e8e9c92cb57b8930, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.49552393
+      value: -0.4956231
       objectReference: {fileID: 0}
     - target: {fileID: 4774809283147415622, guid: 60c329ee0656c824e8e9c92cb57b8930, type: 3}
       propertyPath: m_LocalPosition.y
@@ -627,7 +627,7 @@ PrefabInstance:
     - target: {fileID: 919702509989044879, guid: f4bea54d7ba3e224696a1c316921383e, type: 3}
       propertyPath: gears.Array.data[0]
       value: 
-      objectReference: {fileID: 1043153425}
+      objectReference: {fileID: 1043153426}
     - target: {fileID: 919702509989044879, guid: f4bea54d7ba3e224696a1c316921383e, type: 3}
       propertyPath: signals.Array.data[0].underlyingValue
       value: 
@@ -774,7 +774,7 @@ PrefabInstance:
     - target: {fileID: 919702509989044879, guid: f4bea54d7ba3e224696a1c316921383e, type: 3}
       propertyPath: gears.Array.data[0]
       value: 
-      objectReference: {fileID: 1526962173}
+      objectReference: {fileID: 1526962174}
     - target: {fileID: 919702509989044879, guid: f4bea54d7ba3e224696a1c316921383e, type: 3}
       propertyPath: signals.Array.data[0].underlyingValue
       value: 
@@ -857,11 +857,6 @@ PrefabInstance:
 --- !u!4 &644512913 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4532747657134558616, guid: 357fa721ea9188c4ca319e5fda84f079, type: 3}
-  m_PrefabInstance: {fileID: 644512912}
-  m_PrefabAsset: {fileID: 0}
---- !u!212 &644512914 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 6207397036963953621, guid: 357fa721ea9188c4ca319e5fda84f079, type: 3}
   m_PrefabInstance: {fileID: 644512912}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &706077474
@@ -1482,7 +1477,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4532747657134558616, guid: 357fa721ea9188c4ca319e5fda84f079, type: 3}
   m_PrefabInstance: {fileID: 1043153423}
   m_PrefabAsset: {fileID: 0}
---- !u!212 &1043153425 stripped
+--- !u!212 &1043153426 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 6207397036963953621, guid: 357fa721ea9188c4ca319e5fda84f079, type: 3}
   m_PrefabInstance: {fileID: 1043153423}
@@ -4568,7 +4563,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4532747657134558616, guid: 357fa721ea9188c4ca319e5fda84f079, type: 3}
   m_PrefabInstance: {fileID: 1526962171}
   m_PrefabAsset: {fileID: 0}
---- !u!212 &1526962173 stripped
+--- !u!212 &1526962174 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 6207397036963953621, guid: 357fa721ea9188c4ca319e5fda84f079, type: 3}
   m_PrefabInstance: {fileID: 1526962171}
@@ -11719,6 +11714,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e55e57bd3ef491642ace43c22249a5a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!212 &1609189217 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 6207397036963953621, guid: 357fa721ea9188c4ca319e5fda84f079, type: 3}
+  m_PrefabInstance: {fileID: 644512912}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1637249664
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11979,7 +11979,7 @@ PrefabInstance:
     - target: {fileID: 919702509989044879, guid: f4bea54d7ba3e224696a1c316921383e, type: 3}
       propertyPath: gears.Array.data[0]
       value: 
-      objectReference: {fileID: 644512914}
+      objectReference: {fileID: 1609189217}
     - target: {fileID: 919702509989044879, guid: f4bea54d7ba3e224696a1c316921383e, type: 3}
       propertyPath: signals.Array.data[0].underlyingValue
       value: 
