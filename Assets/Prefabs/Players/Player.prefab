@@ -395,7 +395,6 @@ GameObject:
   - component: {fileID: 6402661582757285898}
   - component: {fileID: 1129889265447086856}
   - component: {fileID: 1527714499327898025}
-  - component: {fileID: 780825240329881781}
   - component: {fileID: 7013774369828041354}
   m_Layer: 7
   m_Name: Player
@@ -625,19 +624,6 @@ MonoBehaviour:
   self: {fileID: 6725967550211918722}
   weapons: {fileID: 898355057700889153}
   weaponsPosition: {x: 0, y: 0}
---- !u!114 &780825240329881781
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5710193498280292276}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 796b651c51cfe684db50c1e72eaf68ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  check: {fileID: 4089117942917127182}
 --- !u!95 &7013774369828041354
 Animator:
   serializedVersion: 5
@@ -669,6 +655,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5974560384194022641}
   - component: {fileID: 4089117942917127182}
+  - component: {fileID: 105117212948777114}
   m_Layer: 0
   m_Name: Wall Clip Check
   m_TagString: Untagged
@@ -736,6 +723,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.1, y: 0.1}
   m_EdgeRadius: 0
+--- !u!114 &105117212948777114
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5801966602156837704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 796b651c51cfe684db50c1e72eaf68ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  check: {fileID: 4089117942917127182}
+  player: {fileID: 6725967550211918722}
 --- !u!1 &7341513922277732889
 GameObject:
   m_ObjectHideFlags: 0

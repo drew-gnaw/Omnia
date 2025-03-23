@@ -1,29 +1,28 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Players.Mixin {
-    [RequireComponent(typeof(Player))]
     public class HandleWallClip : MonoBehaviour {
         [SerializeField] internal BoxCollider2D check;
-        private Player player;
+        [SerializeField] internal Player player;
         private LayerMask ground;
 
         void Start() {
-            player = GetComponent<Player>();
             ground = player.ground;
+            // Ensure the collider is set as a trigger if using triggers
+            check.isTrigger = true;
         }
 
-        // Update is called once per frame
-        void Update() {
-            if (IsPlayerEncased()) {
-                Debug.Log("Player is encased, killing");
+        // Called once when another collider enters the trigger zone
+        void OnTriggerEnter2D(Collider2D other) {
+            if (IsGroundLayer(other.gameObject.layer)) {
+                Debug.Log("Player entered encased state.");
                 player.Die();
             }
         }
 
-        bool IsPlayerEncased() {
-            return check.IsTouchingLayers(ground);
+        bool IsGroundLayer(int layer) {
+            // Check if the object's layer matches the ground layer mask
+            return (ground.value & (1 << layer)) != 0;
         }
     }
 }
