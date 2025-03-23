@@ -10,9 +10,9 @@ public class HarpoonRope : MonoBehaviour {
     [Header("Rope Settings")]
     public int segmentCount = 2;
     public float segmentLength = 0.30f;
-    public float ropeWidth = 0.025f;     
+    public float ropeWidth = 0.025f;
     public Color ropeColor = new Color(0.6f, 0.3f, 0.1f);
-    public int flex = 1;
+    public int flex = 0;
     public GameObject ropeSegmentPrefab;
 
     public LineRenderer lineRenderer;
@@ -184,7 +184,7 @@ public class HarpoonRope : MonoBehaviour {
                 index++;
             }
 
-            positions[pointsCount - 1] = endPoint.position; 
+            positions[pointsCount - 1] = endPoint.position;
 
             lineRenderer.positionCount = pointsCount;
             lineRenderer.SetPositions(positions);
