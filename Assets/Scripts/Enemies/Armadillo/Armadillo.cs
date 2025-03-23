@@ -47,7 +47,7 @@ namespace Enemies.Armadillo {
             return (facing.x > 0 && l && !r) || (facing.x < 0 && !l && r);
         }
 
-        public bool IsTargetDetected() => Sweep(sprite.transform.position, facing, 45, detectionRange, 5, ground | player).Any(hit => IsOnLayer(hit, player));
+        public bool IsTargetDetected() => Sweep(rb.worldCenterOfMass, facing, 45, detectionRange, 5, ground | player).Any(hit => IsOnLayer(hit, player));
 
         protected override void UseAnimation(StateMachine stateMachine) {
             var idleAnim = new IdleAnimation(animator);

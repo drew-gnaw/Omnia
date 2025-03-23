@@ -4,6 +4,7 @@ using Enemies.Crab.Behaviour;
 using Omnia.State;
 using Players;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Utils;
 
 namespace Enemies.Crab {
@@ -20,7 +21,8 @@ namespace Enemies.Crab {
         [SerializeField] internal float windupTime;
         [SerializeField] internal float vulnerableTime;
         [SerializeField] internal float reloadTime;
-        [SerializeField] internal float attackRadius;
+        [SerializeField] internal float attackHeight;
+        [SerializeField] internal float attackDistance;
 
         public void Awake() {
             targetInstance ??= FindObjectsOfType<Player>().FirstOrDefault();
@@ -41,7 +43,7 @@ namespace Enemies.Crab {
             gameObject.layer = MathUtils.LayerIndexOf(layer);
         }
 
-        public bool IsTargetDetected() => Sweep(sprite.transform.position, Vector2.up, 180, detectionRange, 17, ground | player).Any(hit => IsOnLayer(hit, player));
+        public bool IsTargetDetected() => Sweep(rb.worldCenterOfMass, Vector2.up, 180, detectionRange, 17, ground | player).Any(hit => IsOnLayer(hit, player));
 
         protected override void UseAnimation(StateMachine stateMachine) {
             var idleAnim = new IdleAnimation(animator);
