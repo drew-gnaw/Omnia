@@ -67,10 +67,10 @@ public class HarpoonGun : WeaponClass
         CurrentAmmo--;
     }
 
-    public override void UseSkill()
+    public override bool UseSkill()
     {
         if (firedSpears.Count == 0) {
-            return;
+            return false;
         }
 
         var spear = firedSpears.FirstOrDefault(s => s.TaggedEnemy != null || s.PullTo != null);
@@ -78,12 +78,13 @@ public class HarpoonGun : WeaponClass
         Transform target = spear?.PullTo ?? spear?.TaggedEnemy?.transform;
 
         if (target == null) {
-            return;
+            return false;
         }
 
         playerComponent.UsePull(target);
-    }
 
+        return true;
+    }
 
     public override void IntroSkill()
     {
