@@ -171,7 +171,6 @@ public class DialogueManager : PersistentSingleton<DialogueManager>
     }
 
     private void ClearDialogueHistory(Scene current, Scene next) {
-        EndDialogue();
         dialogueHistory.Clear();
     }
 }
