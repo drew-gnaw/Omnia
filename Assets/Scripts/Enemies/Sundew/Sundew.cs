@@ -33,9 +33,9 @@ namespace Enemies.Sundew {
         }
 
         private void FireProjectile(Vector2 direction) {
-            var p = Instantiate(projectile, sprite.transform.position, sprite.transform.rotation).GetComponent<SundewProjectile>();
+            var p = Instantiate(projectile, rb.worldCenterOfMass, Quaternion.identity).GetComponent<SundewProjectile>();
             p.NotifyOnHit = Attack;
-            p.rb.velocity = projectileSpeed * Vector2.Lerp(sprite.transform.rotation * direction.normalized, Random.insideUnitSphere, spread);
+            p.rb.velocity = projectileSpeed * Vector2.Lerp(transform.rotation * direction.normalized, Random.insideUnitSphere, spread);
         }
 
         private void Attack(Player it, SundewProjectile by) {

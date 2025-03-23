@@ -19,11 +19,11 @@ public class DialogueManager : PersistentSingleton<DialogueManager>
     List<DialogueText> dialogueHistory = new();
 
     public void OnEnable() {
-        SceneManager.sceneLoaded += OnSceneChange;
+        SceneManager.activeSceneChanged += ClearDialogueHistory;
     }
 
     public void OnDisable() {
-        SceneManager.sceneLoaded -= OnSceneChange;
+        SceneManager.activeSceneChanged += ClearDialogueHistory;
     }
 
     protected override void OnAwake() {
@@ -146,12 +146,6 @@ public class DialogueManager : PersistentSingleton<DialogueManager>
         }
     }
 
-    void OnSceneChange(Scene s, LoadSceneMode m)
-    {
-        EndDialogue();
-        //dialogueHistory.Clear();
-    }
-
     void EndDialogue()
     {
         ClearPanel();
@@ -174,5 +168,10 @@ public class DialogueManager : PersistentSingleton<DialogueManager>
                 }
             }
         }
+    }
+
+    private void ClearDialogueHistory(Scene current, Scene next) {
+        EndDialogue();
+        dialogueHistory.Clear();
     }
 }

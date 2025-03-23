@@ -30,7 +30,7 @@ namespace Enemies.Armadillo.Behaviour {
         }
 
         private bool IsHitTarget(out Player player) {
-            var hit = Physics2D.OverlapCircle(self.sprite.transform.position, self.attackRadius, self.player);
+            var hit = Physics2D.OverlapCircle(self.rb.worldCenterOfMass, self.attackRadius, self.player);
             player = null;
             return hit && hit.TryGetComponent(out player);
         }

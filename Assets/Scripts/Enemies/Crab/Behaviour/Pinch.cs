@@ -30,7 +30,7 @@ namespace Enemies.Crab.Behaviour {
         }
 
         private bool IsHitTarget(out Player player) {
-            var hit = Physics2D.OverlapCircle(self.sprite.transform.position, self.attackRadius, self.player);
+            var hit = Physics2D.OverlapBox(self.rb.worldCenterOfMass, new Vector2(2 * self.attackDistance, self.attackHeight), 0, self.player);
             player = null;
             return hit && hit.TryGetComponent(out player);
         }

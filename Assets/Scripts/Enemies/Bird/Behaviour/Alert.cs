@@ -12,20 +12,19 @@ namespace Enemies.Bird.Behaviour {
 
         public void OnEnter() {
             t = self.delay;
+            self.rb.velocity = Vector2.zero;
         }
 
         public void OnExit() {
         }
 
         public void OnTick() {
-            self.rb.velocity = MathUtils.Lerpish(self.rb.velocity, Vector2.zero, Time.fixedDeltaTime * self.airAcceleration);
+            if (t != 0) return;
+            self.UseBehaviour(new Attack(self));
         }
 
         public void OnUpdate() {
             t = Mathf.Max(0, t - Time.deltaTime);
-            if (t != 0) return;
-
-            self.UseBehaviour(new Attack(self));
         }
     }
 }
