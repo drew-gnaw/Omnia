@@ -5,7 +5,7 @@ using UnityEngine.Serialization;
 using Utils;
 
 namespace Scenes {
-    public class ArmadilloRoom : MonoBehaviour {
+    public class ArmadilloRoom2 : MonoBehaviour {
         [SerializeField] private DialogueWrapper beginDialogue;
         public void Start() {
             StartCoroutine(BeginSequence());
