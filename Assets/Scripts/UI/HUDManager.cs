@@ -9,7 +9,15 @@ using Utils;
 
 namespace UI {
     public class HUDManager : PersistentSingleton<HUDManager> {
-        private Player player;
+        private Player _p;
+        private Player player {
+            get {
+                if (!_p) {
+                    FindPlayer();
+                }
+                return _p;
+            }
+        }
 
         [SerializeField] private Transform healthContainer;
         [SerializeField] private GameObject heartPrefab;
@@ -38,12 +46,7 @@ namespace UI {
         protected override void OnAwake() {
             gameObject.SetActive(true);
 
-            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
-            if (playerObj != null) {
-                player = playerObj.GetComponent<Player>();
-            } else {
-                Debug.LogError("HUDManager: No GameObject with tag 'Player' found!");
-            }
+            FindPlayer();
 
             Player.OnFlowChanged += UpdateFlow;
             Player.OnHealthChanged += UpdateHealth;
@@ -85,7 +88,7 @@ namespace UI {
                 heartObjects.Add(heartInstance);
             }
 
-            StartCoroutine(FlashHearts(heartObjects));
+            //StartCoroutine(FlashHearts(heartObjects));
             HandleLowHealthEffect(currentHealth);
         }
 
@@ -98,8 +101,10 @@ namespace UI {
         }
 
         private void UpdateAmmo(int currentAmmo) {
+            FindPlayer();
             if (!player.weapons[player.selectedWeapon]) {
                 Debug.LogWarning("HUDManager: No ammo available for selected weapon.");
+                return;
             }
 
             foreach (Transform child in ammoContainer) {
@@ -169,7 +174,7 @@ namespace UI {
 
             yield return new WaitForSeconds(0.1f);  // Short flash duration
 
-            foreach (GameObject heart in hearts) {
+            foreach (GameObject heart in hearts) {;
                 Image heartImage = heart.GetComponent<Image>();
                 if (heartImage != null) {
                     heartImage.color = originalColor;
@@ -205,6 +210,15 @@ namespace UI {
 
         private float EaseOutQuad(float t) {
             return -t * (t - 2f);
+        }
+
+        private void FindPlayer() {
+            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+            if (playerObj != null) {
+                _p = playerObj.GetComponent<Player>();
+            } else {
+                Debug.LogError("HUDManager: No GameObject with tag 'Player' found!");
+            }
         }
 
     }

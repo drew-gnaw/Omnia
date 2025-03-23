@@ -18,18 +18,18 @@ namespace Puzzle {
     }
     public class Red : SignalColor {
         public override Color Color => Color.red;
-        public override Sprite GetSymbol(PuzzleAssets assets) => assets.downSymbol;
+        public override Sprite GetSymbol(PuzzleAssets assets) => assets.xSymbol;
     }
     public class Green : SignalColor {
         public override Color Color => Color.green;
-        public override Sprite GetSymbol(PuzzleAssets assets) => assets.upSymbol;
+        public override Sprite GetSymbol(PuzzleAssets assets) => assets.triangleSymbol;
     }
     public class Blue : SignalColor {
         public override Color Color => Color.blue;
-        public override Sprite GetSymbol(PuzzleAssets assets) => assets.leftSymbol;
+        public override Sprite GetSymbol(PuzzleAssets assets) => assets.squareSymbol;
     }
     public class Yellow : SignalColor {
         public override Color Color => Color.yellow;
-        public override Sprite GetSymbol(PuzzleAssets assets) => assets.downSymbol;
+        public override Sprite GetSymbol(PuzzleAssets assets) => assets.xSymbol;
     }
 }

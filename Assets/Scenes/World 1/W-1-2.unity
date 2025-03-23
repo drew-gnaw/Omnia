@@ -644,9 +644,25 @@ PrefabInstance:
       propertyPath: m_Name
       value: AnimatedBackground
       objectReference: {fileID: 0}
+    - target: {fileID: 2484622220220891352, guid: 2b22dbe803811574e923a8e71df799e0, type: 3}
+      propertyPath: m_SortingOrder
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3621336672189625267, guid: 2b22dbe803811574e923a8e71df799e0, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.69
+      objectReference: {fileID: 0}
+    - target: {fileID: 3806960215822416923, guid: 2b22dbe803811574e923a8e71df799e0, type: 3}
+      propertyPath: m_SortingOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4216001201675224458, guid: 2b22dbe803811574e923a8e71df799e0, type: 3}
+      propertyPath: m_SortingOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4714771506327257110, guid: 2b22dbe803811574e923a8e71df799e0, type: 3}
+      propertyPath: m_SortingOrder
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8258894640173889084, guid: 2b22dbe803811574e923a8e71df799e0, type: 3}
       propertyPath: m_LocalPosition.x
