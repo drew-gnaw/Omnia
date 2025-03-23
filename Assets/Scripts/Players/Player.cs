@@ -150,6 +150,7 @@ namespace Players {
 
             // initially fill out the skill bar
             OnSkillCooldownUpdated?.Invoke(1);
+            OnWeaponChanged?.Invoke(0);
             Spawn?.Invoke();
         }
 
@@ -193,7 +194,7 @@ namespace Players {
             }
 
             combatTimer.Start();
-            CurrentHealth -= (int) damage; 
+            CurrentHealth -= (int) damage;
             currentHurtInvulnerability = hurtInvulnerabilityTime;
             UseExternalVelocity(velocity, lockout);
             StartCoroutine(DoHurtInvincibilityFlicker());
