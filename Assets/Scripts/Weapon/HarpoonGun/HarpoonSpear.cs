@@ -122,6 +122,7 @@ public class HarpoonSpear : MonoBehaviour {
         playerAbsorb = false;
         collectable = false;
         PullTo = null;
+        TaggedEnemy = null;
 
         // Tell gun to mark this spear as available
         gun.SpearCollected(this);
