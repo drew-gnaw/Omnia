@@ -153,8 +153,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94e7e63e1fb938e439a49861e797ad39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maximumHealth: 100
-  currentHealth: 100
+  maximumHealth: 70
+  currentHealth: 70
   attack: 2
   knockbackForce: 10
   knockbackAngle: 45
@@ -175,7 +175,7 @@ MonoBehaviour:
   detectionRange: 1
   windupTime: 0.4
   vulnerableTime: 1
-  reloadTime: 2
+  reloadTime: 1
   attackHeight: 0.75
   attackDistance: 1.5
 --- !u!50 &4347489477469997173
