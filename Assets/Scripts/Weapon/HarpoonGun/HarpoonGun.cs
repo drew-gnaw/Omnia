@@ -92,6 +92,7 @@ public class HarpoonGun : WeaponClass
         foreach (var spear in firedSpears)
         {
             spear.PullEnemy();
+            spear.ReturnToPlayer();
         }
     }
 
