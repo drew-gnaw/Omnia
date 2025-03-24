@@ -101,22 +101,23 @@ public class HarpoonSpear : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D other) {
 
-        AudioManager.Instance.PlaySFX(AudioTracks.HarpoonHit);
-
         if (Collider2D.IsTouchingLayers(playerLayer) && collectable) {
             HandlePlayerCollision();
         }
         // FIXME: for whatever reason, checking if the spear collider is touching enemy does not always work,
         // other collider ends up as null if they are moving
         if (CollisionUtils.IsLayerInMask(other.gameObject.layer, hittableLayerMask) && !dropped) {
+            AudioManager.Instance.PlaySFX(AudioTracks.HarpoonHit);
             HandleEnemyCollision(other.GetComponent<Enemy>());
         }
 
         if (Collider2D.IsTouchingLayers(semisolidLayer) && !dropped) {
+            AudioManager.Instance.PlaySFX(AudioTracks.HarpoonHit);
             HandleSemisolidCollision(other.gameObject);
         }
 
         if (Collider2D.IsTouchingLayers(groundLayer) && !dropped) {
+            AudioManager.Instance.PlaySFX(AudioTracks.HarpoonHit);
             HandleGroundCollision(other.gameObject);
         }
     }
