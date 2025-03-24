@@ -73,7 +73,6 @@ public class HarpoonSpear : MonoBehaviour {
         Vector2 difference = (player.Center - transform.position).normalized;
         TaggedEnemy.GetComponent<Rigidbody2D>().AddForce(difference * gun.pullPower);
         TaggedEnemy.GetComponent<Enemy>().Hurt(gun.damage);
-        ReturnToPlayer();
     }
 
     public void ReturnToPlayer() {
