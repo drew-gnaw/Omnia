@@ -15,6 +15,7 @@ namespace Puzzle {
         [SerializeField] private float moveDistance = 3.0f;
         [SerializeField] private float moveDuration = 0.5f;
         [SerializeField] private AnimationCurve easeCurve;
+        [SerializeField] private PuzzleAssets symbols;
 #nullable enable
         public enum GateType { Horizontal, Vertical }
         public ReceiverBehaviour ReceiverBehaviour => ReceiverBehaviour.Parse(behaviour);
@@ -55,7 +56,9 @@ namespace Puzzle {
         private void Redraw() {
             for (int i = 0; i < gears.Count; i++) {
                 if (i < signalList.Count) {
-                    gears[i].color = signalList[i].SignalColor.Color;
+                    PuzzleSymbol symbol = gears[i].GetComponent<PuzzleSymbol>();
+                    symbol.SetColor(signalList[i].SignalColor.Color);
+                    symbol.SetSymbol(signalList[i].SignalColor.GetSymbol(symbols));
                 }
             }
         }
