@@ -59,9 +59,13 @@ public class AudioManager : PersistentSingleton<AudioManager>
         sfxTracks = Resources.LoadAll<AudioList>("AudioResources")[2];
     }
 
+    // this only starts playing after a scene change, but doesnt matter because a linear playthrough will have audiomanager already playing
+    // tl;dr: this is only for development
     void OnSceneChange(Scene scene, LoadSceneMode mode)
     {
-
+        if (!BGMPlayer.isPlaying) {
+            PlayBGM(AudioTracks.CaveSpeak);
+        }
     }
 
 
@@ -197,6 +201,10 @@ public class AudioManager : PersistentSingleton<AudioManager>
     // Mutes sound effects
     public void ToggleSFX() {
         SFXPlayer.mute = !SFXPlayer.mute;
+    }
+
+    public void PlayHurtSound() {
+        SFXPlayer.PlayOneShot(sfxTracks.GetClipByName($"JamieHurt{Random.Range(1, 4)}"));
     }
 
     /////////////////////

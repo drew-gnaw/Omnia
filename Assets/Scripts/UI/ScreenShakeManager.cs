@@ -1,5 +1,6 @@
 using System.Collections;
 using Cinemachine;
+using Players.Buff;
 using UnityEngine;
 using Utils;
 
@@ -25,6 +26,7 @@ public class ScreenShakeManager : PersistentSingleton<ScreenShakeManager> {
     }
 
     private IEnumerator ShakeCoroutine(float intensity, float duration) {
+        Debug.Log("Shaking");
         float elapsed = 0f;
 
         // Store the original values
