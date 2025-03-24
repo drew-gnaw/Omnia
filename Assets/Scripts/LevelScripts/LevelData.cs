@@ -182,5 +182,5 @@ public class Level_3_S : LevelData {
     public override string PlainName => "Level 3-S";
     public override string SceneName => "W-3-S";
     public override LevelData NextLevel => Get<Level_3_B>();
-    public override LevelData PrevLevel => Get<Level_3_B>();
+    public override LevelData PrevLevel => Get<Level_4_1>();
 }

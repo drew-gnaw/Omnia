@@ -341,6 +341,14 @@ PrefabInstance:
       propertyPath: opposite
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 9136865585392950977, guid: 3799751a30f7d4a4385f70a2b5dbfd54, type: 3}
+      propertyPath: pipes.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9136865585392950977, guid: 3799751a30f7d4a4385f70a2b5dbfd54, type: 3}
+      propertyPath: pipes.Array.data[0]
+      value: 
+      objectReference: {fileID: 6955932191932589430}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
