@@ -9,7 +9,6 @@ namespace Puzzle {
         [SerializeField] private Gate gate;
         [SerializeField] private PuzzleAssets symbols;
 
-
         private void Start() {
             Redraw();
         }
@@ -20,7 +19,6 @@ namespace Puzzle {
             foreach (var pipe in pipes) {
                 pipe.SetColor(gate.SignalList.First().SignalColor.Color);
                 pipe.SetSymbol(gate.SignalList.First().SignalColor.GetSymbol(symbols));
-
             }
         }
     }
