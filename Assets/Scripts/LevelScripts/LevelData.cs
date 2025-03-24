@@ -184,3 +184,10 @@ public class Level_3_S : LevelData {
     public override LevelData NextLevel => Get<Level_3_B>();
     public override LevelData PrevLevel => Get<Level_4_1>();
 }
+
+public class Level_B_B : LevelData {
+    public override string PlainName => "Boss Level";
+    public override string SceneName => "W-B-B";
+    public override LevelData NextLevel => Get<Level_B_B>();
+    public override LevelData PrevLevel => Get<Level_4_S>();
+}
