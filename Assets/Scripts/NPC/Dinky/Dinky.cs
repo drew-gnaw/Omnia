@@ -29,6 +29,9 @@ public class Dinky : MonoBehaviour, IInteractable
 
     public void Appear(Transform t) {
         gameObject.transform.position = t.position;
+        if (!animator) {
+            animator = graphics.GetComponent<Animator>();
+        }
         animator.Play(appearState);
         setVisible(true);
         animating = true;
