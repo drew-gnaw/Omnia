@@ -74,7 +74,7 @@ public class HarpoonSpear : MonoBehaviour {
         Vector2 difference = (player.Center - transform.position).normalized;
         TaggedEnemy.GetComponent<Rigidbody2D>().AddForce(difference * gun.pullPower);
         AudioManager.Instance.PlaySFX(AudioTracks.HarpoonRetract);
-        ReturnToPlayer();
+        TaggedEnemy.GetComponent<Enemy>().Hurt(gun.damage);
     }
 
     public void ReturnToPlayer() {
