@@ -166,6 +166,8 @@ MonoBehaviour:
   delay: 0.2
   speed: 8
   airAcceleration: 6
+  screenShakeIntensity: 1.5
+  screenShakeDuration: 0.5
   sprite: {fileID: 9202038865644320477}
   animator: {fileID: 6149703548532306918}
   rb: {fileID: 7893308943432753642}
@@ -238,4 +240,4 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.25
+  m_Radius: 0.3

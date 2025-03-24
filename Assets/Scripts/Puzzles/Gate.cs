@@ -18,15 +18,15 @@ namespace Puzzle {
 #nullable enable
         public enum GateType { Horizontal, Vertical }
         public ReceiverBehaviour ReceiverBehaviour => ReceiverBehaviour.Parse(behaviour);
+        public List<ISignal> SignalList { get; set; } = new();
         private Vector3 StartPos { get; set; }
         private Vector3 TargetPos => StartPos + ((gateType == GateType.Horizontal) ? Vector3.right : Vector3.up) * moveDistance;
         private bool isSliding = false;
         private bool desiredOpenState = false; // Desired state, used in case signal switches while gate is moving.
-        private List<ISignal> signalList = new();
         private Rigidbody2D rb;
 
         void Awake() {
-            signalList = signals?.Unbox() ?? new();
+            SignalList = signals?.Unbox() ?? new();
         }
 
         private void Start() {
@@ -41,29 +41,29 @@ namespace Puzzle {
         }
 
         private void OnEnable() {
-            foreach (ISignal signal in signalList) {
+            foreach (ISignal signal in SignalList) {
                 signal.SignalEvent += SignalReceived;
             }
         }
 
         private void OnDisable() {
-            foreach (ISignal signal in signalList) {
+            foreach (ISignal signal in SignalList) {
                 signal.SignalEvent -= SignalReceived;
             }
         }
 
         private void Redraw() {
             for (int i = 0; i < gears.Count; i++) {
-                if (i < signalList.Count) {
+                if (i < SignalList.Count) {
                     PuzzleSymbol symbol = gears[i].GetComponent<PuzzleSymbol>();
-                    symbol.SetColor(signalList[i].SignalColor.Color);
-                    symbol.SetSymbol(signalList[i].SignalColor.GetSymbol(symbols));
+                    symbol.SetColor(SignalList[i].SignalColor.Color);
+                    symbol.SetSymbol(SignalList[i].SignalColor.GetSymbol(symbols));
                 }
             }
         }
 
         private void SignalReceived(ISignal signal) {
-            bool newState = ReceiverBehaviour.Accept(signalList);
+            bool newState = ReceiverBehaviour.Accept(SignalList);
             if (newState == desiredOpenState) return;
             desiredOpenState = newState;
 
