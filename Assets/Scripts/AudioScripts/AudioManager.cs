@@ -80,7 +80,9 @@ public class AudioManager : PersistentSingleton<AudioManager>
         if (!BGMPlayer.isPlaying || BGMPlayer.clip != track) {
             BGMPlayer.clip = track;
             BGMPlayer.loop = true;
+            BGMPlayer.volume = 0f; // Start from silent
             BGMPlayer.Play();
+            StartCoroutine(BGMFadeIn(1f)); // Fade in to full volume
         }
     }
 

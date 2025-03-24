@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.Callbacks;
 using UnityEngine;
 
 namespace Puzzle {
@@ -25,7 +24,7 @@ namespace Puzzle {
         private bool desiredOpenState = false; // Desired state, used in case signal switches while gate is moving.
         private List<ISignal> signalList = new();
         private Rigidbody2D rb;
-        
+
         void Awake() {
             signalList = signals?.Unbox() ?? new();
         }
