@@ -26,5 +26,12 @@ public class Level_4_B : LevelData {
     public override string PlainName => "Level 4-B";
     public override string SceneName => "W-4-B";
     public override LevelData NextLevel => Get<Level_4_B>();
-    public override LevelData PrevLevel => Get<Level_4_3>();
+    public override LevelData PrevLevel => Get<Level_4_S>();
+}
+
+public class Level_4_S : LevelData {
+    public override string PlainName => "Level 4-S";
+    public override string SceneName => "W-4-S";
+    public override LevelData NextLevel => Get<Level_B_B>();
+    public override LevelData PrevLevel => Get<Level_4_B>();
 }

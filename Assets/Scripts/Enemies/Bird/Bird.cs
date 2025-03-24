@@ -16,6 +16,8 @@ namespace Enemies.Bird {
         [SerializeField] internal float delay;
         [SerializeField] internal float speed;
         [SerializeField] internal float airAcceleration;
+        [SerializeField] internal float screenShakeIntensity;
+        [SerializeField] internal float screenShakeDuration;
 
         [SerializeField] internal SpriteRenderer sprite;
         [SerializeField] internal Animator animator;
@@ -40,9 +42,14 @@ namespace Enemies.Bird {
         }
 
         public void OnExplode() {
-            Instantiate(explosion, transform.position, Quaternion.identity);
             Attack();
-            Hurt(maximumHealth);
+            Die();
+        }
+
+        public override void Die() {
+            ScreenShakeManager.Instance.Shake(screenShakeIntensity, screenShakeDuration);
+            Instantiate(explosion, transform.position, Quaternion.identity);
+            base.Die();
         }
 
         public bool IsTargetDetected() =>

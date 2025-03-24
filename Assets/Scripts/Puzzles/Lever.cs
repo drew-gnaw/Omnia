@@ -57,7 +57,7 @@ namespace Puzzle {
         }
 
         void OnTriggerEnter2D(Collider2D other) {
-            if (Collider2D.IsTouchingLayers(playerLayer) || Collider2D.IsTouchingLayers(enemyLayer)) {
+            if (Collider2D.IsTouchingLayers(playerLayer)) {
                 objectsInside++;
                 isCharging = true;
                 IsActive = true;
