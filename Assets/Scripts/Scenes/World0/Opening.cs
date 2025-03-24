@@ -258,5 +258,10 @@ namespace Scenes {
                 Ekey.color = originalColor;
             }
         }
+
+        public void SkipScene() {
+            Debug.Log("skipping scene");
+            StartCoroutine(ExitSequence());
+        }
     }
 }

@@ -43,11 +43,23 @@ namespace Scenes {
             dummyAirCheck.OnEnter += HandleHitAirDummy;
 
             StartCoroutine(BeginSequence());
+
+            if (dinky == null) Debug.LogError("Dinky is not assigned!");
+            if (dummy1Obj == null) Debug.LogError("Dummy1 object is not assigned!");
+            if (dummy2Obj == null) Debug.LogError("Dummy2 object is not assigned!");
+            if (dummy3Obj == null) Debug.LogError("Dummy3 object is not assigned!");
+            if (dummyAirCheck == null) Debug.LogError("Dummy Air Check is not assigned!");
+            if (dinkyAppearTransform == null) Debug.LogError("Dinky Appear Transform is not assigned!");
+            if (beginDialogue == null) Debug.LogError("Begin Dialogue is not assigned!");
+            if (AudioManager.Instance == null) Debug.LogError("AudioManager Instance is null!");
+            if (DialogueManager.Instance == null) Debug.LogError("DialogueManager Instance is null!");
+            if (HighlightManager.Instance == null) Debug.LogError("HighlightManager Instance is null!");
+
         }
 
         private IEnumerator BeginSequence() {
             AudioManager.Instance.SwitchBGM(AudioTracks.SunkBeneath);
-            //yield return StartCoroutine(fadeScreen.FadeInLightScreen(1f));
+
             dinky.Appear(dinkyAppearTransform);
             yield return new WaitForSeconds(1.5f);
             yield return StartCoroutine(DialogueManager.Instance.StartDialogue(beginDialogue.Dialogue));

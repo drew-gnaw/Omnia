@@ -10,6 +10,9 @@ public class ScreenShakeManager : PersistentSingleton<ScreenShakeManager> {
 
     protected override void OnAwake() {
         virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
+        if (!virtualCamera) {
+            Debug.Log("couldn't find virtual camera");
+        }
         perlinNoise = virtualCamera.GetComponentInChildren<CinemachineBasicMultiChannelPerlin>();
 
         if (perlinNoise == null) {

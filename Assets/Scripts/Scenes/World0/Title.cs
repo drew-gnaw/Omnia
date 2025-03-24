@@ -33,7 +33,6 @@ namespace Scenes {
             UnityEditor.EditorApplication.isPlaying = false;
 #endif
             Application.Quit();
-
         }
 
         private void Awake() {
