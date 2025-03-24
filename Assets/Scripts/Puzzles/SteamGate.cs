@@ -1,53 +1,27 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 namespace Puzzle {
-    public class SteamGate : MonoBehaviour, IReceiver {
-        [TypeFilter(typeof(ReceiverBehaviour))]
-        [SerializeField] private SerializableType behaviour;
-        [SerializeField] private List<InterfaceReference<ISignal>> signals;
-        [SerializeField] private List<SpriteRenderer> gears;
-        [SerializeField] private SpriteRenderer steamEffect;
-        [SerializeField] private BoxCollider2D hazardCollider;
-        [SerializeField] private AnimationCurve easeCurve;
+    public class SteamGate : MonoBehaviour {
+        [SerializeField] private List<PuzzleSymbol> pipes;
+        [SerializeField] private Steam steamEffect;
+        [SerializeField] private Gate gate;
+        [SerializeField] private PuzzleAssets symbols;
 
-        [SerializeField] private bool opposite;
-        private List<ISignal> signalList = new();
-
-        public ReceiverBehaviour ReceiverBehaviour => ReceiverBehaviour.Parse(behaviour);
-
-        void Awake() {
-            signalList = signals?.Unbox() ?? new();
-        }
 
         private void Start() {
-            steamEffect.enabled = opposite;
-            hazardCollider.enabled = opposite;
+            Redraw();
         }
 
-        private void OnEnable() {
-            foreach (ISignal signal in signalList) {
-                signal.SignalEvent += SignalReceived;
+        private void Redraw() {
+            if (gate.SignalList.Count == 0) return;
+
+            foreach (var pipe in pipes) {
+                pipe.SetColor(gate.SignalList.First().SignalColor.Color);
+                pipe.SetSymbol(gate.SignalList.First().SignalColor.GetSymbol(symbols));
+
             }
-        }
-
-        private void OnDisable() {
-            foreach (ISignal signal in signalList) {
-                signal.SignalEvent -= SignalReceived;
-            }
-        }
-
-
-        private void SignalReceived(ISignal signal) {
-            bool newState = ReceiverBehaviour.Parse(behaviour).Accept(signalList);
-            ToggleSteam(newState);
-        }
-
-        private void ToggleSteam(bool activate) {
-            steamEffect.enabled = activate != opposite;
-            hazardCollider.enabled = activate != opposite;
         }
     }
 }
