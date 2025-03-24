@@ -27,10 +27,6 @@ public class ScreenShakeManager : PersistentSingleton<ScreenShakeManager> {
     private IEnumerator ShakeCoroutine(float intensity, float duration) {
         float elapsed = 0f;
 
-        // Store the original values
-        float originalAmplitude = perlinNoise.m_AmplitudeGain;
-        float originalFrequency = perlinNoise.m_FrequencyGain;
-
         // Set the shake values
         perlinNoise.m_AmplitudeGain = intensity;
         perlinNoise.m_FrequencyGain = intensity;
@@ -44,8 +40,8 @@ public class ScreenShakeManager : PersistentSingleton<ScreenShakeManager> {
             yield return null;
         }
 
-        // Reset to the original values
-        perlinNoise.m_AmplitudeGain = originalAmplitude;
-        perlinNoise.m_FrequencyGain = originalFrequency;
+        // Reset to 0 instead of original values as multiple screen shakes at a time causes issues
+        perlinNoise.m_AmplitudeGain = 0;
+        perlinNoise.m_FrequencyGain = 0;
     }
 }
