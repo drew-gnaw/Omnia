@@ -143,15 +143,17 @@ MonoBehaviour:
   damage: 60
   attackCooldown: 0
   damageToFlowRatio: 1
-  maxAmmoCount: 6
-  reloadTime: 1
-  blastAngle: 45
-  range: 20
+  maxAmmoCount: 3
+  reloadTime: 3
+  blastAngle: 35
+  range: 15
   subDivide: 10
   muzzleFlash: {fileID: 6478827744998899019, guid: a4cb330456d0e401f9cdb0e6d99696db, type: 3}
   tracer: {fileID: 8976097384762832605, guid: 3a3476e9cc759644a9cb5e4d1134c20f, type: 3}
   barrelPosition: {fileID: 8293366980119116200}
   skillForce: 10
+  skillLockDuration: 1
+  introDelayTime: 0.5
 --- !u!1 &8293366980119116200
 GameObject:
   m_ObjectHideFlags: 0

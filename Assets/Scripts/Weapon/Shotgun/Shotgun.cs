@@ -57,9 +57,16 @@ public class Shotgun : WeaponClass {
 
     private IEnumerator IntroCoroutine() {
         yield return new WaitForSeconds(introDelayTime);
-        Shoot();
-        Shoot();
-        Shoot();
+        void FireUltimate() {
+            var hits = PerformRayCasts();
+            ApplyDamage(hits, damage, false); // Ultimate shot ignores drop-off
+            HandleMuzzleFlash();
+            HandleTracers();
+        }
+        FireUltimate();
+        FireUltimate();
+        FireUltimate();
+        CurrentAmmo = maxAmmoCount;
         player.GetComponent<Player>().UseRecoil(10);
         ScreenShakeManager.Instance.Shake(3f);
     }
@@ -83,13 +90,6 @@ public class Shotgun : WeaponClass {
         foreach (SpriteRenderer sr in children) {
             sr.flipY = shouldFlip;
         }
-    }
-
-    private void ShootUltimate() {
-        var hits = PerformRayCasts();
-        ScreenShakeManager.Instance.Shake(intensity: 2f);
-        ApplyDamage(hits, damage,  false); // Ultimate shot ignores drop-off
-        HandleTracers();
     }
 
     private void Shoot() {
@@ -182,6 +182,7 @@ public class Shotgun : WeaponClass {
 
     private IEnumerator Reload() {
         yield return new WaitForSeconds(reloadTime);
+        if (CurrentAmmo >= maxAmmoCount) yield break;
         CurrentAmmo += 1;
         reloadCoroutine = null;
         HandleReload();
