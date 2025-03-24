@@ -2063,7 +2063,7 @@ PrefabInstance:
     - target: {fileID: 1764252916294138170, guid: 3d8d86546b0cf18408f05a957c7e36ad, type: 3}
       propertyPath: signals.Array.data[1].underlyingValue
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1758941395}
     - target: {fileID: 2273225558439740966, guid: 3d8d86546b0cf18408f05a957c7e36ad, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.32
@@ -8697,6 +8697,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ba0651d388999e445bd1aa17fce25842, type: 3}
+--- !u!114 &1758941395 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1302209793040489479, guid: a08762acbb5604c4597b58b4cb080193, type: 3}
+  m_PrefabInstance: {fileID: 71592184}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e55e57bd3ef491642ace43c22249a5a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1975500271 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2157272981753954215, guid: a0a8f7069068e40faa87eaf58c7b7cda, type: 3}
