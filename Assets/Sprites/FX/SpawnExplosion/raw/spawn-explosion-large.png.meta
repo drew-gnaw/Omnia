@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: f0fc1eb04a5ec45aa8fb9ee1bc76d0ec
+guid: 71b10e979f26e49f3ab9f7628459114e
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,85 +97,127 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: bird-explosion_0
+      name: spawn-explosion-large_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 32
-        height: 32
+        width: 256
+        height: 256
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 679965d511854433783b7f933767ba1c
-      internalID: -2051059801
+      spriteID: 019fd82d452194efdad1a69562759396
+      internalID: -57645085
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: bird-explosion_1
+      name: spawn-explosion-large_1
       rect:
         serializedVersion: 2
-        x: 32
+        x: 256
         y: 0
-        width: 32
-        height: 32
+        width: 256
+        height: 256
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 17fd19a867307499a8019a4323cce959
-      internalID: 1315029683
+      spriteID: 9296f013f548243718a6d18ac7d446ec
+      internalID: -460163045
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: bird-explosion_2
+      name: spawn-explosion-large_2
       rect:
         serializedVersion: 2
-        x: 64
+        x: 512
         y: 0
-        width: 32
-        height: 32
+        width: 256
+        height: 256
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 800549fed14404314989788640ba55bb
-      internalID: 138788645
+      spriteID: 1b7ab954909d64a3a984930668ed4d5a
+      internalID: 1536010464
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: bird-explosion_3
+      name: spawn-explosion-large_3
       rect:
         serializedVersion: 2
-        x: 96
+        x: 768
         y: 0
-        width: 32
-        height: 32
+        width: 256
+        height: 256
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1c81ee1d73c6448f0959bb378877ec9d
-      internalID: 2126085042
+      spriteID: f18b53e3a487446ce844f2da9ef2d1d9
+      internalID: -183332250
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spawn-explosion-large_4
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8c7acb76713404d20a305679dd881568
+      internalID: 205761962
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spawn-explosion-large_5
+      rect:
+        serializedVersion: 2
+        x: 1280
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ac260d27a59f7481885b6cebb701be9d
+      internalID: 1892723339
       vertices: []
       indices: 
       edges: []
@@ -191,11 +233,12 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      bird-explosion_0: -2051059801
-      bird-explosion_1: 1315029683
-      bird-explosion_2: 138788645
-      bird-explosion_3: 2126085042
-      bird-explosion_4: -1274513295
+      spawn-explosion-large_0: -57645085
+      spawn-explosion-large_1: -460163045
+      spawn-explosion-large_2: 1536010464
+      spawn-explosion-large_3: -183332250
+      spawn-explosion-large_4: 205761962
+      spawn-explosion-large_5: 1892723339
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
