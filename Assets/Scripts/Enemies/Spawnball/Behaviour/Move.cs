@@ -5,20 +5,20 @@ using Enemies.Common;
 using UnityEngine;
 using Utils;
 
-namespace Enemies.Bird.Behaviour {
-    public class Attack : IBehaviour {
-        private readonly Bird self;
+namespace Enemies.Spawnball.Behaviour {
+    public class Move : IBehaviour {
         private List<Vector3> path;
         private float t;
         private Coroutine co;
+        private readonly Spawnball self;
 
-        public Attack(Bird self) {
+        public Move(Spawnball self) {
             this.self = self;
         }
 
         public void OnEnter() {
             path = CalculatePath();
-            t = self.fuse;
+            t = self.lifespan;
             co = self.StartCoroutine(DoRecalculatePathToTarget());
         }
 
@@ -27,7 +27,7 @@ namespace Enemies.Bird.Behaviour {
         }
 
         public void OnTick() {
-            if (t == 0 || IsNear(self.targetInstance.rb.worldCenterOfMass)) self.OnExplode();
+            if (t == 0 || IsNear(self.target.position)) self.UseBehaviour(new Activate(self));
             else {
                 Vector2 next = path.LastOrDefault(it => IsNear(it));
                 if (next == default) return;
@@ -48,6 +48,6 @@ namespace Enemies.Bird.Behaviour {
 
         private bool IsNear(Vector2 it) => Vector2.Distance(self.rb.worldCenterOfMass, it) < self.triggerDistance;
 
-        private List<Vector3> CalculatePath() => Pathfinder.FindPath(self.rb.worldCenterOfMass, self.targetInstance.rb.worldCenterOfMass);
+        private List<Vector3> CalculatePath() => Pathfinder.FindPath(self.rb.worldCenterOfMass, self.target.position);
     }
 }

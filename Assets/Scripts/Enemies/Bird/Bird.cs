@@ -48,8 +48,9 @@ namespace Enemies.Bird {
 
         public override void Die() {
             ScreenShakeManager.Instance.Shake(screenShakeIntensity, screenShakeDuration);
-            Instantiate(explosion, transform.position, Quaternion.identity);
+
             base.Die();
+            Instantiate(explosion, transform.position, Quaternion.identity);
         }
 
         public bool IsTargetDetected() =>
