@@ -45,8 +45,7 @@ namespace Scenes {
             dustImages = dustParent.GetComponentsInChildren<Image>();
 
             foreach (var img in dustImages) {
-                FloatingImage floating = img.gameObject.AddComponent<FloatingImage>();
-                StartCoroutine(floating.FadeIn());
+                img.gameObject.AddComponent<FloatingImage>();
             }
 
             // Text is not displayed at the beginning, but we should store their values.
