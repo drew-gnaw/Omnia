@@ -12,18 +12,13 @@ public class Dinky : MonoBehaviour, IInteractable
     [SerializeField] private string idleState;
     [SerializeField] private string appearState;
     [SerializeField] private string disappearState;
+    [SerializeField] private Animator animator;
     [FormerlySerializedAs("tempDialogue")] [SerializeField] private DialogueWrapper interactDialogue;
 
     // Not sure this is how it should be handled, could stay this simple if Dinky's interactions are totally linear
     [SerializeField] private List<Transform> locations;
 
     public static event Action OnInteract;
-
-    private Animator animator;
-
-    void Start() {
-       animator = graphics.GetComponent<Animator>();
-    }
 
     private bool animating = false;
 
