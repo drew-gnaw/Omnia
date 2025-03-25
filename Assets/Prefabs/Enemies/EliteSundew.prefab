@@ -450,7 +450,7 @@ MonoBehaviour:
   staggerDurationS: 1
   windup: 3
   reload: 3
-  spread: 3
+  spread: 0.05
   lag: 0
   count: 10
   projectileAngle: 90
@@ -474,7 +474,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5710193498280292276}
-  m_BodyType: 2
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -536,7 +536,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1, y: 1.5}
   m_EdgeRadius: 0
 --- !u!233 &8036100221257340832
 HingeJoint2D:
