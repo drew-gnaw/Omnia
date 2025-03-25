@@ -11461,10 +11461,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2127775288}
     m_Modifications:
+    - target: {fileID: 39432129564974246, guid: d3afaf3412efce549873933418bf70a4, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: dad48720c2dec4740a9f93a3765a8dff, type: 2}
     - target: {fileID: 1939533155320119540, guid: d3afaf3412efce549873933418bf70a4, type: 3}
       propertyPath: m_Name
       value: EliteBird
       objectReference: {fileID: 0}
+    - target: {fileID: 3053440561909225885, guid: d3afaf3412efce549873933418bf70a4, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 4a6e95899120e9344ada66f0ac9102a1, type: 3}
     - target: {fileID: 5198308197478355175, guid: d3afaf3412efce549873933418bf70a4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.75
