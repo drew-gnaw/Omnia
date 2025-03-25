@@ -78,6 +78,7 @@ public class HarpoonSpear : MonoBehaviour {
     }
 
     public void ReturnToPlayer() {
+        collectable = true;
         playerAbsorb = true;
     }
 
@@ -213,7 +214,7 @@ public class HarpoonSpear : MonoBehaviour {
 
     private IEnumerator DropCooldown() {
         yield return new WaitForSeconds(gun.harpoonSpearPickupCooldown);
-        collectable = true;
+        collectable = (TaggedEnemy == null);
     }
 
     private void StartHarpoonTimer() {
