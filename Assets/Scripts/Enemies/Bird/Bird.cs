@@ -50,7 +50,7 @@ namespace Enemies.Bird {
             ScreenShakeManager.Instance.Shake(screenShakeIntensity, screenShakeDuration);
 
             base.Die();
-            Instantiate(explosion, transform.position, Quaternion.identity);
+            Instantiate(explosion, rb.worldCenterOfMass, Quaternion.identity);
         }
 
         public bool IsTargetDetected() =>

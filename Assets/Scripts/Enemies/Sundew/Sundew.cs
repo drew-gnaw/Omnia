@@ -22,8 +22,15 @@ namespace Enemies.Sundew {
         [SerializeField] internal LayerMask player;
         [SerializeField] internal GameObject projectile;
 
+        [SerializeField] internal GameObject deathExplosion;
+
         public void Awake() {
             UseBehaviour(new Idle(this));
+        }
+
+        public override void Die() {
+            base.Die();
+            Instantiate(deathExplosion, rb.worldCenterOfMass, Quaternion.identity);
         }
 
         public void FireProjectiles() {

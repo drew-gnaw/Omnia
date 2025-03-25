@@ -40,7 +40,7 @@ namespace Enemies.Spawnball {
             Instantiate(spawn, target.position, Quaternion.identity);
             Destroy(gameObject);
 
-            Instantiate(explosion, transform.position, Quaternion.identity);
+            Instantiate(explosion, rb.worldCenterOfMass, Quaternion.identity);
         }
 
         protected override void UseAnimation(StateMachine stateMachine) {
