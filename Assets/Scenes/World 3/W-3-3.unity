@@ -3398,11 +3398,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4774809283147415622, guid: 60c329ee0656c824e8e9c92cb57b8930, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.9876652
+      value: -0.98475075
       objectReference: {fileID: 0}
     - target: {fileID: 4774809283147415622, guid: 60c329ee0656c824e8e9c92cb57b8930, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.10916996
+      value: -0.10920048
       objectReference: {fileID: 0}
     - target: {fileID: 4774809283147415622, guid: 60c329ee0656c824e8e9c92cb57b8930, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3555,6 +3555,10 @@ PrefabInstance:
     - target: {fileID: 466323356321424458, guid: f4bea54d7ba3e224696a1c316921383e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919702509989044879, guid: f4bea54d7ba3e224696a1c316921383e, type: 3}
+      propertyPath: moveDistance
+      value: -3
       objectReference: {fileID: 0}
     - target: {fileID: 919702509989044879, guid: f4bea54d7ba3e224696a1c316921383e, type: 3}
       propertyPath: gears.Array.size
