@@ -89,10 +89,9 @@ public class HarpoonGun : WeaponClass
     public override void IntroSkill()
     {
         // Pull all enemies
-        foreach (var spear in firedSpears)
-        {
-            spear.PullEnemy();
+        foreach (var spear in firedSpears) {
             spear.ReturnToPlayer();
+            spear.PullEnemy();
         }
     }
 
