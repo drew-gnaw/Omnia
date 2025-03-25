@@ -8,7 +8,7 @@ namespace Scenes {
     public class City : MonoBehaviour {
         public void Start() {
             Guard.OnSpeakToGuard += ExitScene;
-
+            AudioManager.Instance.SwitchBGM(AudioTracks.CityOfMold);
         }
 
         public void OnDisable() {

@@ -1,7 +1,10 @@
 using System;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 /*
  * Code referenced from adammyhre from github. 
@@ -35,6 +38,7 @@ public class SerializableType : ISerializationCallbackReceiver {
     public static implicit operator SerializableType(Type type) => new() { Type = type };
 }
 
+#if UNITY_EDITOR
 [CustomPropertyDrawer(typeof(SerializableType))]
 public class SerializableTypeDrawer : PropertyDrawer {
     TypeFilterAttribute typeFilter;
@@ -76,6 +80,7 @@ public class SerializableTypeDrawer : PropertyDrawer {
         }
     }
 }
+#endif // UNITY_EDITOR
 
 public class TypeFilterAttribute : PropertyAttribute {
     public Func<Type, bool> Filter { get; }
@@ -89,12 +94,6 @@ public class TypeFilterAttribute : PropertyAttribute {
 }
 
 public static class TypeExtensions {
-    /// <summary>
-    /// Checks if a given type inherits or implements a specified base type.
-    /// </summary>
-    /// <param name="type">The type which needs to be checked.</param>
-    /// <param name="baseType">The base type/interface which is expected to be inherited or implemented by the 'type'</param>
-    /// <returns>Return true if 'type' inherits or implements 'baseType'. False otherwise</returns>        
     public static bool InheritsOrImplements(this Type type, Type baseType) {
         type = ResolveGenericType(type);
         baseType = ResolveGenericType(baseType);

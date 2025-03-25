@@ -43,6 +43,7 @@ public class DialogueManager : PersistentSingleton<DialogueManager>
 
     public IEnumerator StartDialogue(List<DialogueText> newSentences)
     {
+        Debug.Log("Starting Dialogue with sentences: " + newSentences);
         if (activeDialogueBox.gameObject.activeInHierarchy)
         {
             yield break;
@@ -51,6 +52,7 @@ public class DialogueManager : PersistentSingleton<DialogueManager>
         activeDialogueBox.gameObject.SetActive(true);
 
         sentences = newSentences;
+
         inDialogue = true;
 
         Time.timeScale = 0f;

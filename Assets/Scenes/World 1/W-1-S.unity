@@ -178,7 +178,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4774809283147415622, guid: 60c329ee0656c824e8e9c92cb57b8930, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.1749063
+      value: 1.1780553
       objectReference: {fileID: 0}
     - target: {fileID: 4774809283147415622, guid: 60c329ee0656c824e8e9c92cb57b8930, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3511,7 +3511,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea0d771bef90fcb4ab925ebf7e5dd1d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pickupDialogue: {fileID: 11400000, guid: d28e39dd7fd959f44aa9a21cc4bd4922, type: 2}
+  pickupDialogue: {fileID: 11400000, guid: 60d8a9e1e751c5a4787da7f281af2f85, type: 2}
   makeInteractable: {fileID: 1178337836}
   shotgunSprite: {fileID: 298790892}
   player: {fileID: 1975500272}

@@ -193,6 +193,8 @@ namespace Players {
                 damage = modifier(damage);
             }
 
+            AudioManager.Instance.PlayHurtSound();
+
             combatTimer.Start();
             CurrentHealth -= (int) damage;
             currentHurtInvulnerability = hurtInvulnerabilityTime;
