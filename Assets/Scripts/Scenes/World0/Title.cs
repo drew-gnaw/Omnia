@@ -1,4 +1,5 @@
 using System.Collections;
+using Background;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -15,16 +16,15 @@ namespace Scenes {
         [SerializeField] private TextMeshPro quoteTMP;       // Everything happens for a reason (TMP UI)
 
         [SerializeField] private FadeScreenHandler strongFadeHandler;
-        [SerializeField] private float flickerSpeed = 0.1f;
-        [SerializeField] private float flickerIntensity = 0.2f;
-        [SerializeField] private Color baseColor = Color.white;
-        [SerializeField] private Color flickerColor = new Color(1f, 0.85f, 0.6f);
 
-        private SpriteRenderer titleSpriteRenderer;
-        private SpriteRenderer subtitleSpriteRenderer;
+        [SerializeField] private GameObject dustParent;
+
+        private Image[] dustImages;
 
         private string taglineText;
         private string quoteText;
+
+
 
 
 
@@ -42,8 +42,12 @@ namespace Scenes {
         }
 
         private void Start() {
-            titleSpriteRenderer = titleSprite.GetComponent<SpriteRenderer>();
-            subtitleSpriteRenderer = subtitleSprite.GetComponent<SpriteRenderer>();
+            dustImages = dustParent.GetComponentsInChildren<Image>();
+
+            foreach (var img in dustImages) {
+                FloatingImage floating = img.gameObject.AddComponent<FloatingImage>();
+                StartCoroutine(floating.FadeIn());
+            }
 
             // Text is not displayed at the beginning, but we should store their values.
             taglineText = taglineTMP.text;
@@ -75,11 +79,6 @@ namespace Scenes {
 
             // Done to avoid scene transition
             SceneManager.LoadScene("2_Opening");
-        }
-
-        void Update() {
-            float flicker = flickerSpeed + Random.Range(-flickerIntensity, flickerIntensity);
-            titleSpriteRenderer.color = Color.Lerp(baseColor, flickerColor, flicker);
         }
 
         private IEnumerator FadeInSprite(SpriteRenderer sprite, float duration) {
