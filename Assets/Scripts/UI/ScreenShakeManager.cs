@@ -1,16 +1,17 @@
 using System.Collections;
 using Cinemachine;
-using Players.Buff;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Utils;
 
 public class ScreenShakeManager : PersistentSingleton<ScreenShakeManager> {
-    private CinemachineVirtualCamera virtualCamera;
     private CinemachineBasicMultiChannelPerlin perlinNoise;
 
     protected override void OnAwake() {
-        UpdateCameraReference();
+        perlinNoise = FindObjectOfType<CinemachineVirtualCamera>().GetComponentInChildren<CinemachineBasicMultiChannelPerlin>();
+    }
+
+    private void OnEnable() {
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
@@ -19,19 +20,15 @@ public class ScreenShakeManager : PersistentSingleton<ScreenShakeManager> {
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
-        UpdateCameraReference();
+        perlinNoise = FindObjectOfType<CinemachineVirtualCamera>().GetComponentInChildren<CinemachineBasicMultiChannelPerlin>();
     }
 
     public void Shake(float intensity = 1.0f, float duration = 0.5f) {
-        if (perlinNoise != null) {
-            StartCoroutine(ShakeCoroutine(intensity, duration));
-        } else {
-            Debug.LogError("Perlin noise module is missing!");
-        }
+        if (!perlinNoise) return;
+        StartCoroutine(ShakeCoroutine(intensity, duration));
     }
 
     private IEnumerator ShakeCoroutine(float intensity, float duration) {
-        Debug.Log("Shaking");
         float elapsed = 0f;
 
         // Set the shake values
@@ -50,20 +47,5 @@ public class ScreenShakeManager : PersistentSingleton<ScreenShakeManager> {
         // Reset to 0 instead of original values as multiple screen shakes at a time causes issues
         perlinNoise.m_AmplitudeGain = 0;
         perlinNoise.m_FrequencyGain = 0;
-    }
-
-    private void UpdateCameraReference() {
-        virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
-
-        if (!virtualCamera) {
-            Debug.LogWarning("Couldn't find virtual camera in scene!");
-            return;
-        }
-
-        perlinNoise = virtualCamera.GetComponentInChildren<CinemachineBasicMultiChannelPerlin>();
-
-        if (!perlinNoise) {
-            Debug.LogError("CinemachineBasicMultiChannelPerlin component is missing from the camera!");
-        }
     }
 }
