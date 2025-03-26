@@ -39,17 +39,6 @@ namespace Enemies.BirdSpawner {
         }
 
         protected override void UseAnimation(StateMachine stateMachine) {
-            return;
-            var idle = new IdleAnimation(animator);
-            var barf = new BarfAnimation(animator);
-            var dead = new DeadAnimation(animator);
-
-            stateMachine.AddAnyTransition(idle, new FuncPredicate(() => behaviour is Idle));
-            stateMachine.AddAnyTransition(barf, new FuncPredicate(() => behaviour is Attack));
-            stateMachine.AddAnyTransition(dead, new FuncPredicate(() => behaviour is Dead));
-
-            stateMachine.SetState(idle);
-            animationStateMachine = stateMachine;
         }
     }
 }
