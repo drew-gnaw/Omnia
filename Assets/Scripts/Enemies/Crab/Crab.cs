@@ -24,7 +24,12 @@ namespace Enemies.Crab {
         [SerializeField] internal float attackHeight;
         [SerializeField] internal float attackDistance;
 
-        bool HiddenEnemy.hidden { get => behaviour is Hide || behaviour is Idle; set { } }
+        [SerializeField] internal GameObject deathExplosion;
+
+        bool HiddenEnemy.hidden {
+            get => behaviour is Idle or Hide;
+            set { }
+        }
 
         public void Awake() {
             targetInstance ??= FindObjectsOfType<Player>().FirstOrDefault();
@@ -33,7 +38,12 @@ namespace Enemies.Crab {
 
         public override void Update() {
             base.Update();
-            sprite.flipX = targetInstance.rb.position.x < transform.position.x;
+            sprite.flipX = targetInstance.rb.worldCenterOfMass.x < rb.worldCenterOfMass.x;
+        }
+
+        public override void Die() {
+            base.Die();
+            Instantiate(deathExplosion, rb.worldCenterOfMass, Quaternion.identity);
         }
 
         public void Attack(Player it) {

@@ -27,6 +27,8 @@ namespace Enemies.Armadillo {
         [SerializeField] internal float recoilAngle = 45;
         [SerializeField] internal float recoilSpeed = 5.0f;
 
+        [SerializeField] internal GameObject deathExplosion;
+
         public void Awake() {
             UseBehaviour(new Idle(this));
         }
@@ -34,6 +36,11 @@ namespace Enemies.Armadillo {
         public override void Update() {
             base.Update();
             sprite.flipX = facing.x == 0 ? sprite.flipX : facing.x > 0;
+        }
+
+        public override void Die() {
+            base.Die();
+            Instantiate(deathExplosion, rb.worldCenterOfMass, Quaternion.identity);
         }
 
         public void Attack(Player it) {
