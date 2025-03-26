@@ -42,8 +42,7 @@ namespace Scenes {
         }
 
         private void Awake() {
-            strongFadeHandler.SetDarkScreen();
-            StartCoroutine(strongFadeHandler.FadeInLightScreen(1f));
+            strongFadeHandler.SetLightScreen();
         }
 
         private void Start() {
@@ -61,8 +60,7 @@ namespace Scenes {
             quoteTMP.text = "";
 
             AudioManager.Instance.PlayBGM(AudioTracks.LullabyForAScrapyard);
-            fadeScreen.SetDarkScreen();
-            StartCoroutine(fadeScreen.FadeInLightScreen(1f));
+            fadeScreen.SetLightScreen();
 
         }
 
@@ -75,7 +73,7 @@ namespace Scenes {
         }
 
         public void GoToLevelSelect() {
-            SceneInitializer.LoadScene("LevelSelect");
+            SceneManager.LoadScene("LevelSelect");
         }
 
         private IEnumerator StartGameSequence() {

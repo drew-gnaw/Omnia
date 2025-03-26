@@ -23,6 +23,10 @@ namespace Scenes {
             }
         }
 
+        public void Back() {
+            SceneManager.LoadScene("1_Title");
+        }
+
 
         public void GoToWorld(int worldNumber) {
             switch (worldNumber) {
