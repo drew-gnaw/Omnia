@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using Background;
+using Initializers;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -71,6 +72,10 @@ namespace Scenes {
                 b.interactable = false;
             }
             StartCoroutine(StartGameSequence());
+        }
+
+        public void GoToLevelSelect() {
+            SceneInitializer.LoadScene("LevelSelect");
         }
 
         public void Update() {
