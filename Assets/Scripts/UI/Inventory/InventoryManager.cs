@@ -13,8 +13,6 @@ public class InventoryManager : PersistentSingleton<InventoryManager> {
 
     public bool IsInventoryOpen { get; private set; }
 
-    private bool isShaking = false;
-
     protected override void OnAwake() {
     }
 
@@ -25,6 +23,8 @@ public class InventoryManager : PersistentSingleton<InventoryManager> {
     }
 
     private void Update() {
+        if (PauseMenu.IsPaused || DialogueManager.Instance.IsInDialogue()) return;
+
         if (Input.GetKeyDown(KeyCode.I)) {
             ToggleInventory();
         } else if (Input.GetKeyDown(KeyCode.Tab)) {

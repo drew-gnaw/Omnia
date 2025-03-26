@@ -8,13 +8,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 285959956619106809, guid: b1961d03c1fff419ca277115aafff06c, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 285959956619106809, guid: b1961d03c1fff419ca277115aafff06c, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 720053526595852544, guid: b1961d03c1fff419ca277115aafff06c, type: 3}
+      propertyPath: m_Radius
+      value: 0.75
+      objectReference: {fileID: 0}
     - target: {fileID: 2157272981753954215, guid: b1961d03c1fff419ca277115aafff06c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -7.3859396
+      value: 1.75
       objectReference: {fileID: 0}
     - target: {fileID: 2157272981753954215, guid: b1961d03c1fff419ca277115aafff06c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.5
+      value: -4.25
       objectReference: {fileID: 0}
     - target: {fileID: 2157272981753954215, guid: b1961d03c1fff419ca277115aafff06c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -91,6 +103,14 @@ PrefabInstance:
     - target: {fileID: 2397211854694393368, guid: b1961d03c1fff419ca277115aafff06c, type: 3}
       propertyPath: triggerDistance
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2397211854694393368, guid: b1961d03c1fff419ca277115aafff06c, type: 3}
+      propertyPath: screenShakeDuration
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2397211854694393368, guid: b1961d03c1fff419ca277115aafff06c, type: 3}
+      propertyPath: screenShakeIntensity
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5710193498280292276, guid: b1961d03c1fff419ca277115aafff06c, type: 3}
       propertyPath: m_Name

@@ -27,27 +27,22 @@ namespace Enemies.Bird.Behaviour {
         }
 
         public void OnTick() {
-            if (IsNear(self.targetInstance.rb.worldCenterOfMass)) {
-                self.OnExplode();
-            } else {
+            if (t == 0 || IsNear(self.targetInstance.rb.worldCenterOfMass)) self.OnExplode();
+            else {
                 Vector2 next = path.LastOrDefault(it => IsNear(it));
                 if (next == default) return;
                 var direction = next - self.rb.worldCenterOfMass;
-
                 self.rb.velocity = MathUtils.Lerpish(self.rb.velocity, direction.normalized * self.speed, Time.fixedDeltaTime * self.airAcceleration);
             }
         }
 
         public void OnUpdate() {
             t = Mathf.Max(0, t - Time.deltaTime);
-            if (t != 0) return;
-
-            self.OnExplode(); /* Fuse ran out. */
         }
 
         private IEnumerator DoRecalculatePathToTarget() {
             for (; self; path = CalculatePath()) {
-                yield return new WaitForSeconds(0.1f);
+                yield return new WaitForSeconds(0.150f);
             }
         }
 

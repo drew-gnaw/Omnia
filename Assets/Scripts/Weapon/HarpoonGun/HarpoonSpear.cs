@@ -1,9 +1,9 @@
+using System;
 using Unity.VisualScripting;
 using UnityEngine;
 using Enemies;
 using Omnia.Utils;
 using Players;
-
 using System.Collections;
 
 /*
@@ -71,6 +71,7 @@ public class HarpoonSpear : MonoBehaviour {
         if (TaggedEnemy == null) {
             return;
         }
+
         Vector2 difference = (player.Center - transform.position).normalized;
         TaggedEnemy.GetComponent<Rigidbody2D>().AddForce(difference * gun.pullPower);
         AudioManager.Instance.PlaySFX(AudioTracks.HarpoonRetract);
@@ -78,6 +79,7 @@ public class HarpoonSpear : MonoBehaviour {
     }
 
     public void ReturnToPlayer() {
+        collectable = true;
         playerAbsorb = true;
     }
 
@@ -100,10 +102,10 @@ public class HarpoonSpear : MonoBehaviour {
     }
 
     void OnTriggerEnter2D(Collider2D other) {
-
         if (Collider2D.IsTouchingLayers(playerLayer) && collectable) {
             HandlePlayerCollision();
         }
+
         // FIXME: for whatever reason, checking if the spear collider is touching enemy does not always work,
         // other collider ends up as null if they are moving
         if (CollisionUtils.IsLayerInMask(other.gameObject.layer, hittableLayerMask) && !dropped) {
@@ -119,6 +121,15 @@ public class HarpoonSpear : MonoBehaviour {
         if (Collider2D.IsTouchingLayers(groundLayer) && !dropped) {
             AudioManager.Instance.PlaySFX(AudioTracks.HarpoonHit);
             HandleGroundCollision(other.gameObject);
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D other) {
+        // Prevents edge cases of the player already being in the harpoon as it is set to collectable
+        // Having both OnTriggerEnter2D and OnTriggerStay2D should be okay as we check the `collectable`
+        // condition, which is set to false if HandlePlayerCollision() was already called
+        if (Collider2D.IsTouchingLayers(playerLayer) && collectable) {
+            HandlePlayerCollision();
         }
     }
 
@@ -207,13 +218,14 @@ public class HarpoonSpear : MonoBehaviour {
         if (cooldown != null) {
             StopCoroutine(cooldown);
         }
+
         cooldown = DropCooldown();
         StartCoroutine(cooldown);
     }
 
     private IEnumerator DropCooldown() {
         yield return new WaitForSeconds(gun.harpoonSpearPickupCooldown);
-        collectable = true;
+        collectable = (TaggedEnemy == null);
     }
 
     private void StartHarpoonTimer() {
@@ -222,6 +234,7 @@ public class HarpoonSpear : MonoBehaviour {
         if (absorbCooldown != null) {
             StopCoroutine(absorbCooldown);
         }
+
         absorbCooldown = DropHarpoonTimer();
 
         try {

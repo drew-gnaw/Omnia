@@ -24,8 +24,8 @@ public class PauseMenu : PersistentSingleton<PauseMenu> {
 
     public delegate void PauseMenuEventHandler();
 
-    public static event PauseMenuEventHandler onPauseMenuActivate; // for more complex functions that cannot use isPaused
-    public static event PauseMenuEventHandler onPauseMenuDeactivate;
+    public static event PauseMenuEventHandler OnPauseMenuActivate;   // for more complex functions that cannot use isPaused
+    public static event PauseMenuEventHandler OnPauseMenuDeactivate;
 
 
     bool isDialogueHistoryShowing = false;
@@ -77,27 +77,36 @@ public class PauseMenu : PersistentSingleton<PauseMenu> {
     }
 
     // Update is called once per frame
-    void Update() {
-        if (Input.GetKeyDown(KeyCode.Tab)) {
-            if (IsPaused) {
-                ResumeScene();
-            } else {
-                PauseScene();
-            }
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            TogglePause();
+        }
+    }
+
+    void TogglePause() {
+        if (IsPaused)
+        {
+            ResumeScene();
+        } else
+        {
+            PauseScene();
         }
     }
 
 
-    public void ResumeScene() {
+    public void ResumeScene()
+    {
         pauseMenuPanel.SetActive(false);
-        onPauseMenuDeactivate?.Invoke();
+        OnPauseMenuDeactivate?.Invoke();
         Time.timeScale = 1f;
         IsPaused = false;
     }
 
     public void PauseScene() {
         pauseMenuPanel.SetActive(true);
-        onPauseMenuActivate?.Invoke();
+        OnPauseMenuActivate?.Invoke();
         Time.timeScale = 0f;
         IsPaused = true;
 

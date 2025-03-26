@@ -178,7 +178,11 @@ public class AudioManager : PersistentSingleton<AudioManager>
     // Plays a specific sound effect by looking it up in AudioList
     // Ideal for short one-time sounds like footsteps, item pickups, enemy attacks
     public void PlaySFX(string soundName) {
+        RandomizePitch();
         SFXPlayer.PlayOneShot(sfxTracks.GetClipByName(soundName));
+    }
+    private void RandomizePitch() {
+        SFXPlayer.pitch = Random.Range(0.90f, 1.1f);
     }
 
     // Stop any currently playing sound effects immediately
@@ -206,7 +210,7 @@ public class AudioManager : PersistentSingleton<AudioManager>
     }
 
     public void PlayHurtSound() {
-        SFXPlayer.PlayOneShot(sfxTracks.GetClipByName($"JamieHurt{Random.Range(1, 4)}"));
+        PlaySFX($"JamieHurt{Random.Range(1, 4)}");
     }
 
     /////////////////////
