@@ -10,13 +10,13 @@ public class Steam : MonoBehaviour {
     [SerializeField] private LayerMask enemyLayer;
     [SerializeField] private LayerMask playerLayer;
 
-    public void OnTriggerStay2D(Collider2D other) {
+    public void OnTriggerEnter2D(Collider2D other) {
         if (Collider2d.IsTouchingLayers(playerLayer)) {
             var player = other.gameObject.GetComponent<Player>();
 
             /* Directly calling player.Die() here causes
                some strange behaviour with level loading...? */
-            if (player != null) player.Hurt(player.CurrentHealth);
+            if (player != null) player.Die();
         } else if (Collider2d.IsTouchingLayers(enemyLayer)) {
             var enemy = other.gameObject.GetComponent<Enemy>();
             if (enemy != null) enemy.Die();
