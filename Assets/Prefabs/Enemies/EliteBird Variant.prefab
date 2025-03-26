@@ -10,11 +10,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 285959956619106809, guid: b1961d03c1fff419ca277115aafff06c, type: 3}
       propertyPath: m_LocalScale.x
-      value: 3
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 285959956619106809, guid: b1961d03c1fff419ca277115aafff06c, type: 3}
       propertyPath: m_LocalScale.y
-      value: 3
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 720053526595852544, guid: b1961d03c1fff419ca277115aafff06c, type: 3}
       propertyPath: m_Radius
@@ -116,6 +116,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: EliteBird Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 6149703548532306918, guid: b1961d03c1fff419ca277115aafff06c, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: dad48720c2dec4740a9f93a3765a8dff, type: 2}
+    - target: {fileID: 9202038865644320477, guid: b1961d03c1fff419ca277115aafff06c, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 4a6e95899120e9344ada66f0ac9102a1, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
