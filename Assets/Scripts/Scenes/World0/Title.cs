@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Background;
 using TMPro;
@@ -8,16 +9,20 @@ using UnityEngine.UI;
 using Utils;
 
 namespace Scenes {
-    public class Title : LevelSelect {
+    public class Title : MonoBehaviour {
         [SerializeField] private GameObject titleSprite;         // Omnia (Sprite)
         [SerializeField] private GameObject subtitleSprite;      // The Journey Upwards (Sprite)
 
         [SerializeField] private TextMeshPro taglineTMP;     // Causa Fiunt (TMP UI)
         [SerializeField] private TextMeshPro quoteTMP;       // Everything happens for a reason (TMP UI)
 
+        [SerializeField] private FadeScreenHandler fadeScreen;
         [SerializeField] private FadeScreenHandler strongFadeHandler;
 
         [SerializeField] private GameObject dustParent;
+
+        [SerializeField] private Button[] buttons;
+
 
         private Image[] dustImages;
 
@@ -36,7 +41,6 @@ namespace Scenes {
         }
 
         private void Awake() {
-            base.Awake();
             strongFadeHandler.SetDarkScreen();
             StartCoroutine(strongFadeHandler.FadeInLightScreen(1f));
         }
@@ -56,6 +60,8 @@ namespace Scenes {
             quoteTMP.text = "";
 
             AudioManager.Instance.PlayBGM(AudioTracks.LullabyForAScrapyard);
+            fadeScreen.SetDarkScreen();
+            StartCoroutine(fadeScreen.FadeInLightScreen(1f));
 
         }
 
@@ -65,6 +71,10 @@ namespace Scenes {
                 b.interactable = false;
             }
             StartCoroutine(StartGameSequence());
+        }
+
+        public void Update() {
+            Debug.Log(buttons);
         }
 
         private IEnumerator StartGameSequence() {
