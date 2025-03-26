@@ -101,8 +101,8 @@ MonoBehaviour:
   spawnPoint: {fileID: 1724999162820417965}
   maxSpawns: 1
   spawnCoolDown: 3
-  prefab: {fileID: 5710193498280292276, guid: b1961d03c1fff419ca277115aafff06c, type: 3}
-  spawnAnimationPrefab: {fileID: 3513069354802665914, guid: 82e7f705dc585b0498a53cea112146da, type: 3}
+  spawn: {fileID: 5710193498280292276, guid: b1961d03c1fff419ca277115aafff06c, type: 3}
+  explosion: {fileID: 6478827744998899019, guid: 04c9aaf5dc93f4702a16459970fc5fec, type: 3}
 --- !u!1 &4968367588561365521
 GameObject:
   m_ObjectHideFlags: 0

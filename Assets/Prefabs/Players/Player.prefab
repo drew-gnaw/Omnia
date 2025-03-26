@@ -98,7 +98,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.125}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -109,7 +109,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.25, y: 0.5}
+  m_Size: {x: 0.45, y: 0.25}
   m_EdgeRadius: 0
 --- !u!114 &3027503570915798651
 MonoBehaviour:
@@ -394,7 +394,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.25, y: 0.75}
+  m_Offset: {x: 0.25, y: 0.725}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -405,7 +405,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.25, y: 0.25}
+  m_Size: {x: 0.25, y: 1.4}
   m_EdgeRadius: 0
 --- !u!1 &5710193498280292276
 GameObject:
@@ -487,9 +487,9 @@ MonoBehaviour:
   maximumHealth: 6
   maximumFlow: 100
   moveSpeed: 7
-  jumpSpeed: 7
+  jumpSpeed: 6.5
   pullSpeed: 12
-  rollSpeed: 8
+  rollSpeed: 7
   rollDuration: 0.4
   rollCooldown: 1
   rollThreshold: 1
@@ -829,7 +829,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.25, y: 0.75}
+  m_Offset: {x: -0.25, y: 0.725}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -840,7 +840,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.25, y: 0.25}
+  m_Size: {x: 0.25, y: 1.4}
   m_EdgeRadius: 0
 --- !u!1001 &6529488516325034221
 PrefabInstance:

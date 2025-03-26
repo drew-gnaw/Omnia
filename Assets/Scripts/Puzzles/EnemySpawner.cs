@@ -2,13 +2,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using Omnia.Utils;
 using Enemies;
+using UnityEngine.Serialization;
 
 public class EnemySpawner : MonoBehaviour {
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private int maxSpawns;
     [SerializeField] private float spawnCoolDown;
-    [SerializeField] private GameObject prefab;
-    [SerializeField] private SpawnAnimation spawnAnimationPrefab;
+    [SerializeField] private GameObject spawn;
+    [SerializeField] private GameObject explosion;
 
     private readonly List<Enemy> ownedEnemies = new();
     private CountdownTimer spawnTimer;
@@ -40,14 +41,11 @@ public class EnemySpawner : MonoBehaviour {
     }
 
     private void TrySpawn() {
-        if (ownedEnemies.Count >= maxSpawns) {
-            return;
-        }
+        if (ownedEnemies.Count >= maxSpawns) return;
 
-        Instantiate(spawnAnimationPrefab, spawnPoint.position, spawnPoint.rotation);
-
-        Enemy newEnemy = Instantiate(prefab, spawnPoint.position, spawnPoint.rotation).GetComponent<Enemy>();
-        ownedEnemies.Add(newEnemy);
+        var instance = Instantiate(spawn, spawnPoint.position, Quaternion.identity).GetComponent<Enemy>();
+        ownedEnemies.Add(instance);
+        Instantiate(explosion, spawnPoint.position, Quaternion.identity);
     }
 
     private void HandleEnemyDeath(Enemy enemy) {
