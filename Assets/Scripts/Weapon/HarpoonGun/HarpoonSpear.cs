@@ -55,6 +55,7 @@ public class HarpoonSpear : MonoBehaviour {
 
     // Fires the spear in the rotation of the gun with its velocity
     public void Fire(HarpoonGun gun) {
+        AudioManager.Instance.PlaySFX(AudioTracks.HarpoonLaunch);
         this.gun = gun;
 
         gameObject.SetActive(true);
@@ -72,10 +73,12 @@ public class HarpoonSpear : MonoBehaviour {
         }
         Vector2 difference = (player.Center - transform.position).normalized;
         TaggedEnemy.GetComponent<Rigidbody2D>().AddForce(difference * gun.pullPower);
+        AudioManager.Instance.PlaySFX(AudioTracks.HarpoonRetract);
         TaggedEnemy.GetComponent<Enemy>().Hurt(gun.damage);
     }
 
     public void ReturnToPlayer() {
+        collectable = true;
         playerAbsorb = true;
     }
 
@@ -105,14 +108,17 @@ public class HarpoonSpear : MonoBehaviour {
         // FIXME: for whatever reason, checking if the spear collider is touching enemy does not always work,
         // other collider ends up as null if they are moving
         if (CollisionUtils.IsLayerInMask(other.gameObject.layer, hittableLayerMask) && !dropped) {
+            AudioManager.Instance.PlaySFX(AudioTracks.HarpoonHit);
             HandleEnemyCollision(other.GetComponent<Enemy>());
         }
 
         if (Collider2D.IsTouchingLayers(semisolidLayer) && !dropped) {
+            AudioManager.Instance.PlaySFX(AudioTracks.HarpoonHit);
             HandleSemisolidCollision(other.gameObject);
         }
 
         if (Collider2D.IsTouchingLayers(groundLayer) && !dropped) {
+            AudioManager.Instance.PlaySFX(AudioTracks.HarpoonHit);
             HandleGroundCollision(other.gameObject);
         }
     }
@@ -208,7 +214,7 @@ public class HarpoonSpear : MonoBehaviour {
 
     private IEnumerator DropCooldown() {
         yield return new WaitForSeconds(gun.harpoonSpearPickupCooldown);
-        collectable = true;
+        collectable = (TaggedEnemy == null);
     }
 
     private void StartHarpoonTimer() {

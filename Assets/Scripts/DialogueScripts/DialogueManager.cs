@@ -37,14 +37,17 @@ public class DialogueManager : PersistentSingleton<DialogueManager> {
         return inDialogue;
     }
 
-    public IEnumerator StartDialogue(List<DialogueText> newSentences) {
-        if (activeDialogueBox.gameObject.activeInHierarchy) {
+    public IEnumerator StartDialogue(List<DialogueText> newSentences)
+    {
+        if (activeDialogueBox.gameObject.activeInHierarchy)
+        {
             yield break;
         }
 
         activeDialogueBox.gameObject.SetActive(true);
 
         sentences = newSentences;
+
         inDialogue = true;
 
         Time.timeScale = 0f;

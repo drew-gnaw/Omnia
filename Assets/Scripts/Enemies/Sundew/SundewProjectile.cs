@@ -8,6 +8,7 @@ namespace Enemies.Sundew {
         [SerializeField] internal Rigidbody2D rb;
         [SerializeField] internal LayerMask mask;
         [SerializeField] internal float time;
+        [SerializeField] internal float terminalVelocity = -10f;
 
         public Action<Player, SundewProjectile> NotifyOnHit;
 
@@ -18,6 +19,12 @@ namespace Enemies.Sundew {
             Destroy(gameObject);
 
             if (other.TryGetComponent<Player>(out var player)) NotifyOnHit?.Invoke(player, this);
+        }
+
+        void FixedUpdate() {
+            if (rb.velocity.y < terminalVelocity) {
+                rb.velocity = new Vector2(rb.velocity.x, terminalVelocity);
+            }
         }
     }
 }

@@ -33,7 +33,6 @@ namespace Scenes {
             UnityEditor.EditorApplication.isPlaying = false;
 #endif
             Application.Quit();
-
         }
 
         private void Awake() {
@@ -52,6 +51,8 @@ namespace Scenes {
 
             quoteText = quoteTMP.text;
             quoteTMP.text = "";
+
+            AudioManager.Instance.PlayBGM(AudioTracks.LullabyForAScrapyard);
 
         }
 

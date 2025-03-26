@@ -1,27 +1,31 @@
 using System.Collections;
 using Cinemachine;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Utils;
 
 public class ScreenShakeManager : PersistentSingleton<ScreenShakeManager> {
-    private CinemachineVirtualCamera virtualCamera;
     private CinemachineBasicMultiChannelPerlin perlinNoise;
 
     protected override void OnAwake() {
-        virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
-        perlinNoise = virtualCamera.GetComponentInChildren<CinemachineBasicMultiChannelPerlin>();
+        perlinNoise = FindObjectOfType<CinemachineVirtualCamera>().GetComponentInChildren<CinemachineBasicMultiChannelPerlin>();
+    }
 
-        if (perlinNoise == null) {
-            Debug.LogError("CinemachineBasicMultiChannelPerlin is missing from the camera!");
-        }
+    private void OnEnable() {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable() {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+        perlinNoise = FindObjectOfType<CinemachineVirtualCamera>().GetComponentInChildren<CinemachineBasicMultiChannelPerlin>();
     }
 
     public void Shake(float intensity = 1.0f, float duration = 0.5f) {
-        if (perlinNoise != null) {
-            StartCoroutine(ShakeCoroutine(intensity, duration));
-        } else {
-          //  Debug.LogError("Perlin noise module is missing!");
-        }
+        if (!perlinNoise) return;
+        StartCoroutine(ShakeCoroutine(intensity, duration));
     }
 
     private IEnumerator ShakeCoroutine(float intensity, float duration) {

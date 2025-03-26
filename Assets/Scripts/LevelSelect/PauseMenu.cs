@@ -138,6 +138,12 @@ public class PauseMenu : PersistentSingleton<PauseMenu>
         SceneInitializer.LoadScene(SceneManager.GetActiveScene().name);
     }
 
+    public void SkipScene()
+    {
+        ResumeScene();
+        LevelManager.Instance.NextLevel();
+    }
+
     public void ToggleMusic()
     {
        AudioManager.Instance.ToggleAudio();

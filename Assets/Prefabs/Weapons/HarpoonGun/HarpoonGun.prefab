@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1945124447377154729
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3678299751637473820}
+  m_Layer: 7
+  m_Name: Barrel Position
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3678299751637473820
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1945124447377154729}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6285305121185895517}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3775420795739930932
 GameObject:
   m_ObjectHideFlags: 0
@@ -31,6 +62,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5922244361394495977}
+  - {fileID: 3678299751637473820}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3346402560137263328
@@ -59,14 +91,16 @@ MonoBehaviour:
   attackCooldown: 0
   damageToFlowRatio: 1
   maxAmmoCount: 3
-  harpoonVelocity: 20
-  harpoonSpearGravityScale: 0.8
+  harpoonVelocity: 30
+  harpoonSpearGravityScale: 1
   harpoonSpearPickupCooldown: 0.3
   collectionRadius: 1
   harpoonTimer: 999
   spearReturnSpeed: 10
   pullPower: 1000
   harpoonSpearPrefab: {fileID: 3775420795739930932, guid: 3287e05fa4feefa43b2d14e7d0d7e6de, type: 3}
+  muzzleFlash: {fileID: 6478827744998899019, guid: 5c1d26ac08878403a9f939737580c811, type: 3}
+  barrelPosition: {fileID: 1945124447377154729}
 --- !u!1 &7395887500203567774
 GameObject:
   m_ObjectHideFlags: 0

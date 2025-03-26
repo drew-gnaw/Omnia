@@ -3,6 +3,43 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Utils;
 
+public static class AudioTracks {
+    // BGM
+    public const string LullabyForAScrapyard = "Omnia - Lullaby For a Scrapyard";
+    public const string CityOfMold = "Omnia - City of Mold";
+    public const string SunkBeneath = "Omnia - Sunk Beneath";
+    public const string JamiesTheme = "Omnia - Jamie_s Theme";
+    public const string TrialBySteel = "Omnia - Trial By Steel";
+    public const string UnclesTheme = "Omnia - Uncle Beau_s Theme";
+    public const string CaveSpeak = "Omnia - Cave Speak";
+    public const string FloraExMachina = "Omnia - Flora Ex Machina";
+    public const string IntoTheWind = "Omnia - Into The Wind";
+    public const string Undersound = "Omnia - Undersound";
+
+    // SFX
+    public const string Scrapgun = "Scrapgun";
+    public const string ArmadilloAttack = "Armadillo_Attack";
+    public const string ArmadilloCurl = "Armadillo_curl";
+    public const string ArmadilloOpen = "Armadillo_open";
+    public const string CrabHit = "Crab_hit";
+    public const string CrabSpawn = "Crab_spawn";
+    public const string DinkyMutate = "Dinky_Mutate";
+    public const string HarpoonHit = "Harpoon_Hit";
+    public const string HarpoonLaunch = "Harpoon_Launch";
+    public const string HarpoonRetract = "Harpoon_Retract";
+    public const string JamieLand = "Jamie_land";
+    public const string JamieSlide = "Jamie_Slide";
+    public const string JamieHurt1 = "JamieHurt1";
+    public const string JamieHurt2 = "JamieHurt2";
+    public const string JamieHurt3 = "JamieHurt3";
+    public const string JamieHurt4 = "JamieHurt4";
+    public const string PlantShoot = "Plant_Shoot";
+    public const string Rumble = "Rumble";
+
+
+    // AMBIENT
+}
+
 public class AudioManager : PersistentSingleton<AudioManager>
 {
     public AudioSource BGMPlayer, SFXPlayer, AmbientPlayer;
@@ -22,9 +59,13 @@ public class AudioManager : PersistentSingleton<AudioManager>
         sfxTracks = Resources.LoadAll<AudioList>("AudioResources")[2];
     }
 
+    // this only starts playing after a scene change, but doesnt matter because a linear playthrough will have audiomanager already playing
+    // tl;dr: this is only for development
     void OnSceneChange(Scene scene, LoadSceneMode mode)
     {
-
+        if (!BGMPlayer.isPlaying) {
+            PlayBGM(AudioTracks.CaveSpeak);
+        }
     }
 
 
@@ -39,24 +80,41 @@ public class AudioManager : PersistentSingleton<AudioManager>
         if (!BGMPlayer.isPlaying || BGMPlayer.clip != track) {
             BGMPlayer.clip = track;
             BGMPlayer.loop = true;
+            BGMPlayer.volume = 0f; // Start from silent
             BGMPlayer.Play();
+            StartCoroutine(BGMFadeIn(1f)); // Fade in to full volume
         }
     }
 
-    // Smoothly transition from current track to specified new track. Use crossfading for seamless ecperience
+    // Smoothly transition from current track to specified new track. Use crossfading for seamless experience
     public void SwitchBGM(string newTrackName) {
+        AudioClip newTrack = bgmTracks.GetClipByName(newTrackName);
+
+        if (BGMPlayer.clip != newTrack) {
+            StartCoroutine(CrossfadeBGM(newTrack));
+        }
+    }
+
+    private IEnumerator CrossfadeBGM(AudioClip newTrack) {
+        float duration = 1f;  // Crossfade time
         float initialVolume = BGMPlayer.volume;
 
-        AudioClip track = bgmTracks.GetClipByName(newTrackName);
-        if (BGMPlayer.clip != track) {
-            StartCoroutine(BGMFadeOut(initialVolume));
-            BGMPlayer.Stop();
-            BGMPlayer.clip = track;
-            BGMPlayer.Play();
-            StartCoroutine(BGMFadeIn(initialVolume));
+        // Fade out current track
+        for (float t = 0; t < duration; t += Time.deltaTime) {
+            BGMPlayer.volume = Mathf.Lerp(initialVolume, 0f, t / duration);
+            yield return null;
         }
 
-        BGMPlayer.volume = initialVolume;
+        // Switch to new track
+        BGMPlayer.Stop();
+        BGMPlayer.clip = newTrack;
+        BGMPlayer.Play();
+
+        // Fade in new track
+        for (float t = 0; t < duration; t += Time.deltaTime) {
+            BGMPlayer.volume = Mathf.Lerp(0f, initialVolume, t / duration);
+            yield return null;
+        }
     }
 
     // Coroutine to fade BGM out from initial volume
@@ -145,6 +203,10 @@ public class AudioManager : PersistentSingleton<AudioManager>
     // Mutes sound effects
     public void ToggleSFX() {
         SFXPlayer.mute = !SFXPlayer.mute;
+    }
+
+    public void PlayHurtSound() {
+        SFXPlayer.PlayOneShot(sfxTracks.GetClipByName($"JamieHurt{Random.Range(1, 4)}"));
     }
 
     /////////////////////
