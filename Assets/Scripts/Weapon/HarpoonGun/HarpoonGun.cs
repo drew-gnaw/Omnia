@@ -75,8 +75,8 @@ public class HarpoonGun : WeaponClass
 
         GameObject ropeObject = new GameObject("HarpoonRope");
         HarpoonRope rope = ropeObject.AddComponent<HarpoonRope>();
-        rope.Initialize(gunBarrelTransform.right, gunBarrelTransform, spear.transform, harpoonRopePrefab); 
-        spear.rope = rope; 
+        rope.Initialize(gunBarrelTransform.right, gunBarrelTransform, spear.ropeAttachmentPoint, harpoonRopePrefab);
+        spear.rope = rope;
         CurrentAmmo--;
         Instantiate(muzzleFlash, barrelPosition.transform.position, transform.rotation);
     }

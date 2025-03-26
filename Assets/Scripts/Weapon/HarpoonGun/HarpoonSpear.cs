@@ -19,6 +19,8 @@ public class HarpoonSpear : MonoBehaviour {
     public Collider2D Collider2D;
     public Rigidbody2D Rigidbody2D;
 
+    public Transform ropeAttachmentPoint;
+
     private bool dropped;
     private bool collectable;
     private IEnumerator cooldown;
