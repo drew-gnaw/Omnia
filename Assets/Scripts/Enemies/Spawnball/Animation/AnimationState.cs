@@ -1,8 +1,8 @@
 using UnityEngine;
 
 namespace Enemies.Spawnball.Animation {
-    public class MoveAnimation : AnimationState {
-        public MoveAnimation(Animator animator) : base("SpawnballMove", animator) {
+    public class IdleAnimation : AnimationState {
+        public IdleAnimation(Animator animator) : base("SpawnballIdle", animator) {
         }
     }
 

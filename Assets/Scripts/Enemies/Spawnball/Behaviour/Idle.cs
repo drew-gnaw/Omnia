@@ -1,24 +1,24 @@
 using UnityEngine;
 
 namespace Enemies.Spawnball.Behaviour {
-    public class Activate : IBehaviour {
-        private float t;
+    public class Idle : IBehaviour {
         private readonly Spawnball self;
+        private float t;
 
-        public Activate(Spawnball self) {
+        public Idle(Spawnball self) {
             this.self = self;
         }
 
         public void OnEnter() {
-            t = self.spawnDelay;
+            t = self.startDelay;
         }
 
         public void OnExit() {
         }
 
         public void OnTick() {
-            self.rb.velocity = Vector2.zero;
-            if (t == 0) self.OnSpawnEnemy();
+            if (t != 0) return;
+            self.UseBehaviour(new Move(self));
         }
 
         public void OnUpdate() {

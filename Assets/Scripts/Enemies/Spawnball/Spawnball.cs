@@ -9,10 +9,11 @@ using StateMachine = Omnia.State.StateMachine;
 
 namespace Enemies.Spawnball {
     public class Spawnball : Enemy {
-        [SerializeField] internal float triggerDistance;
-        [SerializeField] internal float delay;
+        [SerializeField] internal float activationRange;
+        [SerializeField] internal float startDelay;
+        [SerializeField] internal float spawnDelay;
         [SerializeField] internal float speed;
-        [SerializeField] internal float lifespan;
+        [SerializeField] internal float smoothPath;
         [SerializeField] internal float airAcceleration;
 
         [SerializeField] internal SpriteRenderer sprite;
@@ -28,7 +29,7 @@ namespace Enemies.Spawnball {
         public void OnDestroy() => NotifyOnDestroy?.Invoke(this);
 
         public void Awake() {
-            UseBehaviour(new Move(this));
+            UseBehaviour(new Idle(this));
         }
 
         public override void Update() {
@@ -44,11 +45,11 @@ namespace Enemies.Spawnball {
         }
 
         protected override void UseAnimation(StateMachine stateMachine) {
-            var moveAnim = new MoveAnimation(animator);
-            stateMachine.AddAnyTransition(moveAnim, new FuncPredicate(() => behaviour is Move));
+            var idleAnim = new IdleAnimation(animator);
+            stateMachine.AddAnyTransition(idleAnim, new FuncPredicate(() => behaviour is Idle or Move));
             stateMachine.AddAnyTransition(new ActivateAnimation(animator), new FuncPredicate(() => behaviour is Activate));
 
-            stateMachine.SetState(moveAnim);
+            stateMachine.SetState(idleAnim);
             animationStateMachine = stateMachine;
         }
     }

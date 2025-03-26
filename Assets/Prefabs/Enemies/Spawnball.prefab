@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 285959956619106809}
   - component: {fileID: 9202038865644320477}
   - component: {fileID: 6149703548532306918}
-  m_Layer: 14
+  m_Layer: 8
   m_Name: Graphics
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -117,7 +117,7 @@ GameObject:
   - component: {fileID: 2157272981753954215}
   - component: {fileID: 2188854195952804950}
   - component: {fileID: 7893308943432753642}
-  m_Layer: 14
+  m_Layer: 8
   m_Name: Spawnball
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -158,10 +158,11 @@ MonoBehaviour:
   knockbackForce: 0
   knockbackAngle: 0
   staggerDurationS: 0
-  triggerDistance: 0.5
-  delay: 0.5
+  activationRange: 0.25
+  startDelay: 0.1
+  spawnDelay: 0.5
   speed: 14
-  lifespan: 10
+  smoothPath: 2.5
   airAcceleration: 10
   sprite: {fileID: 9202038865644320477}
   animator: {fileID: 6149703548532306918}

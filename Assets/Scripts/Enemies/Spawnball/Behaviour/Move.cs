@@ -8,7 +8,6 @@ using Utils;
 namespace Enemies.Spawnball.Behaviour {
     public class Move : IBehaviour {
         private List<Vector3> path;
-        private float t;
         private Coroutine co;
         private readonly Spawnball self;
 
@@ -18,7 +17,6 @@ namespace Enemies.Spawnball.Behaviour {
 
         public void OnEnter() {
             path = CalculatePath();
-            t = self.lifespan;
             co = self.StartCoroutine(DoRecalculatePathToTarget());
         }
 
@@ -27,9 +25,9 @@ namespace Enemies.Spawnball.Behaviour {
         }
 
         public void OnTick() {
-            if (t == 0 || IsNear(self.target.position)) self.UseBehaviour(new Activate(self));
+            if (IsNear(self.target.position, self.activationRange)) self.UseBehaviour(new Activate(self));
             else {
-                Vector2 next = path.LastOrDefault(it => IsNear(it));
+                Vector2 next = path.LastOrDefault(it => IsNear(it, self.smoothPath));
                 if (next == default) return;
                 var direction = next - self.rb.worldCenterOfMass;
                 self.rb.velocity = MathUtils.Lerpish(self.rb.velocity, direction.normalized * self.speed, Time.fixedDeltaTime * self.airAcceleration);
@@ -37,7 +35,6 @@ namespace Enemies.Spawnball.Behaviour {
         }
 
         public void OnUpdate() {
-            t = Mathf.Max(0, t - Time.deltaTime);
         }
 
         private IEnumerator DoRecalculatePathToTarget() {
@@ -46,7 +43,7 @@ namespace Enemies.Spawnball.Behaviour {
             }
         }
 
-        private bool IsNear(Vector2 it) => Vector2.Distance(self.rb.worldCenterOfMass, it) < self.triggerDistance;
+        private bool IsNear(Vector2 it, float threshold) => Vector2.Distance(self.rb.worldCenterOfMass, it) < threshold;
 
         private List<Vector3> CalculatePath() => Pathfinder.FindPath(self.rb.worldCenterOfMass, self.target.position);
     }

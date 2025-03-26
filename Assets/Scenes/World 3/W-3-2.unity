@@ -514,6 +514,10 @@ PrefabInstance:
       propertyPath: signals.Array.data[0].underlyingValue
       value: 
       objectReference: {fileID: 1252129574}
+    - target: {fileID: 2273225558439740966, guid: 3d8d86546b0cf18408f05a957c7e36ad, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3904883124132995146, guid: 3d8d86546b0cf18408f05a957c7e36ad, type: 3}
       propertyPath: m_FlipY
       value: 1
@@ -713,7 +717,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4774809283147415622, guid: 60c329ee0656c824e8e9c92cb57b8930, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.9098902
+      value: -0.9145317
       objectReference: {fileID: 0}
     - target: {fileID: 4774809283147415622, guid: 60c329ee0656c824e8e9c92cb57b8930, type: 3}
       propertyPath: m_LocalPosition.y
