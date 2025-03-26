@@ -24,12 +24,12 @@ namespace Enemies {
         protected IBehaviour behaviour;
         public IBehaviour prevBehaviour { get; protected set; }
 
-        protected StateMachine animationStateMachine;
+        public StateMachine animationStateMachine;
 
         public virtual void Start() {
             currentHealth = maximumHealth;
-            Spawn?.Invoke(this);
             UseAnimation(new StateMachine());
+            Spawn?.Invoke(this);
         }
 
         /**
