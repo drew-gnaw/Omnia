@@ -23,6 +23,8 @@ public class InventoryManager : PersistentSingleton<InventoryManager> {
     }
 
     private void Update() {
+        if (PauseMenu.IsPaused || DialogueManager.Instance.IsInDialogue()) return;
+
         if (Input.GetKeyDown(KeyCode.I)) {
             ToggleInventory();
         } else if (Input.GetKeyDown(KeyCode.Tab)) {
