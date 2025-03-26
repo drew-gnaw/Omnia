@@ -24,12 +24,12 @@ namespace Enemies {
         protected IBehaviour behaviour;
         public IBehaviour prevBehaviour { get; protected set; }
 
-        protected StateMachine animationStateMachine;
+        public StateMachine animationStateMachine;
 
         public virtual void Start() {
             currentHealth = maximumHealth;
-            Spawn?.Invoke(this);
             UseAnimation(new StateMachine());
+            Spawn?.Invoke(this);
         }
 
         /**
@@ -84,7 +84,8 @@ namespace Enemies {
         protected abstract void UseAnimation(StateMachine stateMachine);
 
         /* TODO: This could be a coroutine so enemies can play an animation on death...? */
-        public void Die() {
+        // REPLY: This should call a coroutine instead of being one
+        public virtual void Die() {
             Death?.Invoke(this);
             Destroy(gameObject);
         }

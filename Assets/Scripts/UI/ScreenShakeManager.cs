@@ -1,35 +1,35 @@
 using System.Collections;
 using Cinemachine;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Utils;
 
 public class ScreenShakeManager : PersistentSingleton<ScreenShakeManager> {
-    private CinemachineVirtualCamera virtualCamera;
     private CinemachineBasicMultiChannelPerlin perlinNoise;
 
     protected override void OnAwake() {
-        virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
-        perlinNoise = virtualCamera.GetComponentInChildren<CinemachineBasicMultiChannelPerlin>();
+        perlinNoise = FindObjectOfType<CinemachineVirtualCamera>().GetComponentInChildren<CinemachineBasicMultiChannelPerlin>();
+    }
 
-        if (perlinNoise == null) {
-            Debug.LogError("CinemachineBasicMultiChannelPerlin is missing from the camera!");
-        }
+    private void OnEnable() {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable() {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+        perlinNoise = FindObjectOfType<CinemachineVirtualCamera>().GetComponentInChildren<CinemachineBasicMultiChannelPerlin>();
     }
 
     public void Shake(float intensity = 1.0f, float duration = 0.5f) {
-        if (perlinNoise != null) {
-            StartCoroutine(ShakeCoroutine(intensity, duration));
-        } else {
-          //  Debug.LogError("Perlin noise module is missing!");
-        }
+        if (!perlinNoise) return;
+        StartCoroutine(ShakeCoroutine(intensity, duration));
     }
 
     private IEnumerator ShakeCoroutine(float intensity, float duration) {
         float elapsed = 0f;
-
-        // Store the original values
-        float originalAmplitude = perlinNoise.m_AmplitudeGain;
-        float originalFrequency = perlinNoise.m_FrequencyGain;
 
         // Set the shake values
         perlinNoise.m_AmplitudeGain = intensity;
@@ -44,8 +44,8 @@ public class ScreenShakeManager : PersistentSingleton<ScreenShakeManager> {
             yield return null;
         }
 
-        // Reset to the original values
-        perlinNoise.m_AmplitudeGain = originalAmplitude;
-        perlinNoise.m_FrequencyGain = originalFrequency;
+        // Reset to 0 instead of original values as multiple screen shakes at a time causes issues
+        perlinNoise.m_AmplitudeGain = 0;
+        perlinNoise.m_FrequencyGain = 0;
     }
 }

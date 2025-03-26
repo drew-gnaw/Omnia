@@ -8,6 +8,7 @@ namespace Puzzle {
         [TypeFilter(typeof(SignalColor))]
         [SerializeField] private SerializableType signalColor;
         [SerializeField] private float maxChargeDuration;
+        [SerializeField] private float chargeRate = 180f; //(degrees per second)
         [SerializeField] private Collider2D Collider2D;
         [SerializeField] private LayerMask enemyLayer;
         [SerializeField] private LayerMask playerLayer;
@@ -24,10 +25,10 @@ namespace Puzzle {
         public event ProgressFired? ProgressEvent;
 
         public bool IsActive { get; set; }
-        public float Progress { get; private set;  }
+        // Initialize as -1 to show progress is not valid until first update tick.
+        public float Progress { get; private set; } = -1;
 
         private CountdownTimer leverUptime = new(0);
-        private readonly float chargeRate = 180f; //(degrees per second)
         private readonly float radius = 0.2f; // Fixed distance from pivot
         private float currentHandleAngle;
         private bool isCharging = false;
@@ -56,7 +57,7 @@ namespace Puzzle {
         }
 
         void OnTriggerEnter2D(Collider2D other) {
-            if (Collider2D.IsTouchingLayers(playerLayer) || Collider2D.IsTouchingLayers(enemyLayer)) {
+            if (Collider2D.IsTouchingLayers(playerLayer)) {
                 objectsInside++;
                 isCharging = true;
                 IsActive = true;

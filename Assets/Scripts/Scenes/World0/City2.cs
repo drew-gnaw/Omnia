@@ -9,6 +9,7 @@ namespace Scenes {
         [SerializeField] private FadeScreenHandler fadeScreen;
         public void Start() {
             CrazyOldMan.OnSpeakToCrazyOldMan += PlayExitSequence;
+            AudioManager.Instance.SwitchBGM(AudioTracks.CityOfMold);
             fadeScreen.SetLightScreen();
         }
 

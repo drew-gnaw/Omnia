@@ -17,7 +17,8 @@ namespace Initializers {
             SceneManager.sceneLoaded -= OnSceneChange;
         }
 
-        protected override void OnAwake() {
+        protected override void OnDestroyDuplicateInstance() {
+            Instance.managers = managers;
         }
 
         private void OnSceneChange(Scene scene, LoadSceneMode mode) {
@@ -27,15 +28,14 @@ namespace Initializers {
         }
 
         private IEnumerator DoLoadSceneWithTransition(string sceneName) {
-            var it = Instantiate(transition);
-            DontDestroyOnLoad(it);
-            var st = it.GetComponent<SceneTransition>();
+            var it = Instantiate(transition).GetComponent<SceneTransition>();
+            DontDestroyOnLoad(it.gameObject);
 
-            yield return st.DoTransitionToBlack();
+            yield return it.DoTransitionToBlack();
             SceneManager.LoadScene(sceneName);
-            yield return st.DoTransitionToScene();
+            yield return it.DoTransitionToScene();
 
-            Destroy(it);
+            Destroy(it.gameObject);
         }
 
         /**

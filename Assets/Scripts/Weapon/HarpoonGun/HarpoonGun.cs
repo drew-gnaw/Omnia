@@ -25,6 +25,9 @@ public class HarpoonGun : WeaponClass
 
     private ObjectPool<HarpoonSpear> harpoonSpearPool;
 
+    [SerializeField] internal GameObject muzzleFlash;
+    [SerializeField] internal GameObject barrelPosition;
+
     // Assuming number of spears isn't too big
     LinkedList<HarpoonSpear> firedSpears = new LinkedList<HarpoonSpear>();
 
@@ -65,12 +68,13 @@ public class HarpoonGun : WeaponClass
         spear.Fire(this);
         firedSpears.AddFirst(spear);
         CurrentAmmo--;
+        Instantiate(muzzleFlash, barrelPosition.transform.position, transform.rotation);
     }
 
-    public override void UseSkill()
+    public override bool UseSkill()
     {
         if (firedSpears.Count == 0) {
-            return;
+            return false;
         }
 
         var spear = firedSpears.FirstOrDefault(s => s.TaggedEnemy != null || s.PullTo != null);
@@ -78,18 +82,19 @@ public class HarpoonGun : WeaponClass
         Transform target = spear?.PullTo ?? spear?.TaggedEnemy?.transform;
 
         if (target == null) {
-            return;
+            return false;
         }
 
         playerComponent.UsePull(target);
+        AudioManager.Instance.PlaySFX(AudioTracks.HarpoonRetract);
+        return true;
     }
-
 
     public override void IntroSkill()
     {
         // Pull all enemies
-        foreach (var spear in firedSpears)
-        {
+        foreach (var spear in firedSpears) {
+            spear.ReturnToPlayer();
             spear.PullEnemy();
         }
     }

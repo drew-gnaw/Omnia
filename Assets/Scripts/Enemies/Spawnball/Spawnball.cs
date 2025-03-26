@@ -1,0 +1,56 @@
+using System;
+using System.Linq;
+using Enemies.Spawnball.Animation;
+using Enemies.Spawnball.Behaviour;
+using Omnia.State;
+using Players;
+using UnityEngine;
+using StateMachine = Omnia.State.StateMachine;
+
+namespace Enemies.Spawnball {
+    public class Spawnball : Enemy {
+        [SerializeField] internal float activationRange;
+        [SerializeField] internal float startDelay;
+        [SerializeField] internal float spawnDelay;
+        [SerializeField] internal float speed;
+        [SerializeField] internal float smoothPath;
+        [SerializeField] internal float airAcceleration;
+
+        [SerializeField] internal SpriteRenderer sprite;
+        [SerializeField] internal Animator animator;
+        [SerializeField] internal Rigidbody2D rb;
+
+        [SerializeField] internal Transform target;
+        [SerializeField] internal GameObject spawn;
+        [SerializeField] internal GameObject explosion;
+
+        public Action<Spawnball> NotifyOnDestroy;
+
+        public void OnDestroy() => NotifyOnDestroy?.Invoke(this);
+
+        public void Awake() {
+            UseBehaviour(new Idle(this));
+        }
+
+        public override void Update() {
+            base.Update();
+            sprite.transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(rb.velocity.y, rb.velocity.x) * Mathf.Rad2Deg);
+        }
+
+        public void OnSpawnEnemy() {
+            Instantiate(spawn, target.position, Quaternion.identity);
+            Destroy(gameObject);
+
+            Instantiate(explosion, rb.worldCenterOfMass, Quaternion.identity);
+        }
+
+        protected override void UseAnimation(StateMachine stateMachine) {
+            var idleAnim = new IdleAnimation(animator);
+            stateMachine.AddAnyTransition(idleAnim, new FuncPredicate(() => behaviour is Idle or Move));
+            stateMachine.AddAnyTransition(new ActivateAnimation(animator), new FuncPredicate(() => behaviour is Activate));
+
+            stateMachine.SetState(idleAnim);
+            animationStateMachine = stateMachine;
+        }
+    }
+}

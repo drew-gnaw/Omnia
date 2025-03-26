@@ -56,9 +56,9 @@ namespace UI {
         }
 
         private void OnEnemySpawn(Enemy enemy) {
-            var ui = prefabs[(int) UiPrefabs.EnemyUI];
-            var prefab = Instantiate(ui, canvas.transform).GetComponent<EnemyUI>()!.Of(enemy);
-            enemies[enemy] = prefab;
+            //var ui = prefabs[(int) UiPrefabs.EnemyUI];
+            //var prefab = Instantiate(ui, canvas.transform).GetComponent<EnemyUI>()!.Of(enemy);
+            //enemies[enemy] = prefab;
         }
     }
 }

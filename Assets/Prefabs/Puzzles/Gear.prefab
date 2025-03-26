@@ -71,7 +71,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -386920905
-  m_SortingLayer: 1
+  m_SortingLayer: 4
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 70a4c5039ce0edf4eb7b6128e2f74c02, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -94,6 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4532747657134558616}
   - component: {fileID: 6207397036963953621}
+  - component: {fileID: 9129933137101250318}
   m_Layer: 0
   m_Name: Gear
   m_TagString: Untagged
@@ -156,8 +157,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -386920905
-  m_SortingLayer: 1
-  m_SortingOrder: 0
+  m_SortingLayer: 4
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 164a0c90438dc8944a1203c281998aab, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -169,3 +170,17 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &9129933137101250318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4230124695080927382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ff512e4bbd52ec4ab5ff7df1605e932, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  symbolSpriteRenderer: {fileID: 425121790097823543}
+  mainSpriteRenderer: {fileID: 6207397036963953621}

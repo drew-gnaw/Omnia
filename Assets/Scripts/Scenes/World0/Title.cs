@@ -1,4 +1,7 @@
+using System;
 using System.Collections;
+using Background;
+using Initializers;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -7,24 +10,27 @@ using UnityEngine.UI;
 using Utils;
 
 namespace Scenes {
-    public class Title : LevelSelect {
+    public class Title : MonoBehaviour {
         [SerializeField] private GameObject titleSprite;         // Omnia (Sprite)
         [SerializeField] private GameObject subtitleSprite;      // The Journey Upwards (Sprite)
 
         [SerializeField] private TextMeshPro taglineTMP;     // Causa Fiunt (TMP UI)
         [SerializeField] private TextMeshPro quoteTMP;       // Everything happens for a reason (TMP UI)
 
+        [SerializeField] private FadeScreenHandler fadeScreen;
         [SerializeField] private FadeScreenHandler strongFadeHandler;
-        [SerializeField] private float flickerSpeed = 0.1f;
-        [SerializeField] private float flickerIntensity = 0.2f;
-        [SerializeField] private Color baseColor = Color.white;
-        [SerializeField] private Color flickerColor = new Color(1f, 0.85f, 0.6f);
 
-        private SpriteRenderer titleSpriteRenderer;
-        private SpriteRenderer subtitleSpriteRenderer;
+        [SerializeField] private GameObject dustParent;
+
+        [SerializeField] private Button[] buttons;
+
+
+        private Image[] dustImages;
 
         private string taglineText;
         private string quoteText;
+
+
 
 
 
@@ -33,18 +39,18 @@ namespace Scenes {
             UnityEditor.EditorApplication.isPlaying = false;
 #endif
             Application.Quit();
-
         }
 
         private void Awake() {
-            base.Awake();
-            strongFadeHandler.SetDarkScreen();
-            StartCoroutine(strongFadeHandler.FadeInLightScreen(1f));
+            strongFadeHandler.SetLightScreen();
         }
 
         private void Start() {
-            titleSpriteRenderer = titleSprite.GetComponent<SpriteRenderer>();
-            subtitleSpriteRenderer = subtitleSprite.GetComponent<SpriteRenderer>();
+            dustImages = dustParent.GetComponentsInChildren<Image>();
+
+            foreach (var img in dustImages) {
+                img.gameObject.AddComponent<FloatingImage>();
+            }
 
             // Text is not displayed at the beginning, but we should store their values.
             taglineText = taglineTMP.text;
@@ -52,6 +58,9 @@ namespace Scenes {
 
             quoteText = quoteTMP.text;
             quoteTMP.text = "";
+
+            AudioManager.Instance.PlayBGM(AudioTracks.LullabyForAScrapyard);
+            fadeScreen.SetLightScreen();
 
         }
 
@@ -61,6 +70,10 @@ namespace Scenes {
                 b.interactable = false;
             }
             StartCoroutine(StartGameSequence());
+        }
+
+        public void GoToLevelSelect() {
+            SceneManager.LoadScene("LevelSelect");
         }
 
         private IEnumerator StartGameSequence() {
@@ -74,11 +87,6 @@ namespace Scenes {
 
             // Done to avoid scene transition
             SceneManager.LoadScene("2_Opening");
-        }
-
-        void Update() {
-            float flicker = flickerSpeed + Random.Range(-flickerIntensity, flickerIntensity);
-            titleSpriteRenderer.color = Color.Lerp(baseColor, flickerColor, flicker);
         }
 
         private IEnumerator FadeInSprite(SpriteRenderer sprite, float duration) {

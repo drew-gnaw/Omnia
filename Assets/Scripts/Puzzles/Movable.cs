@@ -12,7 +12,7 @@ namespace Puzzle {
         [SerializeField] private Transform destPosition;
         [SerializeField] private Transform startPosOverride;
         [SerializeField] private float moveSpeed = 10f;
-        [SerializeField] private ConveyerEndPiece endpointPiece;
+        [SerializeField] private PuzzleSymbol endpointPiece;
         [SerializeField] private GameObject linePiece;
         [SerializeField] private PuzzleAssets symbols;
         public ReceiverBehaviour ReceiverBehaviour => ReceiverBehaviour.Parse(behaviour);
@@ -88,7 +88,7 @@ namespace Puzzle {
                 return;
             }
 
-            void DrawEndPiece(ConveyerEndPiece piece) {
+            void DrawEndPiece(PuzzleSymbol piece) {
                 conveyerLineObjects.Add(piece.gameObject);
                 piece.SetSymbol(signalList.First().SignalColor.GetSymbol(symbols));
             }
@@ -98,8 +98,8 @@ namespace Puzzle {
             Vector2 direction = (end - start).normalized;
             float distance = Vector2.Distance(start, end);
 
-            ConveyerEndPiece startPiece = Instantiate(endpointPiece, start, Quaternion.identity, transform.parent);
-            ConveyerEndPiece endPiece = Instantiate(endpointPiece, end, Quaternion.identity, transform.parent);
+            PuzzleSymbol startPiece = Instantiate(endpointPiece, start, Quaternion.identity, transform.parent);
+            PuzzleSymbol endPiece = Instantiate(endpointPiece, end, Quaternion.identity, transform.parent);
             DrawEndPiece(startPiece);
             DrawEndPiece(endPiece);
 

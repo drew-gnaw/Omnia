@@ -37,7 +37,7 @@ public class Shotgun : WeaponClass {
         Shoot();
     }
 
-    public override void UseSkill() {
+    public override bool UseSkill() {
         transform.rotation = Quaternion.Euler(0, 0, 270);
         skillLockTimer = skillLockDuration;
 
@@ -47,6 +47,8 @@ public class Shotgun : WeaponClass {
         if (rb != null) {
             rb.velocity = new Vector2(rb.velocity.x, skillForce);
         }
+
+        return true;
     }
 
     public override void IntroSkill() {
@@ -55,9 +57,16 @@ public class Shotgun : WeaponClass {
 
     private IEnumerator IntroCoroutine() {
         yield return new WaitForSeconds(introDelayTime);
-        Shoot();
-        Shoot();
-        Shoot();
+        void FireUltimate() {
+            var hits = PerformRayCasts();
+            ApplyDamage(hits, damage, false); // Ultimate shot ignores drop-off
+            HandleMuzzleFlash();
+            HandleTracers();
+        }
+        FireUltimate();
+        FireUltimate();
+        FireUltimate();
+        CurrentAmmo = maxAmmoCount;
         player.GetComponent<Player>().UseRecoil(10);
         ScreenShakeManager.Instance.Shake(3f);
     }
@@ -83,17 +92,11 @@ public class Shotgun : WeaponClass {
         }
     }
 
-    private void ShootUltimate() {
-        var hits = PerformRayCasts();
-        ScreenShakeManager.Instance.Shake(intensity: 2f);
-        ApplyDamage(hits, damage,  false); // Ultimate shot ignores drop-off
-        HandleTracers();
-    }
-
     private void Shoot() {
         if (CurrentAmmo <= 0) {
             return;
         }
+        AudioManager.Instance.PlaySFX(AudioTracks.Scrapgun);
 
         --CurrentAmmo;
 
@@ -180,6 +183,7 @@ public class Shotgun : WeaponClass {
 
     private IEnumerator Reload() {
         yield return new WaitForSeconds(reloadTime);
+        if (CurrentAmmo >= maxAmmoCount) yield break;
         CurrentAmmo += 1;
         reloadCoroutine = null;
         HandleReload();
