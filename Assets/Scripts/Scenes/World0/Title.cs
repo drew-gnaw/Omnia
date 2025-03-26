@@ -78,10 +78,6 @@ namespace Scenes {
             SceneInitializer.LoadScene("LevelSelect");
         }
 
-        public void Update() {
-            Debug.Log(buttons);
-        }
-
         private IEnumerator StartGameSequence() {
             yield return StartCoroutine(fadeScreen.FadeInDarkScreen(2f));
             yield return new WaitForSeconds(1f);
