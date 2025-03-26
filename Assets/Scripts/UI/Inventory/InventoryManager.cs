@@ -13,8 +13,6 @@ public class InventoryManager : PersistentSingleton<InventoryManager> {
 
     public bool IsInventoryOpen { get; private set; }
 
-    private bool isShaking = false;
-
     protected override void OnAwake() {
     }
 

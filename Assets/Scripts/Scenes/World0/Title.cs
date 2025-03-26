@@ -35,7 +35,7 @@ namespace Scenes {
             Application.Quit();
         }
 
-        private void Awake() {
+        protected override void Awake() {
             base.Awake();
             strongFadeHandler.SetDarkScreen();
             StartCoroutine(strongFadeHandler.FadeInLightScreen(1f));

@@ -15,6 +15,7 @@ namespace Puzzle {
         [SerializeField] private float moveDuration = 0.5f;
         [SerializeField] private AnimationCurve easeCurve;
         [SerializeField] private PuzzleAssets symbols;
+        private Rigidbody2D rb;
 #nullable enable
         public enum GateType { Horizontal, Vertical }
         public ReceiverBehaviour ReceiverBehaviour => ReceiverBehaviour.Parse(behaviour);
@@ -23,7 +24,6 @@ namespace Puzzle {
         private Vector3 TargetPos => StartPos + ((gateType == GateType.Horizontal) ? Vector3.right : Vector3.up) * moveDistance;
         private bool isSliding = false;
         private bool desiredOpenState = false; // Desired state, used in case signal switches while gate is moving.
-        private Rigidbody2D rb;
 
         void Awake() {
             SignalList = signals?.Unbox() ?? new();
