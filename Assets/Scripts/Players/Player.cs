@@ -167,7 +167,7 @@ namespace Players {
         }
 
         public void FixedUpdate() {
-            rb.gravityScale = !held || rb.velocity.y < 0 ? 2 : 1;
+            rb.gravityScale = held && rb.velocity.y > 0 ? 1 : MathUtils.Lerpish(rb.gravityScale, 3, Time.fixedDeltaTime * fallAccel);
             DoAttack();
             DoSkill();
             behaviour?.OnTick();
