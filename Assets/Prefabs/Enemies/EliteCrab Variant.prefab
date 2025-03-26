@@ -65,6 +65,17 @@ SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 2707125335044883048, guid: 3d917830cfb39914f9863cf5a8cfd91d, type: 3}
   m_PrefabInstance: {fileID: 281360983517610451}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6425623031267005566 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6542602472551470509, guid: 3d917830cfb39914f9863cf5a8cfd91d, type: 3}
+  m_PrefabInstance: {fileID: 281360983517610451}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9056406253776013130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94e7e63e1fb938e439a49861e797ad39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9056406253776013130 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 9099885695447254681, guid: 3d917830cfb39914f9863cf5a8cfd91d, type: 3}
@@ -82,6 +93,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09434ebf3dc66c840b95528e54562595, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  crab: {fileID: 6425623031267005566}
   progressObject:
     underlyingValue: {fileID: 0}
   spriteRenderer: {fileID: 2771469093129634747}
+  fadeDuration: 0.5
