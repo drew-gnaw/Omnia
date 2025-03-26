@@ -69,7 +69,7 @@ namespace Players {
         [SerializeField] internal float hurtInvulnerabilityTime;
 
         [SerializeField] internal WeaponClass[] weapons;
-        [SerializeField] internal int selectedWeapon = PlayerDataManager.Instance.playerSelectedWeapon;
+        [SerializeField] internal int selectedWeapon;
 
         [SerializeField] internal Vector2 facing;
         [SerializeField] internal Vector2 moving;
@@ -148,9 +148,11 @@ namespace Players {
 
             canRoll = true;
 
+            selectedWeapon = PlayerDataManager.Instance.playerSelectedWeapon;
+            OnWeaponChanged?.Invoke(selectedWeapon);
+
             // initially fill out the skill bar
             OnSkillCooldownUpdated?.Invoke(1);
-            OnWeaponChanged?.Invoke(0);
             Spawn?.Invoke();
         }
 
