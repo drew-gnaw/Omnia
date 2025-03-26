@@ -69,7 +69,7 @@ namespace Players {
         [SerializeField] internal float hurtInvulnerabilityTime;
 
         [SerializeField] internal WeaponClass[] weapons;
-        [SerializeField] internal int selectedWeapon;
+        [SerializeField] internal int selectedWeapon = PlayerDataManager.Instance.playerSelectedWeapon;
 
         [SerializeField] internal Vector2 facing;
         [SerializeField] internal Vector2 moving;
