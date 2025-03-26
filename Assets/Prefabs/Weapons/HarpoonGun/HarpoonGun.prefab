@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1945124447377154729
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3678299751637473820}
+  m_Layer: 7
+  m_Name: Barrel Position
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3678299751637473820
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1945124447377154729}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6285305121185895517}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3775420795739930932
 GameObject:
   m_ObjectHideFlags: 0
@@ -30,6 +61,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5922244361394495977}
+  - {fileID: 3678299751637473820}
   - {fileID: 5086042264824755528}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -64,16 +96,18 @@ MonoBehaviour:
   attackCooldown: 0
   damageToFlowRatio: 1
   maxAmmoCount: 3
-  harpoonVelocity: 20
+  harpoonVelocity: 30
   harpoonSpearGravityScale: 1
   harpoonSpearPickupCooldown: 0.3
   collectionRadius: 1
   harpoonTimer: 999
   spearReturnSpeed: 10
-  gunBarrelTransform: {fileID: 5086042264824755528}
   pullPower: 1000
+  gunBarrelTransform: {fileID: 5086042264824755528}
   harpoonSpearPrefab: {fileID: 3775420795739930932, guid: 3287e05fa4feefa43b2d14e7d0d7e6de, type: 3}
   harpoonRopePrefab: {fileID: 7285110105274924723, guid: fb13c9b8ec3a4304aaa25128c2ead74e, type: 3}
+  muzzleFlash: {fileID: 0}
+  barrelPosition: {fileID: 1945124447377154729}
   ropeMaterial: {fileID: 0}
   ropeWidth: 0.1
 --- !u!1 &4117915148161224282

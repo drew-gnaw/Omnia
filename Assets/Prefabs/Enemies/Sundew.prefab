@@ -466,6 +466,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   projectile: {fileID: 5710193498280292276, guid: 405681e7663724b52868906c5592258e, type: 3}
+  deathExplosion: {fileID: 6478827744998899019, guid: 423176f41ed8247ddb0fe10d88e78a3e, type: 3}
 --- !u!50 &7893308943432753642
 Rigidbody2D:
   serializedVersion: 4
@@ -562,7 +563,7 @@ HingeJoint2D:
   m_UseLimits: 0
   m_AngleLimits:
     m_LowerAngle: 0
-    m_UpperAngle: 360
+    m_UpperAngle: 0
 --- !u!1 &5835766883576181620
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,0 +1,100 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &281360983517610451
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 7723417269471147987, guid: 3d917830cfb39914f9863cf5a8cfd91d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.59
+      objectReference: {fileID: 0}
+    - target: {fileID: 7723417269471147987, guid: 3d917830cfb39914f9863cf5a8cfd91d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.96
+      objectReference: {fileID: 0}
+    - target: {fileID: 7723417269471147987, guid: 3d917830cfb39914f9863cf5a8cfd91d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7723417269471147987, guid: 3d917830cfb39914f9863cf5a8cfd91d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7723417269471147987, guid: 3d917830cfb39914f9863cf5a8cfd91d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7723417269471147987, guid: 3d917830cfb39914f9863cf5a8cfd91d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7723417269471147987, guid: 3d917830cfb39914f9863cf5a8cfd91d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7723417269471147987, guid: 3d917830cfb39914f9863cf5a8cfd91d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7723417269471147987, guid: 3d917830cfb39914f9863cf5a8cfd91d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7723417269471147987, guid: 3d917830cfb39914f9863cf5a8cfd91d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9099885695447254681, guid: 3d917830cfb39914f9863cf5a8cfd91d, type: 3}
+      propertyPath: m_Name
+      value: EliteCrab Variant
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9099885695447254681, guid: 3d917830cfb39914f9863cf5a8cfd91d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5462927467008201929}
+  m_SourcePrefab: {fileID: 100100000, guid: 3d917830cfb39914f9863cf5a8cfd91d, type: 3}
+--- !u!212 &2771469093129634747 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 2707125335044883048, guid: 3d917830cfb39914f9863cf5a8cfd91d, type: 3}
+  m_PrefabInstance: {fileID: 281360983517610451}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6425623031267005566 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6542602472551470509, guid: 3d917830cfb39914f9863cf5a8cfd91d, type: 3}
+  m_PrefabInstance: {fileID: 281360983517610451}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9056406253776013130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94e7e63e1fb938e439a49861e797ad39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &9056406253776013130 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9099885695447254681, guid: 3d917830cfb39914f9863cf5a8cfd91d, type: 3}
+  m_PrefabInstance: {fileID: 281360983517610451}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5462927467008201929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9056406253776013130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09434ebf3dc66c840b95528e54562595, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  crab: {fileID: 6425623031267005566}
+  progressObject:
+    underlyingValue: {fileID: 0}
+  spriteRenderer: {fileID: 2771469093129634747}
+  fadeDuration: 0.5

@@ -25,6 +25,10 @@ public class HarpoonGun : WeaponClass
     public GameObject harpoonSpearPrefab;
     public GameObject harpoonRopePrefab;
     private ObjectPool<HarpoonSpear> harpoonSpearPool;
+
+    [SerializeField] internal GameObject muzzleFlash;
+    [SerializeField] internal GameObject barrelPosition;
+
     // Assuming number of spears isn't too big
     LinkedList<HarpoonSpear> firedSpears = new LinkedList<HarpoonSpear>();
 
@@ -74,7 +78,7 @@ public class HarpoonGun : WeaponClass
         rope.Initialize(gunBarrelTransform.right, gunBarrelTransform, spear.transform, harpoonRopePrefab); 
         spear.rope = rope; 
         CurrentAmmo--;
-
+        Instantiate(muzzleFlash, barrelPosition.transform.position, transform.rotation);
     }
 
     public override bool UseSkill()
@@ -92,15 +96,15 @@ public class HarpoonGun : WeaponClass
         }
 
         playerComponent.UsePull(target);
-
+        AudioManager.Instance.PlaySFX(AudioTracks.HarpoonRetract);
         return true;
     }
 
     public override void IntroSkill()
     {
         // Pull all enemies
-        foreach (var spear in firedSpears)
-        {
+        foreach (var spear in firedSpears) {
+            spear.ReturnToPlayer();
             spear.PullEnemy();
         }
     }
