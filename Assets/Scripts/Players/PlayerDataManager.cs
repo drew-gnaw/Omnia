@@ -1,5 +1,8 @@
+using Utils;
+
 namespace Players {
-    public class PlayerDataManager {
-        
+    public class PlayerDataManager : PersistentSingleton<PlayerDataManager> {
+        private Player player;
+
     }
 }
