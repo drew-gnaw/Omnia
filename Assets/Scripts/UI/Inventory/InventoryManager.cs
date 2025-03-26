@@ -11,6 +11,8 @@ public class InventoryManager : PersistentSingleton<InventoryManager> {
     [SerializeField] private TrinketSlot equippedTrinket;
     [SerializeField] private TextMeshProUGUI descriptionText; // Description UI text box
 
+    
+
     public bool IsInventoryOpen { get; private set; }
 
     protected override void OnAwake() {
