@@ -110,7 +110,7 @@ namespace Scenes {
                 float spinForce = UnityEngine.Random.Range(250f, 400f) * (UnityEngine.Random.value > 0.5f ? 1 : -1);
                 rb.angularVelocity = spinForce;
 
-                Destroy(dinkyInstance, 5f);
+                Destroy(dinkyInstance, 4f);
             }
             else {
                 Debug.LogError("Launchable Dinky prefab is missing a Rigidbody2D component!");
