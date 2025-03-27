@@ -1,8 +1,6 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using Players;
-using Players.Mixin;
 using UnityEngine;
 using UnityEngine.UI;
 using Utils;
@@ -190,16 +188,19 @@ namespace UI {
             float startAlpha = lowHealthEffect.color.a;
             float duration = 0.5f;
             float timeElapsed = 0f;
+            var color = lowHealthEffect.color;
 
             while (timeElapsed < duration) {
                 float newAlpha = Mathf.Lerp(startAlpha, targetAlpha, timeElapsed / duration);
-                lowHealthEffect.color = new Color(1f, 0f, 0f, newAlpha);  // Red with transparency
+                color.a = newAlpha;
+                lowHealthEffect.color = color;
                 timeElapsed += Time.deltaTime;
                 yield return null;
             }
 
             // Ensure exact target alpha at the end
-            lowHealthEffect.color = new Color(1f, 0f, 0f, targetAlpha);
+            color.a = targetAlpha;
+            lowHealthEffect.color = color;
         }
 
         private float EaseOutQuad(float t) {
