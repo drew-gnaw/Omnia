@@ -82,7 +82,7 @@ public class AudioManager : PersistentSingleton<AudioManager>
             BGMPlayer.loop = true;
             BGMPlayer.volume = 0f; // Start from silent
             BGMPlayer.Play();
-            StartCoroutine(BGMFadeIn(1f)); // Fade in to full volume
+            StartCoroutine(BGMFadeIn(BGMPlayer.volume)); // Fade in to full volume
         }
     }
 
