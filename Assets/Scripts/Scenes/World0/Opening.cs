@@ -30,11 +30,16 @@ namespace Scenes {
         [SerializeField] private TextMeshPro TrekText3;
 
         [SerializeField] private TextMeshPro DeepText1;
-        [SerializeField] private TextMeshPro DeepText2;
+
+        [SerializeField] private TextMeshPro CityText1;
 
         [SerializeField] private Image Panel1;
         [SerializeField] private Image Panel2;
         [SerializeField] private Image Panel3;
+
+        [SerializeField] private Image City1;
+        [SerializeField] private Image City2;
+        [SerializeField] private Image City3;
 
         [SerializeField] private Image Ekey;
 
@@ -70,8 +75,11 @@ namespace Scenes {
             SetAlpha(TrekText2, 0f);
             SetAlpha(TrekText3, 0f);
             SetAlpha(DeepText1, 0f);
-            SetAlpha(DeepText2, 0f);
+            SetAlpha(CityText1, 0f);
             SetAlpha(deepBackground, 0f);
+            SetAlpha(City1, 0f);
+            SetAlpha(City2, 0f);
+            SetAlpha(City3, 0f);
         }
 
         private void Update() {
@@ -97,6 +105,9 @@ namespace Scenes {
                         StartCoroutine(ShowDeep());
                         break;
                     case 6:
+                        StartCoroutine(ShowCity());
+                        break;
+                    case 7:
                         StartCoroutine(ExitSequence());
                         break;
                     default:
@@ -203,11 +214,28 @@ namespace Scenes {
             StartCoroutine(Fade(DeepText1, EkeyFadeTime, fadeIn: true));
             yield return Fade(deepBackground, EkeyFadeTime, fadeIn: true);
 
-            yield return new WaitForSeconds(3f);
-
-            StartCoroutine(Fade(DeepText2, EkeyFadeTime, fadeIn: true));
-
             yield return new WaitForSeconds(EkeyDelayTime);
+            yield return Fade(Ekey, EkeyFadeTime, fadeIn: true);
+            canPressE = true;
+        }
+
+        private IEnumerator ShowCity() {
+            StartCoroutine(Fade(Ekey, EkeyFadeTime, fadeIn: false));
+            StartCoroutine(Fade(deepBackground, EkeyFadeTime, fadeIn: false));
+            yield return Fade(DeepText1, EkeyFadeTime, fadeIn: false);
+
+            yield return Fade(City1, EkeyFadeTime, fadeIn: true);
+
+            yield return new WaitForSeconds(1.5f);
+
+            yield return Fade(City2, EkeyFadeTime, fadeIn: true);
+
+            yield return new WaitForSeconds(1.5f);
+
+            StartCoroutine(Fade(CityText1, EkeyFadeTime, fadeIn: true));
+            yield return Fade(City3, EkeyFadeTime, fadeIn: true);
+
+            yield return new WaitForSeconds(EkeyFadeTime);
             yield return Fade(Ekey, EkeyFadeTime, fadeIn: true);
             canPressE = true;
         }
