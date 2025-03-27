@@ -21,8 +21,9 @@ public class HarpoonGun : WeaponClass
     [SerializeField] public float pullPower;
 
     [Header("HarpoonGun References")]
+    public Transform gunBarrelTransform;
     public GameObject harpoonSpearPrefab;
-
+    public GameObject harpoonRopePrefab;
     private ObjectPool<HarpoonSpear> harpoonSpearPool;
 
     [SerializeField] internal GameObject muzzleFlash;
@@ -30,6 +31,10 @@ public class HarpoonGun : WeaponClass
 
     // Assuming number of spears isn't too big
     LinkedList<HarpoonSpear> firedSpears = new LinkedList<HarpoonSpear>();
+
+    [Header("HarpoonGun Visuals")]
+    public Material ropeMaterial;  // Assign a brown material for the rope
+    public float ropeWidth = 0.1f; // Thickness of the rope
 
     override public void Start()
     {
@@ -67,6 +72,11 @@ public class HarpoonGun : WeaponClass
         HarpoonSpear spear = harpoonSpearPool.Get();
         spear.Fire(this);
         firedSpears.AddFirst(spear);
+
+        GameObject ropeObject = new GameObject("HarpoonRope");
+        HarpoonRope rope = ropeObject.AddComponent<HarpoonRope>();
+        rope.Initialize(gunBarrelTransform.right, gunBarrelTransform, spear.ropeAttachmentPoint, harpoonRopePrefab);
+        spear.rope = rope;
         CurrentAmmo--;
         Instantiate(muzzleFlash, barrelPosition.transform.position, transform.rotation);
     }
@@ -109,10 +119,16 @@ public class HarpoonGun : WeaponClass
             {
                 spear.ReturnToPlayer();
             }
+
         }
     }
 
     public void SpearCollected(HarpoonSpear spear) {
+        if (spear.rope != null) {
+            spear.rope.DestroyRope(); // Remove rope when spear is collected
+            spear.rope = null;
+        }
+
         harpoonSpearPool.Release(spear);
         firedSpears.Remove(spear);
         CurrentAmmo++;

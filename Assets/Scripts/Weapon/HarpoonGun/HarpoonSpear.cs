@@ -19,6 +19,8 @@ public class HarpoonSpear : MonoBehaviour {
     public Collider2D Collider2D;
     public Rigidbody2D Rigidbody2D;
 
+    public Transform ropeAttachmentPoint;
+
     private bool dropped;
     private bool collectable;
     private IEnumerator cooldown;
@@ -30,6 +32,9 @@ public class HarpoonSpear : MonoBehaviour {
     // Tracking enemy
     public Enemy TaggedEnemy { get; private set; }
     public Transform PullTo { get; private set; }
+
+    // The rope in question
+    public HarpoonRope rope { get; set; }
 
     public bool IsCollectable => collectable;
 
