@@ -101,9 +101,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 1024
-        width: 128
-        height: 512
+        y: 683
+        width: 85
+        height: 320
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -121,10 +121,10 @@ TextureImporter:
       name: steam-gate-deactivating_1
       rect:
         serializedVersion: 2
-        x: 128
-        y: 1024
-        width: 128
-        height: 512
+        x: 85
+        y: 683
+        width: 85
+        height: 320
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -142,10 +142,10 @@ TextureImporter:
       name: steam-gate-deactivating_2
       rect:
         serializedVersion: 2
-        x: 256
-        y: 1024
-        width: 128
-        height: 512
+        x: 170
+        y: 683
+        width: 85
+        height: 320
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -164,9 +164,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 512
-        width: 128
-        height: 512
+        y: 342
+        width: 85
+        height: 320
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -184,10 +184,10 @@ TextureImporter:
       name: steam-gate-deactivating_4
       rect:
         serializedVersion: 2
-        x: 128
-        y: 512
-        width: 128
-        height: 512
+        x: 85
+        y: 342
+        width: 85
+        height: 320
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -205,10 +205,10 @@ TextureImporter:
       name: steam-gate-deactivating_5
       rect:
         serializedVersion: 2
-        x: 256
-        y: 512
-        width: 128
-        height: 512
+        x: 170
+        y: 342
+        width: 85
+        height: 320
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -227,9 +227,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 128
-        height: 512
+        y: 1
+        width: 85
+        height: 320
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -239,48 +239,6 @@ TextureImporter:
       bones: []
       spriteID: 796bce7d895714c649166b1d2558ece1
       internalID: 1786995445
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: steam-gate-deactivating_7
-      rect:
-        serializedVersion: 2
-        x: 128
-        y: 0
-        width: 128
-        height: 512
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 36b1c92e07364495285b563a4fecd1ab
-      internalID: 2025885057
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: steam-gate-deactivating_8
-      rect:
-        serializedVersion: 2
-        x: 256
-        y: 0
-        width: 128
-        height: 512
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 1022712a2a2654cf2908fcc6e81709de
-      internalID: -1064212045
       vertices: []
       indices: 
       edges: []
@@ -303,8 +261,6 @@ TextureImporter:
       steam-gate-deactivating_4: 2036766715
       steam-gate-deactivating_5: 1618467351
       steam-gate-deactivating_6: 1786995445
-      steam-gate-deactivating_7: 2025885057
-      steam-gate-deactivating_8: -1064212045
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
