@@ -15,8 +15,9 @@ public class Tank : MonoBehaviour
     private IProgress progressLever;
 
 #nullable enable
-    private TankState state = TankState.Inactive;
-    public event TankDelegate? TankDeactivated;
+    private TankState State { get; set; } = TankState.Inactive;
+    public static event TankDelegate? TankDeactivated;
+    public static event TankDelegate? TankActivated;
     public delegate void TankDelegate(Tank thank);
 
     private void Awake() {
@@ -24,30 +25,40 @@ public class Tank : MonoBehaviour
     }
 
     private void OnEnable() {
-        progressLever.ProgressEvent += HandlePulled;
+        progressLever.ProgressEvent += HandleShutoff;
     }
 
     private void OnDisable() {
-        progressLever.ProgressEvent -= HandlePulled;
+        progressLever.ProgressEvent -= HandleShutoff;
     }
 
-    private void HandlePulled(IProgress progress) {
-        if (progress != null && progress.Progress == 1 && state == TankState.Active) {
-            state = TankState.Inactive;
-            PerformTransition(state);
+    public void Activate() {
+        State = TankState.Active;
+        PerformTransition(State);
+        TankActivated?.Invoke(this);
+    }
+
+    public bool IsInactive() => State == TankState.Inactive;
+
+    private void HandleShutoff(IProgress progress) {
+        if (progress != null && Mathf.Approximately(progress.Progress, 1f) && State == TankState.Active) {
+            State = TankState.Inactive;
+            PerformTransition(State);
             TankDeactivated?.Invoke(this);
         }
     }
 
     private void PerformTransition(TankState state) {
-        Sprite activeSprite = state switch {
+        StartCoroutine(CrossFade(GetSpriteForState(state)));
+    }
+
+    private Sprite GetSpriteForState(TankState state) {
+        return state switch {
             TankState.Active => crackedTank,
             TankState.Inactive => crackedDeactivatedTank,
             TankState.Broken => brokenTank,
             _ => normalTank,
         };
-
-        StartCoroutine(CrossFade(activeSprite));
     }
 
     private IEnumerator CrossFade(Sprite sprite) {
