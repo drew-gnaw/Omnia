@@ -121,6 +121,10 @@ namespace Players {
         public static event Action<int> OnWeaponChanged;
         public static event Action<float> OnSkillCooldownUpdated;
 
+        public static event Action<bool> OnBearEffectReady;
+        private bool wasBearReady = false; // Track previous state
+
+
         public static event Action<bool> OnHealthBoostChanged;
 
         private float currentLockout;
@@ -177,7 +181,7 @@ namespace Players {
             UpdateCombatTimer();
             UpdateRollCooldownTimer();
             UpdateSkillCooldownTimer();
-            bearCooldownTimer.Tick(Time.deltaTime);
+            UpdateBearCooldownTimer();
 
             currentHurtInvulnerability = Mathf.Max(0, currentHurtInvulnerability - Time.deltaTime);
         }
@@ -334,6 +338,16 @@ namespace Players {
 
         private void UpdateSkillCooldownTimer() {
             skillCooldownTimer.Tick(Time.deltaTime);
+        }
+
+        private void UpdateBearCooldownTimer() {
+            bearCooldownTimer.Tick(Time.deltaTime);
+
+            bool isBearReady = !bearCooldownTimer.IsRunning && bearEquipped;
+            if (isBearReady != wasBearReady) {
+                OnBearEffectReady?.Invoke(isBearReady);
+                wasBearReady = isBearReady;
+            }
         }
 
         /* This is kind of lazy but it works. */

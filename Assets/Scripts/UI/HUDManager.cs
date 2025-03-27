@@ -49,6 +49,7 @@ namespace UI {
             Player.OnWeaponChanged += SetWeaponSprites;
             WeaponClass.OnAmmoChanged += UpdateAmmo;
             Player.OnSkillCooldownUpdated += UpdateSkillCooldown;
+            Player.OnBearEffectReady += UpdateBearEffect;
         }
 
         private void OnDisable() {
@@ -57,6 +58,7 @@ namespace UI {
             Player.OnWeaponChanged -= SetWeaponSprites;
             WeaponClass.OnAmmoChanged -= UpdateAmmo;
             Player.OnSkillCooldownUpdated -= UpdateSkillCooldown;
+            Player.OnBearEffectReady -= UpdateBearEffect;
         }
 
         private void UpdateHealth(int currentHealth) {
@@ -121,6 +123,10 @@ namespace UI {
         // progress is a float where 0 <= progress <= 1
         private void UpdateSkillCooldown(float progress) {
             skillCooldownSlider.value = progress;
+        }
+
+        private void UpdateBearEffect(bool ready) {
+            Debug.Log("bear is ready: " + ready);
         }
 
         private IEnumerator SlideFlowValue(float targetFlow) {
