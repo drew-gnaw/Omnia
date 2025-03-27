@@ -24,6 +24,10 @@ namespace Scenes {
 
         [SerializeField] private Button[] buttons;
 
+        [SerializeField] private GameObject launchableDinkyPrefab;
+        [SerializeField] private Transform dinkyLaunchPoint;
+        [SerializeField] private float launchVariation;
+        [SerializeField] private float velocityVariation;
 
         private Image[] dustImages;
 
@@ -88,6 +92,31 @@ namespace Scenes {
             // Done to avoid scene transition
             SceneManager.LoadScene("2_Opening");
         }
+
+        public void LaunchDinky() {
+            float launchX = UnityEngine.Random.Range(-launchVariation, launchVariation);
+            Vector3 spawnPosition = new Vector3(dinkyLaunchPoint.position.x + launchX, dinkyLaunchPoint.position.y, dinkyLaunchPoint.position.z);
+
+            GameObject dinkyInstance = Instantiate(launchableDinkyPrefab, spawnPosition, Quaternion.identity);
+            Rigidbody2D rb = dinkyInstance.GetComponent<Rigidbody2D>();
+
+            if (rb != null) {
+                rb.gravityScale = 1f;
+
+                float horizontalForce = UnityEngine.Random.Range(-velocityVariation, velocityVariation);
+                rb.velocity = new Vector2(horizontalForce, 15);
+
+                // Apply random spin
+                float spinForce = UnityEngine.Random.Range(250f, 400f) * (UnityEngine.Random.value > 0.5f ? 1 : -1);
+                rb.angularVelocity = spinForce;
+
+                Destroy(dinkyInstance, 5f);
+            }
+            else {
+                Debug.LogError("Launchable Dinky prefab is missing a Rigidbody2D component!");
+            }
+        }
+
 
         private IEnumerator FadeInSprite(SpriteRenderer sprite, float duration) {
             float elapsedTime = 0f;

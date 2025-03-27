@@ -2129,7 +2129,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 163673182}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1632812236}
+        m_TargetAssemblyTypeName: Scenes.Title, Assembly-CSharp
+        m_MethodName: LaunchDinky
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1285530293
 GameObject:
   m_ObjectHideFlags: 0
@@ -2579,6 +2591,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ec40a22561f954b8ba3d8530a86a06f3, type: 3}
+--- !u!1 &1581481017 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 955928958887392691, guid: a4d7b4d9badc8524c9d7b029f74ddef8, type: 3}
+  m_PrefabInstance: {fileID: 1781959736183535145}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1632812234
 GameObject:
   m_ObjectHideFlags: 0
@@ -2641,6 +2658,10 @@ MonoBehaviour:
   - {fileID: 121086986}
   - {fileID: 785048718}
   - {fileID: 1285530297}
+  launchableDinkyPrefab: {fileID: 1581481017}
+  dinkyLaunchPoint: {fileID: 651295878}
+  launchVariation: 6
+  velocityVariation: 0
 --- !u!1 &1687957477
 GameObject:
   m_ObjectHideFlags: 0
