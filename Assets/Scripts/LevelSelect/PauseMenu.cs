@@ -14,6 +14,7 @@ public class PauseMenu : PersistentSingleton<PauseMenu> {
     [SerializeField] private Canvas pauseCanvas;
 
     [SerializeField] private GameObject history;
+    [SerializeField] private GameObject controls;
     [SerializeField] private GameObject buttonparent;
 
 
@@ -29,17 +30,31 @@ public class PauseMenu : PersistentSingleton<PauseMenu> {
 
 
     bool isDialogueHistoryShowing = false;
+    bool isControlsShowing = false;
 
     public bool DialogueHistoryState {
         get { return isDialogueHistoryShowing; }
         set {
-            if (value == true) {
+            if (value) {
                 ShowHistory();
             } else {
                 HideHistory();
             }
 
             isDialogueHistoryShowing = value;
+        }
+    }
+
+    public bool ControlsState {
+        get { return isControlsShowing; }
+        set {
+            if (value) {
+                ShowControls();
+            } else {
+                HideControls();
+            }
+
+            isControlsShowing = value;
         }
     }
 
@@ -70,6 +85,19 @@ public class PauseMenu : PersistentSingleton<PauseMenu> {
         DialogueHistoryState = state;
     }
 
+    void ShowControls() {
+        controls.SetActive(true);
+        buttonparent.SetActive(false);
+    }
+
+    void HideControls() {
+        controls.SetActive(false);
+        buttonparent.SetActive(true);
+    }
+
+    public void SetControlsState(bool state) {
+        ControlsState = state;
+    }
 
     private void Start() {
         musicSlider.value = 0.7f;
