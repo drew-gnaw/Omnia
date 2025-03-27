@@ -1,4 +1,5 @@
 using Puzzle;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,8 @@ public class Tank : MonoBehaviour
     [SerializeField] private Sprite crackedDeactivatedTank;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private InterfaceReference<IProgress> lever;
+    [SerializeField] private GameObject enemyPrefab;
+    [SerializeField] private List<TransformInfo> spawnLocations;
     private IProgress progressLever;
 
 #nullable enable
@@ -63,5 +66,11 @@ public class Tank : MonoBehaviour
 
     private IEnumerator CrossFade(Sprite sprite) {
         yield return null;
+    }
+
+    [Serializable]
+    private struct TransformInfo {
+        public Transform transform;
+        public bool isOccupied;
     }
 }
