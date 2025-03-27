@@ -93,7 +93,6 @@ namespace Players {
         [SerializeField] internal bool hasShotgun;
 
         private bool _healthBoosted;
-
         public bool HealthBoosted {
             get => _healthBoosted;
             set {
@@ -103,6 +102,10 @@ namespace Players {
                 }
             }
         }
+
+        // these public fields are set by trinkets that determine aspects of player behaviour.
+        public bool musicBoxEquipped;
+        public bool shoeEquipped;
 
         // Describes the ratio at which flow is converted into HP.
         public const int SWAP_HEAL = 2;
@@ -294,7 +297,9 @@ namespace Players {
                 if (Mathf.Approximately(CurrentFlow, maximumFlow)) {
                     ConsumeAllFlow();
                     weapons[selectedWeapon].IntroSkill();
-                    CurrentHealth += SWAP_HEAL;
+                    if (musicBoxEquipped) {
+                        CurrentHealth += SWAP_HEAL;
+                    }
                 }
 
                 OnWeaponChanged?.Invoke(targetWeapon);

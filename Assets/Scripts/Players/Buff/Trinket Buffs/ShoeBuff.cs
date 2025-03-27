@@ -3,14 +3,12 @@ using UnityEngine;
 
 namespace Players.Buff {
     public class ShoeBuff : Buff {
-        [SerializeField] private float speedBoost;
-
         public override void ApplyBuff() {
-            player.moveSpeed += speedBoost;
+            player.shoeEquipped = true;
         }
 
         public override void RevokeBuff() {
-            player.moveSpeed -= speedBoost;
+            player.shoeEquipped = false;
         }
     }
 }
