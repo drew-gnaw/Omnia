@@ -46,6 +46,8 @@ public abstract class WeaponClass : MonoBehaviour
     public virtual void Start() {
         playerComponent = player.GetComponent<Player>();
         CurrentAmmo = maxAmmoCount;
+
+        OnAmmoChanged?.Invoke(CurrentAmmo);
     }
 
     public void Attack() {

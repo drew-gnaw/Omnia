@@ -149,8 +149,10 @@ namespace Players {
             canRoll = true;
 
             // initially fill out the skill bar
-            OnSkillCooldownUpdated?.Invoke(1);
+            OnFlowChanged?.Invoke(CurrentFlow);
+            OnHealthChanged?.Invoke(CurrentHealth);
             OnWeaponChanged?.Invoke(0);
+            OnSkillCooldownUpdated?.Invoke(1);
             Spawn?.Invoke();
         }
 
