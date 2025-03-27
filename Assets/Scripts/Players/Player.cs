@@ -4,6 +4,7 @@ using Omnia.State;
 using Omnia.Utils;
 using Players.Animation;
 using Players.Behaviour;
+using Players.Buff;
 using Puzzle;
 using UI;
 using UnityEngine;
@@ -106,6 +107,7 @@ namespace Players {
         // these public fields are set by trinkets that determine aspects of player behaviour.
         public bool musicBoxEquipped;
         public bool shoeEquipped;
+        public bool bearEquipped;
 
         // Describes the ratio at which flow is converted into HP.
         public const int SWAP_HEAL = 2;
@@ -128,6 +130,7 @@ namespace Players {
         private CountdownTimer combatTimer;
         private CountdownTimer rollCooldownTimer;
         private CountdownTimer skillCooldownTimer;
+        private CountdownTimer bearCooldownTimer;
 
         private IBehaviour behaviour;
         private StateMachine animationStateMachine;
@@ -148,6 +151,7 @@ namespace Players {
             combatTimer = new CountdownTimer(combatCooldown);
             rollCooldownTimer = new CountdownTimer(rollCooldown);
             skillCooldownTimer = new CountdownTimer(skillCooldown);
+            bearCooldownTimer = new CountdownTimer(TeddyBearBuff.cooldownTime);
 
             canRoll = true;
 
@@ -173,6 +177,7 @@ namespace Players {
             UpdateCombatTimer();
             UpdateRollCooldownTimer();
             UpdateSkillCooldownTimer();
+            bearCooldownTimer.Tick(Time.deltaTime);
 
             currentHurtInvulnerability = Mathf.Max(0, currentHurtInvulnerability - Time.deltaTime);
         }
@@ -202,6 +207,12 @@ namespace Players {
             // Apply any buffs that reduce incoming damage
             foreach (var modifier in Buff.Buff.OnDamageTaken) {
                 damage = modifier(damage);
+            }
+
+            if (bearEquipped && !bearCooldownTimer.IsRunning && damage > 0) {
+                // Bear effect takes place and prevents this instance of damage.
+                bearCooldownTimer.Start();
+                damage = 0;
             }
 
             AudioManager.Instance.PlayHurtSound();
