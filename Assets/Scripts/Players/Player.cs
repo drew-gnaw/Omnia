@@ -148,7 +148,13 @@ namespace Players {
 
             canRoll = true;
 
+            // use persistence data from data manager
             selectedWeapon = PlayerDataManager.Instance.playerSelectedWeapon;
+
+            for (int i = 0; i < weapons.Length; i++) {
+                weapons[i].SetSpriteActive(i == selectedWeapon);
+            }
+
             OnWeaponChanged?.Invoke(selectedWeapon);
 
             // initially fill out the skill bar
