@@ -268,7 +268,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4262718082693769851, guid: b50f816e17885cf45acd8001c5a57e4a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.817811
+      value: -1.1
       objectReference: {fileID: 0}
     - target: {fileID: 4262718082693769851, guid: b50f816e17885cf45acd8001c5a57e4a, type: 3}
       propertyPath: m_LocalPosition.y
@@ -337,7 +337,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4774809283147415622, guid: 60c329ee0656c824e8e9c92cb57b8930, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.1738148
+      value: 1.1727581
       objectReference: {fileID: 0}
     - target: {fileID: 4774809283147415622, guid: 60c329ee0656c824e8e9c92cb57b8930, type: 3}
       propertyPath: m_LocalPosition.y
@@ -742,6 +742,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   notPickedUpDialogue: {fileID: 11400000, guid: 182a216a21f545548befb106d643facf, type: 2}
+  musicBox: {fileID: 11400000, guid: 77d602b8e4ba79c46b02522eea294d32, type: 2}
 --- !u!1 &682334518
 GameObject:
   m_ObjectHideFlags: 0
