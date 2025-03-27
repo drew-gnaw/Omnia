@@ -11,6 +11,8 @@ namespace Inventory {
 
         [SerializeField] private Buff buffPrefab;
 
+        public bool isLocked = true;
+
         private Buff activeBuffInstance;
 
         public void ApplyEffect(Player player) {

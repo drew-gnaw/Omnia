@@ -1,11 +1,13 @@
+using Inventory;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Utils;
 
 namespace Players {
     public class PlayerDataManager : PersistentSingleton<PlayerDataManager> {
-        public int playerSelectedWeapon = 0;
+        [SerializeField] private Trinket[] trinkets;
 
+        public int playerSelectedWeapon = 0;
         public void OnEnable() {
             Player.OnWeaponChanged += HandleWeaponChange;
         }
@@ -16,6 +18,18 @@ namespace Players {
 
 
         // Trinket data
+
+        public void AddTrinket(Trinket trinket) {
+            Debug.Log("Searching for: " + trinket.name);
+            foreach (var t in trinkets) {
+                Debug.Log(t.name);
+                if (t.trinketName == trinket.trinketName) {
+                    t.isLocked = false;
+                    return;
+                }
+            }
+        }
+
 
 
         // Current weapon
