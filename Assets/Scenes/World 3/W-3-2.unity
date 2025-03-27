@@ -134,22 +134,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: SteamPipe (2)
       objectReference: {fileID: 0}
-    - target: {fileID: 4707217400690880422, guid: 3d8d86546b0cf18408f05a957c7e36ad, type: 3}
-      propertyPath: isReverse
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4707217400690880422, guid: 3d8d86546b0cf18408f05a957c7e36ad, type: 3}
-      propertyPath: signals.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4707217400690880422, guid: 3d8d86546b0cf18408f05a957c7e36ad, type: 3}
-      propertyPath: signals.Array.data[0].underlyingValue
-      value: 
-      objectReference: {fileID: 1252129574}
-    - target: {fileID: 5310777599011866485, guid: 3d8d86546b0cf18408f05a957c7e36ad, type: 3}
-      propertyPath: m_FlipX
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6370511850441086835, guid: 3d8d86546b0cf18408f05a957c7e36ad, type: 3}
       propertyPath: m_LocalPosition.x
       value: -9.25
@@ -27074,6 +27058,10 @@ PrefabInstance:
       propertyPath: signals.Array.data[0].underlyingValue
       value: 
       objectReference: {fileID: 1252129574}
+    - target: {fileID: 5310777599011866485, guid: 3d8d86546b0cf18408f05a957c7e36ad, type: 3}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6370511850441086835, guid: 3d8d86546b0cf18408f05a957c7e36ad, type: 3}
       propertyPath: m_LocalPosition.x
       value: -4.25
