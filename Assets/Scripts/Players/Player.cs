@@ -169,6 +169,8 @@ namespace Players {
             OnWeaponChanged?.Invoke(selectedWeapon);
 
             // initially fill out the skill bar
+            OnFlowChanged?.Invoke(CurrentFlow);
+            OnHealthChanged?.Invoke(CurrentHealth);
             OnSkillCooldownUpdated?.Invoke(1);
             Spawn?.Invoke();
         }

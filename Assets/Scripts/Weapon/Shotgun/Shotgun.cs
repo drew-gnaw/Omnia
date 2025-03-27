@@ -34,7 +34,12 @@ public class Shotgun : WeaponClass {
     private Coroutine reloadCoroutine;
 
     protected override void HandleAttack() {
+        if (CurrentAmmo <= 0) {
+            return;
+        }
         Shoot();
+
+        --CurrentAmmo;
     }
 
     public override bool UseSkill() {
@@ -93,12 +98,7 @@ public class Shotgun : WeaponClass {
     }
 
     private void Shoot() {
-        if (CurrentAmmo <= 0) {
-            return;
-        }
         AudioManager.Instance.PlaySFX(AudioTracks.Scrapgun);
-
-        --CurrentAmmo;
 
         var hits = PerformRayCasts();
         ApplyDamage(hits, damage, true); // Regular shot uses drop-off
