@@ -76,8 +76,6 @@ namespace Scenes {
             float spinForce = UnityEngine.Random.Range(250f, 400f) * (UnityEngine.Random.value > 0.5f ? 1 : -1);
             rb.angularVelocity = spinForce;
 
-            yield return new WaitUntil(() => rb.velocity.y <= -4f);
-
             HighlightManager.Instance.HighlightGameObject(dummy1Obj);
             HighlightManager.Instance.HighlightGameObject(dummy2Obj);
         }
