@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: EliteCrabIdle
+  m_Name: CrabIdle
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -21,7 +21,7 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: 736834304, guid: 12ebc63e4ed504dbd9ce43423e56af1f, type: 3}
+      value: {fileID: 1776680185, guid: 3e41a8673cabc4ed19cb362ec3dd4a5e, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -44,7 +44,7 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     pptrCurveMapping:
-    - {fileID: 736834304, guid: 12ebc63e4ed504dbd9ce43423e56af1f, type: 3}
+    - {fileID: 1776680185, guid: 3e41a8673cabc4ed19cb362ec3dd4a5e, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
