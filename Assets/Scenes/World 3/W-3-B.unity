@@ -1060,6 +1060,18 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 3.25
       objectReference: {fileID: 0}
+    - target: {fileID: 4707217400690880422, guid: 3d8d86546b0cf18408f05a957c7e36ad, type: 3}
+      propertyPath: isReverse
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4707217400690880422, guid: 3d8d86546b0cf18408f05a957c7e36ad, type: 3}
+      propertyPath: signals.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4707217400690880422, guid: 3d8d86546b0cf18408f05a957c7e36ad, type: 3}
+      propertyPath: signals.Array.data[0].underlyingValue
+      value: 
+      objectReference: {fileID: 1085071701}
     - target: {fileID: 6370511850441086835, guid: 3d8d86546b0cf18408f05a957c7e36ad, type: 3}
       propertyPath: m_LocalPosition.x
       value: -8.25
@@ -1134,6 +1146,18 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 3.25
       objectReference: {fileID: 0}
+    - target: {fileID: 4707217400690880422, guid: 3d8d86546b0cf18408f05a957c7e36ad, type: 3}
+      propertyPath: isReverse
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4707217400690880422, guid: 3d8d86546b0cf18408f05a957c7e36ad, type: 3}
+      propertyPath: signals.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4707217400690880422, guid: 3d8d86546b0cf18408f05a957c7e36ad, type: 3}
+      propertyPath: signals.Array.data[0].underlyingValue
+      value: 
+      objectReference: {fileID: 1085071701}
     - target: {fileID: 6370511850441086835, guid: 3d8d86546b0cf18408f05a957c7e36ad, type: 3}
       propertyPath: m_LocalPosition.x
       value: 8.25
@@ -1571,6 +1595,23 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -0.75
       objectReference: {fileID: 0}
+    - target: {fileID: 4707217400690880422, guid: 3d8d86546b0cf18408f05a957c7e36ad, type: 3}
+      propertyPath: signals.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4707217400690880422, guid: 3d8d86546b0cf18408f05a957c7e36ad, type: 3}
+      propertyPath: behaviour.assemblyQualifiedName
+      value: Puzzle.ReceiverBehaviour+Or, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 4707217400690880422, guid: 3d8d86546b0cf18408f05a957c7e36ad, type: 3}
+      propertyPath: signals.Array.data[0].underlyingValue
+      value: 
+      objectReference: {fileID: 1233168876}
+    - target: {fileID: 4707217400690880422, guid: 3d8d86546b0cf18408f05a957c7e36ad, type: 3}
+      propertyPath: signals.Array.data[1].underlyingValue
+      value: 
+      objectReference: {fileID: 1758941395}
     - target: {fileID: 6370511850441086835, guid: 3d8d86546b0cf18408f05a957c7e36ad, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -8715,11 +8756,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4774809283147415622, guid: 60c329ee0656c824e8e9c92cb57b8930, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.9326935
+      value: -0.9312954
       objectReference: {fileID: 0}
     - target: {fileID: 4774809283147415622, guid: 60c329ee0656c824e8e9c92cb57b8930, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.0406106
+      value: -2.0405934
       objectReference: {fileID: 0}
     - target: {fileID: 4774809283147415622, guid: 60c329ee0656c824e8e9c92cb57b8930, type: 3}
       propertyPath: m_LocalPosition.z
