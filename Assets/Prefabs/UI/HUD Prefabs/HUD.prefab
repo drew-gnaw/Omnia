@@ -1097,6 +1097,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1259367060579067387}
     m_Modifications:
+    - target: {fileID: 975513573840143788, guid: 1bec0dc3f73da4568aaa134f68d5accd, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 975513573840143788, guid: 1bec0dc3f73da4568aaa134f68d5accd, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 975513573840143788, guid: 1bec0dc3f73da4568aaa134f68d5accd, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 975513573840143788, guid: 1bec0dc3f73da4568aaa134f68d5accd, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4885711954112943314, guid: 1bec0dc3f73da4568aaa134f68d5accd, type: 3}
       propertyPath: m_Name
       value: Health
@@ -1199,6 +1215,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1259367060579067387}
     m_Modifications:
+    - target: {fileID: 975513573840143788, guid: 1bec0dc3f73da4568aaa134f68d5accd, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 975513573840143788, guid: 1bec0dc3f73da4568aaa134f68d5accd, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 975513573840143788, guid: 1bec0dc3f73da4568aaa134f68d5accd, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 975513573840143788, guid: 1bec0dc3f73da4568aaa134f68d5accd, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4885711954112943314, guid: 1bec0dc3f73da4568aaa134f68d5accd, type: 3}
       propertyPath: m_Name
       value: Health
