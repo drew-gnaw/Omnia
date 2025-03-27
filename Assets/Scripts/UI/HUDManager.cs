@@ -31,12 +31,8 @@ namespace UI {
         [SerializeField] private GameObject emptyAmmoPrefab;
 
         [SerializeField] private Sprite harpoonGunSprite;
-        [SerializeField] private Sprite harpoonGunTipSprite;
         [SerializeField] private Sprite shotgunSprite;
-        [SerializeField] private Sprite shotgunTipSprite;
-
         [SerializeField] private Image weaponRenderer;
-        [SerializeField] private Image weaponTipRenderer;
 
         [SerializeField] private Slider flowSlider;
         [SerializeField] private Image lowHealthEffect;
@@ -149,11 +145,9 @@ namespace UI {
             switch (targetWeapon) {
                 case 0:
                     weaponRenderer.sprite = harpoonGunSprite;
-                    weaponTipRenderer.sprite = harpoonGunTipSprite;
                     break;
                 case 1:
                     weaponRenderer.sprite = shotgunSprite;
-                    weaponTipRenderer.sprite = shotgunTipSprite;
                     break;
                 default:
                     Debug.LogWarning("Tried to update HUD to invalid weapon: " + targetWeapon);
