@@ -7,6 +7,8 @@ namespace Omnia.State {
         StateNode current;
         Dictionary<Type, StateNode> nodes = new();
         HashSet<ITransition> anyTransitions = new();
+        public event OnStateChange OnStateChangedEvent;
+        public delegate void OnStateChange(IState prev, IState next);
 
         public void Update() {
             var transition = GetTransition();
@@ -30,7 +32,7 @@ namespace Omnia.State {
         void ChangeState(IState state) {
             if (state == current.State) return;
 
-            // Debug.Log("Changing from " + current.State + " to " + state);
+            //Debug.Log("Changing from " + current.State + " to " + state);
 
             var previousState = current.State;
             var nextState = nodes[state.GetType()].State;
@@ -38,6 +40,7 @@ namespace Omnia.State {
             previousState?.OnExit();
             nextState?.OnEnter();
             current = nodes[state.GetType()];
+            OnStateChangedEvent?.Invoke(previousState, nextState);
         }
 
         ITransition GetTransition() {
