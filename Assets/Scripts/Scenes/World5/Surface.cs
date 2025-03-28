@@ -1,4 +1,5 @@
 using System.Collections;
+using UI;
 using UnityEngine;
 using Utils;
 
@@ -8,6 +9,7 @@ namespace Scenes.World5 {
         [SerializeField] private FadeScreenHandler fadeScreen;
 
         public void Start() {
+            HUDManager.Instance.gameObject.SetActive(false);
             StartCoroutine(StartSequence());
         }
 
