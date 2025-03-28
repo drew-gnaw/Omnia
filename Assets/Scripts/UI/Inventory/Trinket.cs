@@ -8,7 +8,7 @@ namespace Inventory {
     public class Trinket : ScriptableObject {
         [SerializeField] public Sprite icon;
         [SerializeField] public string trinketName;
-        [SerializeField] public string description;
+        [SerializeField, TextArea] public string description;
 
         [SerializeField] private Buff buffPrefab;
 

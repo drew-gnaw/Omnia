@@ -6,7 +6,7 @@ using UnityEngine.UI;
 [System.Serializable]
 public class DialogueText
 {
-    [SerializeField] private string bodyText;
+    [SerializeField, TextArea] private string bodyText;
     [SerializeField] private string speakerName;
     [SerializeField] private Sprite displayingImage;
 
