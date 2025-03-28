@@ -6,11 +6,13 @@ using Utils;
 
 namespace Players {
     public class PlayerDataManager : PersistentSingleton<PlayerDataManager> {
+        [SerializeField] private bool devMode;
+
         [SerializeField] private Trinket[] trinkets;
 
         public void Start() {
             foreach (Trinket trinket in trinkets) {
-                trinket.IsLocked = true;
+                trinket.IsLocked = !devMode;
             }
         }
 
