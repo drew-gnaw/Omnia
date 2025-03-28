@@ -10,13 +10,26 @@ public class EnemySpawner : MonoBehaviour {
     [SerializeField] private float spawnCoolDown;
     [SerializeField] private GameObject spawn;
     [SerializeField] private GameObject explosion;
+    // Necessary to dynamically change the spawned object by providing a different getter
+    public GetSpawnObject GetSpawn;
+    public GetCount GetOwnedEnemiesCount;
+#nullable enable
+    public delegate GameObject GetSpawnObject();
+    public delegate int GetCount();
+    public bool IsActive { get; set; } = true;
 
     private readonly List<Enemy> ownedEnemies = new();
-    private CountdownTimer spawnTimer;
+    private CountdownTimer? spawnTimer;
+    
+    private void Awake() {
+        GetSpawn = () => Instantiate(spawn);
+        GetOwnedEnemiesCount = () => ownedEnemies.Count;
+    }
 
     private void Start() {
         TrySpawn();
     }
+
     private void OnEnable() {
         Enemy.Death += HandleEnemyDeath;
     }
@@ -26,25 +39,39 @@ public class EnemySpawner : MonoBehaviour {
     }
 
     private void Update() {
+        if (!IsActive) return;
+
         if (spawnTimer != null && spawnTimer.IsRunning) {
             spawnTimer.Tick(Time.deltaTime);
-        } else if (ownedEnemies.Count < maxSpawns) {
+        } else if (GetOwnedEnemiesCount() < maxSpawns) {
             if (spawnTimer == null || !spawnTimer.IsRunning) {
                 spawnTimer = new CountdownTimer(spawnCoolDown);
                 spawnTimer.Start();
             }
         }
 
-        if (spawnTimer != null && !spawnTimer.IsRunning && ownedEnemies.Count < maxSpawns) {
+        if (spawnTimer != null && !spawnTimer.IsRunning && GetOwnedEnemiesCount() < maxSpawns) {
             TrySpawn();
         }
     }
 
-    private void TrySpawn() {
-        if (ownedEnemies.Count >= maxSpawns) return;
+    public void KillAllChildren() {
+        // Prevents Concurrent Modification Exception
+        List<Enemy> enemies = new(ownedEnemies);
+        enemies.ForEach(it => it.Die());
+    }
 
-        var instance = Instantiate(spawn, spawnPoint.position, Quaternion.identity).GetComponent<Enemy>();
-        ownedEnemies.Add(instance);
+    public void SetMaxSpawn(int maxSpawn) {
+        this.maxSpawns = maxSpawn;
+    }
+
+    public void TrySpawn() {
+        if (!IsActive || GetOwnedEnemiesCount() >= maxSpawns) return;
+
+        var instance = GetSpawn();
+        instance.transform.position = spawnPoint.position;
+        instance.transform.rotation = Quaternion.identity;
+        ownedEnemies.Add(instance.GetComponent<Enemy>());
         Instantiate(explosion, spawnPoint.position, Quaternion.identity);
     }
 
