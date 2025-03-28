@@ -99,7 +99,7 @@ public class HarpoonSpear : MonoBehaviour {
             float rotationZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.Euler(0.0f, 0.0f, rotationZ);
 
-            if (Vector3.Distance(transform.position, player.Center) <= 0.1f) {
+            if (collectable && Vector3.Distance(transform.position, player.Center) <= 0.1f) {
                 HandlePlayerCollision();
             }
         }
