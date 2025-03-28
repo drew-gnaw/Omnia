@@ -46,7 +46,7 @@ public class Tank : MonoBehaviour {
     }
 
     public void Activate() {
-        ScreenShakeManager.Instance.Shake();
+        Shake();
         PerformTransition(TankState.Active);
         spawner.IsActive = true;
         spawner.TrySpawn();
@@ -54,7 +54,7 @@ public class Tank : MonoBehaviour {
     }
 
     public void Break() {
-        ScreenShakeManager.Instance.Shake(3, 1f);
+        Shake(3, 1f);
         PerformTransition(TankState.Broken);
         spawner.IsActive = false;
         KillAllChildren();
@@ -111,6 +111,7 @@ public class Tank : MonoBehaviour {
 
     private void HandleShutoff(IProgress progress) {
         if (progress != null && Mathf.Approximately(progress.Progress, 1f) && State == TankState.Active) {
+            Shake();
             PerformTransition(TankState.Inactive);
             spawner.IsActive = false;
             TankDeactivated?.Invoke(this);
@@ -133,8 +134,15 @@ public class Tank : MonoBehaviour {
 
     private IEnumerator CrossFade(Sprite sprite) {
         spriteRenderer.sprite = sprite;
+        //TODO make pretty
         yield return null;
     }
+
+    // Helper to reduce clutter for screenShakeManager find references
+    private void Shake(float intensity = 1.0f, float duration = 0.5f) {
+        ScreenShakeManager.Instance.Shake(intensity, duration);
+    }
+
 
     [Serializable]
     private class TransformInfo {

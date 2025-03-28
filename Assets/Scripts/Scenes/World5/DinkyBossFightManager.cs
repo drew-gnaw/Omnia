@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class DinkyBossFightManager : MonoBehaviour, IInteractable
 {
-
+    [SerializeField] private HealthBar bossHealth;
     [SerializeField] private DinkyBossFightTanks dinkyBossfightTanks;
     [Serializable]
     public class DinkyBossFightTanks {
@@ -40,7 +40,15 @@ public class DinkyBossFightManager : MonoBehaviour, IInteractable
     }
 
     private bool canSpawnNextWave = true;
-    private int currentProgress = 0;
+    private int CurrentProgress {
+        get => _currentProgress;
+        set {
+            _currentProgress = value;
+            bossHealth.UpdateBar(MaxProgress - _currentProgress, MaxProgress);
+        }
+    }
+    private int _currentProgress = 0;
+
     private List<Tank> activeTanks = new();
     private Wave currentWave = Wave.Get<DialogueWave>();
     public event Action<int>? ProgressChanged;
@@ -72,8 +80,14 @@ public class DinkyBossFightManager : MonoBehaviour, IInteractable
 
     public void StartFight() {
         if (currentWave == Wave.Get<DialogueWave>()) {
-            ProgressWave();
+            StartCoroutine(AnimateIntro());
         }
+    }
+
+    public IEnumerator AnimateIntro() {
+        yield return StartCoroutine(bossHealth.FadeInAndFill());
+        yield return new WaitForSeconds(0.5f);
+        ProgressWave();
     }
 
     public void ProgressWave() {
@@ -87,9 +101,8 @@ public class DinkyBossFightManager : MonoBehaviour, IInteractable
     }
 
     private void IncrementProgress(Tank tank) {
-        currentProgress += 1;
+        ++CurrentProgress;
         activeTanks.Remove(tank);
-        ProgressChanged?.Invoke(currentProgress);
         ProgressWave();
     }
 
@@ -104,7 +117,7 @@ public class DinkyBossFightManager : MonoBehaviour, IInteractable
             yield return new WaitForSeconds(tankInfo.ActivationTime);
             if (activeTanks.Count == DinkyBossFightTanks.MAX_TANK_COUNT) {
                 Debug.LogWarning($"Something went pretty wrong to try and activate a tank when all tanks are active {currentWave.GetType()}");
-                currentProgress += 1; //Attempt to escape softlock condition
+                ++CurrentProgress; //Attempt to escape softlock condition
                 continue;
             }
 
