@@ -21,10 +21,11 @@ namespace Enemies.Spawnball {
         [SerializeField] internal Rigidbody2D rb;
 
         [SerializeField] internal Transform target;
-        [SerializeField] internal GameObject spawn;
+        [SerializeField] internal Enemy spawn;
         [SerializeField] internal GameObject explosion;
 
         public Action<Spawnball> NotifyOnDestroy;
+        public Action<Enemy> NotifyOnSpawn;
 
         public void OnDestroy() => NotifyOnDestroy?.Invoke(this);
 
@@ -38,9 +39,9 @@ namespace Enemies.Spawnball {
         }
 
         public void OnSpawnEnemy() {
-            Instantiate(spawn, target.position, Quaternion.identity);
+            Enemy enemy = Instantiate(spawn, target.position, Quaternion.identity);
+            NotifyOnSpawn?.Invoke(enemy);
             Destroy(gameObject);
-
             Instantiate(explosion, rb.worldCenterOfMass, Quaternion.identity);
         }
 

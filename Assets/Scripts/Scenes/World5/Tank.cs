@@ -1,4 +1,6 @@
+using Enemies;
 using Enemies.Spawnball;
+using Omnia.Utils;
 using Puzzle;
 using System;
 using System.Collections;
@@ -7,11 +9,6 @@ using UnityEngine;
 
 public class Tank : MonoBehaviour
 {
-    [Serializable]
-    private class TransformInfo {
-        public Transform transform;
-        public bool isOccupied;
-    }
     private enum TankState { Inactive, Active, Broken }
     [SerializeField] private Sprite crackedTank;
     [SerializeField] private Sprite normalTank;
@@ -19,13 +16,15 @@ public class Tank : MonoBehaviour
     [SerializeField] private Sprite crackedDeactivatedTank;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private InterfaceReference<IProgress> lever;
+    [SerializeField] private float spawnCoolDown;
     [SerializeField] private Spawnball spawnball;
-    [SerializeField] private EnemySpawner spawner;
-    [SerializeField] private GameObject enemyPrefab;
+    [SerializeField] private Enemy enemyPrefab;
+    [SerializeField] private GameObject explosion;
+    [SerializeField] private Transform spawnballSpawnPoint;
     [SerializeField] private List<TransformInfo> spawnLocations;
     private IProgress progressLever;
-
 #nullable enable
+    private CountdownTimer? spawnTimer;
     private TankState State { get; set; } = TankState.Inactive;
     public static event TankDelegate? TankDeactivated;
     public static event TankDelegate? TankActivated;
@@ -33,13 +32,6 @@ public class Tank : MonoBehaviour
 
     private void Awake() {
         progressLever = lever.Value;
-        spawner.SetMaxSpawn(spawnLocations.Count);
-    }
-
-    private void Start() {
-        spawner.GetSpawn = GetConfiguredSpawnball;
-
-
     }
 
     private void OnEnable() {
@@ -50,6 +42,28 @@ public class Tank : MonoBehaviour
         progressLever.ProgressEvent -= HandleShutoff;
     }
 
+    private void Update() {
+        if (spawnTimer != null && spawnTimer.IsRunning) {
+            spawnTimer.Tick(Time.deltaTime);
+        } else if (GetUnoccupiedTransformInfos().Count > 0) {
+            if (spawnTimer == null || !spawnTimer.IsRunning) {
+                spawnTimer = new CountdownTimer(spawnCoolDown);
+                spawnTimer.Start();
+            }
+        }
+
+        if (spawnTimer != null && !spawnTimer.IsRunning && GetUnoccupiedTransformInfos().Count > 0) {
+            TrySpawn();
+        }
+    }
+
+    private void TrySpawn() {
+        if (GetUnoccupiedTransformInfos().Count == 0) return;
+
+        var instance = GetConfiguredSpawnball();
+        Instantiate(explosion, spawnballSpawnPoint.position, Quaternion.identity);
+    }
+
     public void Activate() {
         State = TankState.Active;
         PerformTransition(State);
@@ -58,25 +72,44 @@ public class Tank : MonoBehaviour
 
     public bool IsInactive() => State == TankState.Inactive;
     private GameObject GetConfiguredSpawnball() {
-        Spawnball instance = Instantiate(spawnball);
+        Spawnball instance = Instantiate(spawnball, spawnballSpawnPoint.position, Quaternion.identity);
+        
+        TransformInfo info = GetRandomSpawnLocationInfo();
 
         instance.spawn = enemyPrefab; 
-        instance.target = GetRandomSpawnLocation();
+        instance.target = info.transform;
+
+        instance.NotifyOnSpawn += HandleEnemySpawn;
+
+
+        
+        //
+        void HandleEnemySpawn(Enemy enemy) {
+            instance.NotifyOnSpawn -= HandleEnemySpawn;
+            info.occupiedEnemy = enemy;
+
+            // Oh my god I'm gonna cry
+            enemy.OnDeath += HandleEnemyDeath;
+            void HandleEnemyDeath(Enemy e) {
+                enemy.OnDeath -= HandleEnemyDeath;
+                info.occupiedEnemy = null;
+            } 
+        }
 
         return instance.gameObject;
     }
 
-    private Transform GetRandomSpawnLocation() {
-        var inactiveSpawnLocations = spawnLocations.FindAll(it => !it.isOccupied);
+    private List<TransformInfo> GetUnoccupiedTransformInfos() {
+        return spawnLocations.FindAll(it => it.occupiedEnemy == null);
+    }
+
+    private TransformInfo GetRandomSpawnLocationInfo() {
+        List<TransformInfo> inactiveSpawnLocations = GetUnoccupiedTransformInfos();
         if (inactiveSpawnLocations.Count == 0 ) {
             Debug.LogWarning($"Something Went terrible wrong for tank {gameObject.name} to try and spawn when all locations are occupied");
-            return this.gameObject.transform;
+            return new TransformInfo(this.gameObject.transform, null);
         }
-
-        TransformInfo info = spawnLocations[UnityEngine.Random.Range(0, inactiveSpawnLocations.Count)];
-        info.isOccupied = true;
-
-        return info.transform;
+        return spawnLocations[UnityEngine.Random.Range(0, inactiveSpawnLocations.Count)];
     }
 
     private void HandleShutoff(IProgress progress) {
@@ -107,5 +140,15 @@ public class Tank : MonoBehaviour
         yield return null;
     }
 
- 
+
+    [Serializable]
+    private class TransformInfo {
+        public Transform transform;
+        public Enemy? occupiedEnemy;
+
+        public TransformInfo(Transform transform, Enemy? enemy) {
+            this.transform = transform;
+            this.occupiedEnemy = enemy;
+        }
+    }
 }
