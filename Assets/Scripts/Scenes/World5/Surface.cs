@@ -23,9 +23,11 @@ namespace Scenes.World5 {
 
         private IEnumerator StartSequence() {
             fadeScreen.SetDarkScreen();
-            yield return StartCoroutine(fadeScreen.FadeInLightScreen(3f));
+            StartCoroutine(fadeScreen.FadeInLightScreen(3f));
 
+            yield return new WaitForSeconds(2f);
             StartCoroutine(PlayDialogue());
+            yield return new WaitForSeconds(2f);
             floatCamera.StartFloating();
         }
 
@@ -42,7 +44,7 @@ namespace Scenes.World5 {
 
                 if (targetTextBox != null) {
                     yield return StartCoroutine(Typewriter.TypewriterEffect(targetTextBox, dialogueText.BodyText, 0.05f));
-                    yield return new WaitForSeconds(1f);
+                    yield return new WaitForSeconds(2f);
                 }
             }
         }
