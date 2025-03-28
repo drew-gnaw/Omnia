@@ -9,7 +9,7 @@ public class DinkyBossFightManager : MonoBehaviour, IInteractable
     [SerializeField] private HealthBar bossHealth;
     [SerializeField] private DinkyBossFightTanks dinkyBossfightTanks;
     [Serializable]
-    public class DinkyBossFightTanks {
+    public struct DinkyBossFightTanks {
         public const int MAX_TANK_COUNT = 4;
         public Tank armadilloTank;
         public Tank sundewTank;
@@ -39,7 +39,6 @@ public class DinkyBossFightManager : MonoBehaviour, IInteractable
         }
     }
 
-    private bool canSpawnNextWave = true;
     private int CurrentProgress {
         get => _currentProgress;
         set {
@@ -48,10 +47,9 @@ public class DinkyBossFightManager : MonoBehaviour, IInteractable
         }
     }
     private int _currentProgress = 0;
-
+    private bool canSpawnNextWave = true;
     private List<Tank> activeTanks = new();
     private Wave currentWave = Wave.Get<DialogueWave>();
-    public event Action<int>? ProgressChanged;
     public int MaxProgress => Wave.WaveValues.Aggregate(0, (acc, wave) => acc + wave.ActiveTanks(dinkyBossfightTanks).Count);
 
     private void OnEnable() {
@@ -66,13 +64,6 @@ public class DinkyBossFightManager : MonoBehaviour, IInteractable
         FinalWave.FightCompleteEvent -= HandleSceneEnd;
     }
 
-    private void HandleSceneEnd() {
-        var tanks = dinkyBossfightTanks.GetAllTanks();
-        foreach(var tank in tanks) {
-            tank.Break();
-        }
-    }
-
     // Remove me once im not needed :>
     public void Interact() {
         StartFight();
@@ -84,9 +75,25 @@ public class DinkyBossFightManager : MonoBehaviour, IInteractable
         }
     }
 
-    public IEnumerator AnimateIntro() {
+    private IEnumerator AnimateIntro() {
         yield return StartCoroutine(bossHealth.FadeInAndFill());
         yield return new WaitForSeconds(0.5f);
+        ProgressWave();
+    }
+
+    private void HandleActiveTank(Tank tank) {
+        activeTanks.Add(tank);
+    }
+    private void HandleSceneEnd() {
+        var tanks = dinkyBossfightTanks.GetAllTanks();
+        foreach (var tank in tanks) {
+            tank.Break();
+        }
+    }
+
+    private void IncrementProgress(Tank tank) {
+        ++CurrentProgress;
+        activeTanks.Remove(tank);
         ProgressWave();
     }
 
@@ -94,16 +101,6 @@ public class DinkyBossFightManager : MonoBehaviour, IInteractable
         if (canSpawnNextWave && currentWave.WaveEndCondition(activeTanks.Count)) {
             StartWave(currentWave.NextWave());
         }
-    }
-
-    private void HandleActiveTank(Tank tank) {
-        activeTanks.Add(tank);
-    }
-
-    private void IncrementProgress(Tank tank) {
-        ++CurrentProgress;
-        activeTanks.Remove(tank);
-        ProgressWave();
     }
 
     private void StartWave(Wave newWave) {
