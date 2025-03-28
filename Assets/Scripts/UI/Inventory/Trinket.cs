@@ -16,16 +16,14 @@ namespace Inventory {
         private Buff activeBuffInstance;
 
         // Event that gets triggered when isLocked changes
-        public event Action<Trinket> OnTrinketUnlocked;
+        public event Action<Trinket, bool> OnTrinketLockUpdate;
 
         public bool IsLocked {
             get => isLocked;
             set {
                 if (isLocked != value) {
                     isLocked = value;
-                    if (!isLocked) {
-                        OnTrinketUnlocked?.Invoke(this);
-                    }
+                    OnTrinketLockUpdate?.Invoke(this, isLocked);
                 }
             }
         }

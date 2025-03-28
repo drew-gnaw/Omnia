@@ -21,18 +21,18 @@ public class TrinketSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
         // Subscribe to Trinket unlock event
         if (trinket != null) {
-            trinket.OnTrinketUnlocked += HandleTrinketUnlocked;
+            trinket.OnTrinketLockUpdate += HandleTrinketLockUpdate;
         }
     }
 
     private void OnDestroy() {
         // Unsubscribe to prevent memory leaks
         if (trinket != null) {
-            trinket.OnTrinketUnlocked -= HandleTrinketUnlocked;
+            trinket.OnTrinketLockUpdate -= HandleTrinketLockUpdate;
         }
     }
 
-    private void HandleTrinketUnlocked(Trinket unlockedTrinket) {
+    private void HandleTrinketLockUpdate(Trinket unlockedTrinket, bool locked) {
         if (unlockedTrinket == trinket) {
             RefreshSlot();
         }
