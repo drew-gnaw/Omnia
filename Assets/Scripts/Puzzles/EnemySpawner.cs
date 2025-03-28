@@ -10,13 +10,22 @@ public class EnemySpawner : MonoBehaviour {
     [SerializeField] private float spawnCoolDown;
     [SerializeField] private GameObject spawn;
     [SerializeField] private GameObject explosion;
+#nullable enable
+    public bool IsActive { get; set; } = true;
+    // Necessary to dynamically change the spawned object by providing a different getter
+    public GetSpawnObject GetSpawn;
+    public delegate GameObject GetSpawnObject();
 
     private readonly List<Enemy> ownedEnemies = new();
-    private CountdownTimer spawnTimer;
+    private CountdownTimer? spawnTimer;
+    private void Awake() {
+        GetSpawn = () => Instantiate(spawn);
+    }
 
     private void Start() {
         TrySpawn();
     }
+
     private void OnEnable() {
         Enemy.Death += HandleEnemyDeath;
     }
@@ -26,6 +35,8 @@ public class EnemySpawner : MonoBehaviour {
     }
 
     private void Update() {
+        if (!IsActive) return;
+
         if (spawnTimer != null && spawnTimer.IsRunning) {
             spawnTimer.Tick(Time.deltaTime);
         } else if (ownedEnemies.Count < maxSpawns) {
@@ -40,11 +51,17 @@ public class EnemySpawner : MonoBehaviour {
         }
     }
 
-    private void TrySpawn() {
-        if (ownedEnemies.Count >= maxSpawns) return;
+    public void SetMaxSpawn(int maxSpawn) {
+        this.maxSpawns = maxSpawn;
+    }
 
-        var instance = Instantiate(spawn, spawnPoint.position, Quaternion.identity).GetComponent<Enemy>();
-        ownedEnemies.Add(instance);
+    private void TrySpawn() {
+        if (!IsActive || ownedEnemies.Count >= maxSpawns) return;
+
+        var instance = GetSpawn();
+        instance.transform.position = spawnPoint.position;
+        instance.transform.rotation = Quaternion.identity;
+        ownedEnemies.Add(instance.GetComponent<Enemy>());
         Instantiate(explosion, spawnPoint.position, Quaternion.identity);
     }
 
