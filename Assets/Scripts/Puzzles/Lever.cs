@@ -33,7 +33,6 @@ namespace Puzzle {
         private readonly float radius = 0.2f; // Fixed distance from pivot
         private float currentHandleAngle;
         private bool isCharging = false;
-        private int objectsInside = 0;
         private float startAngle = 150f;
         private float endAngle = 30f;
 
@@ -59,7 +58,6 @@ namespace Puzzle {
 
         void OnTriggerEnter2D(Collider2D other) {
             if (other.GetComponent<Player>()) {
-                objectsInside++;
                 isCharging = true;
                 IsActive = true;
                 SignalEvent?.Invoke(this);
@@ -68,8 +66,6 @@ namespace Puzzle {
         }
 
         void OnTriggerExit2D(Collider2D other) {
-            objectsInside = Mathf.Max(0, objectsInside - 1);
-
             if (other.GetComponent<Player>()) {
                 isCharging = false;
                 float chargeRatio = GetProgress();

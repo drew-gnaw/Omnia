@@ -10,17 +10,17 @@ public class EnemySpawner : MonoBehaviour {
     [SerializeField] private float spawnCoolDown;
     [SerializeField] private GameObject spawn;
     [SerializeField] private GameObject explosion;
+    // Necessary to dynamically change the spawned object by providing a different getter
     public GetSpawnObject GetSpawn;
     public GetCount GetOwnedEnemiesCount;
 #nullable enable
-    public bool IsActive { get; set; } = true;
-    // Necessary to dynamically change the spawned object by providing a different getter
-    
     public delegate GameObject GetSpawnObject();
     public delegate int GetCount();
+    public bool IsActive { get; set; } = true;
 
     private readonly List<Enemy> ownedEnemies = new();
     private CountdownTimer? spawnTimer;
+    
     private void Awake() {
         GetSpawn = () => Instantiate(spawn);
         GetOwnedEnemiesCount = () => ownedEnemies.Count;

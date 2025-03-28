@@ -9,7 +9,6 @@ public class BobbingBehaviour : MonoBehaviour {
     private float verticalOffset = 0;
     public bool ShouldBob { get; set; } = true;
     private void Update() {
-
         if (ShouldBob) Bob();
     }
     void Bob() {

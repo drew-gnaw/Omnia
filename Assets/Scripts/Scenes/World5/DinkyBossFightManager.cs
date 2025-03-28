@@ -8,6 +8,7 @@ public class DinkyBossFightManager : MonoBehaviour, IInteractable {
     [SerializeField] private BobbingBehaviour dinkyBoss;
     [SerializeField] private HealthBar bossHealth;
     [SerializeField] private DinkyBossFightTanks dinkyBossfightTanks;
+
     [Serializable]
     public struct DinkyBossFightTanks {
         public const int MAX_TANK_COUNT = 4;
@@ -29,6 +30,7 @@ public class DinkyBossFightManager : MonoBehaviour, IInteractable {
             return inactiveTanks[UnityEngine.Random.Range(0, inactiveTanks.Count)];
         }
     }
+
     public struct TankInfo {
         public Tank Tank { get; }
         public float ActivationTime { get; }
@@ -46,6 +48,7 @@ public class DinkyBossFightManager : MonoBehaviour, IInteractable {
             bossHealth.UpdateBar(MaxProgress - _currentProgress, MaxProgress);
         }
     }
+
     private int _currentProgress = 0;
     private bool canSpawnNextWave = true;
     private List<Tank> activeTanks = new();
@@ -84,6 +87,7 @@ public class DinkyBossFightManager : MonoBehaviour, IInteractable {
     private void HandleActiveTank(Tank tank) {
         activeTanks.Add(tank);
     }
+
     private void HandleSceneEnd() {
         dinkyBossfightTanks.GetAllTanks().ForEach(tank => tank.Break());
         dinkyBoss.ShouldBob = false;
@@ -125,5 +129,4 @@ public class DinkyBossFightManager : MonoBehaviour, IInteractable {
         }
         canSpawnNextWave = true;
     }
-
 }
