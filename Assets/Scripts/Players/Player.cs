@@ -4,6 +4,7 @@ using Omnia.State;
 using Omnia.Utils;
 using Players.Animation;
 using Players.Behaviour;
+using Players.Buff;
 using Puzzle;
 using UI;
 using UnityEngine;
@@ -93,7 +94,6 @@ namespace Players {
         [SerializeField] internal bool hasShotgun;
 
         private bool _healthBoosted;
-
         public bool HealthBoosted {
             get => _healthBoosted;
             set {
@@ -103,6 +103,11 @@ namespace Players {
                 }
             }
         }
+
+        // these public fields are set by trinkets that determine aspects of player behaviour.
+        public bool musicBoxEquipped;
+        public bool shoeEquipped;
+        public bool bearEquipped;
 
         // Describes the ratio at which flow is converted into HP.
         public const int SWAP_HEAL = 2;
@@ -116,6 +121,10 @@ namespace Players {
         public static event Action<int> OnWeaponChanged;
         public static event Action<float> OnSkillCooldownUpdated;
 
+        public static event Action<bool> OnBearEffectReady;
+        private bool wasBearReady = false; // Track previous state
+
+
         public static event Action<bool> OnHealthBoostChanged;
 
         private float currentLockout;
@@ -125,6 +134,7 @@ namespace Players {
         private CountdownTimer combatTimer;
         private CountdownTimer rollCooldownTimer;
         private CountdownTimer skillCooldownTimer;
+        private CountdownTimer bearCooldownTimer;
 
         private IBehaviour behaviour;
         private StateMachine animationStateMachine;
@@ -145,13 +155,22 @@ namespace Players {
             combatTimer = new CountdownTimer(combatCooldown);
             rollCooldownTimer = new CountdownTimer(rollCooldown);
             skillCooldownTimer = new CountdownTimer(skillCooldown);
+            bearCooldownTimer = new CountdownTimer(TeddyBearBuff.cooldownTime);
 
             canRoll = true;
+
+            // use persistence data from data manager
+            selectedWeapon = PlayerDataManager.Instance.playerSelectedWeapon;
+
+            for (int i = 0; i < weapons.Length; i++) {
+                weapons[i].SetSpriteActive(i == selectedWeapon);
+            }
+
+            OnWeaponChanged?.Invoke(selectedWeapon);
 
             // initially fill out the skill bar
             OnFlowChanged?.Invoke(CurrentFlow);
             OnHealthChanged?.Invoke(CurrentHealth);
-            OnWeaponChanged?.Invoke(0);
             OnSkillCooldownUpdated?.Invoke(1);
             Spawn?.Invoke();
         }
@@ -164,6 +183,7 @@ namespace Players {
             UpdateCombatTimer();
             UpdateRollCooldownTimer();
             UpdateSkillCooldownTimer();
+            UpdateBearCooldownTimer();
 
             currentHurtInvulnerability = Mathf.Max(0, currentHurtInvulnerability - Time.deltaTime);
         }
@@ -193,6 +213,12 @@ namespace Players {
             // Apply any buffs that reduce incoming damage
             foreach (var modifier in Buff.Buff.OnDamageTaken) {
                 damage = modifier(damage);
+            }
+
+            if (bearEquipped && !bearCooldownTimer.IsRunning && damage > 0) {
+                // Bear effect takes place and prevents this instance of damage.
+                bearCooldownTimer.Start();
+                damage = 0;
             }
 
             AudioManager.Instance.PlayHurtSound();
@@ -288,7 +314,9 @@ namespace Players {
                 if (Mathf.Approximately(CurrentFlow, maximumFlow)) {
                     ConsumeAllFlow();
                     weapons[selectedWeapon].IntroSkill();
-                    CurrentHealth += SWAP_HEAL;
+                    if (musicBoxEquipped) {
+                        CurrentHealth += SWAP_HEAL;
+                    }
                 }
 
                 OnWeaponChanged?.Invoke(targetWeapon);
@@ -312,6 +340,16 @@ namespace Players {
 
         private void UpdateSkillCooldownTimer() {
             skillCooldownTimer.Tick(Time.deltaTime);
+        }
+
+        private void UpdateBearCooldownTimer() {
+            bearCooldownTimer.Tick(Time.deltaTime);
+
+            bool isBearReady = !bearCooldownTimer.IsRunning && bearEquipped;
+            if (isBearReady != wasBearReady) {
+                OnBearEffectReady?.Invoke(isBearReady);
+                wasBearReady = isBearReady;
+            }
         }
 
         /* This is kind of lazy but it works. */

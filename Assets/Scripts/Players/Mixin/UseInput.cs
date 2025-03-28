@@ -44,7 +44,7 @@ namespace Players.Mixin {
             var jump = Input.GetButtonDown(KeyMap[KeysEnum.Jump]);
             var held = Input.GetButton(KeyMap[KeysEnum.Jump]);
             var skill = Input.GetButtonDown(KeyMap[KeysEnum.Fire2]);
-            var roll = Input.GetButtonDown(KeyMap[KeysEnum.Roll]);
+            var roll = Input.GetButtonDown(KeyMap[KeysEnum.Roll]) && self.shoeEquipped;
 
             foreach (var kvp in weaponKeyMap) {
                 if (Input.GetKeyDown(kvp.Key)) {
