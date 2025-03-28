@@ -51,6 +51,8 @@ public class HarpoonSpear : MonoBehaviour {
 
     public void OnDisable() {
         Enemy.Death -= HandleEnemyDeath;
+        absorbCooldown = null;
+        cooldown = null;
     }
 
     // Fires the spear in the rotation of the gun with its velocity
@@ -220,6 +222,10 @@ public class HarpoonSpear : MonoBehaviour {
         }
 
         cooldown = DropCooldown();
+        if (!gameObject.activeInHierarchy) {
+            Debug.LogWarning("HarpoonSpear is inactive! StartCooldown Coroutine will not start.");
+            return;
+        }
         StartCoroutine(cooldown);
     }
 
@@ -236,12 +242,11 @@ public class HarpoonSpear : MonoBehaviour {
         }
 
         absorbCooldown = DropHarpoonTimer();
-
-        try {
-            StartCoroutine(absorbCooldown);
-        } catch (System.Exception e) {
-            Debug.LogError($"Failed to start coroutine: {e.Message}");
+        if (!gameObject.activeInHierarchy) {
+            Debug.LogWarning("HarpoonSpear is inactive! StartHarpoonTimer Coroutine will not start.");
+            return;
         }
+        StartCoroutine(absorbCooldown);
     }
 
     private IEnumerator DropHarpoonTimer() {

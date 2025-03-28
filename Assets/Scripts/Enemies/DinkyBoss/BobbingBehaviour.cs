@@ -1,0 +1,27 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class BobbingBehaviour : MonoBehaviour {
+    private readonly float cycleScaling = 2f; // Higher the number, the faster one phase is 
+    private readonly float bobbingAmount = 0.1f; //Amplitude
+    private float timer = 0;
+    private float verticalOffset = 0;
+    public bool ShouldBob { get; set; } = true;
+    private void Update() {
+        if (ShouldBob) Bob();
+    }
+    void Bob() {
+        float previousOffset = verticalOffset;
+        float waveslice = Mathf.Sin(cycleScaling * timer);
+        timer += Time.deltaTime;
+        if (timer > Mathf.PI * 2) {
+            timer = timer - (Mathf.PI * 2);
+        }
+
+        verticalOffset = waveslice * bobbingAmount;
+        float translateChange = verticalOffset - previousOffset;
+        transform.position = new Vector3(transform.position.x, transform.position.y + translateChange, transform.position.z);
+    }
+
+}
