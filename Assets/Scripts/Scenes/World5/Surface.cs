@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using Utils;
 
@@ -7,8 +8,13 @@ namespace Scenes.World5 {
         [SerializeField] private FadeScreenHandler fadeScreen;
 
         public void Start() {
+            StartCoroutine(StartSequence());
+        }
+
+        private IEnumerator StartSequence() {
             fadeScreen.SetDarkScreen();
-            StartCoroutine(fadeScreen.FadeInLightScreen(2f));
+            yield return StartCoroutine(fadeScreen.FadeInLightScreen(3f));
+
             camera.StartFloating();
         }
     }
