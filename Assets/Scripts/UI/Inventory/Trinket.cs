@@ -21,10 +21,10 @@ namespace Inventory {
         public bool IsLocked {
             get => isLocked;
             set {
-                if (isLocked != value) { // Only trigger if it actually changes
+                if (isLocked != value) {
                     isLocked = value;
                     if (!isLocked) {
-                        OnTrinketUnlocked?.Invoke(this); // Notify all subscribers
+                        OnTrinketUnlocked?.Invoke(this);
                     }
                 }
             }

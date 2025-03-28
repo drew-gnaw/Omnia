@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 public class TrinketSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler {
-    [SerializeField] private Trinket trinket;
+    [SerializeField] public Trinket trinket;
     private bool isEquipped = false;
     private Image iconImage;
     private Player player;

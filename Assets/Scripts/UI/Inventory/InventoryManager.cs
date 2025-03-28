@@ -10,7 +10,7 @@ public class InventoryManager : PersistentSingleton<InventoryManager> {
     [SerializeField] private TrinketSlot[] trinketSlots; // Grid of trinket slots
     [SerializeField] private TrinketSlot equippedTrinket;
     [SerializeField] private TextMeshProUGUI descriptionText; // Description UI text box
-
+    [SerializeField] private Image EquipDisplay;
 
 
     public bool IsInventoryOpen { get; private set; }
@@ -22,6 +22,7 @@ public class InventoryManager : PersistentSingleton<InventoryManager> {
         InitializeTrinketSlots();
         ClearDescription();
         inventoryUI.SetActive(false);
+        EquipDisplay.color = new Color(1, 1, 1, 0);
     }
 
     private void Update() {
@@ -57,6 +58,8 @@ public class InventoryManager : PersistentSingleton<InventoryManager> {
         equippedTrinket?.SetEquipped(false);
         equippedTrinket = selectedTrinket;
         selectedTrinket.SetEquipped(true);
+        EquipDisplay.sprite = selectedTrinket.trinket.icon;
+        EquipDisplay.color = new Color(1, 1, 1, 1);
     }
 
 
