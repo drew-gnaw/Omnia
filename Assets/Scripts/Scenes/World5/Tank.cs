@@ -67,6 +67,15 @@ public class Tank : MonoBehaviour {
         spawnLocations.ForEach(it => it.occupiedEnemy?.Die());
     }
 
+    private void HandleShutoff(IProgress progress) {
+        if (progress != null && Mathf.Approximately(progress.Progress, 1f) && State == TankState.Active) {
+            Shake();
+            PerformTransition(TankState.Inactive);
+            spawner.IsActive = false;
+            TankDeactivated?.Invoke(this);
+        }
+    }
+
     // Spawnball factory for EnemySpawner that then uses events to modify Tank state
     private GameObject GetConfiguredSpawnball() {
         Spawnball instance = Instantiate(spawnball);
@@ -77,10 +86,10 @@ public class Tank : MonoBehaviour {
         instance.target = info.transform;
         instance.NotifyOnSpawn += HandleEnemySpawn;
 
-        //First register callbacks on spawnball, then on its spawned enemy 
+        //First register callbacks on spawnball, then on its spawned enemy
         void HandleEnemySpawn(Enemy enemy) {
             if (info.occupiedEnemy != null) 
-                Debug.LogWarning($"Something went terrible wrong to overriding the ownership of an existing enemy {info.occupiedEnemy.name} with ${enemy.name}");
+                Debug.LogWarning($"Something went terrible wrong to be overriding the ownership of an existing enemy {info.occupiedEnemy.name} with ${enemy.name}");
 
             info.occupiedEnemy = enemy;
             instance.NotifyOnSpawn -= HandleEnemySpawn;
@@ -107,15 +116,6 @@ public class Tank : MonoBehaviour {
             return new TransformInfo(this.gameObject.transform, null);
         }
         return inactiveSpawnLocations[UnityEngine.Random.Range(0, inactiveSpawnLocations.Count)];
-    }
-
-    private void HandleShutoff(IProgress progress) {
-        if (progress != null && Mathf.Approximately(progress.Progress, 1f) && State == TankState.Active) {
-            Shake();
-            PerformTransition(TankState.Inactive);
-            spawner.IsActive = false;
-            TankDeactivated?.Invoke(this);
-        }
     }
 
     private void PerformTransition(TankState state) {
@@ -148,7 +148,7 @@ public class Tank : MonoBehaviour {
     private class TransformInfo {
         public Transform transform;
         public Enemy? occupiedEnemy;
-        // Necessary field to prevent race condition where occupied enemy is not fulfilled, but this location is chosen for occupency again
+        // Necessary field to prevent race condition where occupied enemy is not spanwed in yet (in spawnball), but this location is chosen for occupency again.
         public bool occupied = false;
 
         public TransformInfo(Transform transform, Enemy? enemy) {

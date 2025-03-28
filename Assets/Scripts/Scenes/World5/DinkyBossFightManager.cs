@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class DinkyBossFightManager : MonoBehaviour, IInteractable
-{
+public class DinkyBossFightManager : MonoBehaviour, IInteractable {
+    [SerializeField] private BobbingBehaviour dinkyBoss;
     [SerializeField] private HealthBar bossHealth;
     [SerializeField] private DinkyBossFightTanks dinkyBossfightTanks;
     [Serializable]
@@ -85,10 +85,9 @@ public class DinkyBossFightManager : MonoBehaviour, IInteractable
         activeTanks.Add(tank);
     }
     private void HandleSceneEnd() {
-        var tanks = dinkyBossfightTanks.GetAllTanks();
-        foreach (var tank in tanks) {
-            tank.Break();
-        }
+        dinkyBossfightTanks.GetAllTanks().ForEach(tank => tank.Break());
+        dinkyBoss.ShouldBob = false;
+        bossHealth.AnimateFadeOut();
     }
 
     private void IncrementProgress(Tank tank) {
