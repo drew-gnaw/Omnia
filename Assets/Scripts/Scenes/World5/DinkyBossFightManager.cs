@@ -65,12 +65,14 @@ public class DinkyBossFightManager : MonoBehaviour, IInteractable
         }
     }
 
+    // Remove me once im not needed :>
     public void Interact() {
+        StartFight();
+    }
+
+    public void StartFight() {
         if (currentWave == Wave.Get<DialogueWave>()) {
             ProgressWave();
-
-        } else {
-            HandleSceneEnd();
         }
     }
 

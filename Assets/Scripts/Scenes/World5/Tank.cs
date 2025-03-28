@@ -34,7 +34,7 @@ public class Tank : MonoBehaviour {
 
     private void Start() {
         spawner.GetSpawn = GetConfiguredSpawnball;
-        spawner.GetOwnedEnemiesCount = () => spawnLocations.FindAll(it => it.occupiedEnemy != null).Count;
+        spawner.GetOwnedEnemiesCount = () => spawnLocations.FindAll(it => it.occupied).Count;
     }
 
     private void OnEnable() {
@@ -72,19 +72,23 @@ public class Tank : MonoBehaviour {
         Spawnball instance = Instantiate(spawnball);
         TransformInfo info = GetRandomSpawnLocationInfo();
 
+        info.occupied = true;
         instance.spawn = enemyPrefab;
         instance.target = info.transform;
         instance.NotifyOnSpawn += HandleEnemySpawn;
 
         //First register callbacks on spawnball, then on its spawned enemy 
         void HandleEnemySpawn(Enemy enemy) {
-            info.occupiedEnemy = enemy;
+            if (info.occupiedEnemy != null) 
+                Debug.LogWarning($"Something went terrible wrong to overriding the ownership of an existing enemy {info.occupiedEnemy.name} with ${enemy.name}");
 
+            info.occupiedEnemy = enemy;
             instance.NotifyOnSpawn -= HandleEnemySpawn;
             enemy.OnDeath += HandleEnemyDeath;
 
             void HandleEnemyDeath(Enemy e) {
                 info.occupiedEnemy = null;
+                info.occupied = false;
                 enemy.OnDeath -= HandleEnemyDeath;
             }
         }
@@ -93,8 +97,7 @@ public class Tank : MonoBehaviour {
     }
 
     private List<TransformInfo> GetUnoccupiedTransformInfos() {
-        var res = spawnLocations.FindAll(it => it.occupiedEnemy == null);
-        return res;
+        return spawnLocations.FindAll(it => !it.occupied);
     }
 
     private TransformInfo GetRandomSpawnLocationInfo() {
@@ -137,6 +140,8 @@ public class Tank : MonoBehaviour {
     private class TransformInfo {
         public Transform transform;
         public Enemy? occupiedEnemy;
+        // Necessary field to prevent race condition where occupied enemy is not fulfilled, but this location is chosen for occupency again
+        public bool occupied = false;
 
         public TransformInfo(Transform transform, Enemy? enemy) {
             this.transform = transform;

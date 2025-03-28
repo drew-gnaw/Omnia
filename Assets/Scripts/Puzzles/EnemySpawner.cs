@@ -56,7 +56,9 @@ public class EnemySpawner : MonoBehaviour {
     }
 
     public void KillAllChildren() {
-        ownedEnemies.ForEach(it => it.Die());
+        // Prevents Concurrent Modification Exception
+        List<Enemy> enemies = new(ownedEnemies);
+        enemies.ForEach(it => it.Die());
     }
 
     public void SetMaxSpawn(int maxSpawn) {
