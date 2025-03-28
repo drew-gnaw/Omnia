@@ -1,26 +1,45 @@
 using UnityEngine;
+using System.Collections;
 
 public class FloatCamera : MonoBehaviour {
-    [SerializeField] private float moveSpeed = 2f;  // Speed of movement
-    [SerializeField] private float moveDistance = 5f;  // How far to move
+    [SerializeField] private float moveSpeed;  // Speed of movement
+    [SerializeField] private float moveDistance;  // How far to move
 
-    private Vector3 startPosition;
-    private Vector3 targetPosition;
-    private bool isMoving = true;
+    private bool isMoving = false;
 
-    void Start() {
-        startPosition = transform.position;
-        targetPosition = startPosition + Vector3.up * moveDistance;
+    public void StartFloating() {
+        if (!isMoving) {
+            Vector3 targetPosition = transform.position + Vector3.up * moveDistance; // Calculate dynamically
+            StartCoroutine(FloatUp(targetPosition));
+        }
     }
 
-    void Update() {
-        if (isMoving) {
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+    private IEnumerator FloatUp(Vector3 targetPosition) {
+        isMoving = true;
 
-            if (Vector3.Distance(transform.position, targetPosition) < 0.01f) {
-                transform.position = targetPosition; // Snap to the exact position
-                isMoving = false; // Stop moving
-            }
+        yield return StartCoroutine(MoveToPosition(targetPosition));
+
+        isMoving = false;
+    }
+
+    private IEnumerator MoveToPosition(Vector3 destination) {
+        float elapsedTime = 0f;
+        float totalDistance = Mathf.Abs(destination.y - transform.position.y);
+        float duration = totalDistance / moveSpeed;
+
+        Vector3 start = transform.position;
+
+        while (elapsedTime < duration) {
+            float t = elapsedTime / duration;
+            t = Mathf.SmoothStep(0f, 1f, t);
+
+            float newY = Mathf.Lerp(start.y, destination.y, t);
+            transform.position = new Vector3(start.x, newY, start.z);
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
         }
+
+        transform.position = new Vector3(start.x, destination.y, start.z);
     }
 }
