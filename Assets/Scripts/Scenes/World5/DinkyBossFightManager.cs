@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class DinkyBossFightManager : MonoBehaviour
+public class DinkyBossFightManager : MonoBehaviour, IInteractable
 {
 
     [SerializeField] private DinkyBossFightTanks dinkyBossfightTanks;
@@ -17,11 +17,12 @@ public class DinkyBossFightManager : MonoBehaviour
         public Tank birdTank;
 
 #nullable enable
+        public List<Tank> GetAllTanks() => new() { armadilloTank, sundewTank, crabTank, birdTank };
         public Tank GetRandomInactiveTank() {
             List<Tank> tanks = new() { armadilloTank, sundewTank, crabTank, birdTank };
             List<Tank> inactiveTanks = tanks.FindAll(t => t.IsInactive());
             if (inactiveTanks.Count == 0) {
-                Debug.LogWarning("Something went pretty wrong to have you call get random when no tanks are active");
+                Debug.LogWarning($"Something went pretty wrong to have you call get random when no tanks are active.");
                 return armadilloTank;
             }
 
@@ -38,6 +39,7 @@ public class DinkyBossFightManager : MonoBehaviour
         }
     }
 
+    private bool canSpawnNextWave = true;
     private int currentProgress = 0;
     private List<Tank> activeTanks = new();
     private Wave currentWave = Wave.Get<DialogueWave>();
@@ -45,13 +47,37 @@ public class DinkyBossFightManager : MonoBehaviour
     public int MaxProgress => Wave.WaveValues.Aggregate(0, (acc, wave) => acc + wave.ActiveTanks(dinkyBossfightTanks).Count);
 
     private void OnEnable() {
-       Tank.TankDeactivated += IncrementProgress;
+        Tank.TankDeactivated += IncrementProgress;
         Tank.TankActivated += HandleActiveTank;
+        EndSceneWave.SceneEndEvent += HandleSceneEnd;
     }
 
     private void OnDisable() {
         Tank.TankDeactivated -= IncrementProgress;
         Tank.TankActivated -= HandleActiveTank;
+        EndSceneWave.SceneEndEvent -= HandleSceneEnd;
+    }
+
+    private void HandleSceneEnd() {
+        var tanks = dinkyBossfightTanks.GetAllTanks();
+        foreach(var tank in tanks) {
+            tank.Break();
+        }
+    }
+
+    public void Interact() {
+        if (currentWave == Wave.Get<DialogueWave>()) {
+            ProgressWave();
+
+        } else {
+            HandleSceneEnd();
+        }
+    }
+
+    public void ProgressWave() {
+        if (canSpawnNextWave && currentWave.WaveEndCondition(activeTanks.Count)) {
+            StartWave(currentWave.NextWave());
+        }
     }
 
     private void HandleActiveTank(Tank tank) {
@@ -62,10 +88,7 @@ public class DinkyBossFightManager : MonoBehaviour
         currentProgress += 1;
         activeTanks.Remove(tank);
         ProgressChanged?.Invoke(currentProgress);
-
-        if (currentWave.WaveEndCondition(activeTanks.Count)) {
-            StartWave(currentWave.NextWave());
-        }
+        ProgressWave();
     }
 
     private void StartWave(Wave newWave) {
@@ -74,10 +97,11 @@ public class DinkyBossFightManager : MonoBehaviour
     }
 
     private IEnumerator ActivateTanks(List<TankInfo> tankInfos) {
+        canSpawnNextWave = false;
         foreach (var tankInfo in tankInfos) {
             yield return new WaitForSeconds(tankInfo.ActivationTime);
             if (activeTanks.Count == DinkyBossFightTanks.MAX_TANK_COUNT) {
-                Debug.LogWarning("Something went pretty wrong to try and activate a tank when all tanks are active");
+                Debug.LogWarning($"Something went pretty wrong to try and activate a tank when all tanks are active {currentWave.GetType()}");
                 currentProgress += 1; //Attempt to escape softlock condition
                 continue;
             }
@@ -88,5 +112,7 @@ public class DinkyBossFightManager : MonoBehaviour
                 dinkyBossfightTanks.GetRandomInactiveTank().Activate();
             }
         }
+        canSpawnNextWave = true;
     }
+
 }

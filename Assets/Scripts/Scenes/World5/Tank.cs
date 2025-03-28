@@ -34,6 +34,7 @@ public class Tank : MonoBehaviour {
 
     private void Start() {
         spawner.GetSpawn = GetConfiguredSpawnball;
+        spawner.GetOwnedEnemiesCount = () => spawnLocations.FindAll(it => it.occupiedEnemy != null).Count;
     }
 
     private void OnEnable() {
@@ -45,41 +46,55 @@ public class Tank : MonoBehaviour {
     }
 
     public void Activate() {
-        State = TankState.Active;
-        PerformTransition(State);
+        ScreenShakeManager.Instance.Shake();
+        PerformTransition(TankState.Active);
         spawner.IsActive = true;
+        spawner.TrySpawn();
         TankActivated?.Invoke(this);
+    }
+
+    public void Break() {
+        ScreenShakeManager.Instance.Shake(3, 1f);
+        PerformTransition(TankState.Broken);
+        spawner.IsActive = false;
+        KillAllChildren();
     }
 
     public bool IsInactive() => State == TankState.Inactive;
 
+    private void KillAllChildren() {
+        spawner.KillAllChildren();
+        spawnLocations.ForEach(it => it.occupiedEnemy?.Die());
+    }
+
     // Spawnball factory for EnemySpawner that then uses events to modify Tank state
     private GameObject GetConfiguredSpawnball() {
         Spawnball instance = Instantiate(spawnball);
-
         TransformInfo info = GetRandomSpawnLocationInfo();
 
         instance.spawn = enemyPrefab;
         instance.target = info.transform;
-
         instance.NotifyOnSpawn += HandleEnemySpawn;
 
+        //First register callbacks on spawnball, then on its spawned enemy 
         void HandleEnemySpawn(Enemy enemy) {
-            instance.NotifyOnSpawn -= HandleEnemySpawn;
             info.occupiedEnemy = enemy;
 
-            // Oh my god I'm gonna cry
+            instance.NotifyOnSpawn -= HandleEnemySpawn;
             enemy.OnDeath += HandleEnemyDeath;
+
             void HandleEnemyDeath(Enemy e) {
-                enemy.OnDeath -= HandleEnemyDeath;
                 info.occupiedEnemy = null;
+                enemy.OnDeath -= HandleEnemyDeath;
             }
         }
 
         return instance.gameObject;
     }
+
     private List<TransformInfo> GetUnoccupiedTransformInfos() {
-        return spawnLocations.FindAll(it => it.occupiedEnemy == null);
+        var res = spawnLocations.FindAll(it => it.occupiedEnemy == null);
+        return res;
     }
 
     private TransformInfo GetRandomSpawnLocationInfo() {
@@ -88,19 +103,19 @@ public class Tank : MonoBehaviour {
             Debug.LogWarning($"Something Went terrible wrong for tank {gameObject.name} to try and spawn when all locations are occupied");
             return new TransformInfo(this.gameObject.transform, null);
         }
-        return spawnLocations[UnityEngine.Random.Range(0, inactiveSpawnLocations.Count)];
+        return inactiveSpawnLocations[UnityEngine.Random.Range(0, inactiveSpawnLocations.Count)];
     }
 
     private void HandleShutoff(IProgress progress) {
         if (progress != null && Mathf.Approximately(progress.Progress, 1f) && State == TankState.Active) {
-            State = TankState.Inactive;
-            PerformTransition(State);
+            PerformTransition(TankState.Inactive);
             spawner.IsActive = false;
             TankDeactivated?.Invoke(this);
         }
     }
 
     private void PerformTransition(TankState state) {
+        State = state;
         StartCoroutine(CrossFade(GetSpriteForState(state)));
     }
 
@@ -114,6 +129,7 @@ public class Tank : MonoBehaviour {
     }
 
     private IEnumerator CrossFade(Sprite sprite) {
+        spriteRenderer.sprite = sprite;
         yield return null;
     }
 

@@ -10,16 +10,20 @@ public class EnemySpawner : MonoBehaviour {
     [SerializeField] private float spawnCoolDown;
     [SerializeField] private GameObject spawn;
     [SerializeField] private GameObject explosion;
+    public GetSpawnObject GetSpawn;
+    public GetCount GetOwnedEnemiesCount;
 #nullable enable
     public bool IsActive { get; set; } = true;
     // Necessary to dynamically change the spawned object by providing a different getter
-    public GetSpawnObject GetSpawn;
+    
     public delegate GameObject GetSpawnObject();
+    public delegate int GetCount();
 
     private readonly List<Enemy> ownedEnemies = new();
     private CountdownTimer? spawnTimer;
     private void Awake() {
         GetSpawn = () => Instantiate(spawn);
+        GetOwnedEnemiesCount = () => ownedEnemies.Count;
     }
 
     private void Start() {
@@ -39,24 +43,28 @@ public class EnemySpawner : MonoBehaviour {
 
         if (spawnTimer != null && spawnTimer.IsRunning) {
             spawnTimer.Tick(Time.deltaTime);
-        } else if (ownedEnemies.Count < maxSpawns) {
+        } else if (GetOwnedEnemiesCount() < maxSpawns) {
             if (spawnTimer == null || !spawnTimer.IsRunning) {
                 spawnTimer = new CountdownTimer(spawnCoolDown);
                 spawnTimer.Start();
             }
         }
 
-        if (spawnTimer != null && !spawnTimer.IsRunning && ownedEnemies.Count < maxSpawns) {
+        if (spawnTimer != null && !spawnTimer.IsRunning && GetOwnedEnemiesCount() < maxSpawns) {
             TrySpawn();
         }
+    }
+
+    public void KillAllChildren() {
+        ownedEnemies.ForEach(it => it.Die());
     }
 
     public void SetMaxSpawn(int maxSpawn) {
         this.maxSpawns = maxSpawn;
     }
 
-    private void TrySpawn() {
-        if (!IsActive || ownedEnemies.Count >= maxSpawns) return;
+    public void TrySpawn() {
+        if (!IsActive || GetOwnedEnemiesCount() >= maxSpawns) return;
 
         var instance = GetSpawn();
         instance.transform.position = spawnPoint.position;
@@ -66,6 +74,7 @@ public class EnemySpawner : MonoBehaviour {
     }
 
     private void HandleEnemyDeath(Enemy enemy) {
+        Debug.Log($"Owned Enemies {ownedEnemies.Count}");
         ownedEnemies.Remove(enemy);
     }
 }

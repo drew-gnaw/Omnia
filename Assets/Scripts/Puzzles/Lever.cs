@@ -2,6 +2,7 @@ using Omnia.Utils;
 using static Puzzle.ISignal;
 using static Puzzle.IProgress;
 using UnityEngine;
+using Players;
 
 namespace Puzzle {
     public class Lever : MonoBehaviour, ISignal, IProgress {
@@ -57,7 +58,7 @@ namespace Puzzle {
         }
 
         void OnTriggerEnter2D(Collider2D other) {
-            if (Collider2D.IsTouchingLayers(playerLayer)) {
+            if (other.GetComponent<Player>()) {
                 objectsInside++;
                 isCharging = true;
                 IsActive = true;
@@ -67,9 +68,9 @@ namespace Puzzle {
         }
 
         void OnTriggerExit2D(Collider2D other) {
-            objectsInside--;
+            objectsInside = Mathf.Max(0, objectsInside - 1);
 
-            if (objectsInside <= 0) {
+            if (other.GetComponent<Player>()) {
                 isCharging = false;
                 float chargeRatio = GetProgress();
                 leverUptime = new CountdownTimer(chargeRatio * maxChargeDuration);

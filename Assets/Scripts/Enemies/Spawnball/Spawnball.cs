@@ -39,9 +39,9 @@ namespace Enemies.Spawnball {
         }
 
         public void OnSpawnEnemy() {
-            Enemy enemy = Instantiate(spawn, target.position, transform.rotation);
+            Enemy enemy = Instantiate(spawn, target.position, target.rotation);
             NotifyOnSpawn?.Invoke(enemy);
-            Destroy(gameObject);
+            Die();
             Instantiate(explosion, rb.worldCenterOfMass, Quaternion.identity);
         }
 
