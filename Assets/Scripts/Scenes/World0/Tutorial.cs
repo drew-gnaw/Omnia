@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using Enemies.Dummy;
 using UI;
+using Unity.VisualScripting;
 using UnityEngine;
 using Utils;
 
@@ -64,6 +65,16 @@ namespace Scenes {
             yield return new WaitForSeconds(1.5f);
             yield return StartCoroutine(DialogueManager.Instance.StartDialogue(beginDialogue.Dialogue));
             beginDialogueTriggered = true;
+
+            Rigidbody2D rb = dinky.AddComponent<Rigidbody2D>();
+
+            rb.gravityScale = 1f;
+
+            float horizontalForce = UnityEngine.Random.Range(1.5f, 3f);
+            rb.velocity = new Vector2(horizontalForce, 15);
+
+            float spinForce = UnityEngine.Random.Range(250f, 400f) * (UnityEngine.Random.value > 0.5f ? 1 : -1);
+            rb.angularVelocity = spinForce;
 
             HighlightManager.Instance.HighlightGameObject(dummy1Obj);
             HighlightManager.Instance.HighlightGameObject(dummy2Obj);
