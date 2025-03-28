@@ -22,5 +22,6 @@ public class TrinketPickup : MonoBehaviour, IInteractable
         PlayerDataManager.Instance.AddTrinket(trinket);
         pickedUp = true;
         glowSprite.enabled = false;
+        Destroy(this.gameObject);
     }
 }
