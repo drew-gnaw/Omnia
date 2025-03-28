@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 1945124447377154729}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1, y: 0, z: 0}
+  m_LocalPosition: {x: 0.90625, y: 0.03125, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -95,7 +95,7 @@ MonoBehaviour:
   harpoonSpearGravityScale: 1
   harpoonSpearPickupCooldown: 0.3
   collectionRadius: 1
-  harpoonTimer: 999
+  harpoonTimer: 10
   spearReturnSpeed: 10
   pullPower: 1000
   harpoonSpearPrefab: {fileID: 3775420795739930932, guid: 3287e05fa4feefa43b2d14e7d0d7e6de, type: 3}
@@ -174,12 +174,12 @@ SpriteRenderer:
   m_SortingLayerID: 1017642853
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 9fdaa83ad8a704c9eae95a244d2bdb11, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 64cfed69e95894d08b877f5dd23e7e76, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.6, y: 0.12}
+  m_Size: {x: 2, y: 0.5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

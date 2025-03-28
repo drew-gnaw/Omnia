@@ -1,8 +1,6 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using Players;
-using Players.Mixin;
 using UnityEngine;
 using UnityEngine.UI;
 using Utils;
@@ -31,17 +29,14 @@ namespace UI {
         [SerializeField] private GameObject emptyAmmoPrefab;
 
         [SerializeField] private Sprite harpoonGunSprite;
-        [SerializeField] private Sprite harpoonGunTipSprite;
         [SerializeField] private Sprite shotgunSprite;
-        [SerializeField] private Sprite shotgunTipSprite;
-
         [SerializeField] private Image weaponRenderer;
-        [SerializeField] private Image weaponTipRenderer;
 
         [SerializeField] private Slider flowSlider;
         [SerializeField] private Image lowHealthEffect;
         private Coroutine lowHealthCoroutine;
         private Coroutine flowAnimationCoroutine;
+        private Coroutine bearEffectCoroutine;
 
         protected override void OnAwake() {
             gameObject.SetActive(true);
@@ -53,6 +48,7 @@ namespace UI {
             Player.OnWeaponChanged += SetWeaponSprites;
             WeaponClass.OnAmmoChanged += UpdateAmmo;
             Player.OnSkillCooldownUpdated += UpdateSkillCooldown;
+            Player.OnBearEffectReady += UpdateBearEffect;
         }
 
         private void OnDisable() {
@@ -61,6 +57,7 @@ namespace UI {
             Player.OnWeaponChanged -= SetWeaponSprites;
             WeaponClass.OnAmmoChanged -= UpdateAmmo;
             Player.OnSkillCooldownUpdated -= UpdateSkillCooldown;
+            Player.OnBearEffectReady -= UpdateBearEffect;
         }
 
         private void UpdateHealth(int currentHealth) {
@@ -127,6 +124,21 @@ namespace UI {
             skillCooldownSlider.value = progress;
         }
 
+        private void UpdateBearEffect(bool ready) {
+            if (ready) {
+                if (bearEffectCoroutine == null) {
+                    bearEffectCoroutine = StartCoroutine(PulseHearts());
+                }
+            } else {
+                if (bearEffectCoroutine != null) {
+                    StopCoroutine(bearEffectCoroutine);
+                    bearEffectCoroutine = null;
+                    SetHeartAlpha(1f);
+                }
+            }
+        }
+
+
         private IEnumerator SlideFlowValue(float targetFlow) {
             float startValue = flowSlider.value;
             float timeElapsed = 0f;
@@ -149,11 +161,9 @@ namespace UI {
             switch (targetWeapon) {
                 case 0:
                     weaponRenderer.sprite = harpoonGunSprite;
-                    weaponTipRenderer.sprite = harpoonGunTipSprite;
                     break;
                 case 1:
                     weaponRenderer.sprite = shotgunSprite;
-                    weaponTipRenderer.sprite = shotgunTipSprite;
                     break;
                 default:
                     Debug.LogWarning("Tried to update HUD to invalid weapon: " + targetWeapon);
@@ -196,16 +206,19 @@ namespace UI {
             float startAlpha = lowHealthEffect.color.a;
             float duration = 0.5f;
             float timeElapsed = 0f;
+            var color = lowHealthEffect.color;
 
             while (timeElapsed < duration) {
                 float newAlpha = Mathf.Lerp(startAlpha, targetAlpha, timeElapsed / duration);
-                lowHealthEffect.color = new Color(1f, 0f, 0f, newAlpha);  // Red with transparency
+                color.a = newAlpha;
+                lowHealthEffect.color = color;
                 timeElapsed += Time.deltaTime;
                 yield return null;
             }
 
             // Ensure exact target alpha at the end
-            lowHealthEffect.color = new Color(1f, 0f, 0f, targetAlpha);
+            color.a = targetAlpha;
+            lowHealthEffect.color = color;
         }
 
         private float EaseOutQuad(float t) {
@@ -221,5 +234,28 @@ namespace UI {
             }
         }
 
+        private IEnumerator PulseHearts() {
+            float duration = 1.5f; // Time for one full cycle
+            float elapsedTime = 0f;
+
+            while (true) {
+                float alpha = 0.6f + 0.4f * Mathf.Sin((elapsedTime / duration) * 2f * Mathf.PI);
+                SetHeartAlpha(alpha);
+
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+        }
+
+        private void SetHeartAlpha(float alpha) {
+            foreach (Transform child in healthContainer) {
+                Image heartImage = child.GetComponent<Image>();
+                if (heartImage != null) {
+                    Color color = heartImage.color;
+                    color.a = alpha;
+                    heartImage.color = color;
+                }
+            }
+        }
     }
 }

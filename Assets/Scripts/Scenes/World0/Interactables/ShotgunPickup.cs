@@ -21,5 +21,8 @@ public class ShotgunPickup : MonoBehaviour, IInteractable
         pickedUp = true;
         shotgunSprite.enabled = false;
         player.hasShotgun = true;
+        foreach (Transform child in transform) {
+            Destroy(child.gameObject);
+        }
     }
 }

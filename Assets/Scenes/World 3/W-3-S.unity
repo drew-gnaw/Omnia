@@ -178,7 +178,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4774809283147415622, guid: 60c329ee0656c824e8e9c92cb57b8930, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.1750355
+      value: 1.1727581
       objectReference: {fileID: 0}
     - target: {fileID: 4774809283147415622, guid: 60c329ee0656c824e8e9c92cb57b8930, type: 3}
       propertyPath: m_LocalPosition.y
@@ -583,6 +583,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   notPickedUpDialogue: {fileID: 11400000, guid: 182a216a21f545548befb106d643facf, type: 2}
+  musicBox: {fileID: 0}
 --- !u!1 &682334518
 GameObject:
   m_ObjectHideFlags: 0
@@ -3479,7 +3480,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea0d771bef90fcb4ab925ebf7e5dd1d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pickupDialogue: {fileID: 11400000, guid: d28e39dd7fd959f44aa9a21cc4bd4922, type: 2}
+  pickupDialogue: {fileID: 11400000, guid: dbf5e20770429d140aa947ebac11537c, type: 2}
   makeInteractable: {fileID: 1178337836}
   shotgunSprite: {fileID: 298790892}
   player: {fileID: 1975500272}
