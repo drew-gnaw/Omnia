@@ -15,18 +15,45 @@ public class TrinketSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void Initialize() {
         iconImage = GetComponent<Image>();
-        iconImage.sprite = trinket.icon;
-
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
 
-        // Handle locked trinkets
-        if (trinket.isLocked) {
-            iconImage.color = new Color(0.5f, 0.5f, 0.5f, 0.5f); // Greyed out
+        RefreshSlot(); // Set initial state
+
+        // Subscribe to Trinket unlock event
+        if (trinket != null) {
+            trinket.OnTrinketUnlocked += HandleTrinketUnlocked;
+        }
+    }
+
+    private void OnDestroy() {
+        // Unsubscribe to prevent memory leaks
+        if (trinket != null) {
+            trinket.OnTrinketUnlocked -= HandleTrinketUnlocked;
+        }
+    }
+
+    private void HandleTrinketUnlocked(Trinket unlockedTrinket) {
+        if (unlockedTrinket == trinket) {
+            RefreshSlot();
+        }
+    }
+
+    public void RefreshSlot() {
+        if (trinket == null) return;
+
+        iconImage.sprite = trinket.icon;
+
+        if (trinket.IsLocked) {
+            iconImage.color = new Color(0.5f, 0.5f, 0.5f, 0.5f); // Greyed out if locked
+        } else if (isEquipped) {
+            iconImage.color = new Color(1f, 0.84f, 0f, 1f); // Gold if equipped
+        } else {
+            iconImage.color = Color.white; // Normal state
         }
     }
 
     public void OnPointerEnter(PointerEventData eventData) {
-        if (!trinket.isLocked) {
+        if (!trinket.IsLocked) {
             InventoryManager.Instance.UpdateDescription(trinket.trinketName, trinket.description);
         }
     }
@@ -36,21 +63,20 @@ public class TrinketSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     }
 
     public void OnPointerClick(PointerEventData eventData) {
-        if (trinket.isLocked) return; // Prevent interaction if locked
+        if (trinket.IsLocked) return; // Prevent interaction if locked
 
         InventoryManager.Instance.EquipTrinket(this);
     }
 
     public void SetEquipped(bool equipped) {
-        if (trinket.isLocked) return; // Do nothing if locked
+        if (trinket.IsLocked) return; // Do nothing if locked
 
         isEquipped = equipped;
+        RefreshSlot(); // Update UI state
 
         if (equipped) {
-            iconImage.color = new Color(1f, 0.84f, 0f, 1f); // Gold color for equipped
             trinket.ApplyEffect(player);
         } else {
-            iconImage.color = Color.white;
             trinket.RemoveEffect(player);
         }
     }

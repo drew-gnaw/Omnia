@@ -78,11 +78,11 @@ public class AudioManager : PersistentSingleton<AudioManager>
     public void PlayBGM(string trackName) {
         AudioClip track = bgmTracks.GetClipByName(trackName);
         if (!BGMPlayer.isPlaying || BGMPlayer.clip != track) {
+            Debug.Log("starting");
             BGMPlayer.clip = track;
             BGMPlayer.loop = true;
-            BGMPlayer.volume = 0f; // Start from silent
             BGMPlayer.Play();
-            StartCoroutine(BGMFadeIn(BGMPlayer.volume)); // Fade in to full volume
+            StartCoroutine(BGMFadeIn(1f)); // Fade in to full volume
         }
     }
 

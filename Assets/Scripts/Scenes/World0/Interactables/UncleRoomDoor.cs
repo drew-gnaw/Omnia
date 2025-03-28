@@ -15,7 +15,7 @@ public class UncleRoomDoor : MonoBehaviour, IInteractable
     }
 
     private IEnumerator InteractCoroutine() {
-        if (!ShotgunPickup.pickedUp || (musicBox && musicBox.isLocked)) {
+        if (!ShotgunPickup.pickedUp || (musicBox && musicBox.IsLocked)) {
             yield return DialogueManager.Instance.StartDialogue(notPickedUpDialogue.Dialogue);
         } else {
             LevelManager.Instance.NextLevel();

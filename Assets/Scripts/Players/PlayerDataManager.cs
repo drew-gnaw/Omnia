@@ -10,7 +10,7 @@ namespace Players {
 
         public void Start() {
             foreach (Trinket trinket in trinkets) {
-                trinket.isLocked = true;
+                trinket.IsLocked = true;
             }
         }
 
@@ -31,7 +31,7 @@ namespace Players {
             foreach (var t in trinkets) {
                 Debug.Log(t.name);
                 if (t.trinketName == trinket.trinketName) {
-                    t.isLocked = false;
+                    t.IsLocked = false;
                     return;
                 }
             }

@@ -1,3 +1,4 @@
+using System;
 using Players;
 using Players.Buff;
 using UnityEngine;
@@ -11,9 +12,23 @@ namespace Inventory {
 
         [SerializeField] private Buff buffPrefab;
 
-        public bool isLocked = true;
-
+        private bool isLocked = true;
         private Buff activeBuffInstance;
+
+        // Event that gets triggered when isLocked changes
+        public event Action<Trinket> OnTrinketUnlocked;
+
+        public bool IsLocked {
+            get => isLocked;
+            set {
+                if (isLocked != value) { // Only trigger if it actually changes
+                    isLocked = value;
+                    if (!isLocked) {
+                        OnTrinketUnlocked?.Invoke(this); // Notify all subscribers
+                    }
+                }
+            }
+        }
 
         public void ApplyEffect(Player player) {
             activeBuffInstance = BuffManager.Instance.ApplyBuff(buffPrefab);
