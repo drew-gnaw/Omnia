@@ -46,11 +46,11 @@ public class AudioManager : PersistentSingleton<AudioManager>
     private AudioList bgmTracks, sfxTracks, ambientTracks;
 
     public void OnEnable() {
-        SceneManager.sceneLoaded += OnSceneChange;
+        LevelManager.OnLevelLoaded += OnSceneChange;
     }
 
     public void OnDisable() {
-        SceneManager.sceneLoaded -= OnSceneChange;
+        LevelManager.OnLevelLoaded -= OnSceneChange;
     }
 
     protected override void OnAwake() {
@@ -59,12 +59,20 @@ public class AudioManager : PersistentSingleton<AudioManager>
         sfxTracks = Resources.LoadAll<AudioList>("AudioResources")[2];
     }
 
-    // this only starts playing after a scene change, but doesnt matter because a linear playthrough will have audiomanager already playing
-    // tl;dr: this is only for development
-    void OnSceneChange(Scene scene, LoadSceneMode mode)
-    {
-        if (!BGMPlayer.isPlaying) {
-            PlayBGM(AudioTracks.CaveSpeak);
+    private void OnSceneChange(LevelData levelData) {
+        Debug.Log("OnSceneChange: " + levelData);
+        switch (levelData.Type) {
+            case LevelType.Normal:
+                SwitchBGM(AudioTracks.CaveSpeak);
+                break;
+            case LevelType.Elite:
+                Debug.Log("switching to elite track");
+                SwitchBGM(AudioTracks.FloraExMachina);
+                break;
+            case LevelType.Secret:
+                SwitchBGM(AudioTracks.Undersound);
+                break;
+            // if type is other, we just don't touch the audio.
         }
     }
 
