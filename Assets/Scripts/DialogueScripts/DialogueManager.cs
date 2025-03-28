@@ -11,7 +11,7 @@ public class DialogueManager : PersistentSingleton<DialogueManager> {
     [SerializeField] private DialogueBox pictureDialogueBox;
     private List<DialogueText> sentences = new();
 
-    public bool inDialogue = false;
+    public bool inDialogue;
 
     List<DialogueText> dialogueHistory = new();
 

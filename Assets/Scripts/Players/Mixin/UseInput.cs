@@ -37,7 +37,7 @@ namespace Players.Mixin {
         private float rlt;
 
         public void Update() {
-            if (DialogueManager.Instance?.IsInDialogue() ?? InventoryManager.Instance?.IsInventoryOpen ?? false) return;
+            if (DialogueManager.Instance?.IsInDialogue() == true || InventoryManager.Instance?.IsInventoryOpen == true) return;
             if (PauseMenu.IsPaused) return;
 
             var fire = Input.GetButtonDown(KeyMap[KeysEnum.Fire1]);
