@@ -64,9 +64,10 @@ public class Wave5 : Wave {
             new TankInfo(tanks.crabTank, 8f)
         };
     public override bool WaveEndCondition(int tanksRemaining) => tanksRemaining <= 0;
-    public override Wave NextWave() => Get<Wave6>();
+    public override Wave NextWave() => Get<FinalWave>();
 }
-public class Wave6 : Wave {
+public class FinalWave : Wave {
+    public static event Action? FightCompleteEvent;
     public override List<TankInfo> ActiveTanks(DinkyBossFightTanks tanks) =>
         new() {
             new TankInfo(tanks.armadilloTank, 0f),
@@ -75,16 +76,17 @@ public class Wave6 : Wave {
             new TankInfo(tanks.crabTank, 0f)
         };
 
-    public override bool WaveEndCondition(int tanksRemaining) => tanksRemaining <= 0;
+    public override bool WaveEndCondition(int tanksRemaining) {
+        bool sceneEnding = tanksRemaining <= 0;
+        if (sceneEnding) FightCompleteEvent?.Invoke();
+        return sceneEnding;
+    }
+
     public override Wave NextWave() => Get<EndSceneWave>();
 }
 
 public class EndSceneWave : Wave {
-    public static event Action? SceneEndEvent; 
-    public override List<TankInfo> ActiveTanks(DinkyBossFightTanks tanks) {
-        SceneEndEvent?.Invoke();
-        return new();
-    }
+    public override List<TankInfo> ActiveTanks(DinkyBossFightTanks tanks) => new();
 
     public override bool WaveEndCondition(int tanksRemaining) => tanksRemaining == 0;
     public override Wave NextWave() => Get<EndSceneWave>();

@@ -76,7 +76,6 @@ public class EnemySpawner : MonoBehaviour {
     }
 
     private void HandleEnemyDeath(Enemy enemy) {
-        Debug.Log($"Owned Enemies {ownedEnemies.Count}");
         ownedEnemies.Remove(enemy);
     }
 }

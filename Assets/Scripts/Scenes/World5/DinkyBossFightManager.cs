@@ -57,16 +57,17 @@ public class DinkyBossFightManager : MonoBehaviour, IInteractable
     private void OnEnable() {
         Tank.TankDeactivated += IncrementProgress;
         Tank.TankActivated += HandleActiveTank;
-        EndSceneWave.SceneEndEvent += HandleSceneEnd;
+        FinalWave.FightCompleteEvent += HandleSceneEnd;
     }
 
     private void OnDisable() {
         Tank.TankDeactivated -= IncrementProgress;
         Tank.TankActivated -= HandleActiveTank;
-        EndSceneWave.SceneEndEvent -= HandleSceneEnd;
+        FinalWave.FightCompleteEvent -= HandleSceneEnd;
     }
 
     private void HandleSceneEnd() {
+        Debug.Log("The scene is ending??");
         var tanks = dinkyBossfightTanks.GetAllTanks();
         foreach(var tank in tanks) {
             tank.Break();
@@ -107,6 +108,7 @@ public class DinkyBossFightManager : MonoBehaviour, IInteractable
     }
 
     private void StartWave(Wave newWave) {
+        Debug.Log($"What is mu current wave {newWave.GetType()}");
         currentWave = newWave;
         StartCoroutine(ActivateTanks(newWave.ActiveTanks(dinkyBossfightTanks)));
     }
