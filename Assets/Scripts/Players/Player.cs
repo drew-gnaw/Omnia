@@ -141,7 +141,7 @@ namespace Players {
 
         private IBehaviour behaviour;
         private StateMachine animationStateMachine;
-        private bool lockGravity = false;
+        internal bool lockGravity = false;
         public Vector3 Center => transform.position + new Vector3(0, 1, 0);
 
         public void Awake() {
