@@ -80,6 +80,10 @@ public class HarpoonSpear : MonoBehaviour {
         TaggedEnemy.GetComponent<Enemy>().Hurt(gun.damage);
     }
 
+    public void ReleaseHarpoonFromEnemy() {
+        collectable = true;
+    }
+
     public void ReturnToPlayer() {
         collectable = true;
         playerAbsorb = true;
