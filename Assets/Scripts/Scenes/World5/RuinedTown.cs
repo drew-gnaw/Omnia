@@ -1,4 +1,5 @@
 using NPC;
+using Players;
 using UnityEngine;
 
 namespace Scenes.World5 {
@@ -6,6 +7,8 @@ namespace Scenes.World5 {
     public class RuinedTown : MonoBehaviour {
 
         [SerializeField] private LayerMask playerLayer;
+
+        [SerializeField] private Player player;
         [SerializeField] private Uncle uncle;
 
         private bool uncleTriggered;
