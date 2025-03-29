@@ -9,10 +9,10 @@ namespace Enemies.Dummy {
             // nothing...
         }
 
-        public override void Hurt(float damage, bool stagger = true) {
+        public override void Hurt(float damage, bool stagger = true, bool crit = false) {
             if (!canBeHurt) return;
-            base.Hurt(damage);
-            OnHurt?.Invoke(this);
+            base.Hurt(damage, crit: crit);
+            OnHurt?.Invoke();
         }
 
     }

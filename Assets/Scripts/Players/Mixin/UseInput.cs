@@ -36,7 +36,15 @@ namespace Players.Mixin {
         private float swt;
         private float rlt;
 
+        public void Start() {
+            InventoryManager.OnInventoryOpened += StopMoving;
+        }
+
         public void Update() {
+            if (Player.controlsLocked) {
+                self.moving = Vector2.zero;
+                return;
+            }
             if (DialogueManager.Instance?.IsInDialogue() == true || InventoryManager.Instance?.IsInventoryOpen == true) return;
             if (PauseMenu.IsPaused) return;
 
@@ -67,12 +75,20 @@ namespace Players.Mixin {
             self.held = self.jump && (self.grounded || self.slide.x != 0) || self.held && held;
         }
 
+        public void OnDestroy() {
+            InventoryManager.OnInventoryOpened -= StopMoving;
+        }
+
         private static Vector2 GetMovingInput() {
             return new Vector2(Input.GetAxisRaw(KeyMap[KeysEnum.Horizontal]), Input.GetAxisRaw(KeyMap[KeysEnum.Vertical]));
         }
 
         private static Vector2 GetFacingInput(Player it) {
             return it.cam.ScreenToWorldPoint(Input.mousePosition) - it.sprite.transform.position;
+        }
+
+        private void StopMoving() {
+            self.moving = Vector2.zero;
         }
     }
 }

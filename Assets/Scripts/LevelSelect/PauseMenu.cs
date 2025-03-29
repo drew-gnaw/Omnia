@@ -127,20 +127,20 @@ public class PauseMenu : PersistentSingleton<PauseMenu> {
     public void ResumeScene()
     {
         pauseMenuPanel.SetActive(false);
-        OnPauseMenuDeactivate?.Invoke();
         Time.timeScale = 1f;
         IsPaused = false;
+        OnPauseMenuDeactivate?.Invoke();
     }
 
     public void PauseScene() {
         pauseMenuPanel.SetActive(true);
-        OnPauseMenuActivate?.Invoke();
         Time.timeScale = 0f;
         IsPaused = true;
 
         if (isDialogueHistoryShowing) {
             RenderHistory();
         }
+        OnPauseMenuActivate?.Invoke();
     }
 
     public void LevelSelectScene() {

@@ -43,7 +43,9 @@ public class DialogueManager : PersistentSingleton<DialogueManager> {
             yield break;
         }
 
-        
+        if (InventoryManager.Instance?.IsInventoryOpen ?? false) {
+            InventoryManager.Instance.CloseInventory();
+        }
 
         activeDialogueBox.gameObject.SetActive(true);
 

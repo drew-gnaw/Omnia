@@ -38,6 +38,11 @@ public class DialogueBox : MonoBehaviour
             aspectRatioFitter.aspectRatio = line.DisplayingImage.bounds.size.x / line.DisplayingImage.bounds.size.y;
             displayingImage.enabled = true;
             displayingImage.sprite = line.DisplayingImage;
+
+            float shadowAmount = 1f - line.Shadow;
+            Color darkenColor = new Color(shadowAmount, shadowAmount, shadowAmount);
+
+            displayingImage.color = darkenColor;
         }
 
         SetFontStyles(line);
