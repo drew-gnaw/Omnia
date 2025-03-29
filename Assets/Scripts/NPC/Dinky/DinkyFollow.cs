@@ -7,8 +7,8 @@ namespace NPC.Dinky {
     public class DinkyFollow : MonoBehaviour
     {
         [SerializeField] private Transform player; // Reference to the player
-        [SerializeField] private float followDistance = 2f; // Distance to maintain behind the player
-        [SerializeField] private float moveSpeed = 2f; // Speed at which Dinky follows
+        [SerializeField] private float followDistance = 0.5f; // Distance to maintain behind the player
+        [SerializeField] private float moveSpeed = 5f; // Speed at which Dinky follows
 
         private Dinky dinky;
         private bool isWalking = false;
