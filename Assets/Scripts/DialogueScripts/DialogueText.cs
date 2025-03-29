@@ -9,6 +9,7 @@ public class DialogueText
     [SerializeField, TextArea] private string bodyText;
     [SerializeField] private string speakerName;
     [SerializeField] private Sprite displayingImage;
+    [SerializeField] private List<string> highlightedWords;
 
     private bool italics;
     private bool bold;
@@ -22,12 +23,12 @@ public class DialogueText
     public string BodyText { get { return bodyText; } set { bodyText = value; } }
     public string SpeakerName { get { return speakerName; } set { speakerName = value; } }
     public Sprite DisplayingImage { get { return displayingImage; } set { displayingImage = value; } }
-
-    DialogueText(string bodyText, string speakerName, Sprite givenImage)
+    public List<string> HighlightedWords { get => new(highlightedWords); }
+    DialogueText(string bodyText, string speakerName, Sprite givenImage, List<string> highlightedWords )
     {
         this.bodyText = bodyText;
         this.speakerName = speakerName;
         this.displayingImage = givenImage;
+        this.highlightedWords = highlightedWords;
     }
-
 }

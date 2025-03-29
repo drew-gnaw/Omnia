@@ -1,9 +1,6 @@
-using System.Collections;
-using Initializers;
 using Inventory;
-using Players;
+using System.Collections;
 using UnityEngine;
-using Utils;
 
 public class UncleRoomDoor : MonoBehaviour, IInteractable
 {

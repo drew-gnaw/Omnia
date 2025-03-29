@@ -140,7 +140,7 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 128
-  damage: 60
+  damage: 70
   attackCooldown: 0
   damageToFlowRatio: 1
   maxAmmoCount: 3
@@ -153,7 +153,7 @@ MonoBehaviour:
   barrelPosition: {fileID: 8293366980119116200}
   skillForce: 10
   skillLockDuration: 1
-  introDelayTime: 0.5
+  introDelayTime: 0.25
 --- !u!1 &8293366980119116200
 GameObject:
   m_ObjectHideFlags: 0

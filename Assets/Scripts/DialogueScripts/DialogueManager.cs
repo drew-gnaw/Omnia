@@ -11,7 +11,7 @@ public class DialogueManager : PersistentSingleton<DialogueManager> {
     [SerializeField] private DialogueBox pictureDialogueBox;
     private List<DialogueText> sentences = new();
 
-    public bool inDialogue = false;
+    public bool inDialogue;
 
     List<DialogueText> dialogueHistory = new();
 
@@ -37,12 +37,13 @@ public class DialogueManager : PersistentSingleton<DialogueManager> {
         return inDialogue;
     }
 
-    public IEnumerator StartDialogue(List<DialogueText> newSentences)
-    {
+    public IEnumerator StartDialogue(List<DialogueText> newSentences) {
         if (activeDialogueBox.gameObject.activeInHierarchy)
         {
             yield break;
         }
+
+        
 
         activeDialogueBox.gameObject.SetActive(true);
 

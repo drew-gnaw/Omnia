@@ -22,13 +22,13 @@ namespace Players.Mixin {
             { KeysEnum.Roll, "Roll" },
         };
 
-        [SerializeField] internal Player self;
-        [SerializeField] internal float delay;
-
         private readonly Dictionary<KeyCode, int> weaponKeyMap = new Dictionary<KeyCode, int> {
             { KeyCode.Alpha1, 0 }, // 1 key -> Harpoon Gun
             { KeyCode.Alpha2, 1 }, // 2 key -> Shotgun
         };
+
+        [SerializeField] internal Player self;
+        [SerializeField] internal float delay;
 
         private float jt;
         private float ft;
@@ -37,7 +37,7 @@ namespace Players.Mixin {
         private float rlt;
 
         public void Update() {
-            if (DialogueManager.Instance?.IsInDialogue() ?? InventoryManager.Instance?.IsInventoryOpen ?? false) return;
+            if (DialogueManager.Instance?.IsInDialogue() == true || InventoryManager.Instance?.IsInventoryOpen == true) return;
             if (PauseMenu.IsPaused) return;
 
             var fire = Input.GetButtonDown(KeyMap[KeysEnum.Fire1]);

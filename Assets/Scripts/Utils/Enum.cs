@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Linq;
 
 public abstract class Enum<T> where T : Enum<T> {
-    private static readonly Dictionary<Type, T> valuesMap = new();
+    protected static readonly Dictionary<Type, T> valuesMap = new();
 
     static Enum() {
         RegisterValues();

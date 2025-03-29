@@ -51,6 +51,8 @@ public class HarpoonSpear : MonoBehaviour {
 
     public void OnDisable() {
         Enemy.Death -= HandleEnemyDeath;
+        absorbCooldown = null;
+        cooldown = null;
     }
 
     // Fires the spear in the rotation of the gun with its velocity
@@ -76,6 +78,11 @@ public class HarpoonSpear : MonoBehaviour {
         TaggedEnemy.GetComponent<Rigidbody2D>().AddForce(difference * gun.pullPower);
         AudioManager.Instance.PlaySFX(AudioTracks.HarpoonRetract);
         TaggedEnemy.GetComponent<Enemy>().Hurt(gun.damage);
+        player?.OnHit(gun.damage * gun.damageToFlowRatio);
+    }
+
+    public void ReleaseHarpoonFromEnemy() {
+        collectable = true;
     }
 
     public void ReturnToPlayer() {
@@ -98,29 +105,35 @@ public class HarpoonSpear : MonoBehaviour {
             Vector3 difference = transform.position - player.Center;
             float rotationZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.Euler(0.0f, 0.0f, rotationZ);
+
+            if (collectable && Vector3.Distance(transform.position, player.Center) <= 0.1f) {
+                HandlePlayerCollision();
+            }
         }
     }
 
     void OnTriggerEnter2D(Collider2D other) {
-        if (Collider2D.IsTouchingLayers(playerLayer) && collectable) {
+        if (other.GetComponent<Player>() != null && collectable) {
             HandlePlayerCollision();
+            return;
         }
 
-        // FIXME: for whatever reason, checking if the spear collider is touching enemy does not always work,
-        // other collider ends up as null if they are moving
-        if (CollisionUtils.IsLayerInMask(other.gameObject.layer, hittableLayerMask) && !dropped) {
+        if (other.GetComponent<Enemy>() != null && !dropped) {
             AudioManager.Instance.PlaySFX(AudioTracks.HarpoonHit);
             HandleEnemyCollision(other.GetComponent<Enemy>());
+            return;
         }
 
         if (Collider2D.IsTouchingLayers(semisolidLayer) && !dropped) {
             AudioManager.Instance.PlaySFX(AudioTracks.HarpoonHit);
             HandleSemisolidCollision(other.gameObject);
+            return;
         }
 
         if (Collider2D.IsTouchingLayers(groundLayer) && !dropped) {
             AudioManager.Instance.PlaySFX(AudioTracks.HarpoonHit);
             HandleGroundCollision(other.gameObject);
+            return;
         }
     }
 
@@ -220,6 +233,10 @@ public class HarpoonSpear : MonoBehaviour {
         }
 
         cooldown = DropCooldown();
+        if (!gameObject.activeInHierarchy) {
+            Debug.LogWarning("HarpoonSpear is inactive! StartCooldown Coroutine will not start.");
+            return;
+        }
         StartCoroutine(cooldown);
     }
 
@@ -236,12 +253,11 @@ public class HarpoonSpear : MonoBehaviour {
         }
 
         absorbCooldown = DropHarpoonTimer();
-
-        try {
-            StartCoroutine(absorbCooldown);
-        } catch (System.Exception e) {
-            Debug.LogError($"Failed to start coroutine: {e.Message}");
+        if (!gameObject.activeInHierarchy) {
+            Debug.LogWarning("HarpoonSpear is inactive! StartHarpoonTimer Coroutine will not start.");
+            return;
         }
+        StartCoroutine(absorbCooldown);
     }
 
     private IEnumerator DropHarpoonTimer() {

@@ -34,7 +34,7 @@ namespace Puzzle {
     public class Yellow : SignalColor {
         public override Color Color => Color.yellow;
 
-        public override Sprite GetSymbol(PuzzleAssets assets) => assets.xSymbol;
+        public override Sprite GetSymbol(PuzzleAssets assets) => assets.circleSymbol;
     }
     public class Black : SignalColor {
         public override Color Color => new Color(.5f,.5f,.5f);
