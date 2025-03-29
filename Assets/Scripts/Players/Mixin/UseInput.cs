@@ -27,10 +27,6 @@ namespace Players.Mixin {
         [SerializeField] internal Player self;
         [SerializeField] internal float delay;
 
-        private readonly Dictionary<KeyCode, int> weaponKeyMap = new Dictionary<KeyCode, int> {
-            { KeyCode.Alpha1, 0 }, // 1 key -> Harpoon Gun
-            { KeyCode.Alpha2, 1 }, // 2 key -> Shotgun
-        };
 
         private float jt;
         private float ft;
@@ -57,12 +53,6 @@ namespace Players.Mixin {
             var skill = Input.GetButtonDown(KeyMap[KeysEnum.Fire2]);
             var roll = Input.GetButtonDown(KeyMap[KeysEnum.Roll]) && self.shoeEquipped;
             var intro = Input.GetButton(KeyMap[KeysEnum.Fire3]);
-
-            foreach (var kvp in weaponKeyMap) {
-                if (Input.GetKeyDown(kvp.Key)) {
-                    self.DoSwap(kvp.Value);
-                }
-            }
 
             ft = fire ? delay : Mathf.Max(0, ft - Time.deltaTime);
             jt = jump ? delay : Mathf.Max(0, jt - Time.deltaTime);
