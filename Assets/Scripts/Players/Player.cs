@@ -66,6 +66,7 @@ namespace Players {
         [SerializeField] internal float wallJumpLockoutTime;
         [SerializeField] internal float combatCooldown;
         [SerializeField] internal float skillCooldown;
+        [SerializeField] internal float introCooldown;
         [SerializeField] internal float flowDrainRate;
         [SerializeField] internal float hurtInvulnerabilityTime;
 
@@ -138,6 +139,7 @@ namespace Players {
         private CountdownTimer combatTimer;
         private CountdownTimer rollCooldownTimer;
         private CountdownTimer skillCooldownTimer;
+        private CountdownTimer introCooldownTimer;
         private CountdownTimer bearCooldownTimer;
 
         private IBehaviour behaviour;
@@ -159,6 +161,7 @@ namespace Players {
             combatTimer = new CountdownTimer(combatCooldown);
             rollCooldownTimer = new CountdownTimer(rollCooldown);
             skillCooldownTimer = new CountdownTimer(skillCooldown);
+            introCooldownTimer = new CountdownTimer(introCooldown);
             bearCooldownTimer = new CountdownTimer(TeddyBearBuff.cooldownTime);
 
             canRoll = true;
@@ -188,6 +191,7 @@ namespace Players {
             UpdateRollCooldownTimer();
             UpdateSkillCooldownTimer();
             UpdateBearCooldownTimer();
+
 
             currentHurtInvulnerability = Mathf.Max(0, currentHurtInvulnerability - Time.deltaTime);
         }
@@ -308,9 +312,14 @@ namespace Players {
         }
 
         private void DoIntroSkill() {
-            if (!intro) return;
+            if (!intro || introCooldownTimer.IsRunning) return;
             intro = false;
-            DoSwap(selectedWeapon += selectedWeapon == 0 ? 1 : -1);
+            introCooldownTimer.Start();
+            if (selectedWeapon == 0) {
+                DoSwap(1);
+            } else {
+                DoSwap(0);
+            }
         }
 
 
@@ -352,6 +361,7 @@ namespace Players {
 
         private void UpdateSkillCooldownTimer() {
             skillCooldownTimer.Tick(Time.deltaTime);
+            introCooldownTimer.Tick(Time.deltaTime);
         }
 
         private void UpdateBearCooldownTimer() {
