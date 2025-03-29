@@ -60,6 +60,7 @@ namespace Scenes.World5 {
 
             yield return StartCoroutine(DialogueManager.Instance.StartDialogue(hugDialogue.Dialogue));
             StartCoroutine(fadescreen.FadeInDarkScreen(2f));
+            LevelManager.Instance.NextLevel();
         }
     }
 }
