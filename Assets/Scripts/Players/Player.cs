@@ -79,6 +79,7 @@ namespace Players {
         [SerializeField] internal bool held;
         [SerializeField] internal bool fire;
         [SerializeField] internal bool skill;
+        [SerializeField] internal bool intro;
         [SerializeField] internal bool grounded;
         [SerializeField] internal bool canRoll;
         [SerializeField] internal bool invulnerable;
@@ -195,6 +196,7 @@ namespace Players {
             rb.gravityScale = held && rb.velocity.y > 0 ? 1 : MathUtils.Lerpish(rb.gravityScale, 3, Time.fixedDeltaTime * fallAccel);
             DoAttack();
             DoSkill();
+            DoIntroSkill();
             behaviour?.OnTick();
             animationStateMachine.FixedUpdate();
         }
@@ -304,6 +306,13 @@ namespace Players {
             skill = false;
             if (weapons[selectedWeapon].UseSkill()) skillCooldownTimer.Start();
         }
+
+        private void DoIntroSkill() {
+            if (!intro) return;
+            intro = false;
+            DoSwap(selectedWeapon += selectedWeapon == 0 ? 1 : -1);
+        }
+
 
         public void DoSwap(int targetWeapon) {
             if (!hasShotgun) return;

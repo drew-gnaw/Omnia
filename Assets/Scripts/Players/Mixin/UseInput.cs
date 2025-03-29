@@ -9,6 +9,7 @@ namespace Players.Mixin {
             Vertical,
             Fire1,
             Fire2,
+            Fire3,
             Jump,
             Roll,
         }
@@ -18,6 +19,7 @@ namespace Players.Mixin {
             { KeysEnum.Vertical, "Vertical" },
             { KeysEnum.Fire1, "Fire1" },
             { KeysEnum.Fire2, "Fire2" },
+            { KeysEnum.Fire3, "Fire3" },
             { KeysEnum.Jump, "Jump" },
             { KeysEnum.Roll, "Roll" },
         };
@@ -35,6 +37,7 @@ namespace Players.Mixin {
         private float skt;
         private float swt;
         private float rlt;
+        private float ist;
 
         public void Start() {
             InventoryManager.OnInventoryOpened += StopMoving;
@@ -53,6 +56,7 @@ namespace Players.Mixin {
             var held = Input.GetButton(KeyMap[KeysEnum.Jump]);
             var skill = Input.GetButtonDown(KeyMap[KeysEnum.Fire2]);
             var roll = Input.GetButtonDown(KeyMap[KeysEnum.Roll]) && self.shoeEquipped;
+            var intro = Input.GetButton(KeyMap[KeysEnum.Fire3]);
 
             foreach (var kvp in weaponKeyMap) {
                 if (Input.GetKeyDown(kvp.Key)) {
@@ -64,11 +68,13 @@ namespace Players.Mixin {
             jt = jump ? delay : Mathf.Max(0, jt - Time.deltaTime);
             skt = skill ? delay : Mathf.Max(0, skt - Time.deltaTime);
             rlt = roll ? delay : Mathf.Max(0, rlt - Time.deltaTime);
+            ist = intro ? delay : Mathf.Max(0, ist - Time.deltaTime);
 
             self.fire = self.fire ? ft > 0 : fire;
             self.jump = self.jump ? jt > 0 : jump;
             self.skill = self.skill ? skt > 0 : skill;
             self.roll = self.roll ? rlt > 0 : roll;
+            self.intro = self.intro ? ist > 0 : intro;
 
             self.facing = GetFacingInput(self);
             self.moving = GetMovingInput();
