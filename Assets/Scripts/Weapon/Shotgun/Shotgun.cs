@@ -46,7 +46,7 @@ public class Shotgun : WeaponClass {
         transform.rotation = Quaternion.Euler(0, 0, 270);
         skillLockTimer = skillLockDuration;
 
-        Shoot();
+        SkillAndUltimateFire();
 
         Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
         if (rb != null) {
@@ -60,17 +60,19 @@ public class Shotgun : WeaponClass {
         StartCoroutine(IntroCoroutine());
     }
 
+    void SkillAndUltimateFire() {
+        var hits = PerformRayCasts();
+        ApplyDamage(hits, damage, false);
+        HandleMuzzleFlash();
+        HandleTracers();
+    }
+
     private IEnumerator IntroCoroutine() {
         yield return new WaitForSeconds(introDelayTime);
-        void FireUltimate() {
-            var hits = PerformRayCasts();
-            ApplyDamage(hits, damage, false); // Ultimate shot ignores drop-off
-            HandleMuzzleFlash();
-            HandleTracers();
-        }
-        FireUltimate();
-        FireUltimate();
-        FireUltimate();
+        
+        SkillAndUltimateFire();
+        SkillAndUltimateFire();
+        SkillAndUltimateFire();
         CurrentAmmo = maxAmmoCount;
         player.GetComponent<Player>().UseRecoil(10);
         ScreenShakeManager.Instance.Shake(3f);
