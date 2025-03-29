@@ -50,9 +50,9 @@ namespace UI {
             if (enemies.Remove(enemy, out var ui)) Destroy(ui.gameObject);
         }
 
-        private void OnEnemyDamage(Enemy enemy, float damage) {
+        private void OnEnemyDamage(Enemy enemy, float damage, bool crit) {
             var marker = Instantiate(prefabs[(int) UiPrefabs.DamageMarker]).GetComponent<DamageMarker>();
-            marker.Initialize(enemy.transform.position, damage);
+            marker.Initialize(enemy.transform.position, damage, crit);
         }
 
         private void OnEnemySpawn(Enemy enemy) {

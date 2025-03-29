@@ -83,6 +83,8 @@ MonoBehaviour:
   minInitialVelocity: 2
   rb: {fileID: -1000781647930275930}
   textMesh: {fileID: 9040411195000303414}
+  color: {r: 1, g: 1, b: 1, a: 0}
+  critColor: {r: 1, g: 0, b: 1, a: 0}
 --- !u!23 &6885813831713043058
 MeshRenderer:
   m_ObjectHideFlags: 0
