@@ -235,13 +235,17 @@ PrefabInstance:
       propertyPath: signalColour.assemblyQualifiedName
       value: Puzzle.Green, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       objectReference: {fileID: 0}
+    - target: {fileID: 7279729453909328315, guid: 3f3b5c7d207a73040a5124c46fedf5de, type: 3}
+      propertyPath: m_Offset.x
+      value: -0.26
+      objectReference: {fileID: 0}
     - target: {fileID: 8439880635391563596, guid: 3f3b5c7d207a73040a5124c46fedf5de, type: 3}
       propertyPath: m_LocalPosition.x
       value: -6.75
       objectReference: {fileID: 0}
     - target: {fileID: 8439880635391563596, guid: 3f3b5c7d207a73040a5124c46fedf5de, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.03125
+      value: 5.029
       objectReference: {fileID: 0}
     - target: {fileID: 8439880635391563596, guid: 3f3b5c7d207a73040a5124c46fedf5de, type: 3}
       propertyPath: m_LocalPosition.z
@@ -350,7 +354,7 @@ HingeJoint2D:
   m_BreakAction: 3
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: -0.25, y: -0.46875}
+  m_ConnectedAnchor: {x: -0.25, y: -0.4710002}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 0
@@ -3313,6 +3317,10 @@ PrefabInstance:
     - target: {fileID: 4919977815763468974, guid: b534862d8d83ab543905aee223875fdb, type: 3}
       propertyPath: m_Name
       value: Decoration Tilemap
+      objectReference: {fileID: 0}
+    - target: {fileID: 4919977815763468974, guid: b534862d8d83ab543905aee223875fdb, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6045314846527042819, guid: b534862d8d83ab543905aee223875fdb, type: 3}
       propertyPath: m_LocalPosition.x

@@ -29,6 +29,7 @@ namespace Puzzle {
             if (CollisionUtils.IsLayerInMask(other.gameObject.layer, excludedLayers)) {
                 return;
             }
+            Debug.Log($"on trigger entered {other.gameObject.name}");
             objectsInside++;
             IsActive = true;
             Redraw();
@@ -39,6 +40,8 @@ namespace Puzzle {
             if (CollisionUtils.IsLayerInMask(other.gameObject.layer, excludedLayers)) {
                 return;
             }
+
+            Debug.Log($"on trigger exited {other.gameObject.name}");
             --objectsInside;
             if (objectsInside <= 0) {
                 IsActive = false;
