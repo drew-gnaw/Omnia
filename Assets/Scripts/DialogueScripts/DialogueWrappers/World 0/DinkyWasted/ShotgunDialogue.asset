@@ -17,17 +17,21 @@ MonoBehaviour:
       more damage.
     speakerName: Tutorial
     displayingImage: {fileID: 0}
+    highlightedWords: []
+    shadow: 0
     broadcastAnEvent: 0
   - bodyText: Use your skill [Q] while holding the Scrap Gun to jump great distances.
     speakerName: Tutorial
     displayingImage: {fileID: 0}
+    highlightedWords: []
+    shadow: 0
     broadcastAnEvent: 0
-  - bodyText: Hitting enemies with any weapon will generate Flow, which is displayed
-      on your weapon.
+  - bodyText: Press [Tab] and open up the Guide to get a more in details on what
+      each weapon does!
     speakerName: Tutorial
     displayingImage: {fileID: 0}
-    broadcastAnEvent: 0
-  - bodyText: Switching weapons while your Flow is full will trigger a special effect!
-    speakerName: Tutorial
-    displayingImage: {fileID: 0}
+    highlightedWords:
+    - '[Tab]'
+    - Guide
+    shadow: 0
     broadcastAnEvent: 0
