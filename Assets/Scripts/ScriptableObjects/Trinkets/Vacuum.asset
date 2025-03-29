@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46708f3e568b40a49a78cf2f4c56d827, type: 3}
+  m_Name: Vacuum
+  m_EditorClassIdentifier: 
+  icon: {fileID: 21300000, guid: a053ef3b165a1fe4997b5db0a4854446, type: 3}
+  trinketName: Vacuum
+  description: "Slows you down (Why would you equip this?)\n\nA bit odd to bring
+    on your journey. The weight of it sucks you down. Someone wanted to use it to
+    remove the Waste, too bad it\u2019s just a regular old vacuum. Maybe in the future\u2026"
+  buffPrefab: {fileID: 8520820078211700885, guid: 6f7ed79cbbfa91a4fb31140da917f3aa, type: 3}

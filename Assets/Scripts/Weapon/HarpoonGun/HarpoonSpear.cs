@@ -163,10 +163,10 @@ public class HarpoonSpear : MonoBehaviour {
 
         TaggedEnemy = enemy;
         AttachToRigidBody(TaggedEnemy.GetComponent<Rigidbody2D>());
-        
-        bool isCrit = Random.Range(0f, 1f) < gun.critChance;
+
+        bool isCrit = Random.Range(0f, 1f) < player.critChance;
         TaggedEnemy.GetComponent<Enemy>().Hurt(
-            gun.damage * (isCrit ? gun.critMultiplier : 1),
+            gun.damage * (isCrit ? player.critMultiplier : 1),
             crit: isCrit);
 
         player?.OnHit(gun.damage * gun.damageToFlowRatio);

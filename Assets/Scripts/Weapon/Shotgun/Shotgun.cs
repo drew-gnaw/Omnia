@@ -151,9 +151,9 @@ public class Shotgun : WeaponClass {
 
                     damageAmount = Mathf.Max(damageAmount, 0);
 
-                    bool isCrit = Random.Range(0f, 1f) < critChance;
+                    bool isCrit = Random.Range(0f, 1f) < player.GetComponent<Player>().critChance;
                     if (isCrit) {
-                        damageAmount *= critMultiplier;
+                        damageAmount *= player.GetComponent<Player>().critMultiplier;
                     }
 
                     enemy.Hurt(damageAmount, crit: isCrit);

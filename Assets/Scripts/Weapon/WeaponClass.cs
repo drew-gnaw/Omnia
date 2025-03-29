@@ -15,8 +15,6 @@ public abstract class WeaponClass : MonoBehaviour
     public float damage;
     public float attackCooldown; // seconds
     public float damageToFlowRatio = 1; // determines the rate at which damage is translated into flow.
-    public float critChance = 0;
-    public float critMultiplier = 1;
 
     [SerializeField] public int maxAmmoCount;
 

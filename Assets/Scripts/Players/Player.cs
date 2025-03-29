@@ -95,6 +95,9 @@ namespace Players {
         // if this is false, disable swapping.
         [SerializeField] internal bool hasShotgun;
 
+        [SerializeField] public float critChance;
+        [SerializeField] public float critMultiplier;
+
         // disable user input if this is true.
         public static bool controlsLocked = false;
 

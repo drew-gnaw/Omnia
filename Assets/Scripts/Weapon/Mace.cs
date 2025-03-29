@@ -13,9 +13,9 @@ public class Mace : WeaponClass
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(AttackPoint.position, Radius, hittableLayerMask);
         foreach (Collider2D enemy in hitEnemies)
         {
-            bool isCrit = Random.Range(0f, 1f) < critChance;
+            bool isCrit = Random.Range(0f, 1f) < player.GetComponent<Player>().critChance;
             enemy.GetComponent<Enemy>().Hurt(
-                damage * (isCrit ? critMultiplier : 1),
+                damage * (isCrit ? player.GetComponent<Player>().critMultiplier : 1),
                 crit: isCrit
             );
         }
