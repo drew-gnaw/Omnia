@@ -501,6 +501,7 @@ MonoBehaviour:
   wallJumpLockoutTime: 0
   combatCooldown: 5
   skillCooldown: 5
+  introCooldown: 0.5
   flowDrainRate: 10
   hurtInvulnerabilityTime: 1
   weapons:
@@ -514,6 +515,7 @@ MonoBehaviour:
   held: 0
   fire: 0
   skill: 0
+  intro: 0
   grounded: 0
   canRoll: 0
   invulnerable: 0

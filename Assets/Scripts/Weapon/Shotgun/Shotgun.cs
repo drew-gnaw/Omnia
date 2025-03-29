@@ -49,8 +49,9 @@ public class Shotgun : WeaponClass {
 
         Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
         if (rb != null) {
-            rb.velocity = new Vector2(rb.velocity.x, skillForce);
+            rb.velocity = new Vector2(rb.velocity.x, Mathf.Min(Mathf.Max(rb.velocity.y + skillForce, skillForce), skillForce + 2f));
         }
+
 
         return true;
     }
@@ -70,7 +71,7 @@ public class Shotgun : WeaponClass {
     private IEnumerator IntroCoroutine() {
         CurrentAmmo = maxAmmoCount;
         yield return new WaitForSeconds(introDelayTime);
-        
+
         SkillAndUltimateFire();
         SkillAndUltimateFire();
         SkillAndUltimateFire();
