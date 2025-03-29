@@ -9,6 +9,7 @@ namespace Enemies.Armadillo.Behaviour {
         }
 
         public void OnEnter() {
+            self.FaceAggrodPlayer();
         }
 
         public void OnExit() {
