@@ -15,8 +15,10 @@ public class Dinky : MonoBehaviour, IInteractable
     private static readonly int AppearTrigger = Animator.StringToHash("Appear");
     private static readonly int DisappearTrigger = Animator.StringToHash("Disappear");
     private static readonly int IdleTrigger = Animator.StringToHash("Idle");
+    private static readonly int WalkTrigger = Animator.StringToHash("Walk");
 
     public static event Action OnInteract;
+    private Coroutine walkCoroutine;
 
     private void Awake()
     {
@@ -52,6 +54,40 @@ public class Dinky : MonoBehaviour, IInteractable
     {
         yield return StartCoroutine(DialogueManager.Instance.StartDialogue(interactDialogue.Dialogue));
         OnInteract?.Invoke();
+    }
+
+    public void Walk(float distance, float speed)
+    {
+        if (walkCoroutine != null)
+        {
+            StopCoroutine(walkCoroutine);
+        }
+        walkCoroutine = StartCoroutine(WalkRoutine(distance, speed));
+    }
+
+    private IEnumerator WalkRoutine(float distance, float speed)
+    {
+        if (!animator) yield break;
+
+        animator.SetTrigger(WalkTrigger);
+
+        float startX = transform.position.x;
+        float targetX = startX + distance;
+        float direction = Mathf.Sign(distance); // 1 for right, -1 for left
+
+        // Flip Dinky to face the correct direction
+        Vector3 scale = transform.localScale;
+        scale.x = -direction * Mathf.Abs(scale.x);
+        transform.localScale = scale;
+
+        while (Mathf.Abs(transform.position.x - startX) < Mathf.Abs(distance))
+        {
+            transform.position += new Vector3(direction * speed * Time.deltaTime, 0, 0);
+            yield return null;
+        }
+
+        transform.position = new Vector3(targetX, transform.position.y, transform.position.z);
+        animator.SetTrigger(IdleTrigger);
     }
 
 

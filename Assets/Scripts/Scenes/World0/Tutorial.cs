@@ -66,16 +66,6 @@ namespace Scenes {
             yield return StartCoroutine(DialogueManager.Instance.StartDialogue(beginDialogue.Dialogue));
             beginDialogueTriggered = true;
 
-            Rigidbody2D rb = dinky.AddComponent<Rigidbody2D>();
-
-            rb.gravityScale = 1f;
-
-            float horizontalForce = UnityEngine.Random.Range(1.5f, 3f);
-            rb.velocity = new Vector2(horizontalForce, 15);
-
-            float spinForce = UnityEngine.Random.Range(250f, 400f) * (UnityEngine.Random.value > 0.5f ? 1 : -1);
-            rb.angularVelocity = spinForce;
-
             HighlightManager.Instance.HighlightGameObject(dummy1Obj);
             HighlightManager.Instance.HighlightGameObject(dummy2Obj);
         }
@@ -152,6 +142,8 @@ namespace Scenes {
             yield return StartCoroutine(DialogueManager.Instance.StartDialogue(dinkyScaredDialogue.Dialogue));
 
             yield return new WaitForSeconds(0.3f);
+            dinky.Walk(15.5f, 7f);
+            yield return new WaitForSeconds(15.5f / 7f + 0.2f);
             dinky.Disappear();
             yield return new WaitForSeconds(1f);
 
