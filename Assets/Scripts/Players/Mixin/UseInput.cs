@@ -37,6 +37,10 @@ namespace Players.Mixin {
         private float rlt;
 
         public void Update() {
+            if (Player.controlsLocked) {
+                self.moving = Vector2.zero;
+                return;
+            }
             if (DialogueManager.Instance?.IsInDialogue() == true || InventoryManager.Instance?.IsInventoryOpen == true) return;
             if (PauseMenu.IsPaused) return;
 

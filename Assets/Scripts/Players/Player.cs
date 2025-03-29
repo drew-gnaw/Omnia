@@ -93,6 +93,9 @@ namespace Players {
         // if this is false, disable swapping.
         [SerializeField] internal bool hasShotgun;
 
+        // disable user input if this is true.
+        public static bool controlsLocked = false;
+
         private bool _healthBoosted;
         public bool HealthBoosted {
             get => _healthBoosted;
@@ -109,7 +112,7 @@ namespace Players {
         public bool shoeEquipped;
         public bool bearEquipped;
 
-        // Describes the ratio at which flow is converted into HP.
+        // Describes how much healing you get from a swap.
         public const int SWAP_HEAL = 2;
 
         internal Camera cam;
