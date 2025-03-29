@@ -4,99 +4,92 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class Dinky : MonoBehaviour, IInteractable
-{
-    [SerializeField] private Interactable interactable;
-    [SerializeField] private GameObject graphics;
-    [SerializeField] private Animator animator;
-    [FormerlySerializedAs("tempDialogue")] [SerializeField] private DialogueWrapper interactDialogue;
-    [SerializeField] private List<Transform> locations;
+namespace NPC.Dinky {
+    public class Dinky : MonoBehaviour, IInteractable {
+        [SerializeField] private Interactable interactable;
+        [SerializeField] private GameObject graphics;
+        [SerializeField] private Animator animator;
 
-    private static readonly int AppearTrigger = Animator.StringToHash("Appear");
-    private static readonly int DisappearTrigger = Animator.StringToHash("Disappear");
-    private static readonly int IdleTrigger = Animator.StringToHash("Idle");
-    private static readonly int WalkTrigger = Animator.StringToHash("Walk");
+        [FormerlySerializedAs("tempDialogue")] [SerializeField]
+        private DialogueWrapper interactDialogue;
 
-    public static event Action OnInteract;
-    private Coroutine walkCoroutine;
+        [SerializeField] private List<Transform> locations;
 
-    private void Awake()
-    {
-        if (!animator && graphics)
-        {
-            animator = graphics.GetComponent<Animator>();
-        }
-    }
+        private static readonly int AppearTrigger = Animator.StringToHash("Appear");
+        private static readonly int DisappearTrigger = Animator.StringToHash("Disappear");
+        private static readonly int IdleTrigger = Animator.StringToHash("Idle");
+        private static readonly int WalkTrigger = Animator.StringToHash("Walk");
 
-    public void Appear(Transform t)
-    {
-        if (!animator) return;
+        public static event Action OnInteract;
+        private Coroutine walkCoroutine;
 
-        gameObject.transform.position = t.position;
-        setVisible(true);
-        animator.SetTrigger(AppearTrigger);
-    }
-
-    public void Disappear()
-    {
-        if (!animator) return;
-
-        interactable?.SetEnable(false);
-        animator.SetTrigger(DisappearTrigger);
-    }
-
-    public void Interact()
-    {
-        StartCoroutine(StartDialogue());
-    }
-
-    private IEnumerator StartDialogue()
-    {
-        yield return StartCoroutine(DialogueManager.Instance.StartDialogue(interactDialogue.Dialogue));
-        OnInteract?.Invoke();
-    }
-
-    public void Walk(float distance, float speed)
-    {
-        if (walkCoroutine != null)
-        {
-            StopCoroutine(walkCoroutine);
-        }
-        walkCoroutine = StartCoroutine(WalkRoutine(distance, speed));
-    }
-
-    private IEnumerator WalkRoutine(float distance, float speed)
-    {
-        if (!animator) yield break;
-
-        animator.SetTrigger(WalkTrigger);
-
-        float startX = transform.position.x;
-        float targetX = startX + distance;
-        float direction = Mathf.Sign(distance); // 1 for right, -1 for left
-
-        // Flip Dinky to face the correct direction
-        Vector3 scale = transform.localScale;
-        scale.x = -direction * Mathf.Abs(scale.x);
-        transform.localScale = scale;
-
-        while (Mathf.Abs(transform.position.x - startX) < Mathf.Abs(distance))
-        {
-            transform.position += new Vector3(direction * speed * Time.deltaTime, 0, 0);
-            yield return null;
+        private void Awake() {
+            if (!animator && graphics) {
+                animator = graphics.GetComponent<Animator>();
+            }
         }
 
-        transform.position = new Vector3(targetX, transform.position.y, transform.position.z);
-        animator.SetTrigger(IdleTrigger);
-    }
+        public void Appear(Transform t) {
+            if (!animator) return;
+
+            gameObject.transform.position = t.position;
+            setVisible(true);
+            animator.SetTrigger(AppearTrigger);
+        }
+
+        public void Disappear() {
+            if (!animator) return;
+
+            interactable?.SetEnable(false);
+            animator.SetTrigger(DisappearTrigger);
+        }
+
+        public void Interact() {
+            StartCoroutine(StartDialogue());
+        }
+
+        private IEnumerator StartDialogue() {
+            yield return StartCoroutine(DialogueManager.Instance.StartDialogue(interactDialogue.Dialogue));
+            OnInteract?.Invoke();
+        }
+
+        public void Walk(float distance, float speed) {
+            if (walkCoroutine != null) {
+                StopCoroutine(walkCoroutine);
+            }
+
+            walkCoroutine = StartCoroutine(WalkRoutine(distance, speed));
+        }
+
+        private IEnumerator WalkRoutine(float distance, float speed) {
+            if (!animator) yield break;
+
+            animator.SetTrigger(WalkTrigger);
+
+            float startX = transform.position.x;
+            float targetX = startX + distance;
+            float direction = Mathf.Sign(distance); // 1 for right, -1 for left
+
+            // Flip Dinky to face the correct direction
+            Vector3 scale = transform.localScale;
+            scale.x = -direction * Mathf.Abs(scale.x);
+            transform.localScale = scale;
+
+            while (Mathf.Abs(transform.position.x - startX) < Mathf.Abs(distance)) {
+                transform.position += new Vector3(direction * speed * Time.deltaTime, 0, 0);
+                yield return null;
+            }
+
+            transform.position = new Vector3(targetX, transform.position.y, transform.position.z);
+            animator.SetTrigger(IdleTrigger);
+        }
 
 
-    private void setVisible(bool visible)
-    {
-        if (graphics)
-        {
-            Renderer renderer = graphics.GetComponentInChildren<Renderer>();
-            if (renderer) renderer.enabled = visible;
+        private void setVisible(bool visible) {
+            if (graphics) {
+                Renderer renderer = graphics.GetComponentInChildren<Renderer>();
+                if (renderer) renderer.enabled = visible;
+            }
         }
     }
 }

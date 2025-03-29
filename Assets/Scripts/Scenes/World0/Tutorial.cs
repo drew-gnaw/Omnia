@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using Enemies.Dummy;
+using NPC.Dinky;
 using UI;
 using Unity.VisualScripting;
 using UnityEngine;
