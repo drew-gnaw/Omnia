@@ -35,7 +35,7 @@ namespace Scenes.World5 {
             float horizontalForce = 0.3f;
             rb.velocity = new Vector2(horizontalForce, 16);
 
-            float spinForce = UnityEngine.Random.Range(250f, 400f) * (UnityEngine.Random.value > 0.5f ? 1 : -1);
+            float spinForce = Random.Range(250f, 400f) * (Random.value > 0.5f ? 1 : -1);
             rb.angularVelocity = spinForce;
 
             yield return new WaitUntil(() => rb.velocity.y < -1f);
