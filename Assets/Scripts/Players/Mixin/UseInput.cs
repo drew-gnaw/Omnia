@@ -37,6 +37,7 @@ namespace Players.Mixin {
         private float rlt;
 
         public void Update() {
+            if (Player.controlsLocked) return;
             if (DialogueManager.Instance?.IsInDialogue() ?? InventoryManager.Instance?.IsInventoryOpen ?? false) return;
             if (PauseMenu.IsPaused) return;
 

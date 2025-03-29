@@ -93,6 +93,9 @@ namespace Players {
         // if this is false, disable swapping.
         [SerializeField] internal bool hasShotgun;
 
+        // disable user input if this is true.
+        public static bool controlsLocked = false;
+
         private bool _healthBoosted;
         public bool HealthBoosted {
             get => _healthBoosted;
