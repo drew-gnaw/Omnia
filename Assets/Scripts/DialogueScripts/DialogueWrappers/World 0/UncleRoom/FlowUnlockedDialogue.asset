@@ -24,9 +24,12 @@ MonoBehaviour:
       attack!
     speakerName: Tutorial
     displayingImage: {fileID: 0}
-    highlightedWords: []
+    highlightedWords:
+    - Tempo
+    - blue tempo bar.
+    - unleash a special attack!
     broadcastAnEvent: 0
-  - bodyText: Alright! Let's go test out these new weapons and trinkets out!
+  - bodyText: Alright! Let's go test these new weapons and trinkets out!
     speakerName: Jaime
     displayingImage: {fileID: 21300000, guid: e45f1839db2784540934541013900a29, type: 3}
     highlightedWords: []

@@ -16,24 +16,31 @@ MonoBehaviour:
   - bodyText: Hmm, how would I hit that dummy above us...
     speakerName: Jamie
     displayingImage: {fileID: 21300000, guid: e97d70049b5514d0dbe229dc7380a76b, type: 3}
+    highlightedWords: []
     broadcastAnEvent: 0
   - bodyText: I know! If I get the angle just right... I can grapple up there with
       my harpoon gun!
     speakerName: Jaime
     displayingImage: {fileID: 21300000, guid: e45f1839db2784540934541013900a29, type: 3}
+    highlightedWords: []
     broadcastAnEvent: 0
   - bodyText: Each weapon has a unique skill which is activated by pressing [Q].
-      Using the Harpoon Gun's skill will pull you to the last <color=#A2BAF5>semi-solid
-      platform</color> or <color=#A2BAF5>enemy</color> you hit.
+      Using the Harpoon Gun's skill will pull you to the last semi-solid platform
+      or enemy you hit.
     speakerName: Tutorial
     displayingImage: {fileID: 0}
+    highlightedWords:
+    - semi-solid platform
+    - enemy
     broadcastAnEvent: 0
   - bodyText: You can only use the skill every once in a while. Keep track of it's
       cooldown by watching the white bar in the top-left corner.
     speakerName: Tutorial
     displayingImage: {fileID: 0}
+    highlightedWords: []
     broadcastAnEvent: 0
   - bodyText: Alright, let's give this a shot!
     speakerName: Jaime
     displayingImage: {fileID: 21300000, guid: e45f1839db2784540934541013900a29, type: 3}
+    highlightedWords: []
     broadcastAnEvent: 0

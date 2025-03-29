@@ -109,7 +109,7 @@ public class DialogueBox : MonoBehaviour
     }
 
     
-    private string HighlightCharacter(string str) => $"<color=#ADD8E6>{str}</color>";
+    private string HighlightCharacter(string str) => $"<color=#99cfe0>{str}</color>";
   
 
     IEnumerator TypeLine() {

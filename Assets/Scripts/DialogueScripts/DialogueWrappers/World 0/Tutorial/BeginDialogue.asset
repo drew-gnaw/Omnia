@@ -16,26 +16,33 @@ MonoBehaviour:
   - bodyText: Time to try out this thing...
     speakerName: Jamie
     displayingImage: {fileID: 21300000, guid: e97d70049b5514d0dbe229dc7380a76b, type: 3}
+    highlightedWords: []
     broadcastAnEvent: 0
   - bodyText: ...I'll hit those dummies!
     speakerName: Jamie
     displayingImage: {fileID: 21300000, guid: e45f1839db2784540934541013900a29, type: 3}
+    highlightedWords: []
     broadcastAnEvent: 0
   - bodyText: fehbladlguyiuw!!
     speakerName: Dinky
     displayingImage: {fileID: 21300000, guid: 051a502d883714b478186d5fea5082dd, type: 3}
+    highlightedWords: []
     broadcastAnEvent: 0
   - bodyText: Use your [Mouse] to aim, and [Left Click] To shoot.
     speakerName: Tutorial
     displayingImage: {fileID: 0}
+    highlightedWords: []
     broadcastAnEvent: 0
   - bodyText: Keep track of your ammo, displayed as yellow ticks in the top-left
       corner. You can't shoot without ammo!
     speakerName: Tutorial
     displayingImage: {fileID: 0}
+    highlightedWords: []
     broadcastAnEvent: 0
-  - bodyText: While using the Harpoon Gun, restore ammo by <color=#A2BAF5>picking
-      up harpoons>/color> that have landed on the ground.
+  - bodyText: While using the Harpoon Gun, restore ammo by picking up harpoons that
+      have landed on the ground.
     speakerName: Tutorial
     displayingImage: {fileID: 0}
+    highlightedWords:
+    - picking up harpoons
     broadcastAnEvent: 0
