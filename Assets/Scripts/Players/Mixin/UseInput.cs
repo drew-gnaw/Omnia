@@ -11,6 +11,7 @@ namespace Players.Mixin {
             Fire2,
             Jump,
             Roll,
+            Swap,
         }
 
         private static readonly Dictionary<KeysEnum, string> KeyMap = new Dictionary<KeysEnum, string> {
@@ -20,15 +21,11 @@ namespace Players.Mixin {
             { KeysEnum.Fire2, "Fire2" },
             { KeysEnum.Jump, "Jump" },
             { KeysEnum.Roll, "Roll" },
+            { KeysEnum.Swap, "Swap" },
         };
 
         [SerializeField] internal Player self;
         [SerializeField] internal float delay;
-
-        private readonly Dictionary<KeyCode, int> weaponKeyMap = new Dictionary<KeyCode, int> {
-            { KeyCode.Alpha1, 0 }, // 1 key -> Harpoon Gun
-            { KeyCode.Alpha2, 1 }, // 2 key -> Shotgun
-        };
 
         private float jt;
         private float ft;
@@ -45,12 +42,8 @@ namespace Players.Mixin {
             var held = Input.GetButton(KeyMap[KeysEnum.Jump]);
             var skill = Input.GetButtonDown(KeyMap[KeysEnum.Fire2]);
             var roll = Input.GetButtonDown(KeyMap[KeysEnum.Roll]) && self.shoeEquipped;
-
-            foreach (var kvp in weaponKeyMap) {
-                if (Input.GetKeyDown(kvp.Key)) {
-                    self.DoSwap(kvp.Value);
-                }
-            }
+            var swap = Input.GetButtonDown(KeyMap[KeysEnum.Swap]); 
+            if (swap) self.DoSwap();
 
             ft = fire ? delay : Mathf.Max(0, ft - Time.deltaTime);
             jt = jump ? delay : Mathf.Max(0, jt - Time.deltaTime);

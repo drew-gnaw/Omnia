@@ -302,8 +302,10 @@ namespace Players {
             if (weapons[selectedWeapon].UseSkill()) skillCooldownTimer.Start();
         }
 
-        public void DoSwap(int targetWeapon) {
+        public void DoSwap() {
             if (!hasShotgun) return;
+
+            var targetWeapon = (selectedWeapon + 1) % weapons.Length;
             if (selectedWeapon != targetWeapon) {
                 weapons[selectedWeapon].SetSpriteActive(false);
 

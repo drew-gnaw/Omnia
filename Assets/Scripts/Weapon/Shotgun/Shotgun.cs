@@ -68,12 +68,12 @@ public class Shotgun : WeaponClass {
     }
 
     private IEnumerator IntroCoroutine() {
+        CurrentAmmo = maxAmmoCount;
         yield return new WaitForSeconds(introDelayTime);
         
         SkillAndUltimateFire();
         SkillAndUltimateFire();
         SkillAndUltimateFire();
-        CurrentAmmo = maxAmmoCount;
         player.GetComponent<Player>().UseRecoil(10);
         ScreenShakeManager.Instance.Shake(3f);
     }
