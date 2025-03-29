@@ -18,6 +18,10 @@ public class Dinky : MonoBehaviour, IInteractable
     // Not sure this is how it should be handled, could stay this simple if Dinky's interactions are totally linear
     [SerializeField] private List<Transform> locations;
 
+    private static readonly int AppearTrigger = Animator.StringToHash("Appear");
+    private static readonly int DisappearTrigger = Animator.StringToHash("Disappear");
+    private static readonly int IdleTrigger = Animator.StringToHash("Idle");
+
     public static event Action OnInteract;
 
     private bool animating = false;
@@ -27,7 +31,7 @@ public class Dinky : MonoBehaviour, IInteractable
         if (!animator) {
             animator = graphics.GetComponent<Animator>();
         }
-        animator.Play(appearState);
+        animator.SetTrigger(AppearTrigger);
         setVisible(true);
         animating = true;
     }
