@@ -1,4 +1,4 @@
-using System.Collections;
+using System;
 using UnityEngine;
 
 namespace NPC.Dinky {
@@ -11,7 +11,10 @@ namespace NPC.Dinky {
         [SerializeField] private float moveSpeed = 2f; // Speed at which Dinky follows
 
         private Dinky dinky;
-        private Coroutine followCoroutine;
+        private bool isWalking = false;
+        private Vector3 targetPosition;
+
+        private float initialY;
 
         private void Awake()
         {
@@ -24,27 +27,51 @@ namespace NPC.Dinky {
             }
         }
 
-        private void Start()
+        private void Start() {
+            initialY = transform.position.y;
+        }
+
+        private void Update()
         {
             if (player != null)
             {
-                followCoroutine = StartCoroutine(FollowPlayer());
+                FollowPlayer();
             }
         }
 
-        private IEnumerator FollowPlayer()
+        private void FollowPlayer()
         {
-            while (true)
+            // Calculate the distance from Dinky to the player
+            float distanceToPlayer = player.position.x - transform.position.x;
+
+            // If Dinky is too far from the player, start moving
+            if (Mathf.Abs(distanceToPlayer) > followDistance)
             {
-                yield return new WaitForSeconds(0.1f); // Small delay to optimize performance
+                // Set target position
+                targetPosition = player.position - new Vector3(followDistance * Mathf.Sign(distanceToPlayer), player.position.y - initialY, 0);
 
-                float distanceToPlayer = player.position.x - transform.position.x;
+                // Flip Dinky to face the correct direction based on movement
+                Vector3 scale = transform.localScale;
+                scale.x = Mathf.Sign(targetPosition.x - transform.position.x) * Mathf.Abs(scale.x);
+                transform.localScale = scale;
 
-                // Only move if the distance is greater than the desired follow distance
-                if (Mathf.Abs(distanceToPlayer) > followDistance)
+                // Move Dinky towards the target position smoothly
+                transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+
+                // Trigger walking animation if Dinky is moving
+                if (!isWalking)
                 {
-                    float moveDistance = distanceToPlayer - (followDistance * Mathf.Sign(distanceToPlayer));
-                    dinky.Walk(moveDistance, moveSpeed);
+                    dinky.animator.SetTrigger(Dinky.WalkTrigger);  // Set walk animation trigger
+                    isWalking = true;
+                }
+            }
+            else
+            {
+                // Stop walking and trigger idle animation if Dinky is close enough
+                if (isWalking)
+                {
+                    dinky.animator.SetTrigger(Dinky.IdleTrigger);  // Set idle animation trigger
+                    isWalking = false;
                 }
             }
         }

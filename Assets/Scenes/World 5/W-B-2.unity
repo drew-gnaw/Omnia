@@ -814,6 +814,26 @@ Transform:
   - {fileID: 1399571585}
   m_Father: {fileID: 970156644}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1058044218 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5710193498280292276, guid: 96464ed19ec750e48a6fc68c0c78322a, type: 3}
+  m_PrefabInstance: {fileID: 1479007238}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1058044219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1058044218}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 468c42d8f24d4a90a9dbe36133c979df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1975500271}
+  followDistance: 2
+  moveSpeed: 2
 --- !u!1 &1320361155
 GameObject:
   m_ObjectHideFlags: 0
@@ -1318,6 +1338,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5590812443150669939, guid: 96464ed19ec750e48a6fc68c0c78322a, type: 3}
+      propertyPath: interactable
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 5710193498280292276, guid: 96464ed19ec750e48a6fc68c0c78322a, type: 3}
       propertyPath: m_Name
       value: Dinky
@@ -1331,7 +1355,10 @@ PrefabInstance:
     - {fileID: 1732566356408106204, guid: 96464ed19ec750e48a6fc68c0c78322a, type: 3}
     - {fileID: 1193800503757693516, guid: 96464ed19ec750e48a6fc68c0c78322a, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5710193498280292276, guid: 96464ed19ec750e48a6fc68c0c78322a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1058044219}
   m_SourcePrefab: {fileID: 100100000, guid: 96464ed19ec750e48a6fc68c0c78322a, type: 3}
 --- !u!1 &1545538707
 GameObject:

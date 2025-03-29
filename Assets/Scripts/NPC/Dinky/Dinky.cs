@@ -8,17 +8,17 @@ namespace NPC.Dinky {
     public class Dinky : MonoBehaviour, IInteractable {
         [SerializeField] private Interactable interactable;
         [SerializeField] private GameObject graphics;
-        [SerializeField] private Animator animator;
+        [SerializeField] public Animator animator;
 
         [FormerlySerializedAs("tempDialogue")] [SerializeField]
         private DialogueWrapper interactDialogue;
 
         [SerializeField] private List<Transform> locations;
 
-        private static readonly int AppearTrigger = Animator.StringToHash("Appear");
-        private static readonly int DisappearTrigger = Animator.StringToHash("Disappear");
-        private static readonly int IdleTrigger = Animator.StringToHash("Idle");
-        private static readonly int WalkTrigger = Animator.StringToHash("Walk");
+        public static readonly int AppearTrigger = Animator.StringToHash("Appear");
+        public static readonly int DisappearTrigger = Animator.StringToHash("Disappear");
+        public static readonly int IdleTrigger = Animator.StringToHash("Idle");
+        public static readonly int WalkTrigger = Animator.StringToHash("Walk");
 
         public static event Action OnInteract;
         private Coroutine walkCoroutine;
