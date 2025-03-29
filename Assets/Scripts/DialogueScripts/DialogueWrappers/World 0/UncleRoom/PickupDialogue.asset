@@ -29,10 +29,12 @@ MonoBehaviour:
     displayingImage: {fileID: 21300000, guid: e45f1839db2784540934541013900a29, type: 3}
     highlightedWords: []
     broadcastAnEvent: 0
-  - bodyText: You picked up the Scrap Gun! Press [Left Shift] to swap between weapons!
+  - bodyText: You picked up the Scrap Gun! Press the number keys to swap between
+      weapons!
     speakerName: Tutorial
     displayingImage: {fileID: 0}
-    highlightedWords: []
+    highlightedWords:
+    - Press the number keys
     broadcastAnEvent: 0
   - bodyText: The Scrap Gun's [Q] skill blasts you in the air, giving you extra height.
     speakerName: Tutorial
