@@ -21,6 +21,7 @@ namespace UI {
         private Coroutine co;
 
         public void Start() {
+            player = GameObject.FindGameObjectWithTag("Player")?.GetComponent<Player>();
             if (debugTransform) SetTarget(debugTransform);
         }
 

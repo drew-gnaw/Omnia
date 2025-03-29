@@ -22,13 +22,13 @@ namespace Players.Mixin {
             { KeysEnum.Roll, "Roll" },
         };
 
-        [SerializeField] internal Player self;
-        [SerializeField] internal float delay;
-
         private readonly Dictionary<KeyCode, int> weaponKeyMap = new Dictionary<KeyCode, int> {
             { KeyCode.Alpha1, 0 }, // 1 key -> Harpoon Gun
             { KeyCode.Alpha2, 1 }, // 2 key -> Shotgun
         };
+
+        [SerializeField] internal Player self;
+        [SerializeField] internal float delay;
 
         private float jt;
         private float ft;

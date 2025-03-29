@@ -77,6 +77,11 @@ public class HarpoonSpear : MonoBehaviour {
         TaggedEnemy.GetComponent<Rigidbody2D>().AddForce(difference * gun.pullPower);
         AudioManager.Instance.PlaySFX(AudioTracks.HarpoonRetract);
         TaggedEnemy.GetComponent<Enemy>().Hurt(gun.damage);
+        player?.OnHit(gun.damage * gun.damageToFlowRatio);
+    }
+
+    public void ReleaseHarpoonFromEnemy() {
+        collectable = true;
     }
 
     public void ReturnToPlayer() {
@@ -107,25 +112,27 @@ public class HarpoonSpear : MonoBehaviour {
     }
 
     void OnTriggerEnter2D(Collider2D other) {
-        if (Collider2D.IsTouchingLayers(playerLayer) && collectable) {
+        if (other.GetComponent<Player>() != null && collectable) {
             HandlePlayerCollision();
+            return;
         }
 
-        // FIXME: for whatever reason, checking if the spear collider is touching enemy does not always work,
-        // other collider ends up as null if they are moving
-        if (CollisionUtils.IsLayerInMask(other.gameObject.layer, hittableLayerMask) && !dropped) {
+        if (other.GetComponent<Enemy>() != null && !dropped) {
             AudioManager.Instance.PlaySFX(AudioTracks.HarpoonHit);
             HandleEnemyCollision(other.GetComponent<Enemy>());
+            return;
         }
 
         if (Collider2D.IsTouchingLayers(semisolidLayer) && !dropped) {
             AudioManager.Instance.PlaySFX(AudioTracks.HarpoonHit);
             HandleSemisolidCollision(other.gameObject);
+            return;
         }
 
         if (Collider2D.IsTouchingLayers(groundLayer) && !dropped) {
             AudioManager.Instance.PlaySFX(AudioTracks.HarpoonHit);
             HandleGroundCollision(other.gameObject);
+            return;
         }
     }
 

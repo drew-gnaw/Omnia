@@ -16,17 +16,29 @@ MonoBehaviour:
   - bodyText: What's this?
     speakerName: Jamie
     displayingImage: {fileID: 21300000, guid: 092a1591720d645c5993e5e2c781803f, type: 3}
+    highlightedWords: []
     broadcastAnEvent: 0
   - bodyText: Looks like some kind of... gun?
     speakerName: Jamie
     displayingImage: {fileID: 21300000, guid: e97d70049b5514d0dbe229dc7380a76b, type: 3}
-    broadcastAnEvent: 0
-  - bodyText: You picked up the Scrap Gun!
-    speakerName: Tutorial
-    displayingImage: {fileID: 0}
+    highlightedWords: []
     broadcastAnEvent: 0
   - bodyText: I only know one person crafty enough to make something like this out
       of scrap...
     speakerName: Jamie
     displayingImage: {fileID: 21300000, guid: e45f1839db2784540934541013900a29, type: 3}
+    highlightedWords: []
     broadcastAnEvent: 0
+  - bodyText: You picked up the Scrap Gun! Press the number keys to swap between
+      weapons!
+    speakerName: Tutorial
+    displayingImage: {fileID: 0}
+    highlightedWords:
+    - Press the number keys
+    broadcastAnEvent: 0
+  - bodyText: The Scrap Gun's [Q] skill blasts you in the air, giving you extra height.
+    speakerName: Tutorial
+    displayingImage: {fileID: 0}
+    highlightedWords:
+    - blasts you in the air
+    broadcastAnEvent: 1
