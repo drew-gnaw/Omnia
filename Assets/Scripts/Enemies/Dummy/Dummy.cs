@@ -8,8 +8,8 @@ namespace Enemies.Dummy {
             // nothing...
         }
 
-        public override void Hurt(float damage, bool stagger = true) {
-            base.Hurt(damage);
+        public override void Hurt(float damage, bool stagger = true, bool crit = false) {
+            base.Hurt(damage, crit: crit);
             OnHurt?.Invoke();
         }
 
