@@ -27,7 +27,7 @@ public class DialogueText
     public List<string> HighlightedWords { get => new(highlightedWords); }
     public float Shadow { get { return shadow; } set { shadow = value; } }
 
-    DialogueText(string bodyText, string speakerName, List<string> highlightedWords, Sprite givenImage)
+    DialogueText(string bodyText, string speakerName, List<string> highlightedWords, Sprite givenImage, float shadow)
     {
         this.bodyText = bodyText;
         this.speakerName = speakerName;

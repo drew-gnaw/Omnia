@@ -12,7 +12,7 @@ namespace Enemies.Dummy {
         public override void Hurt(float damage, bool stagger = true, bool crit = false) {
             if (!canBeHurt) return;
             base.Hurt(damage, crit: crit);
-            OnHurt?.Invoke();
+            OnHurt?.Invoke(this);
         }
 
     }
