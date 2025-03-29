@@ -152,7 +152,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4751600449346173604, guid: f86acd3388944ae46bb845d9dd6e7441, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 32.82782
+      value: 40.31
       objectReference: {fileID: 0}
     - target: {fileID: 4751600449346173604, guid: f86acd3388944ae46bb845d9dd6e7441, type: 3}
       propertyPath: m_LocalPosition.y
@@ -382,7 +382,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2b3bef375fa4cf3984ea6cd58fa30ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parallaxFactor: 0.1
+  parallaxFactor: 0.08
 --- !u!1 &207238040
 GameObject:
   m_ObjectHideFlags: 0
@@ -444,10 +444,10 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 29, y: 9}
+    - - {x: 33, y: 9}
       - {x: -6.5, y: 9}
       - {x: -6.5, y: -5.5}
-      - {x: 29, y: -5.5}
+      - {x: 33, y: -5.5}
   m_UseDelaunayMesh: 0
 --- !u!4 &207238042
 Transform:
@@ -640,6 +640,7 @@ GameObject:
   m_Component:
   - component: {fileID: 587904335}
   - component: {fileID: 587904336}
+  - component: {fileID: 587904337}
   m_Layer: 0
   m_Name: Layer (7)
   m_TagString: Untagged
@@ -714,6 +715,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &587904337
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 587904334}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6afcf1abe86d45b0885dec22b9294d2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parallaxFactor: 0.2
 --- !u!1 &633260188
 GameObject:
   m_ObjectHideFlags: 0
@@ -1082,7 +1096,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2b3bef375fa4cf3984ea6cd58fa30ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parallaxFactor: 0.2
+  parallaxFactor: 0.04
 --- !u!1001 &947442479
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1309,7 +1323,7 @@ Transform:
   m_GameObject: {fileID: 973418300}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 23.25, y: 3.6759114, z: -0.0299657}
+  m_LocalPosition: {x: 32.742184, y: 3.6759114, z: -0.0299657}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3828,7 +3842,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2b3bef375fa4cf3984ea6cd58fa30ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parallaxFactor: 0.25
+  parallaxFactor: 0.02
 --- !u!1 &1237267611
 GameObject:
   m_ObjectHideFlags: 0
@@ -5573,7 +5587,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2b3bef375fa4cf3984ea6cd58fa30ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parallaxFactor: 0.15
+  parallaxFactor: 0.06
 --- !u!1001 &1972708437
 PrefabInstance:
   m_ObjectHideFlags: 0
