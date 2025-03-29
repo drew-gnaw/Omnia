@@ -136,7 +136,7 @@ namespace Scenes {
             yield return new WaitForSeconds(1f);
 
             yield return StartCoroutine(DialogueManager.Instance.StartDialogue(dinkyGoneDialogue.Dialogue));
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(1f);
             LevelManager.Instance.NextLevel();
         }
 
