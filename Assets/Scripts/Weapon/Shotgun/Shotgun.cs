@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using Enemies;
 using Omnia.Utils;
@@ -62,6 +61,7 @@ public class Shotgun : WeaponClass {
             ApplyDamage(hits, damage, false); // Ultimate shot ignores drop-off
             HandleMuzzleFlash();
             HandleTracers();
+            AudioManager.Instance.PlaySFX(AudioTracks.Scrapgun);
         }
         FireUltimate();
         FireUltimate();
@@ -146,8 +146,14 @@ public class Shotgun : WeaponClass {
                         damageAmount *= DamageDropOff(distance);
                     }
 
-                    damageAmount = Math.Max(damageAmount, 0);
-                    enemy.Hurt(damageAmount);
+                    damageAmount = Mathf.Max(damageAmount, 0);
+
+                    bool isCrit = Random.Range(0f, 1f) < critChance;
+                    if (isCrit) {
+                        damageAmount *= critMultiplier;
+                    }
+
+                    enemy.Hurt(damageAmount, crit: isCrit);
                     playerScript.OnHit(damageAmount * damageToFlowRatio);
                 }
             }
@@ -155,7 +161,7 @@ public class Shotgun : WeaponClass {
     }
 
     private float DamageDropOff(float distance) {
-        return Math.Max((1 - distance / range), 0);
+        return Mathf.Max((1 - distance / range), 0);
     }
 
     private void HandleMuzzleFlash() {

@@ -143,6 +143,8 @@ MonoBehaviour:
   damage: 60
   attackCooldown: 0
   damageToFlowRatio: 1
+  critChance: 0.1
+  critMultiplier: 2
   maxAmmoCount: 3
   reloadTime: 3
   blastAngle: 35
