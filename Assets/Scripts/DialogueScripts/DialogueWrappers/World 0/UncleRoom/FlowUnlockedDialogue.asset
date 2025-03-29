@@ -13,17 +13,21 @@ MonoBehaviour:
   m_Name: FlowUnlockedDialogue
   m_EditorClassIdentifier: 
   dialogue:
-  - bodyText: <color=#A2BAF5>Tempo</color> has also been permanently unlocked!
+  - bodyText: Tempo has also been permanently unlocked!
     speakerName: Tutorial
     displayingImage: {fileID: 0}
+    highlightedWords:
+    - Tempo
     broadcastAnEvent: 0
   - bodyText: Gain Tempo by damaging enemies to charge up your blue tempo bar. Once
       full, swap into your other weapon by pressing [Left Shift] to unleash a special
       attack!
     speakerName: Tutorial
     displayingImage: {fileID: 0}
+    highlightedWords: []
     broadcastAnEvent: 0
   - bodyText: Alright! Let's go test out these new weapons and trinkets out!
     speakerName: Jaime
     displayingImage: {fileID: 21300000, guid: e45f1839db2784540934541013900a29, type: 3}
+    highlightedWords: []
     broadcastAnEvent: 0

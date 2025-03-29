@@ -17,6 +17,7 @@ public class DialogueBox : MonoBehaviour
     [SerializeField] private AspectRatioFitter aspectRatioFitter;
 
     private string currentLine = string.Empty;
+    private List<string> highlightedWords = new();
 
     public float rollingSpeed;
 
@@ -43,6 +44,7 @@ public class DialogueBox : MonoBehaviour
 
         bodyText.text = string.Empty;
         this.currentLine = line.BodyText;
+        this.highlightedWords = line.HighlightedWords;
         nameText.text = line.SpeakerName;
 
         if (line.broadcastAnEvent) DialogueBoxEvent?.Invoke();
@@ -88,42 +90,63 @@ public class DialogueBox : MonoBehaviour
     {
     }
 
-    public void StopScrollingText()
-    {
-        if (bodyText.text != currentLine)
-        {
+    public void StopScrollingText() {
+        if (bodyText.text != currentLine) {
             StopAllCoroutines();
-            bodyText.text = currentLine;
+            bodyText.text = PreProcessText(currentLine);
             lineIsFinished = true;
         }
     }
 
+    private string PreProcessText(string modifiedText) {
+        highlightedWords.ForEach(word => modifiedText = modifiedText.Replace(word, $"<color=#ADD8E6>{word}</color>"));
+        return modifiedText;
+    }
 
     void StartDialogue()
     {
         StartCoroutine(TypeLine());
     }
 
-    //Effects: Adds the rolling dialogue effect to the text
-    IEnumerator TypeLine()
-    {
+    
+    private string HighlightCharacter(string str) => $"<color=#ADD8E6>{str}</color>";
+  
+
+    IEnumerator TypeLine() {
         lineIsFinished = false;
         int currentIndex = 0;
         string displayedText = "";
+        int highlightedWordLength = 0;
 
-        while (currentIndex < currentLine.Length)
-        {
-            displayedText += currentLine[currentIndex];
+        bool IsStartOfHighlightedWord(int currentIndex, out int wordLength) {
+            foreach (string word in highlightedWords) {
+                if (currentLine.Substring(currentIndex).StartsWith(word)) {
+                    wordLength = word.Length; // Capture the full word length
+                    return true;
+                }
+            }
+            wordLength = 0;
+            return false;
+        }
+
+        while (currentIndex < currentLine.Length) {
+            if (highlightedWordLength == 0 && IsStartOfHighlightedWord(currentIndex, out int wordLength)) {
+                highlightedWordLength = wordLength;
+            }
+
+            if (highlightedWordLength > 0) {
+                displayedText += HighlightCharacter(currentLine[currentIndex].ToString());
+                highlightedWordLength--;
+            } else {
+                displayedText += currentLine[currentIndex];
+            }
+
             currentIndex++;
-
             bodyText.text = displayedText;
 
-            // Rolling delay using unscaled time
             float delay = 1f / rollingSpeed;
             float timer = 0f;
-
-            while (timer < delay)
-            {
+            while (timer < delay) {
                 timer += Time.unscaledDeltaTime;
                 yield return null;
             }
@@ -131,6 +154,8 @@ public class DialogueBox : MonoBehaviour
 
         lineIsFinished = true;
     }
+
+
 
 
     public bool FinishedLine()
