@@ -1,11 +1,14 @@
 using System.Collections;
 using NPC;
 using Players;
+using Players.Mixin;
 using UnityEngine;
+using Utils;
 
 namespace Scenes.World5 {
     [RequireComponent(typeof(BoxCollider2D))]
     public class RuinedTown : MonoBehaviour {
+        [SerializeField] private FadeScreenHandler fadescreen;
 
         [SerializeField] private LayerMask playerLayer;
 
@@ -14,10 +17,12 @@ namespace Scenes.World5 {
 
         [SerializeField] private DialogueWrapper beginDialogue;
         [SerializeField] private DialogueWrapper uncleDialogue;
+        [SerializeField] private DialogueWrapper hugDialogue;
 
         private bool uncleTriggered;
 
         public void Start() {
+            fadescreen.SetLightScreen();
             StartCoroutine(BeginSequence());
         }
 
@@ -40,6 +45,21 @@ namespace Scenes.World5 {
             uncle.Walk(-5f, 3f);
             yield return new WaitForSeconds(2f);
             yield return StartCoroutine(DialogueManager.Instance.StartDialogue(uncleDialogue.Dialogue));
+
+            Player.controlsLocked = false;
+            player.GetComponent<UseInput>().enabled = false;
+
+            while (player.transform.position.x <= uncle.transform.position.x) {
+                player.moving = new Vector2(1, 0);
+                yield return null;
+            }
+
+            player.moving = Vector2.zero;
+            player.GetComponent<UseInput>().enabled = true;
+
+
+            yield return StartCoroutine(DialogueManager.Instance.StartDialogue(hugDialogue.Dialogue));
+            StartCoroutine(fadescreen.FadeInDarkScreen(2f));
         }
     }
 }
