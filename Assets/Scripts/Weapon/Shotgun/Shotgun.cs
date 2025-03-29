@@ -65,7 +65,6 @@ public class Shotgun : WeaponClass {
         ApplyDamage(hits, damage, false);
         HandleMuzzleFlash();
         HandleTracers();
-        AudioManager.Instance.PlaySFX(AudioTracks.Scrapgun);
     }
 
     private IEnumerator IntroCoroutine() {
@@ -75,6 +74,7 @@ public class Shotgun : WeaponClass {
         SkillAndUltimateFire();
         SkillAndUltimateFire();
         SkillAndUltimateFire();
+        AudioManager.Instance.PlaySFX(AudioTracks.ScrapgunSpecial);
         player.GetComponent<Player>().UseRecoil(10);
         ScreenShakeManager.Instance.Shake(3f);
     }

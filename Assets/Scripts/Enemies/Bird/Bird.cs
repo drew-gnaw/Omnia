@@ -58,6 +58,7 @@ namespace Enemies.Bird {
             Sweep(rb.worldCenterOfMass, targetInstance.rb.worldCenterOfMass - rb.worldCenterOfMass, 45, detectionRadius, 5, ground | player).Any(hit => IsOnLayer(hit, player));
 
         private void Attack() {
+            AudioManager.Instance.PlaySFX(AudioTracks.FlyBoom);
             var hit = Physics2D.OverlapCircle(rb.worldCenterOfMass, explosionRadius, player);
             if (!hit || !hit.TryGetComponent<Player>(out var it)) return;
             var direction = it.rb.worldCenterOfMass - rb.worldCenterOfMass;
