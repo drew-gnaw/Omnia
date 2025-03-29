@@ -57,14 +57,6 @@ namespace Scenes {
             yield return new WaitForSeconds(1.5f);
             yield return StartCoroutine(DialogueManager.Instance.StartDialogue(beginDialogue.Dialogue));
 
-            Rigidbody2D rb = dinky.AddComponent<Rigidbody2D>();
-            float horizontalForce = UnityEngine.Random.Range(1.5f, 3f);
-            float spinForce = UnityEngine.Random.Range(250f, 400f) * (UnityEngine.Random.value > 0.5f ? 1 : -1);
-            rb.gravityScale = 1f;
-            rb.velocity = new Vector2(horizontalForce, 15);
-            rb.angularVelocity = spinForce;
-
-
             RegisterDummyHurt(dummy1);
             RegisterDummyHurt(dummy2);
             yield return new WaitUntil(() => dummiesHit == 2);
