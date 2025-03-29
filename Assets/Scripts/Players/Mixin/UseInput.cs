@@ -24,9 +24,9 @@ namespace Players.Mixin {
             { KeysEnum.Roll, "Roll" },
         };
 
+
         [SerializeField] internal Player self;
         [SerializeField] internal float delay;
-
 
         private float jt;
         private float ft;

@@ -10,39 +10,37 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0c4ba83377da9aa4d989fd8875452eae, type: 3}
-  m_Name: BeginDialogue
+  m_Name: PlatformDummyDialogue
   m_EditorClassIdentifier: 
   dialogue:
-  - bodyText: Time to try out this thing...
+  - bodyText: Hmm, how would I hit that dummy above us...
     speakerName: Jamie
     displayingImage: {fileID: 21300000, guid: e97d70049b5514d0dbe229dc7380a76b, type: 3}
     highlightedWords: []
     broadcastAnEvent: 0
-  - bodyText: ...I'll hit those dummies!
-    speakerName: Jamie
+  - bodyText: I know! If I get the angle just right... I can grapple up there with
+      my harpoon gun!
+    speakerName: Jaime
     displayingImage: {fileID: 21300000, guid: e45f1839db2784540934541013900a29, type: 3}
     highlightedWords: []
     broadcastAnEvent: 0
-  - bodyText: fehbladlguyiuw!!
-    speakerName: Dinky
-    displayingImage: {fileID: 21300000, guid: 051a502d883714b478186d5fea5082dd, type: 3}
-    highlightedWords: []
-    broadcastAnEvent: 0
-  - bodyText: Use your [Mouse] to aim, and [Left Click] To shoot.
-    speakerName: Tutorial
-    displayingImage: {fileID: 0}
-    highlightedWords: []
-    broadcastAnEvent: 0
-  - bodyText: Keep track of your ammo, displayed as yellow ticks in the top-left
-      corner. You can't shoot without ammo!
-    speakerName: Tutorial
-    displayingImage: {fileID: 0}
-    highlightedWords: []
-    broadcastAnEvent: 0
-  - bodyText: While using the Harpoon Gun, restore ammo by picking up harpoons that
-      have landed on the ground.
+  - bodyText: Each weapon has a unique skill which is activated by pressing [Q].
+      Using the Harpoon Gun's skill will pull you to the last semi-solid platform
+      or enemy you hit.
     speakerName: Tutorial
     displayingImage: {fileID: 0}
     highlightedWords:
-    - picking up harpoons
+    - semi-solid platform
+    - enemy
+    broadcastAnEvent: 0
+  - bodyText: You can only use the skill every once in a while. Keep track of it's
+      cooldown by watching the white bar in the top-left corner.
+    speakerName: Tutorial
+    displayingImage: {fileID: 0}
+    highlightedWords: []
+    broadcastAnEvent: 0
+  - bodyText: Alright, let's give this a shot!
+    speakerName: Jaime
+    displayingImage: {fileID: 21300000, guid: e45f1839db2784540934541013900a29, type: 3}
+    highlightedWords: []
     broadcastAnEvent: 0

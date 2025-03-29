@@ -73,19 +73,17 @@ public class HarpoonGun : WeaponClass
 
     public override bool UseSkill()
     {
-        if (firedSpears.Count == 0) {
-            return false;
-        }
+        if (firedSpears.Count == 0) return false;
 
         var spear = firedSpears.FirstOrDefault(s => s.TaggedEnemy != null || s.PullTo != null);
-
         Transform target = spear?.PullTo ?? spear?.TaggedEnemy?.transform;
 
-        if (target == null) {
-            return false;
-        }
+        if (target == null) return false;
 
+
+        spear.ReleaseHarpoonFromEnemy();
         playerComponent.UsePull(target);
+
         AudioManager.Instance.PlaySFX(AudioTracks.HarpoonRetract);
         return true;
     }
