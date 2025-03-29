@@ -121,7 +121,7 @@ public class DialogueBox : MonoBehaviour
         bool IsStartOfHighlightedWord(int currentIndex, out int wordLength) {
             foreach (string word in highlightedWords) {
                 if (currentLine.Substring(currentIndex).StartsWith(word)) {
-                    wordLength = word.Length; // Capture the full word length
+                    wordLength = word.Length;
                     return true;
                 }
             }
