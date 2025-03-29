@@ -12,6 +12,9 @@ public class InventoryManager : PersistentSingleton<InventoryManager> {
     [SerializeField] private TextMeshProUGUI descriptionText; // Description UI text box
     [SerializeField] private Image EquipDisplay;
 
+    public delegate void InventoryEventHandler();
+    public static event InventoryEventHandler OnInventoryOpened;   // for more complex functions that cannot use isPaused
+    public static event InventoryEventHandler OnInventoryClosed;
 
     public bool IsInventoryOpen { get; private set; }
 
@@ -44,11 +47,14 @@ public class InventoryManager : PersistentSingleton<InventoryManager> {
     public void ToggleInventory() {
         IsInventoryOpen = !inventoryUI.activeSelf;
         inventoryUI.SetActive(IsInventoryOpen);
+        if (IsInventoryOpen) OnInventoryOpened?.Invoke();
+        else OnInventoryClosed?.Invoke();
     }
 
     public void CloseInventory() {
         IsInventoryOpen = false;
         inventoryUI.SetActive(false);
+        OnInventoryClosed?.Invoke();
     }
 
     public void EquipTrinket(TrinketSlot selectedTrinket) {
