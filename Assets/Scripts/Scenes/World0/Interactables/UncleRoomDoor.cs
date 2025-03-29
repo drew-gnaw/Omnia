@@ -8,6 +8,7 @@ using Utils;
 public class UncleRoomDoor : MonoBehaviour, IInteractable
 {
     [SerializeField] private DialogueWrapper notPickedUpDialogue;
+    [SerializeField] private DialogueWrapper flowUnlockedDialogue;
     [SerializeField] private Trinket musicBox;
 
     public virtual void Interact() {
