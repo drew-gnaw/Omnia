@@ -42,7 +42,10 @@ namespace UI {
             gameObject.SetActive(true);
 
             FindPlayer();
+            OnEnable();
+        }
 
+        private void OnEnable() {
             Player.OnFlowChanged += UpdateFlow;
             Player.OnHealthChanged += UpdateHealth;
             Player.OnWeaponChanged += SetWeaponSprites;
