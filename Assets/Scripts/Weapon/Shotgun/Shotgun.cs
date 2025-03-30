@@ -25,11 +25,11 @@ public class Shotgun : WeaponClass {
 
     [SerializeField] internal float skillForce;
 
-    [SerializeField] private float skillLockDuration = 1f;
+    [SerializeField] private float skillLockDuration = 0.2f;
     [SerializeField] private float introDelayTime = 0.5f;
 
     private float skillLockTimer = 0f;
-
+    private bool lockedPlayerGravity = false;
     private Coroutine reloadCoroutine;
 
     protected override void HandleAttack() {
@@ -48,8 +48,11 @@ public class Shotgun : WeaponClass {
         SkillAndUltimateFire();
 
         Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
+        Player playerCharachter = player.GetComponent<Player>();
         if (rb != null) {
-            rb.velocity = new Vector2(rb.velocity.x, Mathf.Min(Mathf.Max(rb.velocity.y + skillForce, skillForce), skillForce + 2f));
+            rb.velocity = new Vector2(rb.velocity.x, skillForce);
+            lockedPlayerGravity = true;
+            playerCharachter.SetGravityLock(lockedPlayerGravity, 1);
         }
 
 
@@ -80,6 +83,14 @@ public class Shotgun : WeaponClass {
     }
 
     private void Update() {
+        Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
+
+        if (rb.velocity.y < 0 && lockedPlayerGravity) {
+            Player playerCharachter = player.GetComponent<Player>();
+            lockedPlayerGravity = false;
+            playerCharachter.SetGravityLock(lockedPlayerGravity, 3);
+        } 
+
         if (skillLockTimer > 0) {
             skillLockTimer -= Time.deltaTime;
         } else {

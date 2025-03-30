@@ -147,7 +147,7 @@ namespace Players {
 
         private IBehaviour behaviour;
         private StateMachine animationStateMachine;
-
+        internal bool lockGravity = false;
         public Vector3 Center => transform.position + new Vector3(0, 1, 0);
 
         public void Awake() {
@@ -200,7 +200,7 @@ namespace Players {
         }
 
         public void FixedUpdate() {
-            rb.gravityScale = held && rb.velocity.y > 0 ? 1 : MathUtils.Lerpish(rb.gravityScale, 3, Time.fixedDeltaTime * fallAccel);
+            if (!lockGravity) rb.gravityScale = held && rb.velocity.y > 0 ? 1 : MathUtils.Lerpish(rb.gravityScale, 3, Time.fixedDeltaTime * fallAccel);
             DoAttack();
             DoSkill();
             DoIntroSkill();
@@ -279,9 +279,12 @@ namespace Players {
 
         public float HorizontalVelocityOf(float x, float acceleration) {
             if (maximumLockout == 0) return MathUtils.Lerpish(rb.velocity.x, x, acceleration);
-
             var control = 1 - currentLockout / maximumLockout;
             return MathUtils.Lerpish(rb.velocity.x, x, control * acceleration);
+        }
+        public void SetGravityLock(bool lockGravity, float gravity) {
+            rb.gravityScale = gravity;
+            this.lockGravity = lockGravity;
         }
 
         internal bool IsPhoon() {
