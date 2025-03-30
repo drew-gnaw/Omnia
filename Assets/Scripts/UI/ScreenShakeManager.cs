@@ -25,6 +25,7 @@ public class ScreenShakeManager : PersistentSingleton<ScreenShakeManager> {
 
     public void Shake(float intensity = 1.0f, float duration = 0.5f) {
         if (!perlinNoise) return;
+        if (PauseMenu.ScreenShake)
         StartCoroutine(ShakeCoroutine(intensity, duration));
     }
 
