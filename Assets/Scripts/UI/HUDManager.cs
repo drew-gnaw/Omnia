@@ -49,6 +49,7 @@ namespace UI {
             WeaponClass.OnAmmoChanged += UpdateAmmo;
             Player.OnSkillCooldownUpdated += UpdateSkillCooldown;
             Player.OnBearEffectReady += UpdateBearEffect;
+            LevelManager.OnLevelLoaded += OnSceneChange;
         }
 
         private void OnDisable() {
@@ -58,6 +59,11 @@ namespace UI {
             WeaponClass.OnAmmoChanged -= UpdateAmmo;
             Player.OnSkillCooldownUpdated -= UpdateSkillCooldown;
             Player.OnBearEffectReady -= UpdateBearEffect;
+            LevelManager.OnLevelLoaded -= OnSceneChange;
+        }
+
+        public void OnSceneChange(LevelData level) {
+            FindPlayer();
         }
 
         private void UpdateHealth(int currentHealth) {
