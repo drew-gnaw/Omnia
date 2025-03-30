@@ -46,6 +46,7 @@ public class Shotgun : WeaponClass {
         skillLockTimer = skillLockDuration;
 
         SkillAndUltimateFire();
+        AudioManager.Instance.PlaySFX(AudioTracks.Scrapgun);
 
         Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
         Player playerCharachter = player.GetComponent<Player>();
