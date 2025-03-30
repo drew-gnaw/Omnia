@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7285355237660147787}
   - component: {fileID: 8855555113227699089}
+  - component: {fileID: 2043504567393240233}
   m_Layer: 31
   m_Name: PostProcessFX
   m_TagString: Untagged
@@ -49,3 +50,20 @@ MonoBehaviour:
   blendDistance: 0
   weight: 1
   priority: 0
+--- !u!114 &2043504567393240233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 541092851418386870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78d3a5416ebd44999b15579a8c8ca937, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  volume: {fileID: 8855555113227699089}
+  hpThreshold: 2
+  fadeSpeed: 1
+  hurtColor: {r: 0.7490196, g: 0.12941177, b: 0.2627451, a: 0}
+  hurtIntensity: 0.5
