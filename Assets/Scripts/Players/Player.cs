@@ -66,6 +66,7 @@ namespace Players {
         [SerializeField] internal float wallJumpLockoutTime;
         [SerializeField] internal float combatCooldown;
         [SerializeField] internal float skillCooldown;
+        [SerializeField] internal float introCooldown;
         [SerializeField] internal float flowDrainRate;
         [SerializeField] internal float hurtInvulnerabilityTime;
 
@@ -79,6 +80,7 @@ namespace Players {
         [SerializeField] internal bool held;
         [SerializeField] internal bool fire;
         [SerializeField] internal bool skill;
+        [SerializeField] internal bool intro;
         [SerializeField] internal bool grounded;
         [SerializeField] internal bool canRoll;
         [SerializeField] internal bool invulnerable;
@@ -92,6 +94,9 @@ namespace Players {
 
         // if this is false, disable swapping.
         [SerializeField] internal bool hasShotgun;
+
+        [SerializeField] public float critChance;
+        [SerializeField] public float critMultiplier;
 
         // disable user input if this is true.
         public static bool controlsLocked = false;
@@ -137,6 +142,7 @@ namespace Players {
         private CountdownTimer combatTimer;
         private CountdownTimer rollCooldownTimer;
         private CountdownTimer skillCooldownTimer;
+        private CountdownTimer introCooldownTimer;
         private CountdownTimer bearCooldownTimer;
 
         private IBehaviour behaviour;
@@ -158,6 +164,7 @@ namespace Players {
             combatTimer = new CountdownTimer(combatCooldown);
             rollCooldownTimer = new CountdownTimer(rollCooldown);
             skillCooldownTimer = new CountdownTimer(skillCooldown);
+            introCooldownTimer = new CountdownTimer(introCooldown);
             bearCooldownTimer = new CountdownTimer(TeddyBearBuff.cooldownTime);
 
             canRoll = true;
@@ -188,6 +195,7 @@ namespace Players {
             UpdateSkillCooldownTimer();
             UpdateBearCooldownTimer();
 
+
             currentHurtInvulnerability = Mathf.Max(0, currentHurtInvulnerability - Time.deltaTime);
         }
 
@@ -195,6 +203,7 @@ namespace Players {
             if (!lockGravity) rb.gravityScale = held && rb.velocity.y > 0 ? 1 : MathUtils.Lerpish(rb.gravityScale, 3, Time.fixedDeltaTime * fallAccel);
             DoAttack();
             DoSkill();
+            DoIntroSkill();
             behaviour?.OnTick();
             animationStateMachine.FixedUpdate();
         }
@@ -308,6 +317,18 @@ namespace Players {
             if (weapons[selectedWeapon].UseSkill()) skillCooldownTimer.Start();
         }
 
+        private void DoIntroSkill() {
+            if (!intro || introCooldownTimer.IsRunning) return;
+            intro = false;
+            introCooldownTimer.Start();
+            if (selectedWeapon == 0) {
+                DoSwap(1);
+            } else {
+                DoSwap(0);
+            }
+        }
+
+
         public void DoSwap(int targetWeapon) {
             if (!hasShotgun) return;
             if (selectedWeapon != targetWeapon) {
@@ -346,6 +367,7 @@ namespace Players {
 
         private void UpdateSkillCooldownTimer() {
             skillCooldownTimer.Tick(Time.deltaTime);
+            introCooldownTimer.Tick(Time.deltaTime);
         }
 
         private void UpdateBearCooldownTimer() {

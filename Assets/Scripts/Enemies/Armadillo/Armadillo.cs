@@ -48,6 +48,7 @@ namespace Enemies.Armadillo {
 
         public void Attack(Player it) {
             it.Hurt(attack, knockbackForce * new Vector2(facing.x * Mathf.Cos(knockbackAngle * Mathf.Deg2Rad), Mathf.Sin(knockbackAngle * Mathf.Deg2Rad)), 1);
+            AudioManager.Instance.PlaySFX(AudioTracks.ArmadilloAttack);
         }
 
         public bool IsReversing() {
