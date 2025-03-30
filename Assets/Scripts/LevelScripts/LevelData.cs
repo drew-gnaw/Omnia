@@ -285,7 +285,7 @@ public class Level_B_B : LevelData {
     public override string PlainName => "Boss Level";
     public override string SceneName => "W-B-B";
     public override LevelType Type => LevelType.Other;
-    public override LevelData NextLevel => Get<Level_B_E>();
+    public override LevelData NextLevel => Get<Level_Credits>();
     public override LevelData PrevLevel => Get<Level_B_3>();
 }
 
