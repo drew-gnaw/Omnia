@@ -285,6 +285,22 @@ public class Level_B_B : LevelData {
     public override string PlainName => "Boss Level";
     public override string SceneName => "W-B-B";
     public override LevelType Type => LevelType.Other;
-    public override LevelData NextLevel => Get<Level_B_B>();
-    public override LevelData PrevLevel => Get<Level_B_1>();
+    public override LevelData NextLevel => Get<Level_B_E>();
+    public override LevelData PrevLevel => Get<Level_B_3>();
+}
+
+public class Level_B_E : LevelData {
+    public override string PlainName => "Epilogue";
+    public override string SceneName => "W-B-E";
+    public override LevelType Type => LevelType.Other;
+    public override LevelData NextLevel => Get<Level_Credits>();
+    public override LevelData PrevLevel => Get<Level_B_B>();
+}
+
+public class Level_Credits : LevelData {
+    public override string PlainName => "Credits";
+    public override string SceneName => "Credits";
+    public override LevelType Type => LevelType.Other;
+    public override LevelData NextLevel => Get<Title>();
+    public override LevelData PrevLevel => Get<Level_B_E>();
 }
