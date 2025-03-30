@@ -742,6 +742,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1648064886294425958, guid: af1cf079e4c170f488475888faae911d, type: 3}
   m_PrefabInstance: {fileID: 476569343}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &487705274 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9182929038880738119, guid: af1cf079e4c170f488475888faae911d, type: 3}
+  m_PrefabInstance: {fileID: 476569343}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5d9d8642862c7a4f829618c31d14a44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &559942477
 GameObject:
   m_ObjectHideFlags: 0
@@ -970,6 +981,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: 8010525fd1ae64b5da9fbb7f78c88f35, type: 3}
     - target: {fileID: 1857542085962422805, guid: edd20cb531303ea4c84e1b2abdc716a8, type: 3}
+      propertyPath: deactivatedTank
+      value: 
+      objectReference: {fileID: 21300000, guid: 8010525fd1ae64b5da9fbb7f78c88f35, type: 3}
+    - target: {fileID: 1857542085962422805, guid: edd20cb531303ea4c84e1b2abdc716a8, type: 3}
       propertyPath: lever.underlyingValue
       value: 
       objectReference: {fileID: 1239010244}
@@ -983,6 +998,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 170241542300584584, guid: edd20cb531303ea4c84e1b2abdc716a8, type: 3}
   m_PrefabInstance: {fileID: 769186532}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &769186535 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1857542085962422805, guid: edd20cb531303ea4c84e1b2abdc716a8, type: 3}
+  m_PrefabInstance: {fileID: 769186532}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5d9d8642862c7a4f829618c31d14a44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &840576400 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4751600449346173604, guid: f86acd3388944ae46bb845d9dd6e7441, type: 3}
@@ -1615,6 +1641,10 @@ MonoBehaviour:
   dinky: {fileID: 1311102229}
   tankDinky: {fileID: 1486306423}
   boss: {fileID: 144176347}
+  sundewTank: {fileID: 2088289538}
+  crabTank: {fileID: 487705274}
+  birdTank: {fileID: 769186535}
+  armadilloTankk: {fileID: 1920284103}
   beginDialogue: {fileID: 11400000, guid: d4ca1683618a402489a333eb53c06286, type: 2}
   dinkyThrownDialogue: {fileID: 11400000, guid: e7bbe75dcda4a3e44b309e540d439e4f, type: 2}
   dinkyHurtDialogue: {fileID: 11400000, guid: 82860ae8fd6ea4a439903a514bfa2310, type: 2}
@@ -11402,6 +11432,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1912517100}
   m_CullTransparentMesh: 1
+--- !u!114 &1920284103 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3453286698871021146, guid: 8ab4758314f9f98468ef1d9717f5c6fa, type: 3}
+  m_PrefabInstance: {fileID: 246589340}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5d9d8642862c7a4f829618c31d14a44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1936517262
 GameObject:
   m_ObjectHideFlags: 0
@@ -11561,6 +11602,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 46697037cc144cbdb2b4e901be9aa2ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2088289538 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5366135700262557147, guid: 5bec4eb5e24d2ab488905b58c462a686, type: 3}
+  m_PrefabInstance: {fileID: 226575518}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5d9d8642862c7a4f829618c31d14a44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2127775287

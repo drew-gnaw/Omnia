@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using Players;
 using Players.Mixin;
 using UnityEngine;
@@ -10,6 +11,11 @@ namespace Scenes.World5 {
         [SerializeField] private GameObject tankDinky;
         [SerializeField] private GameObject boss;
 
+        [SerializeField] Tank sundewTank;
+        [SerializeField] Tank crabTank;
+        [SerializeField] Tank birdTank;
+        [SerializeField] Tank armadilloTankk;
+
         [SerializeField] DialogueWrapper beginDialogue;
         [SerializeField] DialogueWrapper dinkyThrownDialogue;
         [SerializeField] DialogueWrapper dinkyHurtDialogue;
@@ -19,7 +25,10 @@ namespace Scenes.World5 {
         }
 
         private IEnumerator BeginSequence() {
-            yield return new WaitForSeconds(0.2f);
+            List<Tank> tanks = new() {sundewTank,crabTank,armadilloTankk,birdTank };
+            tanks.ForEach(t => t.TurnOff());
+
+            yield return new WaitForSeconds(2f);
             yield return StartCoroutine(DialogueManager.Instance.StartDialogue(beginDialogue.Dialogue));
 
             yield return new WaitForSeconds(1f);
@@ -41,6 +50,9 @@ namespace Scenes.World5 {
 
             tankDinky.AddComponent<Rigidbody2D>();
 
+
+            tanks.ForEach(t => t.FadeOn());
+
             yield return new WaitForSeconds(2f);
 
             yield return StartCoroutine(DialogueManager.Instance.StartDialogue(dinkyThrownDialogue.Dialogue));
@@ -55,7 +67,11 @@ namespace Scenes.World5 {
 
             AudioManager.Instance.PlaySFX(AudioTracks.DinkyScream);
 
-            yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(0.75f);
+
+            tanks.ForEach(t => t.Deactivate());
+
+            yield return new WaitForSeconds(0.75f);
 
             StartCoroutine(BlareAlarm());
 

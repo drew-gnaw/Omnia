@@ -287,6 +287,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8420006892261697528, guid: a08762acbb5604c4597b58b4cb080193, type: 3}
   m_PrefabInstance: {fileID: 86453567}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &86453569 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1302209793040489479, guid: a08762acbb5604c4597b58b4cb080193, type: 3}
+  m_PrefabInstance: {fileID: 86453567}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e55e57bd3ef491642ace43c22249a5a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &144176347
 GameObject:
   m_ObjectHideFlags: 0
@@ -1449,6 +1460,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8420006892261697528, guid: a08762acbb5604c4597b58b4cb080193, type: 3}
   m_PrefabInstance: {fileID: 1239010242}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1239010244 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1302209793040489479, guid: a08762acbb5604c4597b58b4cb080193, type: 3}
+  m_PrefabInstance: {fileID: 1239010242}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e55e57bd3ef491642ace43c22249a5a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1320361155
 GameObject:
   m_ObjectHideFlags: 0
@@ -10614,6 +10636,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8420006892261697528, guid: a08762acbb5604c4597b58b4cb080193, type: 3}
   m_PrefabInstance: {fileID: 1573132187}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1573132189 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1302209793040489479, guid: a08762acbb5604c4597b58b4cb080193, type: 3}
+  m_PrefabInstance: {fileID: 1573132187}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e55e57bd3ef491642ace43c22249a5a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1576258087 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6579575483584205291, guid: 1c66e812644d07b4ca8f5d0ae6b741f9, type: 3}
@@ -11331,7 +11364,7 @@ PrefabInstance:
     - target: {fileID: 9182929038880738119, guid: af1cf079e4c170f488475888faae911d, type: 3}
       propertyPath: lever.underlyingValue
       value: 
-      objectReference: {fileID: 879357680}
+      objectReference: {fileID: 1573132189}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -11352,7 +11385,7 @@ PrefabInstance:
     - target: {fileID: 5366135700262557147, guid: 5bec4eb5e24d2ab488905b58c462a686, type: 3}
       propertyPath: lever.underlyingValue
       value: 
-      objectReference: {fileID: 879357680}
+      objectReference: {fileID: 86453569}
     - target: {fileID: 6025163856348772007, guid: 5bec4eb5e24d2ab488905b58c462a686, type: 3}
       propertyPath: m_LocalPosition.x
       value: -8.56
@@ -11453,7 +11486,7 @@ PrefabInstance:
     - target: {fileID: 1857542085962422805, guid: edd20cb531303ea4c84e1b2abdc716a8, type: 3}
       propertyPath: lever.underlyingValue
       value: 
-      objectReference: {fileID: 879357680}
+      objectReference: {fileID: 1239010244}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

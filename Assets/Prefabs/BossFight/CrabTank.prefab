@@ -274,6 +274,90 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1648064886294425958}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6371845150730211585
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4023928169585631414}
+  - component: {fileID: 1131052236383719210}
+  m_Layer: 0
+  m_Name: CrossFadeHelper
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4023928169585631414
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6371845150730211585}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1648064886294425958}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &1131052236383719210
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6371845150730211585}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: -2
+  m_Sprite: {fileID: 21300000, guid: 6396739ccde63514a8ebc1b8bc6d28d3, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 2, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &8237899566213341212
 GameObject:
   m_ObjectHideFlags: 0
@@ -286,6 +370,7 @@ GameObject:
   - component: {fileID: 2871095172766303358}
   - component: {fileID: 9182929038880738119}
   - component: {fileID: 2795398878649815083}
+  - component: {fileID: 4432684842292439468}
   m_Layer: 0
   m_Name: CrabTank
   m_TagString: Untagged
@@ -306,6 +391,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 4023928169585631414}
   - {fileID: 5956347904743216185}
   - {fileID: 5783339406785294915}
   - {fileID: 3897996515017247245}
@@ -385,6 +471,8 @@ MonoBehaviour:
   crackedDeactivatedTank: {fileID: 21300000, guid: f827182fb643a9549ac8352e0a7dd209, type: 3}
   containedSpecimen: {fileID: 8074392888861573570}
   transparentOverlay: {fileID: 4712737224021043686}
+  crossFadeRenderer: {fileID: 1131052236383719210}
+  crossFade: {fileID: 4432684842292439468}
   spriteRenderer: {fileID: 2871095172766303358}
   lever:
     underlyingValue: {fileID: 0}
@@ -421,6 +509,18 @@ MonoBehaviour:
   spawnCoolDown: 7
   spawn: {fileID: 0}
   explosion: {fileID: 6478827744998899019, guid: 04c9aaf5dc93f4702a16459970fc5fec, type: 3}
+--- !u!114 &4432684842292439468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8237899566213341212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62499c3719a8a1e4f986779a52bff82e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8442073450999965056
 GameObject:
   m_ObjectHideFlags: 0
