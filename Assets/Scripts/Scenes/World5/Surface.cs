@@ -17,7 +17,7 @@ namespace Scenes.World5 {
         [SerializeField] private TextMeshPro dinkyTextBox;
 
         public void Start() {
-            HUDManager.Instance.gameObject.SetActive(false);
+            DisablePersistentSingletons.DisableHUD();
             StartCoroutine(StartSequence());
         }
 
