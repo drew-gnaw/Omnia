@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BobbingBehaviour : MonoBehaviour {
-    private readonly float cycleScaling = 2f; // Higher the number, the faster one phase is 
+    private readonly float cycleScalingBase = 2f; // Higher the number, the faster one phase is 
     private readonly float bobbingAmount = 0.1f; //Amplitude
+    private float cycleScaling; // Higher the number, the faster one phase is 
     private float timer = 0;
     private float verticalOffset = 0;
     public bool ShouldBob { get; set; } = true;
+    private void Start() {
+        cycleScaling = cycleScalingBase + Random.Range(-0.5f, 0.5f);
+    }
     private void Update() {
         if (ShouldBob) Bob();
     }

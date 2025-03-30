@@ -11,7 +11,10 @@ public class Tank : MonoBehaviour {
     [SerializeField] private Sprite crackedTank;
     [SerializeField] private Sprite normalTank;
     [SerializeField] private Sprite brokenTank;
+    [SerializeField] private Sprite deactivatedTank;
     [SerializeField] private Sprite crackedDeactivatedTank;
+    [SerializeField] private SpriteRenderer containedSpecimen;
+    [SerializeField] private SpriteRenderer transparentOverlay;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private InterfaceReference<IProgress> lever;
     [SerializeField] private Spawnball spawnball;
@@ -134,6 +137,7 @@ public class Tank : MonoBehaviour {
 
     private IEnumerator CrossFade(Sprite sprite) {
         spriteRenderer.sprite = sprite;
+        transparentOverlay.sprite = sprite;
         //TODO make pretty
         yield return null;
     }
