@@ -1,3 +1,5 @@
+using System.Collections;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace Utils {
@@ -77,6 +79,46 @@ namespace Utils {
             fadeActive = false;
         }
 
+    }
+
+}
+
+public static class FadeHelpers {
+    //Fade Background that gives you more control over the level of fade
+    public static IEnumerator FadeSpriteRendererColor(SpriteRenderer fadeScreen, float startValue, float endValue, float duration) {
+
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration) {
+            elapsedTime += Time.deltaTime;
+            float t = elapsedTime / duration;
+
+            // Use an ease-out function to slow the fade at the end
+            float easedT = 1f - Mathf.Pow(1f - t, 3f); // Cubic ease-out
+
+            float newColor = Mathf.Lerp(startValue, endValue, easedT);
+            fadeScreen.color = new Color(newColor, newColor, newColor, fadeScreen.color.a);
+
+            yield return null;
+        }
+    }
+
+    public static IEnumerator FadeSpriteRenderer(SpriteRenderer fadeScreen, float startAlpha, float endAlpha, float duration) {
+
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration) {
+            elapsedTime += Time.deltaTime;
+            float t = elapsedTime / duration;
+
+            // Use an ease-out function to slow the fade at the end
+            float easedT = 1f - Mathf.Pow(1f - t, 3f); // Cubic ease-out
+
+            float newAlpha = Mathf.Lerp(startAlpha, endAlpha, easedT);
+            fadeScreen.color = new Color(fadeScreen.color.r, fadeScreen.color.g, fadeScreen.color.b, newAlpha);
+
+            yield return null;
+        }
     }
 
 }

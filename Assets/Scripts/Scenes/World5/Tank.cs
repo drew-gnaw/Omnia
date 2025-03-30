@@ -63,6 +63,7 @@ public class Tank : MonoBehaviour {
         Shake(3, 1f);
         PerformTransition(TankState.Broken);
         spawner.IsActive = false;
+        containedSpecimen.gameObject.SetActive(false);
         KillAllChildren();
     }
 

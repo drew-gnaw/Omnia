@@ -8,9 +8,10 @@ public class BobbingBehaviour : MonoBehaviour {
     private float cycleScaling; // Higher the number, the faster one phase is 
     private float timer = 0;
     private float verticalOffset = 0;
+    [SerializeField] private bool shouldHaveRandomOffset = true;
     public bool ShouldBob { get; set; } = true;
     private void Start() {
-        cycleScaling = cycleScalingBase + Random.Range(-0.5f, 0.5f);
+           cycleScaling = cycleScalingBase + (shouldHaveRandomOffset ? Random.Range(-0.5f, 0.5f) : 0);
     }
     private void Update() {
         if (ShouldBob) Bob();

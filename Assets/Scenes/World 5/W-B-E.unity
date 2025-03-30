@@ -134,6 +134,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Uncle
       objectReference: {fileID: 0}
+    - target: {fileID: 4051882839811083441, guid: f86acd3388944ae46bb845d9dd6e7441, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4751600449346173604, guid: f86acd3388944ae46bb845d9dd6e7441, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.11
@@ -1016,6 +1020,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18c7688c4a923554b9cec7feff3455bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shouldHaveRandomOffset: 1
 --- !u!1001 &879357678
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2503,13 +2508,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c65cd5b37244bb29e8e9908963db5a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jamie: {fileID: 0}
   dinky: {fileID: 0}
-  tankDinky: {fileID: 0}
   boss: {fileID: 144176347}
+  bossAnimator: {fileID: 0}
   beginDialogue: {fileID: 0}
-  dinkyThrownDialogue: {fileID: 0}
-  dinkyHurtDialogue: {fileID: 0}
 --- !u!1 &1450624967
 GameObject:
   m_ObjectHideFlags: 0
