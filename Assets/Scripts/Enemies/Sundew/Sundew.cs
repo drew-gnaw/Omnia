@@ -37,6 +37,7 @@ namespace Enemies.Sundew {
             var step = count == 1 ? 0 : projectileAngle / (count - 1);
             var initial = projectileAngle / 2;
             for (var a = initial * -1; a <= initial; a += step) FireProjectile(Quaternion.Euler(0, 0, a) * Vector2.up);
+            AudioManager.Instance.PlaySFX(AudioTracks.PlantShoot);
         }
 
         private void FireProjectile(Vector2 direction) {

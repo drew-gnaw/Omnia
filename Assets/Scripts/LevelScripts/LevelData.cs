@@ -252,14 +252,39 @@ public class Level_4_S : LevelData {
     public override string PlainName => "Level 4-S";
     public override string SceneName => "W-4-S";
     public override LevelType Type => LevelType.Secret;
-    public override LevelData NextLevel => Get<Level_B_B>();
+    public override LevelData NextLevel => Get<Level_B_1>();
     public override LevelData PrevLevel => Get<Level_4_B>();
 }
+
+public class Level_B_1 : LevelData {
+    public override string PlainName => "Level B-1";
+    public override string SceneName => "W-B-1";
+    public override LevelType Type => LevelType.Other;
+    public override LevelData NextLevel => Get<Level_B_2>();
+    public override LevelData PrevLevel => Get<Level_4_B>();
+}
+
+public class Level_B_2 : LevelData {
+    public override string PlainName => "Level B-2";
+    public override string SceneName => "W-B-2";
+    public override LevelType Type => LevelType.Other;
+    public override LevelData NextLevel => Get<Level_B_3>();
+    public override LevelData PrevLevel => Get<Level_B_1>();
+}
+
+public class Level_B_3 : LevelData {
+    public override string PlainName => "Level B-3";
+    public override string SceneName => "W-B-3";
+    public override LevelType Type => LevelType.Other;
+    public override LevelData NextLevel => Get<Level_B_B>();
+    public override LevelData PrevLevel => Get<Level_B_2>();
+}
+
 
 public class Level_B_B : LevelData {
     public override string PlainName => "Boss Level";
     public override string SceneName => "W-B-B";
     public override LevelType Type => LevelType.Other;
     public override LevelData NextLevel => Get<Level_B_B>();
-    public override LevelData PrevLevel => Get<Level_4_S>();
+    public override LevelData PrevLevel => Get<Level_B_1>();
 }

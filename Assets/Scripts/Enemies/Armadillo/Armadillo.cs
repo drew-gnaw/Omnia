@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Enemies.Armadillo.Animation;
 using Enemies.Armadillo.Behaviour;
@@ -29,8 +30,10 @@ namespace Enemies.Armadillo {
 
         [SerializeField] internal GameObject deathExplosion;
 
+#nullable enable
+        internal Player? aggrodPlayer;
         public void Awake() {
-            UseBehaviour(new Idle(this));
+            UseBehaviour(new Move(this));
         }
 
         public override void Update() {
@@ -45,6 +48,7 @@ namespace Enemies.Armadillo {
 
         public void Attack(Player it) {
             it.Hurt(attack, knockbackForce * new Vector2(facing.x * Mathf.Cos(knockbackAngle * Mathf.Deg2Rad), Mathf.Sin(knockbackAngle * Mathf.Deg2Rad)), 1);
+            AudioManager.Instance.PlaySFX(AudioTracks.ArmadilloAttack);
         }
 
         public bool IsReversing() {
@@ -54,7 +58,34 @@ namespace Enemies.Armadillo {
             return (facing.x > 0 && l && !r) || (facing.x < 0 && !l && r);
         }
 
-        public bool IsTargetDetected() => Sweep(rb.worldCenterOfMass, facing, 45, detectionRange, 5, ground | player).Any(hit => IsOnLayer(hit, player));
+        public override void Hurt(float damage, bool stagger = true, bool crit = false) {
+            base.Hurt(damage, stagger, crit);
+            if (behaviour is Move)
+                FaceAggrodPlayer();
+        }
+        public void FaceAggrodPlayer() {
+            if (aggrodPlayer != null) {
+                facing = new Vector2(
+                    (aggrodPlayer.transform.position - transform.position).x >= 0 ? 1 : -1
+                    , 0
+                    );
+            }
+        }
+
+        public bool IsTargetDetected() {
+            List<RaycastHit2D> sweptCast = new (Sweep(rb.worldCenterOfMass, facing, 45, detectionRange, 5, player));
+            RaycastHit2D sweepPlayer = sweptCast.Find(hit => IsOnLayer(hit, player));
+
+            if (sweepPlayer) {
+                var playerComponent = sweepPlayer.collider.GetComponent<Player>();
+                if (playerComponent != null) {
+                    aggrodPlayer = playerComponent;
+                    return true;
+                }
+            }
+
+            return false;
+        }
 
         protected override void UseAnimation(StateMachine stateMachine) {
             var idleAnim = new IdleAnimation(animator);

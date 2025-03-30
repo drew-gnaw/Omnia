@@ -26,10 +26,7 @@ namespace Enemies.Crab {
 
         [SerializeField] internal GameObject deathExplosion;
 
-        bool HiddenEnemy.hidden {
-            get => behaviour is Idle or Hide;
-            set { }
-        }
+        bool HiddenEnemy.hidden => behaviour is Idle or Hide;
 
         public void Awake() {
             targetInstance ??= FindObjectsOfType<Player>().FirstOrDefault();
@@ -46,9 +43,15 @@ namespace Enemies.Crab {
             Instantiate(deathExplosion, rb.worldCenterOfMass, Quaternion.identity);
         }
 
+        public override void Hurt(float damage, bool stagger = true, bool crit = false) {
+            if (((HiddenEnemy)this).hidden) return;
+            base.Hurt(damage, stagger, crit);
+        }
+
         public void Attack(Player it) {
             var side = sprite.flipX ? -1 : 1;
             it.Hurt(attack, knockbackForce * new Vector2(side * Mathf.Cos(knockbackAngle * Mathf.Deg2Rad), Mathf.Sin(knockbackAngle * Mathf.Deg2Rad)), 1);
+            AudioManager.Instance.PlaySFX(AudioTracks.CrabHurt);
         }
 
         public void SetLayer(LayerMask layer) {

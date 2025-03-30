@@ -379,8 +379,8 @@ PolygonCollider2D:
     m_Paths:
     - - {x: 11.279337, y: 6.5590897}
       - {x: -19.30621, y: 6.4684997}
-      - {x: -19.241322, y: -5.8337593}
-      - {x: 11.476264, y: -5.815551}
+      - {x: -19.288256, y: -4.9420114}
+      - {x: 11.382398, y: -4.923804}
   m_UseDelaunayMesh: 0
 --- !u!4 &207238042
 Transform:
@@ -618,6 +618,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 970156644}
     m_Modifications:
+    - target: {fileID: 1016169061012764450, guid: a0a8f7069068e40faa87eaf58c7b7cda, type: 3}
+      propertyPath: skillForce
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 1129889265447086856, guid: a0a8f7069068e40faa87eaf58c7b7cda, type: 3}
       propertyPath: semisolidCollider
       value: 
@@ -3814,11 +3818,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4774809283147415622, guid: 60c329ee0656c824e8e9c92cb57b8930, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -5.3524384
+      value: -5.350871
       objectReference: {fileID: 0}
     - target: {fileID: 4774809283147415622, guid: 60c329ee0656c824e8e9c92cb57b8930, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.3767786
+      value: 3.3767805
       objectReference: {fileID: 0}
     - target: {fileID: 4774809283147415622, guid: 60c329ee0656c824e8e9c92cb57b8930, type: 3}
       propertyPath: m_LocalPosition.z

@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46708f3e568b40a49a78cf2f4c56d827, type: 3}
+  m_Name: Pickaxe
+  m_EditorClassIdentifier: 
+  icon: {fileID: 21300000, guid: 0f5fbbf0943571f44bd079a98e0b36ed, type: 3}
+  trinketName: Pickaxe
+  description: "Increases the damage of your critical strikes.\n\nYou know what they
+    say\u2013don\u2019t mine at night.\n"
+  buffPrefab: {fileID: -1031304580847844764, guid: 1cc51d3635fe3eb4bb56187a6da51ada, type: 3}

@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Enemies.Dummy;
+using NPC.Dinky;
 using UI;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -9,46 +11,36 @@ using Utils;
 namespace Scenes {
     public class Tutorial : MonoBehaviour {
         [SerializeField] private Dinky dinky;
-        [SerializeField] private GameObject dummy1Obj;
-        [SerializeField] private GameObject dummy2Obj;
-        [SerializeField] private GameObject dummy3Obj;
-
         [SerializeField] private ColliderEventBroadcaster dummyAirCheck;
-
         [SerializeField] private Transform dinkyAppearTransform;
 
         [SerializeField] private DialogueWrapper beginDialogue;
-        [SerializeField] private DialogueWrapper thirdDummyDialogue;
+        [SerializeField] private DialogueWrapper platformDummyDialogue;
         [SerializeField] private DialogueWrapper pullToDummyDialogue;
         [SerializeField] private DialogueWrapper dinkyScaredDialogue;
         [SerializeField] private DialogueWrapper dinkyGoneDialogue;
 
-        private Dummy dummy1;
-        private Dummy dummy2;
-        private Dummy dummy3;
+        [SerializeField] private Dummy dummy1;
+        [SerializeField] private Dummy dummy2;
+        [SerializeField] private Dummy dummy3;
+        [SerializeField] private Dummy dummy4;
+        [SerializeField] private Dummy dummy5;
 
         private int dummiesHit = 0;
-        private bool beginDialogueTriggered = false;
-        private bool thirdDialogueTriggered = false;
-        private bool pullToDummyDialogueTriggered = false;
 
         private void Start() {
-            dummy1 = dummy1Obj.GetComponent<Dummy>();
-            dummy2 = dummy2Obj.GetComponent<Dummy>();
-            dummy3 = dummy3Obj.GetComponent<Dummy>();
-
-            dummy1.OnHurt += HandleDummy1Hurt;
-            dummy2.OnHurt += HandleDummy2Hurt;
-            dummy3.OnHurt += HandleDummy3Hurt;
-
-            dummyAirCheck.OnEnter += HandleHitAirDummy;
+            List<Dummy> dummies = new() { dummy1, dummy2, dummy3, dummy4, dummy5 };
+            foreach (var dummy in dummies) {
+                if (dummy == null) {
+                    Debug.LogWarning("A dummy is null, please check that they are non null");
+                    return;
+                }
+                dummy.canBeHurt = false;
+            }
 
             StartCoroutine(BeginSequence());
 
             if (dinky == null) Debug.LogError("Dinky is not assigned!");
-            if (dummy1Obj == null) Debug.LogError("Dummy1 object is not assigned!");
-            if (dummy2Obj == null) Debug.LogError("Dummy2 object is not assigned!");
-            if (dummy3Obj == null) Debug.LogError("Dummy3 object is not assigned!");
             if (dummyAirCheck == null) Debug.LogError("Dummy Air Check is not assigned!");
             if (dinkyAppearTransform == null) Debug.LogError("Dinky Appear Transform is not assigned!");
             if (beginDialogue == null) Debug.LogError("Begin Dialogue is not assigned!");
@@ -64,74 +56,55 @@ namespace Scenes {
             dinky.Appear(dinkyAppearTransform);
             yield return new WaitForSeconds(1.5f);
             yield return StartCoroutine(DialogueManager.Instance.StartDialogue(beginDialogue.Dialogue));
-            beginDialogueTriggered = true;
 
-            Rigidbody2D rb = dinky.AddComponent<Rigidbody2D>();
+            RegisterDummyHurt(dummy1);
+            RegisterDummyHurt(dummy2);
+            yield return new WaitUntil(() => dummiesHit == 2);
 
-            rb.gravityScale = 1f;
-
-            float horizontalForce = UnityEngine.Random.Range(1.5f, 3f);
-            rb.velocity = new Vector2(horizontalForce, 15);
-
-            float spinForce = UnityEngine.Random.Range(250f, 400f) * (UnityEngine.Random.value > 0.5f ? 1 : -1);
-            rb.angularVelocity = spinForce;
-
-            HighlightManager.Instance.HighlightGameObject(dummy1Obj);
-            HighlightManager.Instance.HighlightGameObject(dummy2Obj);
+            StartCoroutine(PlatformDummySequence());
         }
 
-        private void HandleDummy1Hurt() {
-            if (!beginDialogueTriggered) return;
-            dummy1.OnHurt -= HandleDummy1Hurt;
-            HighlightManager.Instance.UnhighlightGameObject(dummy1Obj);
+        private void RegisterDummyHurt(Dummy dummy) {
+            dummy.OnHurt += HandleDummyHurt;
+            dummy.canBeHurt = true;
+            HighlightManager.Instance.HighlightGameObject(dummy.gameObject);
+        }
+
+        private void HandleDummyHurt(Dummy dummy) {
+            dummy.OnHurt -= HandleDummyHurt;
+            HighlightManager.Instance.UnhighlightGameObject(dummy.gameObject);
             dummiesHit++;
-            if (dummiesHit >= 2 && !thirdDialogueTriggered) {
-                thirdDialogueTriggered = true;
-                StartCoroutine(ThirdDummySequence());
-            }
         }
 
-        private void HandleDummy2Hurt() {
-            if (!beginDialogueTriggered) return;
-            dummy1.OnHurt -= HandleDummy2Hurt;
-            HighlightManager.Instance.UnhighlightGameObject(dummy2Obj);
-            dummiesHit++;
-            if (dummiesHit >= 2 && !thirdDialogueTriggered) {
-                thirdDialogueTriggered = true;
-                StartCoroutine(ThirdDummySequence());
-            }
-        }
-
-        private IEnumerator ThirdDummySequence() {
+        private IEnumerator PlatformDummySequence() {
             yield return new WaitForSeconds(0.5f);
-            yield return StartCoroutine(DialogueManager.Instance.StartDialogue(thirdDummyDialogue.Dialogue));
+            yield return StartCoroutine(DialogueManager.Instance.StartDialogue(platformDummyDialogue.Dialogue));
 
-            HighlightManager.Instance.HighlightGameObject(dummy3Obj);
-        }
+            RegisterDummyHurt(dummy4);
+            RegisterDummyHurt(dummy5);
+            yield return new WaitUntil(() => dummiesHit == 4);
 
-        private void HandleDummy3Hurt() {
-            if (!thirdDialogueTriggered) return;
-            dummy3.OnHurt -= HandleDummy3Hurt;
+            RegisterDummyHurt(dummy3);
+            yield return new WaitUntil(() => dummiesHit == 5);
+
             StartCoroutine(PullToDummySequence());
-
         }
 
         private IEnumerator PullToDummySequence() {
+            yield return new WaitForSeconds(1.5f);
             yield return StartCoroutine(DialogueManager.Instance.StartDialogue(pullToDummyDialogue.Dialogue));
-            pullToDummyDialogueTriggered = true;
+            dummyAirCheck.OnEnter += HandleHitAirDummy;
         }
 
         private void HandleHitAirDummy() {
-            if (!pullToDummyDialogueTriggered) return;
             dummyAirCheck.OnEnter -= HandleHitAirDummy;
             StartCoroutine(BeginDummyFallSequence());
         }
 
         private IEnumerator BeginDummyFallSequence() {
-            HighlightManager.Instance.UnhighlightGameObject(dummy3Obj);
-            Rigidbody2D rb = dummy3Obj.GetComponent<Rigidbody2D>();
+            Rigidbody2D rb = dummy3.GetComponent<Rigidbody2D>();
             if (rb == null) {
-                rb = dummy3Obj.AddComponent<Rigidbody2D>();
+                rb = dummy3.AddComponent<Rigidbody2D>();
             }
 
             rb.gravityScale = 1f;
@@ -152,6 +125,8 @@ namespace Scenes {
             yield return StartCoroutine(DialogueManager.Instance.StartDialogue(dinkyScaredDialogue.Dialogue));
 
             yield return new WaitForSeconds(0.3f);
+            dinky.Walk(15.5f, 7f);
+            yield return new WaitForSeconds(15.5f / 7f + 0.2f);
             dinky.Disappear();
             yield return new WaitForSeconds(1f);
 

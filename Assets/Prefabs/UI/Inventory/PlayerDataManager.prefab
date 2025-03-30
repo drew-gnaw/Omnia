@@ -46,7 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   root: 1
   persistent: 1
-  devMode: 0
+  devMode: 1
   trinkets:
   - {fileID: 11400000, guid: f19582b28bc5310428d19a660d5bac34, type: 2}
   - {fileID: 11400000, guid: bc7555ce5434fcf45b715cc15939d61c, type: 2}
@@ -54,4 +54,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4e04fdf9775206a41b3c065fb173ed7d, type: 2}
   - {fileID: 11400000, guid: dc89736ea00d54c47b64fa703f0b6219, type: 2}
   - {fileID: 11400000, guid: 07feebf6689d4814d8c55a3d9bb9cf1c, type: 2}
+  - {fileID: 11400000, guid: db59f4ce605d12448a6e7f1aca83ad75, type: 2}
+  - {fileID: 11400000, guid: e649e93f2ff6a964792b995460c55d31, type: 2}
+  - {fileID: 11400000, guid: ece06702ad114bd47b9d6fe9921da9d7, type: 2}
+  - {fileID: 11400000, guid: 975a2173f63607f4d9baa546423fe1b5, type: 2}
   playerSelectedWeapon: 0

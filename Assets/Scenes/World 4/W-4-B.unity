@@ -8454,11 +8454,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4774809283147415622, guid: 60c329ee0656c824e8e9c92cb57b8930, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -17.850866
+      value: -17.854288
       objectReference: {fileID: 0}
     - target: {fileID: 4774809283147415622, guid: 60c329ee0656c824e8e9c92cb57b8930, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.2433856
+      value: 3.2433195
       objectReference: {fileID: 0}
     - target: {fileID: 4774809283147415622, guid: 60c329ee0656c824e8e9c92cb57b8930, type: 3}
       propertyPath: m_LocalPosition.z
@@ -10147,6 +10147,14 @@ PrefabInstance:
     - target: {fileID: 6534368713585511763, guid: 8ab7355aba26040daac6163bb86d6b95, type: 3}
       propertyPath: m_Name
       value: EliteSundew Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 7059180037266601265, guid: 8ab7355aba26040daac6163bb86d6b95, type: 3}
+      propertyPath: currentHealth
+      value: 250
+      objectReference: {fileID: 0}
+    - target: {fileID: 7059180037266601265, guid: 8ab7355aba26040daac6163bb86d6b95, type: 3}
+      propertyPath: maximumHealth
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 8654433778987696909, guid: 8ab7355aba26040daac6163bb86d6b95, type: 3}
       propertyPath: m_GravityScale
