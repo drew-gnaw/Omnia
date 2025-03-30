@@ -83,7 +83,7 @@ namespace Scenes {
         }
 
         private void Update() {
-            if (canPressE && Input.GetKeyDown(KeyCode.E)) {
+            if (canPressE && (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKeyDown(KeyCode.Space))) {
                 canPressE = false;
                 switch (progress) {
                     case 0:
