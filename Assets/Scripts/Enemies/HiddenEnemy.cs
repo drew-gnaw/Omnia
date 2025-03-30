@@ -5,7 +5,6 @@ namespace Enemies
         public bool hidden
         {
             get;
-            protected set;
         }
     }
 }
