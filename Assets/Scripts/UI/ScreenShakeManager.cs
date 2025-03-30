@@ -8,7 +8,7 @@ public class ScreenShakeManager : PersistentSingleton<ScreenShakeManager> {
     private CinemachineBasicMultiChannelPerlin perlinNoise;
 
     protected override void OnAwake() {
-        perlinNoise = FindObjectOfType<CinemachineVirtualCamera>().GetComponentInChildren<CinemachineBasicMultiChannelPerlin>();
+        perlinNoise = FindObjectOfType<CinemachineVirtualCamera>()?.GetComponentInChildren<CinemachineBasicMultiChannelPerlin>();
     }
 
     private void OnEnable() {
@@ -20,7 +20,7 @@ public class ScreenShakeManager : PersistentSingleton<ScreenShakeManager> {
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
-        perlinNoise = FindObjectOfType<CinemachineVirtualCamera>().GetComponentInChildren<CinemachineBasicMultiChannelPerlin>();
+        perlinNoise = FindObjectOfType<CinemachineVirtualCamera>()?.GetComponentInChildren<CinemachineBasicMultiChannelPerlin>();
     }
 
     public void Shake(float intensity = 1.0f, float duration = 0.5f) {

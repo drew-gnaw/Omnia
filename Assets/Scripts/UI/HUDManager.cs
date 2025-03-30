@@ -237,7 +237,7 @@ namespace UI {
             if (playerObj != null) {
                 _p = playerObj.GetComponent<Player>();
             } else {
-                Debug.LogError("HUDManager: No GameObject with tag 'Player' found!");
+                Debug.LogWarning("HUDManager: No GameObject with tag 'Player' found!");
             }
         }
 

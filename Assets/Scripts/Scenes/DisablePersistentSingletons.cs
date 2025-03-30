@@ -21,6 +21,9 @@ namespace Scenes {
                 disabledManagers.Add(manager);
             }
         }
+        public static void DisableScreenShakeManager() {
+            DisableManager(ScreenShakeManager.Instance?.gameObject);
+        }
 
         public static void DisableHUD() {
             DisableManager(HUDManager.Instance?.gameObject);
