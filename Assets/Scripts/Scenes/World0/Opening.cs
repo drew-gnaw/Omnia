@@ -80,6 +80,10 @@ namespace Scenes {
             SetAlpha(City1, 0f);
             SetAlpha(City2, 0f);
             SetAlpha(City3, 0f);
+
+            DisablePersistentSingletons.DisableHUD();
+            DisablePersistentSingletons.DisableInventory();
+            DisablePersistentSingletons.DisablePause();
         }
 
         private void Update() {

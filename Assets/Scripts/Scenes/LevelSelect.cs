@@ -21,6 +21,10 @@ namespace Scenes {
             foreach (var img in dustImages) {
                 img.gameObject.AddComponent<FloatingImage>();
             }
+
+            DisablePersistentSingletons.DisableHUD();
+            DisablePersistentSingletons.DisableInventory();
+            DisablePersistentSingletons.DisablePause();
         }
 
         public void Back() {
