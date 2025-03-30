@@ -57,12 +57,6 @@ namespace Enemies.Armadillo {
             var r = c[3] || !c[2];
             return (facing.x > 0 && l && !r) || (facing.x < 0 && !l && r);
         }
-
-        public override void Hurt(float damage, bool stagger = true, bool crit = false) {
-            base.Hurt(damage, stagger, crit);
-            if (behaviour is Move)
-                FaceAggrodPlayer();
-        }
         public void FaceAggrodPlayer() {
             if (aggrodPlayer != null) {
                 facing = new Vector2(

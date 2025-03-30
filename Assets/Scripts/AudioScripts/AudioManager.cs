@@ -78,19 +78,16 @@ public class AudioManager : PersistentSingleton<AudioManager>
     }
 
     private void OnSceneChange(LevelData levelData) {
-        Debug.Log("OnSceneChange: " + levelData);
-        switch (levelData.Type) {
-            case LevelType.Normal:
-                SwitchBGM(AudioTracks.CaveSpeak);
-                break;
-            case LevelType.Elite:
-                Debug.Log("switching to elite track");
-                SwitchBGM(AudioTracks.FloraExMachina);
-                break;
-            case LevelType.Secret:
-                SwitchBGM(AudioTracks.Undersound);
-                break;
-            // if type is other, we just don't touch the audio.
+        var track = levelData.Type switch {
+            LevelType.Normal => AudioTracks.CaveSpeak,
+            LevelType.Elite => AudioTracks.FloraExMachina,
+            LevelType.Secret => AudioTracks.Undersound,
+            LevelType.Custom => levelData.SoundTrack,
+            _ => ""
+           };
+
+        if (track != "") {
+            SwitchBGM(track);
         }
     }
 
@@ -160,8 +157,8 @@ public class AudioManager : PersistentSingleton<AudioManager>
 
     // Stop the current background music entirely.
     // Fade out if a transition effect is needed
-    public void StopBGM() {
-        StartCoroutine(BGMFadeOut(BGMPlayer.volume));
+    public IEnumerator StopBGM() {
+        yield return StartCoroutine(BGMFadeOut(BGMPlayer.volume));
         BGMPlayer.Stop();
     }
 

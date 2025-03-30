@@ -5,12 +5,14 @@ public enum LevelType {
     Normal,
     Elite,
     Secret,
+    Custom,
     Other
 }
 
 public abstract class LevelData : Enum<LevelData> {
     public abstract string PlainName { get; }
     public abstract string SceneName { get; }
+    public virtual string SoundTrack { get; } = "";
 
     public abstract LevelType Type { get; }
     public abstract LevelData NextLevel { get; }
@@ -251,7 +253,8 @@ public class Level_4_B : LevelData {
 public class Level_4_S : LevelData {
     public override string PlainName => "Level 4-S";
     public override string SceneName => "W-4-S";
-    public override LevelType Type => LevelType.Secret;
+    public override LevelType Type => LevelType.Custom;
+    public override string SoundTrack => AudioTracks.JamiesTheme;
     public override LevelData NextLevel => Get<Level_B_1>();
     public override LevelData PrevLevel => Get<Level_4_B>();
 }
@@ -275,7 +278,8 @@ public class Level_B_2 : LevelData {
 public class Level_B_3 : LevelData {
     public override string PlainName => "Level B-3";
     public override string SceneName => "W-B-3";
-    public override LevelType Type => LevelType.Other;
+    public override LevelType Type => LevelType.Custom;
+    public override string SoundTrack => AudioTracks.SunkBeneath;
     public override LevelData NextLevel => Get<Level_B_B>();
     public override LevelData PrevLevel => Get<Level_B_2>();
 }

@@ -55,8 +55,10 @@ namespace Scenes.World5 {
 
             yield return new WaitForSeconds(2f);
 
+
             yield return StartCoroutine(DialogueManager.Instance.StartDialogue(dinkyThrownDialogue.Dialogue));
 
+            StartCoroutine(AudioManager.Instance.StopBGM());
             // machine starts
 
             boss.AddComponent<BobbingBehaviour>();
