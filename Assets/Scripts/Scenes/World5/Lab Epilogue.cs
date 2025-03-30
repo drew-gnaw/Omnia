@@ -17,7 +17,7 @@ namespace Scenes.World5 {
         private IEnumerator BeginSequence() {
             yield return new WaitForSeconds(0.5f);
 
-            
+
         }
 
 
