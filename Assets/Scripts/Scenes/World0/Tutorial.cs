@@ -40,14 +40,7 @@ namespace Scenes {
 
             StartCoroutine(BeginSequence());
 
-            if (dinky == null) Debug.LogError("Dinky is not assigned!");
-            if (dummyAirCheck == null) Debug.LogError("Dummy Air Check is not assigned!");
-            if (dinkyAppearTransform == null) Debug.LogError("Dinky Appear Transform is not assigned!");
-            if (beginDialogue == null) Debug.LogError("Begin Dialogue is not assigned!");
-            if (AudioManager.Instance == null) Debug.LogError("AudioManager Instance is null!");
-            if (DialogueManager.Instance == null) Debug.LogError("DialogueManager Instance is null!");
-            if (HighlightManager.Instance == null) Debug.LogError("HighlightManager Instance is null!");
-
+            DisablePersistentSingletons.DisableInventory();
         }
 
         private IEnumerator BeginSequence() {

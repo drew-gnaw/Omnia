@@ -42,13 +42,17 @@ namespace UI {
             gameObject.SetActive(true);
 
             FindPlayer();
+            OnEnable();
+        }
 
+        private void OnEnable() {
             Player.OnFlowChanged += UpdateFlow;
             Player.OnHealthChanged += UpdateHealth;
             Player.OnWeaponChanged += SetWeaponSprites;
             WeaponClass.OnAmmoChanged += UpdateAmmo;
             Player.OnSkillCooldownUpdated += UpdateSkillCooldown;
             Player.OnBearEffectReady += UpdateBearEffect;
+            LevelManager.OnLevelLoaded += OnSceneChange;
         }
 
         private void OnDisable() {
@@ -58,6 +62,11 @@ namespace UI {
             WeaponClass.OnAmmoChanged -= UpdateAmmo;
             Player.OnSkillCooldownUpdated -= UpdateSkillCooldown;
             Player.OnBearEffectReady -= UpdateBearEffect;
+            LevelManager.OnLevelLoaded -= OnSceneChange;
+        }
+
+        public void OnSceneChange(LevelData level) {
+            FindPlayer();
         }
 
         private void UpdateHealth(int currentHealth) {

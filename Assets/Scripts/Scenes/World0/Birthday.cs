@@ -10,6 +10,10 @@ namespace Scenes {
         [SerializeField] private DialogueWrapper birthdayDialogue;
         void Start() {
             StartCoroutine(BeginSequence());
+
+            DisablePersistentSingletons.DisableHUD();
+            DisablePersistentSingletons.DisableInventory();
+            DisablePersistentSingletons.DisablePause();
         }
 
         private IEnumerator BeginSequence() {

@@ -99,7 +99,6 @@ public class DinkyBossFightManager : MonoBehaviour {
         dinkyBoss.ShouldBob = false;
         bossHealth.AnimateFadeOut();
         StartCoroutine(StartAfterScene());
-
     }
 
     private IEnumerator StartAfterScene() {

@@ -10148,6 +10148,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: EliteSundew Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 7059180037266601265, guid: 8ab7355aba26040daac6163bb86d6b95, type: 3}
+      propertyPath: currentHealth
+      value: 250
+      objectReference: {fileID: 0}
+    - target: {fileID: 7059180037266601265, guid: 8ab7355aba26040daac6163bb86d6b95, type: 3}
+      propertyPath: maximumHealth
+      value: 250
+      objectReference: {fileID: 0}
     - target: {fileID: 8654433778987696909, guid: 8ab7355aba26040daac6163bb86d6b95, type: 3}
       propertyPath: m_GravityScale
       value: 0
