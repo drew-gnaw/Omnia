@@ -207,6 +207,7 @@ public class AudioManager : PersistentSingleton<AudioManager>
         RandomizePitch();
         SFXPlayer.PlayOneShot(sfxTracks.GetClipByName(soundName));
     }
+
     private void RandomizePitch() {
         SFXPlayer.pitch = Random.Range(0.90f, 1.1f);
     }

@@ -268,8 +268,16 @@ public class Level_B_2 : LevelData {
     public override string PlainName => "Level B-2";
     public override string SceneName => "W-B-2";
     public override LevelType Type => LevelType.Other;
-    public override LevelData NextLevel => Get<Level_B_B>();
+    public override LevelData NextLevel => Get<Level_B_3>();
     public override LevelData PrevLevel => Get<Level_B_1>();
+}
+
+public class Level_B_3 : LevelData {
+    public override string PlainName => "Level B-3";
+    public override string SceneName => "W-B-3";
+    public override LevelType Type => LevelType.Other;
+    public override LevelData NextLevel => Get<Level_B_B>();
+    public override LevelData PrevLevel => Get<Level_B_2>();
 }
 
 

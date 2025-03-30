@@ -8,11 +8,11 @@ namespace Scenes.World5 {
         [SerializeField] private Player jamie;
         [SerializeField] private GameObject dinky;
         [SerializeField] private GameObject tankDinky;
+        [SerializeField] private GameObject boss;
 
         [SerializeField] DialogueWrapper beginDialogue;
-        [SerializeField] DialogueWrapper throwDialogue;
-        [SerializeField] DialogueWrapper DinkyThrownDialogue;
-
+        [SerializeField] DialogueWrapper dinkyThrownDialogue;
+        [SerializeField] DialogueWrapper dinkyHurtDialogue;
         public void Start() {
             Player.controlsLocked = true;
             StartCoroutine(BeginSequence());
@@ -23,9 +23,6 @@ namespace Scenes.World5 {
             yield return StartCoroutine(DialogueManager.Instance.StartDialogue(beginDialogue.Dialogue));
 
             yield return new WaitForSeconds(1f);
-            yield return StartCoroutine(DialogueManager.Instance.StartDialogue(throwDialogue.Dialogue));
-            yield return new WaitForSeconds(0.5f);
-
             Rigidbody2D rb = dinky.GetComponent<Rigidbody2D>();
             if (rb == null) {
                 rb = dinky.AddComponent<Rigidbody2D>();
@@ -43,7 +40,39 @@ namespace Scenes.World5 {
             Destroy(dinky);
 
             tankDinky.AddComponent<Rigidbody2D>();
+
+            yield return new WaitForSeconds(2f);
+
+            yield return StartCoroutine(DialogueManager.Instance.StartDialogue(dinkyThrownDialogue.Dialogue));
+
+            // machine starts
+
+            boss.AddComponent<BobbingBehaviour>();
+
+            yield return new WaitForSeconds(3f);
+
+            // something goes wrong
+
+            AudioManager.Instance.PlaySFX(AudioTracks.DinkyScream);
+
+            yield return new WaitForSeconds(1.5f);
+
+            StartCoroutine(BlareAlarm());
+
+            yield return new WaitForSeconds(2f);
+
+            yield return StartCoroutine(DialogueManager.Instance.StartDialogue(dinkyHurtDialogue.Dialogue));
+
             Player.controlsLocked = false;
+            LevelManager.Instance.NextLevel();
+        }
+
+        private IEnumerator BlareAlarm() {
+            while (true) {
+                AudioManager.Instance.PlaySFX(AudioTracks.MachineMalfunction);
+                yield return new WaitForSeconds(7f);
+            }
         }
     }
+
 }
