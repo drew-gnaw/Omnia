@@ -55,6 +55,7 @@ public class Shotgun : WeaponClass {
             playerCharachter.SetGravityLock(lockedPlayerGravity, 1);
         }
 
+
         return true;
     }
 
@@ -67,16 +68,16 @@ public class Shotgun : WeaponClass {
         ApplyDamage(hits, damage, false);
         HandleMuzzleFlash();
         HandleTracers();
-        AudioManager.Instance.PlaySFX(AudioTracks.Scrapgun);
     }
 
     private IEnumerator IntroCoroutine() {
         CurrentAmmo = maxAmmoCount;
         yield return new WaitForSeconds(introDelayTime);
-        
+
         SkillAndUltimateFire();
         SkillAndUltimateFire();
         SkillAndUltimateFire();
+        AudioManager.Instance.PlaySFX(AudioTracks.ScrapgunSpecial);
         player.GetComponent<Player>().UseRecoil(10);
         ScreenShakeManager.Instance.Shake(3f);
     }
@@ -161,9 +162,9 @@ public class Shotgun : WeaponClass {
 
                     damageAmount = Mathf.Max(damageAmount, 0);
 
-                    bool isCrit = Random.Range(0f, 1f) < critChance;
+                    bool isCrit = Random.Range(0f, 1f) < player.GetComponent<Player>().critChance;
                     if (isCrit) {
-                        damageAmount *= critMultiplier;
+                        damageAmount *= player.GetComponent<Player>().critMultiplier;
                     }
 
                     enemy.Hurt(damageAmount, crit: isCrit);

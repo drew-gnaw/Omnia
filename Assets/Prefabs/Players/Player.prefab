@@ -501,6 +501,7 @@ MonoBehaviour:
   wallJumpLockoutTime: 0
   combatCooldown: 5
   skillCooldown: 5
+  introCooldown: 0.5
   flowDrainRate: 10
   hurtInvulnerabilityTime: 1
   weapons:
@@ -514,6 +515,7 @@ MonoBehaviour:
   held: 0
   fire: 0
   skill: 0
+  intro: 0
   grounded: 0
   canRoll: 0
   invulnerable: 0
@@ -523,6 +525,8 @@ MonoBehaviour:
   debugPullToTargetTransform: {fileID: 0}
   buffsParent: {fileID: 9209025776175109295}
   hasShotgun: 1
+  critChance: 0.1
+  critMultiplier: 2
   musicBoxEquipped: 0
   shoeEquipped: 0
   bearEquipped: 0

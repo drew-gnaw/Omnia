@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class DinkyBossFightManager : MonoBehaviour, IInteractable {
+public class DinkyBossFightManager : MonoBehaviour {
     [SerializeField] private BobbingBehaviour dinkyBoss;
     [SerializeField] private HealthBar bossHealth;
     [SerializeField] private DinkyBossFightTanks dinkyBossfightTanks;
@@ -67,9 +67,9 @@ public class DinkyBossFightManager : MonoBehaviour, IInteractable {
         FinalWave.FightCompleteEvent -= HandleSceneEnd;
     }
 
-    // Remove me once im not needed :>
-    public void Interact() {
+    public void Start() {
         StartFight();
+        AudioManager.Instance.SwitchBGM(AudioTracks.TrialBySteel);
     }
 
     public void StartFight() {

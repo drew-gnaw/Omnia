@@ -3,89 +3,92 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
-using Random = UnityEngine.Random;
 
-public class Dinky : MonoBehaviour, IInteractable
-{
-    [SerializeField] private Interactable interactable;
-    [SerializeField] private GameObject graphics;
-    [SerializeField] private string idleState;
-    [SerializeField] private string appearState;
-    [SerializeField] private string disappearState;
-    [SerializeField] private Animator animator;
-    [FormerlySerializedAs("tempDialogue")] [SerializeField] private DialogueWrapper interactDialogue;
+namespace NPC.Dinky {
+    public class Dinky : MonoBehaviour, IInteractable {
+        [SerializeField] private Interactable interactable;
+        [SerializeField] private GameObject graphics;
+        [SerializeField] public Animator animator;
 
-    // Not sure this is how it should be handled, could stay this simple if Dinky's interactions are totally linear
-    [SerializeField] private List<Transform> locations;
+        [FormerlySerializedAs("tempDialogue")] [SerializeField]
+        private DialogueWrapper interactDialogue;
 
-    public static event Action OnInteract;
+        [SerializeField] private List<Transform> locations;
 
-    private bool animating = false;
+        public static readonly int AppearTrigger = Animator.StringToHash("Appear");
+        public static readonly int DisappearTrigger = Animator.StringToHash("Disappear");
+        public static readonly int IdleTrigger = Animator.StringToHash("Idle");
+        public static readonly int WalkTrigger = Animator.StringToHash("Walk");
 
-    public void Appear(Transform t) {
-        gameObject.transform.position = t.position;
-        if (!animator) {
-            animator = graphics.GetComponent<Animator>();
+        public static event Action OnInteract;
+        private Coroutine walkCoroutine;
+
+        private void Awake() {
+            if (!animator && graphics) {
+                animator = graphics.GetComponent<Animator>();
+            }
         }
-        animator.Play(appearState);
-        setVisible(true);
-        animating = true;
-    }
 
-    public void Disappear() {
-        interactable?.SetEnable(false);
-        animator.Play(disappearState);
-        animating = true;
-    }
+        public void Appear(Transform t) {
+            if (!animator) return;
 
-    public void Interact() {
-        // This is a demo of how Dinky could interact
-        StartCoroutine(StartDialogue());
-        // I think a list of observers in DialogueManager is worth looking into if other classes are interested
-        // in listening to the end of the dialogue, otherwise this will probably be fine
+            gameObject.transform.position = t.position;
+            setVisible(true);
+            animator.SetTrigger(AppearTrigger);
+        }
 
-        //StartCoroutine(dinkyReappearElsewhere());
-    }
+        public void Disappear() {
+            if (!animator) return;
 
-    private IEnumerator StartDialogue() {
-        yield return StartCoroutine(DialogueManager.Instance.StartDialogue(interactDialogue.Dialogue));
-        OnInteract?.Invoke();
-    }
+            interactable?.SetEnable(false);
+            animator.SetTrigger(DisappearTrigger);
+        }
 
-    // demo of dinky behaviour
-    private IEnumerator dinkyReappearElsewhere() {
-        yield return new WaitUntil(DialogueManager.Instance.IsInDialogue);
-        Disappear();
-        yield return new WaitUntil(() => !animating);
-        Appear(locations[Random.Range(0, locations.Count)]);
-    }
+        public void Interact() {
+            StartCoroutine(StartDialogue());
+        }
 
-    private void appeared() {
-        animating = false;
-        interactable?.SetEnable(true);
-        animator.Play(idleState);
-    }
+        private IEnumerator StartDialogue() {
+            yield return StartCoroutine(DialogueManager.Instance.StartDialogue(interactDialogue.Dialogue));
+            OnInteract?.Invoke();
+        }
 
-    private void disappeared() {
-        animating = false;
-        setVisible(false);
-    }
+        public void Walk(float distance, float speed) {
+            if (walkCoroutine != null) {
+                StopCoroutine(walkCoroutine);
+            }
 
-    private void setVisible(bool visible) {
-        graphics.GetComponentInChildren<Renderer>().enabled = visible;
-    }
+            walkCoroutine = StartCoroutine(WalkRoutine(distance, speed));
+        }
 
-    void Update()
-    {
-        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+        private IEnumerator WalkRoutine(float distance, float speed) {
+            if (!animator) yield break;
 
-        // This is a pretty jank way to check if animation has completed, but probably quickest and easiest
-        if (animating && stateInfo.normalizedTime >= 1.0f)
-        {
-            if (stateInfo.IsName(appearState)) {
-                appeared();
-            } else if (stateInfo.IsName(disappearState)) {
-                disappeared();
+            animator.SetTrigger(WalkTrigger);
+
+            float startX = transform.position.x;
+            float targetX = startX + distance;
+            float direction = Mathf.Sign(distance); // 1 for right, -1 for left
+
+            // Flip Dinky to face the correct direction
+            Vector3 scale = transform.localScale;
+            scale.x = -direction * Mathf.Abs(scale.x);
+            transform.localScale = scale;
+
+            while (Mathf.Abs(transform.position.x - startX) < Mathf.Abs(distance)) {
+                transform.position += new Vector3(direction * speed * Time.deltaTime, 0, 0);
+                yield return null;
+            }
+
+            transform.position = new Vector3(targetX, transform.position.y, transform.position.z);
+            animator.SetTrigger(IdleTrigger);
+        }
+
+
+        private void setVisible(bool visible) {
+            if (graphics) {
+                Renderer renderer = graphics.GetComponentInChildren<Renderer>();
+                if (renderer) renderer.enabled = visible;
             }
         }
     }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Enemies.Dummy;
+using NPC.Dinky;
 using UI;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -55,14 +56,6 @@ namespace Scenes {
             dinky.Appear(dinkyAppearTransform);
             yield return new WaitForSeconds(1.5f);
             yield return StartCoroutine(DialogueManager.Instance.StartDialogue(beginDialogue.Dialogue));
-
-            Rigidbody2D rb = dinky.AddComponent<Rigidbody2D>();
-            float horizontalForce = UnityEngine.Random.Range(1.5f, 3f);
-            float spinForce = UnityEngine.Random.Range(250f, 400f) * (UnityEngine.Random.value > 0.5f ? 1 : -1);
-            rb.gravityScale = 1f;
-            rb.velocity = new Vector2(horizontalForce, 15);
-            rb.angularVelocity = spinForce;
-
 
             RegisterDummyHurt(dummy1);
             RegisterDummyHurt(dummy2);
@@ -132,6 +125,8 @@ namespace Scenes {
             yield return StartCoroutine(DialogueManager.Instance.StartDialogue(dinkyScaredDialogue.Dialogue));
 
             yield return new WaitForSeconds(0.3f);
+            dinky.Walk(15.5f, 7f);
+            yield return new WaitForSeconds(15.5f / 7f + 0.2f);
             dinky.Disappear();
             yield return new WaitForSeconds(1f);
 

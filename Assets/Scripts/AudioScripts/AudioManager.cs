@@ -18,24 +18,42 @@ public static class AudioTracks {
 
     // SFX
     public const string Scrapgun = "Scrapgun";
-    public const string ArmadilloAttack = "Armadillo_Attack";
-    public const string ArmadilloCurl = "Armadillo_curl";
-    public const string ArmadilloOpen = "Armadillo_open";
-    public const string CrabHit = "Crab_hit";
-    public const string CrabSpawn = "Crab_spawn";
-    public const string DinkyMutate = "Dinky_Mutate";
     public const string HarpoonHit = "Harpoon_Hit";
     public const string HarpoonLaunch = "Harpoon_Launch";
     public const string HarpoonRetract = "Harpoon_Retract";
-    public const string JamieLand = "Jamie_land";
+    public const string JamieLand = "Jamie_Land";
     public const string JamieSlide = "Jamie_Slide";
+    public const string JamieSlide2 = "Jamie_Slide_2";
     public const string JamieHurt1 = "JamieHurt1";
     public const string JamieHurt2 = "JamieHurt2";
     public const string JamieHurt3 = "JamieHurt3";
     public const string JamieHurt4 = "JamieHurt4";
+    public const string MachineBreakdown = "Machine_Breakdown";
+    public const string MachineHitGround = "Machine_Hit_Ground";
+    public const string MachineMalfunction = "Machine_Malfunction";
     public const string PlantShoot = "Plant_Shoot";
+    public const string Reload = "Reload";
     public const string Rumble = "Rumble";
-
+    public const string ScrapgunSpecial = "Scrapgun_Special";
+    public const string TaDa = "Ta_Da!";
+    public const string WasteMove1 = "Waste_Move_1";
+    public const string WasteMove2 = "Waste_Move_2";
+    public const string ArmadilloAttack = "Armadillo_Attack";
+    public const string ArmadilloClose = "Armadillo_Close";
+    public const string ArmadilloOpen = "Armadillo_Open";
+    public const string ButtonPress = "Button_Press";
+    public const string ClockStrikes = "Clock_Strikes";
+    public const string CrabHurt = "Crab_Hurt";
+    public const string CrabSpawn = "Crab_Spawn";
+    public const string Dinky1 = "Dinky_1";
+    public const string Dinky2 = "Dinky_2";
+    public const string Dinky3 = "Dinky_3";
+    public const string DinkyMutate = "Dinky_Mutate";
+    public const string DinkyScream = "Dinky_Scream";
+    public const string DummyFall = "Dummy_Fall";
+    public const string FlyBoom = "Fly_Boom";
+    public const string GateOpen = "Gate_Open";
+    public const string GlassBreak = "Glass_Break";
 
     // AMBIENT
 }
@@ -189,6 +207,7 @@ public class AudioManager : PersistentSingleton<AudioManager>
         RandomizePitch();
         SFXPlayer.PlayOneShot(sfxTracks.GetClipByName(soundName));
     }
+
     private void RandomizePitch() {
         SFXPlayer.pitch = Random.Range(0.90f, 1.1f);
     }

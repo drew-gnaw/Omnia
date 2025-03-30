@@ -49,6 +49,7 @@ namespace Enemies.Crab {
         public void Attack(Player it) {
             var side = sprite.flipX ? -1 : 1;
             it.Hurt(attack, knockbackForce * new Vector2(side * Mathf.Cos(knockbackAngle * Mathf.Deg2Rad), Mathf.Sin(knockbackAngle * Mathf.Deg2Rad)), 1);
+            AudioManager.Instance.PlaySFX(AudioTracks.CrabHurt);
         }
 
         public void SetLayer(LayerMask layer) {
