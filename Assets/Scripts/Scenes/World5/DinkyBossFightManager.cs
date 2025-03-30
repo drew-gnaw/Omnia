@@ -92,6 +92,8 @@ public class DinkyBossFightManager : MonoBehaviour {
         dinkyBossfightTanks.GetAllTanks().ForEach(tank => tank.Break());
         dinkyBoss.ShouldBob = false;
         bossHealth.AnimateFadeOut();
+
+        LevelManager.Instance.NextLevel();
     }
 
     private void IncrementProgress(Tank tank) {
