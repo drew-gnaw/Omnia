@@ -106,7 +106,7 @@ public class DinkyBossFightManager : MonoBehaviour {
 
         AudioManager.Instance.SwitchBGM(AudioTracks.UnclesTheme);
         StartCoroutine(FadeHelpers.FadeSpriteRenderer(lighting, lighting.color.a, 0, 1.5f));
-        yield return StartCoroutine(FadeHelpers.FadeSpriteRendererColor(uncle, lighting.color.r, 1, 1.5f));
+        yield return StartCoroutine(FadeHelpers.FadeSpriteRendererColor(uncle, uncle.color, new Color(1,1,1), 1.5f));
 
         yield return new WaitForSeconds(1f);
 

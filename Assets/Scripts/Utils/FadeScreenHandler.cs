@@ -84,23 +84,25 @@ namespace Utils {
 }
 
 public static class FadeHelpers {
-    //Fade Background that gives you more control over the level of fade
-    public static IEnumerator FadeSpriteRendererColor(SpriteRenderer fadeScreen, float startValue, float endValue, float duration) {
+
+    public static IEnumerator FadeSpriteRendererColor(SpriteRenderer fadeScreen, Color startValue, Color endValue, float duration) {
 
         float elapsedTime = 0f;
 
         while (elapsedTime < duration) {
             elapsedTime += Time.deltaTime;
+
             float t = elapsedTime / duration;
 
-            // Use an ease-out function to slow the fade at the end
             float easedT = 1f - Mathf.Pow(1f - t, 3f); // Cubic ease-out
 
-            float newColor = Mathf.Lerp(startValue, endValue, easedT);
-            fadeScreen.color = new Color(newColor, newColor, newColor, fadeScreen.color.a);
+            Color newColor = Color.Lerp(startValue, endValue, easedT);
+            fadeScreen.color = newColor; 
 
             yield return null;
         }
+
+        fadeScreen.color = endValue;
     }
 
     public static IEnumerator FadeSpriteRenderer(SpriteRenderer fadeScreen, float startAlpha, float endAlpha, float duration) {

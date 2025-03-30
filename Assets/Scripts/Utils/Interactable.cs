@@ -57,7 +57,7 @@ public class Interactable : MonoBehaviour
     private void StartFade(bool fadeIn) {
         if (fadeCoroutine != null) StopCoroutine(fadeCoroutine);
         if (!gameObject.activeInHierarchy) {
-            Debug.LogWarning("HarpoonSpear is inactive! StartCooldown Coroutine will not start.");
+            Debug.LogWarning("Interactable has been disabled");
             return;
         }
         fadeCoroutine = StartCoroutine(FadeButton(fadeIn));
