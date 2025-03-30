@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using Enemies;
 using Omnia.Utils;
@@ -26,11 +25,11 @@ public class Shotgun : WeaponClass {
 
     [SerializeField] internal float skillForce;
 
-    [SerializeField] private float skillLockDuration = 1f;
+    [SerializeField] private float skillLockDuration = 0.2f;
     [SerializeField] private float introDelayTime = 0.5f;
 
     private float skillLockTimer = 0f;
-
+    private bool lockedPlayerGravity = false;
     private Coroutine reloadCoroutine;
 
     protected override void HandleAttack() {
@@ -46,11 +45,14 @@ public class Shotgun : WeaponClass {
         transform.rotation = Quaternion.Euler(0, 0, 270);
         skillLockTimer = skillLockDuration;
 
-        Shoot();
+        SkillAndUltimateFire();
 
         Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
+        Player playerCharachter = player.GetComponent<Player>();
         if (rb != null) {
             rb.velocity = new Vector2(rb.velocity.x, skillForce);
+            lockedPlayerGravity = true;
+            playerCharachter.SetGravityLock(lockedPlayerGravity, 1);
         }
 
         return true;
@@ -60,23 +62,34 @@ public class Shotgun : WeaponClass {
         StartCoroutine(IntroCoroutine());
     }
 
+    void SkillAndUltimateFire() {
+        var hits = PerformRayCasts();
+        ApplyDamage(hits, damage, false);
+        HandleMuzzleFlash();
+        HandleTracers();
+        AudioManager.Instance.PlaySFX(AudioTracks.Scrapgun);
+    }
+
     private IEnumerator IntroCoroutine() {
-        yield return new WaitForSeconds(introDelayTime);
-        void FireUltimate() {
-            var hits = PerformRayCasts();
-            ApplyDamage(hits, damage, false); // Ultimate shot ignores drop-off
-            HandleMuzzleFlash();
-            HandleTracers();
-        }
-        FireUltimate();
-        FireUltimate();
-        FireUltimate();
         CurrentAmmo = maxAmmoCount;
+        yield return new WaitForSeconds(introDelayTime);
+        
+        SkillAndUltimateFire();
+        SkillAndUltimateFire();
+        SkillAndUltimateFire();
         player.GetComponent<Player>().UseRecoil(10);
         ScreenShakeManager.Instance.Shake(3f);
     }
 
     private void Update() {
+        Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
+
+        if (rb.velocity.y < 0 && lockedPlayerGravity) {
+            Player playerCharachter = player.GetComponent<Player>();
+            lockedPlayerGravity = false;
+            playerCharachter.SetGravityLock(lockedPlayerGravity, 3);
+        } 
+
         if (skillLockTimer > 0) {
             skillLockTimer -= Time.deltaTime;
         } else {
@@ -146,8 +159,14 @@ public class Shotgun : WeaponClass {
                         damageAmount *= DamageDropOff(distance);
                     }
 
-                    damageAmount = Math.Max(damageAmount, 0);
-                    enemy.Hurt(damageAmount);
+                    damageAmount = Mathf.Max(damageAmount, 0);
+
+                    bool isCrit = Random.Range(0f, 1f) < critChance;
+                    if (isCrit) {
+                        damageAmount *= critMultiplier;
+                    }
+
+                    enemy.Hurt(damageAmount, crit: isCrit);
                     playerScript.OnHit(damageAmount * damageToFlowRatio);
                 }
             }
@@ -155,7 +174,7 @@ public class Shotgun : WeaponClass {
     }
 
     private float DamageDropOff(float distance) {
-        return Math.Max((1 - distance / range), 0);
+        return Mathf.Max((1 - distance / range), 0);
     }
 
     private void HandleMuzzleFlash() {

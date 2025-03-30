@@ -34,7 +34,8 @@ namespace Players.Behaviour {
         }
 
         public static IBehaviour If(Player it) {
-            return it.grounded && it.jump ? new Jump(it) : null;
+            //Bugfix: When player stands still and uses shotgun skill, they should enter this state via the lockGravity flag instead of being stuck in Idle and not allowed to move.
+            return it.lockGravity || it.grounded && it.jump ? new Jump(it) : null;
         }
     }
 }

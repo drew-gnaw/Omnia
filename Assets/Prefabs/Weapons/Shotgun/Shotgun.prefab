@@ -140,9 +140,11 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 128
-  damage: 60
+  damage: 70
   attackCooldown: 0
   damageToFlowRatio: 1
+  critChance: 0.1
+  critMultiplier: 2
   maxAmmoCount: 3
   reloadTime: 3
   blastAngle: 35
@@ -152,8 +154,8 @@ MonoBehaviour:
   tracer: {fileID: 8976097384762832605, guid: 3a3476e9cc759644a9cb5e4d1134c20f, type: 3}
   barrelPosition: {fileID: 8293366980119116200}
   skillForce: 10
-  skillLockDuration: 1
-  introDelayTime: 0.5
+  skillLockDuration: 0.25
+  introDelayTime: 0.25
 --- !u!1 &8293366980119116200
 GameObject:
   m_ObjectHideFlags: 0

@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: PullToDummyDialogue
   m_EditorClassIdentifier: 
   dialogue:
-  - bodyText: I need to get up there to get that harpoon back...
+  - bodyText: Ack! Looks like the harpoons stuck.
     speakerName: Jamie
     displayingImage: {fileID: 21300000, guid: 34062a4c6040e4c068a5a0a77f26c834, type: 3}
     broadcastAnEvent: 0
-  - bodyText: But I can't jump that high!
+  - bodyText: How am I gonna go get that back...
     speakerName: Jamie
     displayingImage: {fileID: 21300000, guid: 34062a4c6040e4c068a5a0a77f26c834, type: 3}
     broadcastAnEvent: 0
@@ -32,15 +32,4 @@ MonoBehaviour:
   - bodyText: Okay!
     speakerName: Jamie
     displayingImage: {fileID: 21300000, guid: e45f1839db2784540934541013900a29, type: 3}
-    broadcastAnEvent: 0
-  - bodyText: Each weapon has a unique skill, which is activated with [Q]. Using
-      the Harpoon Gun's skill will pull you to the last enemy you hit. It won't work
-      on solid tiles, so be careful!
-    speakerName: Tutorial
-    displayingImage: {fileID: 0}
-    broadcastAnEvent: 0
-  - bodyText: You can only use the skill every once in a while. Keep track of it's
-      cooldown by watching the white bar in the top-left corner.
-    speakerName: Tutorial
-    displayingImage: {fileID: 0}
     broadcastAnEvent: 0
