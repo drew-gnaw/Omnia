@@ -158,8 +158,10 @@ public class AudioManager : PersistentSingleton<AudioManager>
     // Stop the current background music entirely.
     // Fade out if a transition effect is needed
     public IEnumerator StopBGM() {
+        float originalVolume = BGMPlayer.volume;
         yield return StartCoroutine(BGMFadeOut(BGMPlayer.volume));
         BGMPlayer.Stop();
+        BGMPlayer.volume = originalVolume;
     }
 
     // Pauses background music
