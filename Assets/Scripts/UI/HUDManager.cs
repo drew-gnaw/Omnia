@@ -42,13 +42,17 @@ namespace UI {
             gameObject.SetActive(true);
 
             FindPlayer();
+            OnEnable();
+        }
 
+        private void OnEnable() {
             Player.OnFlowChanged += UpdateFlow;
             Player.OnHealthChanged += UpdateHealth;
             Player.OnWeaponChanged += SetWeaponSprites;
             WeaponClass.OnAmmoChanged += UpdateAmmo;
             Player.OnSkillCooldownUpdated += UpdateSkillCooldown;
             Player.OnBearEffectReady += UpdateBearEffect;
+            LevelManager.OnLevelLoaded += OnSceneChange;
         }
 
         private void OnDisable() {
@@ -58,6 +62,11 @@ namespace UI {
             WeaponClass.OnAmmoChanged -= UpdateAmmo;
             Player.OnSkillCooldownUpdated -= UpdateSkillCooldown;
             Player.OnBearEffectReady -= UpdateBearEffect;
+            LevelManager.OnLevelLoaded -= OnSceneChange;
+        }
+
+        public void OnSceneChange(LevelData level) {
+            FindPlayer();
         }
 
         private void UpdateHealth(int currentHealth) {
@@ -84,9 +93,6 @@ namespace UI {
 
                 heartObjects.Add(heartInstance);
             }
-
-            //StartCoroutine(FlashHearts(heartObjects));
-            HandleLowHealthEffect(currentHealth);
         }
 
         private void UpdateFlow(float targetFlow) {
@@ -142,7 +148,7 @@ namespace UI {
         private IEnumerator SlideFlowValue(float targetFlow) {
             float startValue = flowSlider.value;
             float timeElapsed = 0f;
-            float duration = 1f;  // Duration of the animation (1 second)
+            float duration = 1f; // Duration of the animation (1 second)
 
             while (timeElapsed < duration) {
                 float easedValue = EaseOutQuad(timeElapsed / duration);
@@ -182,9 +188,10 @@ namespace UI {
                 }
             }
 
-            yield return new WaitForSeconds(0.1f);  // Short flash duration
+            yield return new WaitForSeconds(0.1f); // Short flash duration
 
-            foreach (GameObject heart in hearts) {;
+            foreach (GameObject heart in hearts) {
+                ;
                 Image heartImage = heart.GetComponent<Image>();
                 if (heartImage != null) {
                     heartImage.color = originalColor;

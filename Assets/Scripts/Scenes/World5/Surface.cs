@@ -17,7 +17,7 @@ namespace Scenes.World5 {
         [SerializeField] private TextMeshPro dinkyTextBox;
 
         public void Start() {
-            HUDManager.Instance.gameObject.SetActive(false);
+            DisablePersistentSingletons.DisableHUD();
             StartCoroutine(StartSequence());
         }
 
@@ -49,6 +49,7 @@ namespace Scenes.World5 {
             }
 
             yield return new WaitForSeconds(3f);
+            HUDManager.Instance.gameObject.SetActive(true);
             LevelManager.Instance.NextLevel();
 
         }

@@ -9,6 +9,7 @@ namespace Scenes {
         public void Start() {
             Guard.OnSpeakToGuard += ExitScene;
             AudioManager.Instance.SwitchBGM(AudioTracks.CityOfMold);
+            DisablePersistentSingletons.DisableInventory();
         }
 
         public void OnDisable() {
