@@ -73,7 +73,7 @@ public class Shotgun : WeaponClass {
     private IEnumerator IntroCoroutine() {
         CurrentAmmo = maxAmmoCount;
         yield return new WaitForSeconds(introDelayTime);
-        
+
         SkillAndUltimateFire();
         SkillAndUltimateFire();
         SkillAndUltimateFire();
@@ -88,7 +88,7 @@ public class Shotgun : WeaponClass {
             Player playerCharachter = player.GetComponent<Player>();
             lockedPlayerGravity = false;
             playerCharachter.SetGravityLock(lockedPlayerGravity, 3);
-        } 
+        }
 
         if (skillLockTimer > 0) {
             skillLockTimer -= Time.deltaTime;
@@ -161,9 +161,9 @@ public class Shotgun : WeaponClass {
 
                     damageAmount = Mathf.Max(damageAmount, 0);
 
-                    bool isCrit = Random.Range(0f, 1f) < critChance;
+                    bool isCrit = Random.Range(0f, 1f) < player.GetComponent<Player>().critChance;
                     if (isCrit) {
-                        damageAmount *= critMultiplier;
+                        damageAmount *= player.GetComponent<Player>().critMultiplier;
                     }
 
                     enemy.Hurt(damageAmount, crit: isCrit);
