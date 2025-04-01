@@ -20,7 +20,6 @@ public class CrossFade : MonoBehaviour {
 
     public void StartCrossFadeBackground(CrossFadeRenderers renderers, Sprite sprite, float duration = 1f) {
         AbortCrossFade(); // Abort if cross fade is currently animating
-        Debug.Log("Starting the cross fade");
         currentCrossFade = StartCoroutine(CrossFadeBackground(renderers, sprite, duration));
     }
 

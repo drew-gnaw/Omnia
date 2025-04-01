@@ -101,7 +101,6 @@ public class AudioManager : PersistentSingleton<AudioManager>
     public void PlayBGM(string trackName) {
         AudioClip track = bgmTracks.GetClipByName(trackName);
         if (!BGMPlayer.isPlaying || BGMPlayer.clip != track) {
-            Debug.Log("starting");
             BGMPlayer.clip = track;
             BGMPlayer.loop = true;
             BGMPlayer.Play();
