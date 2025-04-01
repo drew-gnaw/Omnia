@@ -24,6 +24,8 @@ public class LevelGenerator : MonoBehaviour
 
         // Spawn the first section
         GameObject firstPrefab = Instantiate(sectionPrefabs[Random.Range(0, sectionPrefabs.Length)], position, Quaternion.identity);
+        CopyTilesToMasterTilemap(firstPrefab.GetComponent<Tilemap>(), Vector3Int.zero);
+
         Connector[] firstConnectors = FindConnectors(firstPrefab);
 
         // Add its connectors to the open list
@@ -60,7 +62,7 @@ public class LevelGenerator : MonoBehaviour
             }
 
 // Instantiate the new prefab
-            GameObject instantiatedPrefab = Instantiate(prefabToUse, Vector3.zero, Quaternion.identity);
+            GameObject instantiatedPrefab = Instantiate(prefabToUse, chosenWorldPosition, Quaternion.identity);
 
 // Find the matching connector in the instantiated prefab
             Connector matchingConnector = null;
@@ -83,9 +85,12 @@ public class LevelGenerator : MonoBehaviour
 
 // Calculate the offset to align the connectors
             Vector3 offset = chosenWorldPosition - matchingConnector.transform.position;
-            instantiatedPrefab.transform.position = offset;
+            instantiatedPrefab.transform.position += 3*offset;
 
             Tilemap secondTilemap = instantiatedPrefab.GetComponent<Tilemap>();
+
+            Debug.Log("Tilemap for " + instantiatedPrefab.name + " has size " + secondTilemap.size);
+
             CopyTilesToMasterTilemap(secondTilemap, Vector3Int.RoundToInt(instantiatedPrefab.transform.position));
 
 // Remove used connector
@@ -113,9 +118,9 @@ public class LevelGenerator : MonoBehaviour
     // Find a valid prefab that has a connector matching the required type
     GameObject GetCompatiblePrefab(ConnectorType requiredType)
     {
-        foreach (GameObject prefab in sectionPrefabs)
-        {
+        foreach (GameObject prefab in sectionPrefabs) {
             Connector[] connectors = FindConnectors(prefab);
+            ShuffleConnectors(connectors);
             foreach (Connector conn in connectors)
             {
                 if (conn.connectorType == Connector.GetCompatibleConnectorType(requiredType))
@@ -137,6 +142,23 @@ public class LevelGenerator : MonoBehaviour
             {
                 masterTilemap.SetTile(positionOffset + pos, tile);
             }
+        }
+
+        Destroy(tilemap.gameObject);
+    }
+
+    void ShuffleConnectors(Connector[] connectors)
+    {
+        System.Random rng = new System.Random();
+        int n = connectors.Length;
+        while (n > 1)
+        {
+            n--;
+            int k = rng.Next(n + 1);
+            // Swap the elements at indices n and k
+            Connector value = connectors[k];
+            connectors[k] = connectors[n];
+            connectors[n] = value;
         }
     }
 }
