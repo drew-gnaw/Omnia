@@ -23,13 +23,11 @@ public class TestGenerator : MonoBehaviour
 
         // Spawn LR section first
         GameObject firstPrefab = Instantiate(LRPrefab, position, Quaternion.identity);
-        Connector[] firstConnectors = FindConnectors(firstPrefab);
+        Tilemap firstTilemap = firstPrefab.GetComponent<Tilemap>();
+        CopyTilesToMasterTilemap(firstTilemap, position);
 
-        // Add its connectors to the open list
-        foreach (Connector conn in firstConnectors)
-        {
-            openConnectors.Add(conn);
-        }
+        Connector[] firstConnectors = FindConnectors(firstPrefab);
+        openConnectors.AddRange(firstConnectors);
 
         if (openConnectors.Count == 0)
         {
@@ -38,34 +36,56 @@ public class TestGenerator : MonoBehaviour
         }
 
         // Choose the right-side connector from LR
-        Connector chosenConnector = openConnectors.Find(c => c.connectorType == ConnectorType.R);
+        Connector chosenConnector = openConnectors.Find(c => c.connectorType == ConnectorType.L);
         if (chosenConnector == null)
         {
             Debug.LogError("No right connector found in LR prefab.");
             return;
         }
 
-        Vector3Int chosenPosition = Vector3Int.RoundToInt(chosenConnector.transform.position);
+        Vector3 chosenWorldPosition = chosenConnector.transform.position; // World position
 
         // Spawn RT section next, connecting to the right connector of LR
-        GameObject secondPrefab = Instantiate(RTPrefab, chosenPosition, Quaternion.identity);
+        GameObject secondPrefab = Instantiate(RTPrefab, chosenWorldPosition, Quaternion.identity);
         Connector[] secondConnectors = FindConnectors(secondPrefab);
 
-        // Align second prefab properly
-        Connector matchingConnector = System.Array.Find(secondConnectors, c => c.connectorType == ConnectorType.L);
+        // Find the matching connector in RT prefab
+        Connector matchingConnector = System.Array.Find(secondConnectors, c => c.connectorType == ConnectorType.R);
         if (matchingConnector != null)
         {
-            Vector3Int newConnectorPosition = Vector3Int.RoundToInt(matchingConnector.transform.position);
-            Vector3Int offset = chosenPosition - newConnectorPosition;
-            secondPrefab.transform.position += (Vector3)offset;
+            Vector3 matchingWorldPosition = matchingConnector.transform.position; // Get its world position
+
+            // Calculate required offset
+            Vector3 offset = chosenWorldPosition - matchingWorldPosition;
+
+            // Move second prefab so its connector aligns exactly
+            secondPrefab.transform.position += 2* offset;
         }
+
+        Tilemap secondTilemap = secondPrefab.GetComponent<Tilemap>();
+        CopyTilesToMasterTilemap(secondTilemap, Vector3Int.RoundToInt(secondPrefab.transform.position));
 
         Debug.Log("Test level generated: LR -> RT");
     }
+
 
     // Find all connectors in a prefab
     Connector[] FindConnectors(GameObject prefab)
     {
         return prefab.GetComponentsInChildren<Connector>();
     }
+
+    // Copy tiles from the instantiated prefab to the master tilemap
+    void CopyTilesToMasterTilemap(Tilemap tilemap, Vector3Int positionOffset)
+    {
+        foreach (var pos in tilemap.cellBounds.allPositionsWithin)
+        {
+            TileBase tile = tilemap.GetTile(pos);
+            if (tile != null)
+            {
+                masterTilemap.SetTile(positionOffset + pos, tile);
+            }
+        }
+    }
+
 }

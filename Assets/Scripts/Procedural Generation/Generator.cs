@@ -2,6 +2,7 @@ using Procedural_Generation;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.Collections.Generic;
+using System.Linq;
 
 public class LevelGenerator : MonoBehaviour
 {
@@ -19,7 +20,7 @@ public class LevelGenerator : MonoBehaviour
 
     void GenerateLevel()
     {
-        Vector3Int position = startingPosition;
+        Vector3 position = startingPosition;
 
         // Spawn the first section
         GameObject firstPrefab = Instantiate(sectionPrefabs[Random.Range(0, sectionPrefabs.Length)], position, Quaternion.identity);
@@ -39,38 +40,65 @@ public class LevelGenerator : MonoBehaviour
                 break;
             }
 
+            Debug.Log("These are the connectors open on iteration " + i);
+            foreach (Connector conn in openConnectors) {
+                Debug.Log(conn.transform.position);
+            }
+
             // Choose a random open connector to build from
             Connector chosenConnector = openConnectors[Random.Range(0, openConnectors.Count)];
-            Vector3Int chosenPosition = Vector3Int.RoundToInt(chosenConnector.transform.position);
+            Vector3 chosenWorldPosition = chosenConnector.transform.position;
 
-            // Find a valid prefab that has a compatible connector
-            GameObject selectedPrefab = GetValidPrefab(chosenConnector.connectorType, out Connector matchingConnector);
+// Find a valid prefab that has a compatible connector type
+            GameObject prefabToUse = GetCompatiblePrefab(chosenConnector.connectorType);
 
-            if (selectedPrefab == null)
+            if (prefabToUse == null)
             {
                 Debug.LogWarning("No valid prefab found for connector type: " + chosenConnector.connectorType);
                 openConnectors.Remove(chosenConnector);
                 continue;
             }
 
-            // Instantiate the new prefab and align it properly
-            GameObject instantiatedPrefab = Instantiate(selectedPrefab, chosenPosition, Quaternion.identity);
-            Vector3Int newConnectorPosition = Vector3Int.RoundToInt(matchingConnector.transform.position);
-            Vector3Int offset = chosenPosition - newConnectorPosition;
-            instantiatedPrefab.transform.position += (Vector3)offset;
+// Instantiate the new prefab
+            GameObject instantiatedPrefab = Instantiate(prefabToUse, Vector3.zero, Quaternion.identity);
 
-            // Copy the tiles to the master tilemap
-            Tilemap tilemap = instantiatedPrefab.GetComponent<Tilemap>();
-            CopyTilesToMasterTilemap(tilemap, offset);
+// Find the matching connector in the instantiated prefab
+            Connector matchingConnector = null;
+            foreach (Connector conn in FindConnectors(instantiatedPrefab))
+            {
+                if (conn.connectorType == Connector.GetCompatibleConnectorType(chosenConnector.connectorType))
+                {
+                    matchingConnector = conn;
+                    break;
+                }
+            }
 
-            // Remove the used connector and add new ones
+            if (matchingConnector == null)
+            {
+                Debug.LogError("Failed to find matching connector in instantiated prefab");
+                Destroy(instantiatedPrefab);
+                openConnectors.Remove(chosenConnector);
+                continue;
+            }
+
+// Calculate the offset to align the connectors
+            Vector3 offset = chosenWorldPosition - matchingConnector.transform.position;
+            instantiatedPrefab.transform.position = offset;
+
+            Tilemap secondTilemap = instantiatedPrefab.GetComponent<Tilemap>();
+            CopyTilesToMasterTilemap(secondTilemap, Vector3Int.RoundToInt(instantiatedPrefab.transform.position));
+
+// Remove used connector
             openConnectors.Remove(chosenConnector);
+
+// Only add the other connector from the prefab (since each prefab has exactly 2)
             Connector[] newConnectors = FindConnectors(instantiatedPrefab);
             foreach (Connector conn in newConnectors)
             {
-                if (conn != matchingConnector) // Don't add the used connector
+                if (conn != matchingConnector)
                 {
                     openConnectors.Add(conn);
+                    break; // Only add one connector (the non-matching one)
                 }
             }
         }
@@ -83,7 +111,7 @@ public class LevelGenerator : MonoBehaviour
     }
 
     // Find a valid prefab that has a connector matching the required type
-    GameObject GetValidPrefab(ConnectorType requiredType, out Connector matchingConnector)
+    GameObject GetCompatiblePrefab(ConnectorType requiredType)
     {
         foreach (GameObject prefab in sectionPrefabs)
         {
@@ -92,13 +120,10 @@ public class LevelGenerator : MonoBehaviour
             {
                 if (conn.connectorType == Connector.GetCompatibleConnectorType(requiredType))
                 {
-                    matchingConnector = conn;
                     return prefab;
                 }
             }
         }
-
-        matchingConnector = null;
         return null;
     }
 
