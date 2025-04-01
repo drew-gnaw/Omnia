@@ -75,7 +75,7 @@ public class DinkyBossFightManager : MonoBehaviour {
 
     public void Start() {
         StartFight();
-        AudioManager.Instance.SwitchBGM(AudioTracks.TrialBySteel);
+        AudioManager.Instance.PlayBGM(AudioTracks.TrialBySteel);
     }
 
     public void StartFight() {
