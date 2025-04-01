@@ -6,6 +6,7 @@ using System.Linq;
 
 public class LevelGenerator : MonoBehaviour {
     public Tilemap masterTilemap; // The main Tilemap
+    public GameObject startPrefab; // The starting piece. It should have exactly one connector.
     public GameObject[] sectionPrefabs; // Prefabs containing tilemap sections (tunnels, rooms, etc.)
     public Vector3Int startingPosition; // Initial position to start generation
 
@@ -29,7 +30,7 @@ public class LevelGenerator : MonoBehaviour {
         Vector3 position = startingPosition;
 
         // Spawn the first section
-        GameObject firstPrefab = Instantiate(sectionPrefabs[Random.Range(0, sectionPrefabs.Length)], position, Quaternion.identity);
+        GameObject firstPrefab = Instantiate(startPrefab, position, Quaternion.identity);
         CopyTilesToMasterTilemap(firstPrefab.GetComponent<Tilemap>(), Vector3Int.zero);
         occupiedSpaces.Add(WorldToPieceGrid(Vector2.zero));
 
