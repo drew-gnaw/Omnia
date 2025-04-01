@@ -4768,6 +4768,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1693335491777310559}
+  - component: {fileID: 6462338608596729989}
   m_Layer: 3
   m_Name: Connector 1
   m_TagString: Connector
@@ -4790,6 +4791,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3365929233352645053}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6462338608596729989
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2521730338141531668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cc7842913ec4991b57ba8eb4e03a839, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  connectorType: 3
 --- !u!1 &3295027256254640825
 GameObject:
   m_ObjectHideFlags: 0
@@ -4799,6 +4813,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 442199900336606651}
+  - component: {fileID: 1063588073839747454}
   m_Layer: 3
   m_Name: Connector 2
   m_TagString: Connector
@@ -4821,3 +4836,16 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3365929233352645053}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1063588073839747454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3295027256254640825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cc7842913ec4991b57ba8eb4e03a839, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  connectorType: 0
