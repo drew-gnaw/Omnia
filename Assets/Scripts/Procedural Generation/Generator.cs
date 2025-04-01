@@ -5,12 +5,12 @@ using System.Collections.Generic;
 
 public class LevelGenerator : MonoBehaviour
 {
-    public Tilemap masterTilemap; // Your main Tilemap
-    public GameObject[] sectionPrefabs; // Your Tilemap prefabs (tunnel, room, etc.)
-    public Vector3Int startingPosition; // Where to start placing sections
+    public Tilemap masterTilemap; // The main Tilemap
+    public GameObject[] sectionPrefabs; // Prefabs containing tilemap sections (tunnels, rooms, etc.)
+    public Vector3Int startingPosition; // Initial position to start generation
 
-    // Set to store the positions of already connected connectors
-    private HashSet<Vector3Int> connectedPositions = new HashSet<Vector3Int>();
+    private List<Connector> openConnectors = new List<Connector>(); // List of currently open connectors
+    private HashSet<Vector3Int> occupiedPositions = new HashSet<Vector3Int>(); // Track used positions
 
     void Start()
     {
@@ -20,114 +20,97 @@ public class LevelGenerator : MonoBehaviour
     void GenerateLevel()
     {
         Vector3Int position = startingPosition;
-        GameObject previousPrefab = null;
 
-        // Loop to instantiate and place sections
-        for (int i = 0; i < 10; i++) // Example: Generate 10 sections
+        // Spawn the first section
+        GameObject firstPrefab = Instantiate(sectionPrefabs[Random.Range(0, sectionPrefabs.Length)], position, Quaternion.identity);
+        Connector[] firstConnectors = FindConnectors(firstPrefab);
+
+        // Add its connectors to the open list
+        foreach (Connector conn in firstConnectors)
         {
-            // Choose a random prefab to place
-            GameObject selectedPrefab = sectionPrefabs[Random.Range(0, sectionPrefabs.Length)];
+            openConnectors.Add(conn);
+        }
 
-            // Instantiate the Tilemap prefab
-            GameObject instantiatedPrefab = Instantiate(selectedPrefab, position, Quaternion.identity);
-
-            // Get the connectors of the current prefab
-            Connector[] connectors = FindConnectors(instantiatedPrefab);
-
-            // If connectors are found, choose one and set the position for the next section
-            if (connectors.Length > 0)
+        for (int i = 1; i < 10; i++) // Example: generate 10 sections
+        {
+            if (openConnectors.Count == 0)
             {
-                // Choose a connector to connect with the previous section's exit
-                Connector selectedConnector = ChooseConnector(connectors, previousPrefab);
-
-                // Move the new section's position to match the connector
-                Vector3Int connectorPositionInt = Vector3Int.RoundToInt(selectedConnector.transform.localPosition);
-                position += 4 * connectorPositionInt;
-
-                // Check if the new position has already been connected
-                if (connectedPositions.Contains(position))
-                {
-                    Debug.LogWarning("Position already connected. Skipping.");
-                    continue; // Skip this iteration to avoid generating on an already connected position
-                }
-
-                // Add the position of the new connector to the set of connected positions
-                connectedPositions.Add(position);
-                Debug.Log("We are connecting " + previousPrefab?.name + " to " + selectedPrefab.name);
-                Debug.Log("New position after connector: " + position);
-            }
-            else
-            {
-                Debug.LogWarning("No connectors found in prefab: " + selectedPrefab.name);
+                Debug.LogWarning("No open connectors left. Stopping generation.");
+                break;
             }
 
-            // Access the Tilemap component of the instantiated prefab
+            // Choose a random open connector to build from
+            Connector chosenConnector = openConnectors[Random.Range(0, openConnectors.Count)];
+            Vector3Int chosenPosition = Vector3Int.RoundToInt(chosenConnector.transform.position);
+
+            // Find a valid prefab that has a compatible connector
+            GameObject selectedPrefab = GetValidPrefab(chosenConnector.connectorType, out Connector matchingConnector);
+
+            if (selectedPrefab == null)
+            {
+                Debug.LogWarning("No valid prefab found for connector type: " + chosenConnector.connectorType);
+                openConnectors.Remove(chosenConnector);
+                continue;
+            }
+
+            // Instantiate the new prefab and align it properly
+            GameObject instantiatedPrefab = Instantiate(selectedPrefab, chosenPosition, Quaternion.identity);
+            Vector3Int newConnectorPosition = Vector3Int.RoundToInt(matchingConnector.transform.position);
+            Vector3Int offset = chosenPosition - newConnectorPosition;
+            instantiatedPrefab.transform.position += (Vector3)offset;
+
+            // Copy the tiles to the master tilemap
             Tilemap tilemap = instantiatedPrefab.GetComponent<Tilemap>();
+            CopyTilesToMasterTilemap(tilemap, offset);
 
-            // Copy the tiles from the prefab's Tilemap to the master Tilemap
-            CopyTilesToMasterTilemap(tilemap, position);
-
-            // Update previousPrefab to the current prefab for the next iteration
-            previousPrefab = selectedPrefab;
+            // Remove the used connector and add new ones
+            openConnectors.Remove(chosenConnector);
+            Connector[] newConnectors = FindConnectors(instantiatedPrefab);
+            foreach (Connector conn in newConnectors)
+            {
+                if (conn != matchingConnector) // Don't add the used connector
+                {
+                    openConnectors.Add(conn);
+                }
+            }
         }
     }
 
-    // Method to find all connectors (child objects with the Connector script attached)
+    // Find all connectors in a prefab
     Connector[] FindConnectors(GameObject prefab)
     {
-        // Find all child objects that have the Connector script attached
         return prefab.GetComponentsInChildren<Connector>();
     }
 
-    // Method to choose the right connector (logic based on connector types)
-    Connector ChooseConnector(Connector[] connectors, GameObject previousPrefab)
+    // Find a valid prefab that has a connector matching the required type
+    GameObject GetValidPrefab(ConnectorType requiredType, out Connector matchingConnector)
     {
-        // If this is the first piece, just return the first connector
-        if (previousPrefab == null) {
-            return connectors[0];
-        }
-
-        // For simplicity, let's assume we're picking the first connector that matches the type of the previous section's exit.
-        Connector previousConnector = previousPrefab.GetComponentInChildren<Connector>();
-
-        // Example: If the previous connector is "L", pick a "R" connector to match
-        foreach (Connector connector in connectors)
+        foreach (GameObject prefab in sectionPrefabs)
         {
-            if (CanConnect(connector, previousConnector))
+            Connector[] connectors = FindConnectors(prefab);
+            foreach (Connector conn in connectors)
             {
-                return connector;
+                if (conn.connectorType == Connector.GetCompatibleConnectorType(requiredType))
+                {
+                    matchingConnector = conn;
+                    return prefab;
+                }
             }
         }
 
-        // If no valid connector found, choose a random one (you can improve this logic)
-        return connectors[Random.Range(0, connectors.Length)];
+        matchingConnector = null;
+        return null;
     }
 
-    // Method to check if two connectors can connect based on their types
-    bool CanConnect(Connector current, Connector previous)
+    // Copy tiles to the master tilemap
+    void CopyTilesToMasterTilemap(Tilemap tilemap, Vector3Int positionOffset)
     {
-        if (current.connectorType == ConnectorType.L && previous.connectorType == ConnectorType.R)
-            return true;
-        if (current.connectorType == ConnectorType.R && previous.connectorType == ConnectorType.L)
-            return true;
-        if (current.connectorType == ConnectorType.T && previous.connectorType == ConnectorType.B)
-            return true;
-        if (current.connectorType == ConnectorType.B && previous.connectorType == ConnectorType.T)
-            return true;
-
-        return false; // No connection
-    }
-
-    // Method to copy the tiles from the prefab Tilemap to the master Tilemap
-    void CopyTilesToMasterTilemap(Tilemap tilemap, Vector3Int position)
-    {
-        // Loop through all tiles in the prefab Tilemap and copy them to the master Tilemap
         foreach (var pos in tilemap.cellBounds.allPositionsWithin)
         {
             TileBase tile = tilemap.GetTile(pos);
             if (tile != null)
             {
-                masterTilemap.SetTile(position + pos, tile);
+                masterTilemap.SetTile(positionOffset + pos, tile);
             }
         }
     }
