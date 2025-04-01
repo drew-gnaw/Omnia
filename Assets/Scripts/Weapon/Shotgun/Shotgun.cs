@@ -176,7 +176,7 @@ public class Shotgun : WeaponClass {
     }
 
     private float DamageDropOff(float distance) {
-        return Mathf.Max((1 - distance / range), 0);
+        return Mathf.Max(Mathf.Sqrt(1 - distance / range), 0);
     }
 
     private void HandleMuzzleFlash() {

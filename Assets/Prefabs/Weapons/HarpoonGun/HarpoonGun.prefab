@@ -90,15 +90,13 @@ MonoBehaviour:
   damage: 35
   attackCooldown: 0
   damageToFlowRatio: 1
-  critChance: 0.3
-  critMultiplier: 2
   maxAmmoCount: 3
   harpoonVelocity: 30
   harpoonSpearGravityScale: 1
   harpoonSpearPickupCooldown: 0.3
   collectionRadius: 1
   harpoonTimer: 10
-  spearReturnSpeed: 10
+  spearReturnSpeed: 16
   pullPower: 1000
   harpoonSpearPrefab: {fileID: 3775420795739930932, guid: 3287e05fa4feefa43b2d14e7d0d7e6de, type: 3}
   muzzleFlash: {fileID: 6478827744998899019, guid: 5c1d26ac08878403a9f939737580c811, type: 3}
