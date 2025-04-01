@@ -22,7 +22,7 @@ namespace NPC.Dinky {
 
         public static readonly int BrownWalkTrigger = Animator.StringToHash("BrownWalk");
         public static readonly int BrownIdleTrigger = Animator.StringToHash("BrownIdle");
-        public static readonly int BrownDisappearTrigger = Animator.StringToHash("BrownDisappear");
+        public static readonly int BrownDisappearTrigger = Animator.StringToHash("BrownBurrow");
 
         public static event Action OnInteract;
         private Coroutine walkCoroutine;
@@ -58,6 +58,13 @@ namespace NPC.Dinky {
             } else {
                 animator.SetTrigger(DisappearTrigger);
             }
+            StartCoroutine(WaitForAnimation());
+        }
+
+        private IEnumerator WaitForAnimation() {
+            AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+            yield return new WaitForSeconds(stateInfo.length); // Wait for the animation duration
+            gameObject.SetActive(false);
         }
 
         public void Interact() {

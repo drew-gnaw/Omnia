@@ -29,6 +29,7 @@ namespace Scenes {
         private int dummiesHit = 0;
 
         private void Start() {
+            dinky.TurnBrown(true);
             List<Dummy> dummies = new() { dummy1, dummy2, dummy3, dummy4, dummy5 };
             foreach (var dummy in dummies) {
                 if (dummy == null) {
@@ -46,7 +47,6 @@ namespace Scenes {
         private IEnumerator BeginSequence() {
             AudioManager.Instance.SwitchBGM(AudioTracks.SunkBeneath);
 
-            dinky.Appear(dinkyAppearTransform);
             yield return new WaitForSeconds(1.5f);
             yield return StartCoroutine(DialogueManager.Instance.StartDialogue(beginDialogue.Dialogue));
 
