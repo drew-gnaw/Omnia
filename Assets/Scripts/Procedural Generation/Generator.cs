@@ -6,7 +6,13 @@ using System.Linq;
 
 public class LevelGenerator : MonoBehaviour {
     public Tilemap masterTilemap; // The main Tilemap
-    public GameObject startPrefab; // The starting piece. It should have exactly one connector.
+    [SerializeField] private GameObject startPrefab; // The starting piece. It should have exactly one connector.
+    [SerializeField] private GameObject endPieceUp;
+    [SerializeField] private GameObject endPieceDown;
+    [SerializeField] private GameObject endPieceLeft;
+    [SerializeField] private GameObject endPieceRight;
+
+
     public GameObject[] sectionPrefabs; // Prefabs containing tilemap sections (tunnels, rooms, etc.)
     public Vector3Int startingPosition; // Initial position to start generation
 
@@ -104,6 +110,31 @@ public class LevelGenerator : MonoBehaviour {
         }
 
         // generate the end section
+        if (openConnectors.Count > 0) {
+            Connector lastConnector = openConnectors[0]; // The last remaining open connector
+            Vector3 lastPosition = lastConnector.transform.position;
+
+            // Choose the appropriate end piece based on connector type
+            GameObject endPiecePrefab = GetEndPiecePrefab(lastConnector.connectorType);
+
+            if (endPiecePrefab != null) {
+                // Instantiate and align the end piece
+                GameObject endPiece = Instantiate(endPiecePrefab, lastPosition, Quaternion.identity);
+
+                // Find its single connector (to align it properly)
+                Connector endConnector = FindConnectors(endPiece).FirstOrDefault();
+                if (endConnector != null) {
+                    Vector3 offset = lastPosition - endConnector.transform.position;
+                    endPiece.transform.position += offset * 3;
+                }
+
+                // Copy tiles from the end piece to the master tilemap
+                CopyTilesToMasterTilemap(endPiece.GetComponent<Tilemap>(), Vector3Int.RoundToInt(endPiece.transform.position));
+
+                // Mark space as occupied
+                occupiedSpaces.Add(WorldToPieceGrid(endPiece.transform.position));
+            }
+        }
     }
 
     // Find all connectors in a prefab
@@ -177,5 +208,15 @@ public class LevelGenerator : MonoBehaviour {
     bool IsPieceSpaceAvailable(Vector3 worldPosition) {
         Vector2Int pieceGridPos = WorldToPieceGrid(worldPosition);
         return !occupiedSpaces.Contains(pieceGridPos);
+    }
+
+    GameObject GetEndPiecePrefab(ConnectorType connectorType) {
+        switch (connectorType) {
+            case ConnectorType.T: return endPieceDown;
+            case ConnectorType.B: return endPieceUp;
+            case ConnectorType.L: return endPieceRight;
+            case ConnectorType.R: return endPieceLeft;
+            default: return null;
+        }
     }
 }
