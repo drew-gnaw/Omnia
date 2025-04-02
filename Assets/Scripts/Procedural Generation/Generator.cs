@@ -25,6 +25,7 @@ public class LevelGenerator : MonoBehaviour {
 
     private List<Connector> openConnectors = new List<Connector>(); // List of currently open connectors
     private List<Vector3> groundSpawnPoints = new List<Vector3>();
+    private List<Vector3> airSpawnPoints = new List<Vector3>();
     private HashSet<Vector2Int> occupiedSpaces = new HashSet<Vector2Int>();
 
     private Vector3 endPosition;
@@ -121,7 +122,8 @@ public class LevelGenerator : MonoBehaviour {
             foreach (EnemySpawnPoint spawnPoint in foundPoints) {
                 if (spawnPoint.type == SpawnPointType.Ground) {
                     groundSpawnPoints.Add(spawnPoint.transform.position + instantiatedPrefab.transform.position);
-
+                } else if (spawnPoint.type == SpawnPointType.Air) {
+                    airSpawnPoints.Add(spawnPoint.transform.position + instantiatedPrefab.transform.position);
                 }
             }
 
@@ -156,11 +158,23 @@ public class LevelGenerator : MonoBehaviour {
             }
         }
 
-        StartCoroutine(SpawnEnemies(10, startingPosition, endPosition));
+        StartCoroutine(SpawnEnemiesWithAStar(10, startingPosition, endPosition));
+        SpawnEnemiesAtPoints();
+    }
+
+    private void SpawnEnemiesAtPoints() {
+        foreach (Vector3 spawnPoint in groundSpawnPoints) {
+            // i dont know why the shit is scaled by 4 LOL
+            SpawnGroundEnemy(spawnPoint / 4);
+        }
+
+        foreach (Vector3 spawnPoint in airSpawnPoints) {
+            SpawnAirEnemy(spawnPoint / 4);
+        }
     }
 
 
-    public IEnumerator SpawnEnemies(int enemyCount, Vector3 startPoint, Vector3 endPoint)
+    public IEnumerator SpawnEnemiesWithAStar(int enemyCount, Vector3 startPoint, Vector3 endPoint)
     {
         yield return new WaitForEndOfFrame();
         Pathfinder.Instance.UpdateTilemap();
@@ -178,16 +192,24 @@ public class LevelGenerator : MonoBehaviour {
         for (int i = 0; i < enemyCount; i++)
         {
             int index = Mathf.FloorToInt((float)i / enemyCount * (path.Count - 1));
-            if (Random.value < .5f) {
-                Debug.Log("Armadillo time");
-                Instantiate(armadilloPrefab, path[index], Quaternion.identity);
-            } else {
-                Debug.Log("Crab time");
-                Instantiate(crabPrefab, path[index], Quaternion.identity);
-            }
+            SpawnGroundEnemy(path[index]);
         }
 
         Debug.Log($"Spawned {enemyCount} enemies along the path.");
+    }
+
+    private void SpawnGroundEnemy(Vector3 location) {
+        if (Random.value < .5f) {
+            Debug.Log("Armadillo time");
+            Instantiate(armadilloPrefab, location, Quaternion.identity);
+        } else {
+            Debug.Log("Crab time");
+            Instantiate(crabPrefab, location, Quaternion.identity);
+        }
+    }
+
+    private void SpawnAirEnemy(Vector3 location) {
+        Instantiate(birdPrefab, location, Quaternion.identity);
     }
 
     // Find all connectors in a prefab
