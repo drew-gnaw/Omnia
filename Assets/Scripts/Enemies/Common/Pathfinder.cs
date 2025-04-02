@@ -41,6 +41,7 @@ namespace Enemies.Common {
         }
 
         private List<Vector3> DoFindPath(Vector3 a, Vector3 b) {
+            Debug.Log("Pathfinder: length of tiles: " + tiles.Length);
             if (tiles.Length == 0) return new List<Vector3>();
             var basis = tiles[0];
 

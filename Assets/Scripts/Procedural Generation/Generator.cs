@@ -1,3 +1,4 @@
+using System.Collections;
 using Procedural_Generation;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -100,8 +101,6 @@ public class LevelGenerator : MonoBehaviour {
 
             Tilemap secondTilemap = instantiatedPrefab.GetComponent<Tilemap>();
 
-            Debug.Log("Tilemap for " + instantiatedPrefab.name + " has size " + secondTilemap.size);
-
             CopyTilesToMasterTilemap(secondTilemap, Vector3Int.RoundToInt(instantiatedPrefab.transform.position));
 
             occupiedSpaces.Add(WorldToPieceGrid(instantiatedPrefab.transform.position));
@@ -126,7 +125,6 @@ public class LevelGenerator : MonoBehaviour {
                 }
             }
 
-            Debug.Log("there are " + groundSpawnPoints.Count + " spawnpoints");
         }
 
         // generate the end section
@@ -158,17 +156,18 @@ public class LevelGenerator : MonoBehaviour {
             }
         }
 
-        SpawnEnemies(10, startingPosition, endPosition);
+        StartCoroutine(SpawnEnemies(10, startingPosition, endPosition));
     }
 
-    public void SpawnEnemies(int enemyCount, Vector3 startPoint, Vector3 endPoint)
+
+    public IEnumerator SpawnEnemies(int enemyCount, Vector3 startPoint, Vector3 endPoint)
     {
-        //Pathfinder.Instance.UpdateTilemap();
+        yield return new WaitForEndOfFrame();
+        Pathfinder.Instance.UpdateTilemap();
         List<Vector3> path = Pathfinder.FindPath(startPoint, endPoint);
         if (path.Count == 0)
         {
             Debug.LogWarning("No valid path found for enemy spawning!");
-            return;
         }
 
         for (int i = 0; i < path.Count - 1; i++)
@@ -239,9 +238,7 @@ public class LevelGenerator : MonoBehaviour {
     void ShufflePrefabs(GameObject[] prefabs) {
         for (int i = prefabs.Length - 1; i > 0; i--) {
             int randomIndex = Random.Range(0, i + 1);
-            GameObject temp = prefabs[i];
-            prefabs[i] = prefabs[randomIndex];
-            prefabs[randomIndex] = temp;
+            (prefabs[i], prefabs[randomIndex]) = (prefabs[randomIndex], prefabs[i]);
         }
     }
 
