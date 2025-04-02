@@ -192,6 +192,8 @@ public class LevelGenerator : MonoBehaviour {
         for (int i = 0; i < enemyCount; i++)
         {
             int index = Mathf.FloorToInt((float)i / enemyCount * (path.Count - 1));
+
+            if (Vector3.Distance(path[index], Vector3.zero) < 3f || Vector3.Distance(path[index], endPoint) < 3f) continue;
             SpawnGroundEnemy(path[index]);
         }
 
