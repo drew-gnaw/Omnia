@@ -308,3 +308,13 @@ public class Level_Credits : LevelData {
     public override LevelData NextLevel => Get<Title>();
     public override LevelData PrevLevel => Get<Level_B_E>();
 }
+
+// --------- DESCENT MODE --------- //
+
+public class Level_1 : LevelData {
+    public override string PlainName => "Level 1";
+    public override string SceneName => "Level 1";
+    public override LevelType Type => LevelType.Normal;
+    public override LevelData NextLevel => Get<Level_1>();
+    public override LevelData PrevLevel => Get<Level_1>();
+}

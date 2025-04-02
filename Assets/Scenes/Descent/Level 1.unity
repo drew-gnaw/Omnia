@@ -508,7 +508,7 @@ GameObject:
   - component: {fileID: 1399571590}
   - component: {fileID: 1399571589}
   - component: {fileID: 1399571588}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Semisolid Tilemap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1291,9 +1291,25 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7007707993195197160, guid: f6037194ff8ed2f43bd68c853ce2e8f9, type: 3}
+      propertyPath: birdPrefab
+      value: 
+      objectReference: {fileID: 5710193498280292276, guid: b1961d03c1fff419ca277115aafff06c, type: 3}
+    - target: {fileID: 7007707993195197160, guid: f6037194ff8ed2f43bd68c853ce2e8f9, type: 3}
+      propertyPath: crabPrefab
+      value: 
+      objectReference: {fileID: 9099885695447254681, guid: 3d917830cfb39914f9863cf5a8cfd91d, type: 3}
+    - target: {fileID: 7007707993195197160, guid: f6037194ff8ed2f43bd68c853ce2e8f9, type: 3}
+      propertyPath: sundewPrefab
+      value: 
+      objectReference: {fileID: 5710193498280292276, guid: 784cabab73d374cf19936fa720cd4d25, type: 3}
+    - target: {fileID: 7007707993195197160, guid: f6037194ff8ed2f43bd68c853ce2e8f9, type: 3}
       propertyPath: masterTilemap
       value: 
       objectReference: {fileID: 1545538710}
+    - target: {fileID: 7007707993195197160, guid: f6037194ff8ed2f43bd68c853ce2e8f9, type: 3}
+      propertyPath: armadilloPrefab
+      value: 
+      objectReference: {fileID: 5710193498280292276, guid: 6f3a6004e073d451da5cfcfe0449ce25, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
