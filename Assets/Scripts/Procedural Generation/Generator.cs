@@ -3,8 +3,14 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.Collections.Generic;
 using System.Linq;
+using Enemies.Common;
 
 public class LevelGenerator : MonoBehaviour {
+    [SerializeField] private GameObject armadilloPrefab;
+    [SerializeField] private GameObject crabPrefab;
+    [SerializeField] private GameObject birdPrefab;
+    [SerializeField] private GameObject sundewPrefab;
+
     public Tilemap masterTilemap; // The main Tilemap
     [SerializeField] private GameObject startPrefab; // The starting piece. It should have exactly one connector.
     [SerializeField] private GameObject endPieceUp;
@@ -17,7 +23,10 @@ public class LevelGenerator : MonoBehaviour {
     public Vector3Int startingPosition; // Initial position to start generation
 
     private List<Connector> openConnectors = new List<Connector>(); // List of currently open connectors
+    private List<Vector3> groundSpawnPoints = new List<Vector3>();
     private HashSet<Vector2Int> occupiedSpaces = new HashSet<Vector2Int>();
+
+    private Vector3 endPosition;
 
     [SerializeField] internal int pieceWidth = 24;
     [SerializeField] internal int pieceHeight = 12;
@@ -107,6 +116,17 @@ public class LevelGenerator : MonoBehaviour {
                     break; // Only add one connector (the non-matching one)
                 }
             }
+
+            EnemySpawnPoint[] foundPoints = FindSpawnPoints(instantiatedPrefab);
+
+            foreach (EnemySpawnPoint spawnPoint in foundPoints) {
+                if (spawnPoint.type == SpawnPointType.Ground) {
+                    groundSpawnPoints.Add(spawnPoint.transform.position + instantiatedPrefab.transform.position);
+
+                }
+            }
+
+            Debug.Log("there are " + groundSpawnPoints.Count + " spawnpoints");
         }
 
         // generate the end section
@@ -131,16 +151,56 @@ public class LevelGenerator : MonoBehaviour {
                 // Copy tiles from the end piece to the master tilemap
                 CopyTilesToMasterTilemap(endPiece.GetComponent<Tilemap>(), Vector3Int.RoundToInt(endPiece.transform.position));
 
+                endPosition = endPiece.transform.position / 2;
+
                 // Mark space as occupied
                 occupiedSpaces.Add(WorldToPieceGrid(endPiece.transform.position));
             }
         }
+
+        SpawnEnemies(10, startingPosition, endPosition);
+    }
+
+    public void SpawnEnemies(int enemyCount, Vector3 startPoint, Vector3 endPoint)
+    {
+        //Pathfinder.Instance.UpdateTilemap();
+        List<Vector3> path = Pathfinder.FindPath(startPoint, endPoint);
+        if (path.Count == 0)
+        {
+            Debug.LogWarning("No valid path found for enemy spawning!");
+            return;
+        }
+
+        for (int i = 0; i < path.Count - 1; i++)
+        {
+            Debug.DrawLine(path[i], path[i + 1], Color.green, 99f);
+        }
+
+        for (int i = 0; i < enemyCount; i++)
+        {
+            int index = Mathf.FloorToInt((float)i / enemyCount * (path.Count - 1));
+            if (Random.value < .5f) {
+                Debug.Log("Armadillo time");
+                Instantiate(armadilloPrefab, path[index], Quaternion.identity);
+            } else {
+                Debug.Log("Crab time");
+                Instantiate(crabPrefab, path[index], Quaternion.identity);
+            }
+        }
+
+        Debug.Log($"Spawned {enemyCount} enemies along the path.");
     }
 
     // Find all connectors in a prefab
     Connector[] FindConnectors(GameObject prefab) {
         return prefab.GetComponentsInChildren<Connector>();
     }
+
+
+    EnemySpawnPoint[] FindSpawnPoints(GameObject prefab) {
+        return prefab.GetComponentsInChildren<EnemySpawnPoint>();
+    }
+
 
     // Find a valid prefab that has a connector matching the required type
     GameObject GetCompatiblePrefab(ConnectorType requiredType, Vector3 position) {
