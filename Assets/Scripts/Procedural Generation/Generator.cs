@@ -16,8 +16,7 @@ public class LevelGenerator : MonoBehaviour {
     [SerializeField] internal int pieceWidth = 24;
     [SerializeField] internal int pieceHeight = 12;
 
-    Vector2Int WorldToPieceGrid(Vector3 position)
-    {
+    Vector2Int WorldToPieceGrid(Vector3 position) {
         return new Vector2Int(Mathf.RoundToInt(position.x / (pieceWidth * 2)), Mathf.RoundToInt(position.y / (pieceHeight * 2)));
     }
 
@@ -42,21 +41,10 @@ public class LevelGenerator : MonoBehaviour {
             openConnectors.Add(conn);
         }
 
-        for (int i = 1; i < 20; i++) // Example: generate 10 sections
-        {
-            Debug.Log(occupiedSpaces.Count);
-            foreach (Vector2Int space in occupiedSpaces) {
-                Debug.Log(space);
-            }
-
+        for (int i = 1; i < 10; i++) {
             if (openConnectors.Count == 0) {
                 Debug.LogWarning("No open connectors left. Stopping generation.");
                 break;
-            }
-
-            Debug.Log("These are the connectors open on iteration " + i);
-            foreach (Connector conn in openConnectors) {
-                Debug.Log(conn.transform.position);
             }
 
             // Choose a random open connector to build from
@@ -114,6 +102,8 @@ public class LevelGenerator : MonoBehaviour {
                 }
             }
         }
+
+        // generate the end section
     }
 
     // Find all connectors in a prefab
@@ -122,21 +112,18 @@ public class LevelGenerator : MonoBehaviour {
     }
 
     // Find a valid prefab that has a connector matching the required type
-    GameObject GetCompatiblePrefab(ConnectorType requiredType, Vector3 position)
-    {
+    GameObject GetCompatiblePrefab(ConnectorType requiredType, Vector3 position) {
         GameObject[] shuffledPrefabs = (GameObject[])sectionPrefabs.Clone();
         ShufflePrefabs(shuffledPrefabs);
 
-        foreach (GameObject prefab in shuffledPrefabs)
-        {
+        foreach (GameObject prefab in shuffledPrefabs) {
             Connector[] connectors = FindConnectors(prefab);
             ShuffleConnectors(connectors);
 
             Connector matchingConnector = null;
             Connector exitConnector = null;
 
-            foreach (Connector conn in connectors)
-            {
+            foreach (Connector conn in connectors) {
                 if (conn.connectorType == Connector.GetCompatibleConnectorType(requiredType))
                     matchingConnector = conn;
                 else
@@ -149,11 +136,11 @@ public class LevelGenerator : MonoBehaviour {
             // Calculate exit piece space
             Vector3 exitWorldPosition = position + (exitConnector.transform.position - matchingConnector.transform.position) * 3;
 
-            if (IsPieceSpaceAvailable(exitWorldPosition))
-            {
+            if (IsPieceSpaceAvailable(exitWorldPosition)) {
                 return prefab;
             }
         }
+
         return null;
     }
 
@@ -187,8 +174,7 @@ public class LevelGenerator : MonoBehaviour {
         }
     }
 
-    bool IsPieceSpaceAvailable(Vector3 worldPosition)
-    {
+    bool IsPieceSpaceAvailable(Vector3 worldPosition) {
         Vector2Int pieceGridPos = WorldToPieceGrid(worldPosition);
         return !occupiedSpaces.Contains(pieceGridPos);
     }
