@@ -1,6 +1,7 @@
 using System.Collections;
 using Background;
 using Initializers;
+using Players;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -39,6 +40,7 @@ namespace Scenes {
         }
 
         public IEnumerator StartSequence() {
+            PlayerDataManager.Instance.warpedDepthsProgress = 1;
             yield return fadeScreen.FadeInDarkScreen(3f);
             LevelManager.Instance.NextLevel();
         }
