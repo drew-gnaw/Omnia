@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Players.Fragments {
     public class SheathObject : MonoBehaviour {
-        [SerializeField] private Animator animator;
+        [SerializeField] private ParticleSystem sheathEffect;
         public float damage;
         public float velocityThreshold;
 
@@ -12,24 +12,38 @@ namespace Players.Fragments {
         private bool active;
         private bool wasActive;
 
-        public static readonly int AppearTrigger = Animator.StringToHash("Appear");
-        public static readonly int DisappearTrigger = Animator.StringToHash("Disappear");
-
         private void Start() {
             player = GameObject.FindGameObjectWithTag("Player")?.GetComponent<Player>();
+            if (sheathEffect == null) {
+                Debug.LogWarning("Sheath Particle System is not assigned!");
+            }
         }
 
         private void Update() {
             bool shouldBeActive = player.rb.velocity.y < -velocityThreshold;
 
             if (shouldBeActive && !wasActive) {
-                animator.SetTrigger(AppearTrigger);
+                ActivateEffect();
             } else if (!shouldBeActive && wasActive) {
-                animator.SetTrigger(DisappearTrigger);
+                DeactivateEffect();
             }
 
             wasActive = shouldBeActive;
             active = shouldBeActive;
+        }
+
+        private void ActivateEffect() {
+            if (sheathEffect != null) {
+                sheathEffect.Play(); // Play particle effect
+            }
+            player.invulnerable = true;
+        }
+
+        private void DeactivateEffect() {
+            if (sheathEffect != null) {
+                sheathEffect.Stop(); // Stop particle effect
+            }
+            player.invulnerable = false;
         }
 
         private void OnTriggerEnter2D(Collider2D other) {
