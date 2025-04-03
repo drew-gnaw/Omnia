@@ -19,8 +19,11 @@ public class LevelGenerator : MonoBehaviour {
     [SerializeField] private GameObject endPieceLeft;
     [SerializeField] private GameObject endPieceRight;
 
-
     public GameObject[] sectionPrefabs; // Prefabs containing tilemap sections (tunnels, rooms, etc.)
+
+    [SerializeField] private GameObject entryDoorPrefab;
+    [SerializeField] private GameObject exitDoorPrefab;
+
     public Vector3Int startingPosition; // Initial position to start generation
 
     private List<Connector> openConnectors = new List<Connector>(); // List of currently open connectors
@@ -44,6 +47,9 @@ public class LevelGenerator : MonoBehaviour {
 
     void GenerateLevel() {
         Vector3 position = startingPosition;
+
+        // Spawn the entry door
+        Instantiate(entryDoorPrefab, startingPosition + new Vector3Int(0, 1, 0), Quaternion.identity);
 
         // Spawn the first section
         GameObject firstPrefab = Instantiate(startPrefab, position, Quaternion.identity);
