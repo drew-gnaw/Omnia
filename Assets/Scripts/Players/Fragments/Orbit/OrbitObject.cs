@@ -4,9 +4,9 @@ using UnityEngine;
 namespace Players.Fragments {
     public class OrbitObject : MonoBehaviour {
         [SerializeField] private GameObject orbitalPrefab;
-        [SerializeField] private int orbitalCount;
+        [SerializeField] public int orbitalCount;
         [SerializeField] private float orbitRadius;
-        [SerializeField] private float orbitSpeed;
+        [SerializeField] public float orbitSpeed;
         [SerializeField] private float damage;
 
         private GameObject[] orbitals;
