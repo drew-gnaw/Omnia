@@ -33,6 +33,14 @@ namespace Enemies {
             Spawn?.Invoke(this);
         }
 
+        // Used to make enemies stronger in Warped Depths.
+        public void Magnify(float factor) {
+            maximumHealth *= factor;
+            currentHealth *= factor;
+            attack = Mathf.Floor(attack * factor);
+        }
+
+
         /**
          * By default, the enemy will stagger upon taking damage.
          * If the specific enemies behaviour should not stagger or the damage applied should not stagger

@@ -4,7 +4,9 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.Collections.Generic;
 using System.Linq;
+using Enemies;
 using Enemies.Common;
+using Players;
 
 public class LevelGenerator : MonoBehaviour {
     [SerializeField] private GameObject armadilloPrefab;
@@ -175,23 +177,44 @@ public class LevelGenerator : MonoBehaviour {
             CopyTilesToMasterTilemap(instance.GetComponent<Tilemap>(), Vector3Int.RoundToInt(instance.transform.position));
         }
 
-        StartCoroutine(SpawnEnemiesWithAStar(10, startingPosition, endPosition));
-        SpawnEnemiesAtPoints();
+        float enemyDifficulty = CalculateEnemyDifficulty(PlayerDataManager.Instance.warpedDepthsProgress);
+
+        float enemyMagnification = CalculateEnemyMagnification(PlayerDataManager.Instance.warpedDepthsProgress);
+
+        StartCoroutine(SpawnEnemiesWithAStar(10, startingPosition, endPosition, enemyDifficulty, enemyMagnification));
+        SpawnEnemiesAtPoints(enemyDifficulty, enemyMagnification);
     }
 
-    private void SpawnEnemiesAtPoints() {
+    // returns a float between 0.3 and 1 representing the chance for any enemy spawn to actually happen.
+    // Scales linearly with progress, and reaches 1 past level 10.
+    private static float CalculateEnemyDifficulty(int progress) {
+        return Mathf.Clamp01(Mathf.Lerp(0.3f, 1f, (float)progress / 10));
+    }
+
+
+    // returns a float >=1 that represents the factor by which to multiply all enemy stats.
+    // Example: factor = 2 -> enemies have double health and damage.
+    // Enemy stats will grow exponentially, by doubling every three levels.
+    private static float CalculateEnemyMagnification(int progress) {
+        return Mathf.Pow(2f, progress / 3f);
+    }
+
+
+    private void SpawnEnemiesAtPoints(float probability, float magnification) {
         foreach (Vector3 spawnPoint in groundSpawnPoints) {
+            if (Random.value > probability) continue;
             // i dont know why the shit is scaled by 4 LOL
-            SpawnGroundEnemy(spawnPoint / 4);
+            SpawnGroundEnemy(spawnPoint / 4, magnification);
         }
 
         foreach (Vector3 spawnPoint in airSpawnPoints) {
-            SpawnAirEnemy(spawnPoint / 4);
+            if (Random.value > probability) continue;
+            SpawnAirEnemy(spawnPoint / 4, magnification);
         }
     }
 
 
-    public IEnumerator SpawnEnemiesWithAStar(int enemyCount, Vector3 startPoint, Vector3 endPoint) {
+    public IEnumerator SpawnEnemiesWithAStar(int enemyCount, Vector3 startPoint, Vector3 endPoint, float probability, float magnification) {
         yield return new WaitForEndOfFrame();
         Pathfinder.Instance.UpdateTilemap();
         List<Vector3> path = Pathfinder.FindPath(startPoint, endPoint);
@@ -207,20 +230,38 @@ public class LevelGenerator : MonoBehaviour {
             int index = Mathf.FloorToInt((float)i / enemyCount * (path.Count - 1));
 
             if (Vector3.Distance(path[index], Vector3.zero) < 3f || Vector3.Distance(path[index], endPoint) < 3f) continue;
-            SpawnGroundEnemy(path[index]);
+            // skip if random chance doesn't cooperate. we don't spawn unlucky enemies here
+            if (Random.value > probability) continue;
+            SpawnRandomEnemy(path[index], magnification);
         }
     }
 
-    private void SpawnGroundEnemy(Vector3 location) {
-        if (Random.value < .5f) {
-            Instantiate(armadilloPrefab, location, Quaternion.identity);
+    private void SpawnRandomEnemy(Vector3 location, float magnification) {
+        if (Random.value > 0.33f) {
+            SpawnGroundEnemy(location, magnification);
         } else {
-            Instantiate(crabPrefab, location, Quaternion.identity);
+            SpawnAirEnemy(location, magnification);
         }
     }
 
-    private void SpawnAirEnemy(Vector3 location) {
-        Instantiate(birdPrefab, location, Quaternion.identity);
+    private void SpawnGroundEnemy(Vector3 location, float magnification) {
+        GameObject instance;
+        if (Random.value < .5f) {
+             instance = Instantiate(armadilloPrefab, location, Quaternion.identity);
+
+        } else {
+            instance = Instantiate(crabPrefab, location, Quaternion.identity);
+        }
+
+        Enemy enemy = instance.GetComponent<Enemy>();
+        enemy.Magnify(magnification);
+    }
+
+    private void SpawnAirEnemy(Vector3 location, float magnification) {
+        GameObject instance = Instantiate(birdPrefab, location, Quaternion.identity);
+
+        Enemy enemy = instance.GetComponent<Enemy>();
+        enemy.Magnify(magnification);
     }
 
     // Find all connectors in a prefab
