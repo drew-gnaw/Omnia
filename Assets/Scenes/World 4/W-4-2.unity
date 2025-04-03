@@ -713,6 +713,14 @@ PrefabInstance:
       propertyPath: customLevelData.assemblyQualifiedName
       value: MainScene, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       objectReference: {fileID: 0}
+    - target: {fileID: 1630003175123073409, guid: ba0651d388999e445bd1aa17fce25842, type: 3}
+      propertyPath: m_Size.x
+      value: 1.9676198
+      objectReference: {fileID: 0}
+    - target: {fileID: 1630003175123073409, guid: ba0651d388999e445bd1aa17fce25842, type: 3}
+      propertyPath: m_Offset.x
+      value: -0.0028973222
+      objectReference: {fileID: 0}
     - target: {fileID: 6606181839919195947, guid: ba0651d388999e445bd1aa17fce25842, type: 3}
       propertyPath: m_LocalScale.x
       value: 2
@@ -727,7 +735,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6606181839919195947, guid: ba0651d388999e445bd1aa17fce25842, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 9.95
+      value: 10.82
       objectReference: {fileID: 0}
     - target: {fileID: 6606181839919195947, guid: ba0651d388999e445bd1aa17fce25842, type: 3}
       propertyPath: m_LocalPosition.z
