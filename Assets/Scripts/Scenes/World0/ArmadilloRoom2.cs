@@ -12,9 +12,13 @@ namespace Scenes {
         [SerializeField] private Transform fireFliesLocation;
         [SerializeField] private Collider2D fireFlyTrigger;
 
+        private bool fireFlyTriggered = false;
+
         private void OnTriggerEnter2D(Collider2D other) {
             if (other.GetComponent<Player>() == null) return;
-            GameplayAssistance.Instance.interval = 2;
+            if (fireFlyTriggered) return;
+            fireFlyTriggered = true;
+            GameplayAssistance.Instance.interval = 4;
             GameplayAssistance.SetPathHintTarget(fireFliesLocation);
         }
 
