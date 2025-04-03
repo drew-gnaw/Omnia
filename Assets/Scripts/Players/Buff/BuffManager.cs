@@ -9,7 +9,7 @@ namespace Players.Buff {
     public class BuffManager : PersistentSingleton<BuffManager> {
         private Player player;
         private List<Buff> activeBuffs = new List<Buff>();
-        private List<Fragment> fragmentPool = new List<Fragment>();
+        [SerializeField] private List<Fragment> fragmentPool = new List<Fragment>();
 
         protected override void OnAwake() {
             player = GameObject.FindGameObjectWithTag("Player")?.GetComponent<Player>();
@@ -71,6 +71,24 @@ namespace Players.Buff {
             if (fragments.Count > 0) {
                 fragmentPool.AddRange(fragments);
             }
+        }
+
+        public List<Fragment> GetRandomizedFragments(int fragmentCount) {
+            if (fragmentPool.Count == 0) {
+                Debug.LogWarning("Fragment pool is empty, cannot get fragments.");
+                return new List<Fragment>();
+            }
+
+            fragmentCount = Mathf.Min(fragmentCount, fragmentPool.Count);
+
+            List<Fragment> shuffledFragments = new List<Fragment>(fragmentPool);
+
+            for (int i = shuffledFragments.Count - 1; i > 0; i--) {
+                int randomIndex = UnityEngine.Random.Range(0, i + 1);
+                (shuffledFragments[i], shuffledFragments[randomIndex]) = (shuffledFragments[randomIndex], shuffledFragments[i]);
+            }
+
+            return shuffledFragments.GetRange(0, fragmentCount);
         }
     }
 }
