@@ -15,7 +15,7 @@ namespace UI {
         [SerializeField] internal int take;
         [SerializeField] internal float step;
         [SerializeField] internal float interval;
-        [SerializeField] internal bool repeat;
+        [SerializeField] internal bool repeat = true;
         [SerializeField] internal Transform debugTransform;
 
         private Coroutine co;
