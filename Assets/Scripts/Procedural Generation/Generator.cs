@@ -18,6 +18,7 @@ public class LevelGenerator : MonoBehaviour {
     [SerializeField] private GameObject endPieceDown;
     [SerializeField] private GameObject endPieceLeft;
     [SerializeField] private GameObject endPieceRight;
+    [SerializeField] private GameObject fillerPrefab;
 
     public GameObject[] sectionPrefabs; // Prefabs containing tilemap sections (tunnels, rooms, etc.)
 
@@ -132,7 +133,6 @@ public class LevelGenerator : MonoBehaviour {
                     airSpawnPoints.Add(spawnPoint.transform.position + instantiatedPrefab.transform.position);
                 }
             }
-
         }
 
         // generate the end section
@@ -164,6 +164,15 @@ public class LevelGenerator : MonoBehaviour {
             }
         }
 
+        // Wrap the generated level with filler pieces on all sides.
+        var neighbours = new List<Vector2Int> { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right, Vector2Int.up + Vector2Int.left, Vector2Int.up + Vector2Int.right, Vector2Int.down + Vector2Int.left, Vector2Int.down + Vector2Int.right };
+        foreach (var instance in occupiedSpaces.SelectMany(space =>
+                     from offset in neighbours select space + offset
+                     into neighbour
+                     where !occupiedSpaces.Contains(neighbour) select Instantiate(fillerPrefab, new Vector3(neighbour.x * pieceWidth * 2, neighbour.y * pieceHeight * 2, 0), Quaternion.identity))) {
+            CopyTilesToMasterTilemap(instance.GetComponent<Tilemap>(), Vector3Int.RoundToInt(instance.transform.position));
+        }
+
         StartCoroutine(SpawnEnemiesWithAStar(10, startingPosition, endPosition));
         SpawnEnemiesAtPoints();
     }
@@ -180,29 +189,24 @@ public class LevelGenerator : MonoBehaviour {
     }
 
 
-    public IEnumerator SpawnEnemiesWithAStar(int enemyCount, Vector3 startPoint, Vector3 endPoint)
-    {
+    public IEnumerator SpawnEnemiesWithAStar(int enemyCount, Vector3 startPoint, Vector3 endPoint) {
         yield return new WaitForEndOfFrame();
         Pathfinder.Instance.UpdateTilemap();
         List<Vector3> path = Pathfinder.FindPath(startPoint, endPoint);
-        if (path.Count == 0)
-        {
+        if (path.Count == 0) {
             Debug.LogWarning("No valid path found for enemy spawning!");
         }
 
-        for (int i = 0; i < path.Count - 1; i++)
-        {
+        for (int i = 0; i < path.Count - 1; i++) {
             Debug.DrawLine(path[i], path[i + 1], Color.green, 99f);
         }
 
-        for (int i = 0; i < enemyCount; i++)
-        {
+        for (int i = 0; i < enemyCount; i++) {
             int index = Mathf.FloorToInt((float)i / enemyCount * (path.Count - 1));
 
             if (Vector3.Distance(path[index], Vector3.zero) < 3f || Vector3.Distance(path[index], endPoint) < 3f) continue;
             SpawnGroundEnemy(path[index]);
         }
-
     }
 
     private void SpawnGroundEnemy(Vector3 location) {
