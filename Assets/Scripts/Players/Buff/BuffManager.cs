@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Players.Fragments;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Utils;
@@ -8,6 +9,7 @@ namespace Players.Buff {
     public class BuffManager : PersistentSingleton<BuffManager> {
         private Player player;
         private List<Buff> activeBuffs = new List<Buff>();
+        private List<Fragment> fragmentPool = new List<Fragment>();
 
         protected override void OnAwake() {
             player = GameObject.FindGameObjectWithTag("Player")?.GetComponent<Player>();
@@ -62,6 +64,12 @@ namespace Players.Buff {
             foreach (Buff buff in activeBuffs) {
                 buff.Initialize(player);
                 buff.ApplyBuff();
+            }
+        }
+
+        public void AddFragmentsToPool(List<Fragment> fragments) {
+            if (fragments.Count > 0) {
+                fragmentPool.AddRange(fragments);
             }
         }
     }

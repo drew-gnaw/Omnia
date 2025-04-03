@@ -203,15 +203,12 @@ public class LevelGenerator : MonoBehaviour {
             SpawnGroundEnemy(path[index]);
         }
 
-        Debug.Log($"Spawned {enemyCount} enemies along the path.");
     }
 
     private void SpawnGroundEnemy(Vector3 location) {
         if (Random.value < .5f) {
-            Debug.Log("Armadillo time");
             Instantiate(armadilloPrefab, location, Quaternion.identity);
         } else {
-            Debug.Log("Crab time");
             Instantiate(crabPrefab, location, Quaternion.identity);
         }
     }
