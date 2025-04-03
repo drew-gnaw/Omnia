@@ -162,6 +162,8 @@ public class LevelGenerator : MonoBehaviour {
                 // Mark space as occupied
                 occupiedSpaces.Add(WorldToPieceGrid(endPiece.transform.position));
             }
+
+            Instantiate(exitDoorPrefab, endPosition += new Vector3(0, 2, 0), Quaternion.identity);
         }
 
         // Wrap the generated level with filler pieces on all sides.
