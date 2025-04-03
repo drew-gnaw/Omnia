@@ -146,6 +146,7 @@ GameObject:
   - component: {fileID: 6633991464594173386}
   - component: {fileID: 589544735412314598}
   - component: {fileID: 7807706019605401278}
+  - component: {fileID: 4445114771298439106}
   m_Layer: 0
   m_Name: FragmentChoice
   m_TagString: Untagged
@@ -227,6 +228,19 @@ MonoBehaviour:
   fragmentImage: {fileID: 589544735412314598}
   title: {fileID: 4007577530107873763}
   description: {fileID: 5458039443181106288}
+--- !u!114 &4445114771298439106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6340079048267282273}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18c7688c4a923554b9cec7feff3455bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shouldHaveRandomOffset: 1
 --- !u!1 &8811650825330882499
 GameObject:
   m_ObjectHideFlags: 0
