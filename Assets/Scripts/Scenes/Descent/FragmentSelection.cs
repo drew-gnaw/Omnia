@@ -34,10 +34,12 @@ namespace Scenes {
 
             List<Fragment> fragmentOptions = BuffManager.Instance.GetRandomizedFragments(choices.Length);
 
-            int i = 0;
-            foreach (var choice in choices) {
-                choice.SetFragment(fragmentOptions[i++]);
+            int count = Mathf.Min(choices.Length, fragmentOptions.Count);
+
+            for (int i = 0; i < count; i++) {
+                choices[i].SetFragment(fragmentOptions[i]);
             }
+
         }
 
         public void StartLevel() {
