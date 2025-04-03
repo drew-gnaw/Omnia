@@ -12,10 +12,12 @@ namespace Scenes {
     public class WarpedDepths : MonoBehaviour
     {
         [SerializeField] private GameObject dustParent;
+        [SerializeField] private FadeScreenHandler fadeScreen;
 
         private Image[] dustImages;
 
         private void Start() {
+            fadeScreen.SetLightScreen();
             dustImages = dustParent.GetComponentsInChildren<Image>();
 
             foreach (var img in dustImages) {
@@ -31,32 +33,14 @@ namespace Scenes {
             LevelManager.Instance.PrevLevel();
         }
 
+        public void StartWarpedDepths() {
+            StartCoroutine(StartSequence());
 
-        public void GoToWorld(int worldNumber) {
-            switch (worldNumber) {
-                case 0:
-                    SceneInitializer.LoadScene("2_Opening");
-                    break;
-                case 1:
-                    SceneInitializer.LoadScene("W-1-2");
-                    break;
-                case 2:
-                    SceneInitializer.LoadScene("W-2-1");
-                    break;
-                case 3:
-                    SceneInitializer.LoadScene("W-3-1");
-                    break;
-                case 4:
-                    SceneInitializer.LoadScene("W-4-1");
-                    break;
-                case 5:
-                    SceneInitializer.LoadScene("W-B-B");
-                    break;
-                default:
-                    Debug.Log("Invalid world number");
-                    SceneInitializer.LoadScene("1_Title");
-                    break;
-            }
+        }
+
+        public IEnumerator StartSequence() {
+            yield return fadeScreen.FadeInDarkScreen(3f);
+            LevelManager.Instance.NextLevel();
         }
 
     }
