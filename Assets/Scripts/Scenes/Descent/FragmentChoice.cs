@@ -16,15 +16,16 @@ namespace Scenes.Descent {
 
         public void SetFragment(Fragment frag) {
             fragment = frag;
+            title.text = fragment.fragmentName;
+            description.text = fragment.description;
         }
 
         private void Start() {
             if (fragmentImage == null) {
                 fragmentImage = GetComponent<Image>();
             }
+
             originalColor = fragmentImage.color;
-            title.text = fragment.fragmentName;
-            description.text = fragment.description;
         }
 
         public void OnPointerEnter(PointerEventData eventData) {
