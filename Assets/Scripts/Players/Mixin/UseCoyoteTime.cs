@@ -5,6 +5,7 @@ namespace Players.Mixin {
     public class UseCoyoteTime : MonoBehaviour {
         [SerializeField] internal Player self;
         [SerializeField] internal float delay;
+        [SerializeField] internal float wallJumpDelay;
 
         private bool grounded;
         private Vector2 slide;
@@ -15,7 +16,7 @@ namespace Players.Mixin {
             var touching = slide.x != 0;
 
             gt = grounded ? delay : Mathf.Max(0, gt - Time.deltaTime);
-            st = touching ? delay : Mathf.Max(0, st - Time.deltaTime);
+            st = touching ? wallJumpDelay : Mathf.Max(0, st - Time.deltaTime);
             self.grounded = gt > 0;
             self.slide = st > 0 ? touching ? slide : self.slide : Vector2.zero;
         }
