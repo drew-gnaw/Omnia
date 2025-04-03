@@ -1110,6 +1110,50 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6579575483584205291, guid: 1c66e812644d07b4ca8f5d0ae6b741f9, type: 3}
   m_PrefabInstance: {fileID: 1357616859}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1578684680
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1578684682}
+  - component: {fileID: 1578684681}
+  m_Layer: 0
+  m_Name: Level Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1578684681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1578684680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 646316112b1e46c1b73bd3eca225a900, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1578684682
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1578684680}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -7.328502, y: -2.148044, z: 5.2830877}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1972708437
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1708,3 +1752,4 @@ SceneRoots:
   - {fileID: 879871372}
   - {fileID: 2013468701647424273}
   - {fileID: 8258894639563567290}
+  - {fileID: 1578684682}
