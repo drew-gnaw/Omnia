@@ -179,6 +179,8 @@ namespace Players {
         public static event Action<int> OnWeaponChanged;
         public static event Action<float> OnSkillCooldownUpdated;
 
+        public static event Action<float, Enemy> OnEnemyHit;
+
         public static event Action OnSkill;
 
         public static event Action<bool> OnBearEffectReady;
@@ -302,6 +304,7 @@ namespace Players {
             combatTimer.Start();
             if (!hasShotgun) return;
             CurrentFlow = Mathf.Min(CurrentFlow + (damage / damageMultiplier) * WeaponClass.damageToFlowRatio, maximumFlow);
+            OnEnemyHit?.Invoke(damage, enemy);
         }
 
         public void ConsumeAllFlow() {

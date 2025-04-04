@@ -31,6 +31,8 @@ public class PurpleArrow : MonoBehaviour {
         Vector3 direction = (target - transform.position).normalized;
         rb.velocity = direction * speed;
 
+        transform.right = (target - transform.position).normalized;
+
         if (Vector3.Distance(transform.position, target) < nodeThreshold) {
             currentIndex++;
         }
@@ -45,9 +47,8 @@ public class PurpleArrow : MonoBehaviour {
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
-        if (other.CompareTag("Enemy")) {
-            Destroy(gameObject);
-        }
+        Debug.Log(other.gameObject.name);
+        Destroy(gameObject);
     }
 
     private void OnDestroy() {
