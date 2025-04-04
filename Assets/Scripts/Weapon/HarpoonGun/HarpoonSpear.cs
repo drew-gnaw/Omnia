@@ -163,6 +163,8 @@ public class HarpoonSpear : MonoBehaviour {
 
         TaggedEnemy = enemy;
         AttachToRigidBody(TaggedEnemy.GetComponent<Rigidbody2D>());
+
+        DoDamage();
     }
 
     private void DoDamage() {
