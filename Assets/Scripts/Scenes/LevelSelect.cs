@@ -1,6 +1,7 @@
 using System.Collections;
 using Background;
 using Initializers;
+using Players;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -16,11 +17,16 @@ namespace Scenes {
         private Image[] dustImages;
 
         private void Start() {
+            PlayerDataManager.Instance.warpedDepthsProgress = 0;
             dustImages = dustParent.GetComponentsInChildren<Image>();
 
             foreach (var img in dustImages) {
                 img.gameObject.AddComponent<FloatingImage>();
             }
+
+            DisablePersistentSingletons.DisableHUD();
+            DisablePersistentSingletons.DisableInventory();
+            DisablePersistentSingletons.DisablePause();
         }
 
         public void Back() {

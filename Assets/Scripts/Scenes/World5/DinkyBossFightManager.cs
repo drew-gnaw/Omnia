@@ -2,12 +2,18 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
+using Utils;
 
 public class DinkyBossFightManager : MonoBehaviour {
     [SerializeField] private BobbingBehaviour dinkyBoss;
     [SerializeField] private HealthBar bossHealth;
     [SerializeField] private DinkyBossFightTanks dinkyBossfightTanks;
+
+    [SerializeField] DialogueWrapper afterwordDialogue;
+    [SerializeField] SpriteRenderer lighting;
+    [SerializeField] SpriteRenderer uncle;
 
     [Serializable]
     public struct DinkyBossFightTanks {
@@ -69,7 +75,7 @@ public class DinkyBossFightManager : MonoBehaviour {
 
     public void Start() {
         StartFight();
-        AudioManager.Instance.SwitchBGM(AudioTracks.TrialBySteel);
+        AudioManager.Instance.PlayBGM(AudioTracks.TrialBySteel);
     }
 
     public void StartFight() {
@@ -92,6 +98,23 @@ public class DinkyBossFightManager : MonoBehaviour {
         dinkyBossfightTanks.GetAllTanks().ForEach(tank => tank.Break());
         dinkyBoss.ShouldBob = false;
         bossHealth.AnimateFadeOut();
+        StartCoroutine(StartAfterScene());
+    }
+
+    private IEnumerator StartAfterScene() {
+        yield return new WaitForSeconds(2f);
+
+        AudioManager.Instance.SwitchBGM(AudioTracks.UnclesTheme);
+        StartCoroutine(FadeHelpers.FadeSpriteRenderer(lighting, lighting.color.a, 0, 1.5f));
+        yield return StartCoroutine(FadeHelpers.FadeSpriteRendererColor(uncle, uncle.color, new Color(1,1,1), 1.5f));
+
+        yield return new WaitForSeconds(1f);
+
+        yield return DialogueManager.Instance.StartDialogue(afterwordDialogue.Dialogue);
+
+        yield return new WaitForSeconds(0.5f);
+
+        LevelManager.Instance.NextLevel();
     }
 
     private void IncrementProgress(Tank tank) {

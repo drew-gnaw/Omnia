@@ -15,7 +15,7 @@ namespace UI {
         [SerializeField] internal int take;
         [SerializeField] internal float step;
         [SerializeField] internal float interval;
-
+        [SerializeField] internal bool repeat = true;
         [SerializeField] internal Transform debugTransform;
 
         private Coroutine co;
@@ -26,7 +26,7 @@ namespace UI {
         }
 
         private IEnumerator DoPathHint(Transform target) {
-            while (this) {
+            do {
                 foreach (var next in Pathfinder.FindPath(player.rb.worldCenterOfMass, target.position).Where((_, i) => i % skip == skip - 1).Take(take)) {
                     Instantiate(pathHint, next, Quaternion.Euler(0, 0, Random.Range(0, 360)));
                     yield return new WaitForSeconds(step);
@@ -34,6 +34,7 @@ namespace UI {
 
                 yield return new WaitForSeconds(interval);
             }
+            while (repeat);
         }
 
         private void SetTarget(Transform target) {

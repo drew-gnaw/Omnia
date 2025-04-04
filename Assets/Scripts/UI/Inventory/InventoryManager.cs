@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEngine.SceneManagement;
 using Utils;
 
 public class InventoryManager : PersistentSingleton<InventoryManager> {
@@ -19,6 +20,17 @@ public class InventoryManager : PersistentSingleton<InventoryManager> {
     public bool IsInventoryOpen { get; private set; }
 
     protected override void OnAwake() {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDestroy() {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+        CloseInventory();
+        InitializeTrinketSlots();
+        EquipDisplay.color = new Color(1, 1, 1, 0);
     }
 
     private void Start() {

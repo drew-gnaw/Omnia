@@ -1,16 +1,19 @@
 using System;
 using System.Collections.Generic;
+using Scenes;
 
 public enum LevelType {
     Normal,
     Elite,
     Secret,
+    Custom,
     Other
 }
 
 public abstract class LevelData : Enum<LevelData> {
     public abstract string PlainName { get; }
     public abstract string SceneName { get; }
+    public virtual string SoundTrack { get; } = "";
 
     public abstract LevelType Type { get; }
     public abstract LevelData NextLevel { get; }
@@ -251,7 +254,8 @@ public class Level_4_B : LevelData {
 public class Level_4_S : LevelData {
     public override string PlainName => "Level 4-S";
     public override string SceneName => "W-4-S";
-    public override LevelType Type => LevelType.Secret;
+    public override LevelType Type => LevelType.Custom;
+    public override string SoundTrack => AudioTracks.JamiesTheme;
     public override LevelData NextLevel => Get<Level_B_1>();
     public override LevelData PrevLevel => Get<Level_4_B>();
 }
@@ -275,7 +279,8 @@ public class Level_B_2 : LevelData {
 public class Level_B_3 : LevelData {
     public override string PlainName => "Level B-3";
     public override string SceneName => "W-B-3";
-    public override LevelType Type => LevelType.Other;
+    public override LevelType Type => LevelType.Custom;
+    public override string SoundTrack => AudioTracks.SunkBeneath;
     public override LevelData NextLevel => Get<Level_B_B>();
     public override LevelData PrevLevel => Get<Level_B_2>();
 }
@@ -285,6 +290,65 @@ public class Level_B_B : LevelData {
     public override string PlainName => "Boss Level";
     public override string SceneName => "W-B-B";
     public override LevelType Type => LevelType.Other;
-    public override LevelData NextLevel => Get<Level_B_B>();
-    public override LevelData PrevLevel => Get<Level_B_1>();
+    public override LevelData NextLevel => Get<Level_B_E>();
+    public override LevelData PrevLevel => Get<Level_B_3>();
+}
+
+public class Level_B_E : LevelData {
+    public override string PlainName => "Epilogue";
+    public override string SceneName => "W-B-E";
+    public override LevelType Type => LevelType.Other;
+    public override LevelData NextLevel => Get<Level_Credits>();
+    public override LevelData PrevLevel => Get<Level_B_B>();
+}
+
+public class Level_Credits : LevelData {
+    public override string PlainName => "Credits";
+    public override string SceneName => "Credits";
+    public override LevelType Type => LevelType.Other;
+    public override LevelData NextLevel => Get<Title>();
+    public override LevelData PrevLevel => Get<Level_B_E>();
+}
+
+// --------- DESCENT MODE --------- //
+
+public class Level_Select : LevelData {
+    public override string PlainName => "Level Select";
+    public override string SceneName => "LevelSelect";
+    public override LevelType Type => LevelType.Other;
+    public override LevelData NextLevel => Get<Opening>();
+    public override LevelData PrevLevel => Get<Title>();
+}
+
+
+public class Warped_Depths : LevelData {
+    public override string PlainName => "Warped Depths";
+    public override string SceneName => "WarpedDepths";
+    public override LevelType Type => LevelType.Other;
+    public override LevelData NextLevel => Get<Fragment_Selection>();
+    public override LevelData PrevLevel => Get<Title>();
+}
+
+public class Fragment_Selection : LevelData {
+    public override string PlainName => "Fragment Selection";
+    public override string SceneName => "FragmentSelection";
+    public override LevelType Type => LevelType.Other;
+    public override LevelData NextLevel => Get<Level_1>();
+    public override LevelData PrevLevel => Get<Level_1>();
+}
+
+public class Level_1 : LevelData {
+    public override string PlainName => "Level 1";
+    public override string SceneName => "Level 1";
+    public override LevelType Type => LevelType.Normal;
+    public override LevelData NextLevel => Get<Fragment_Selection>();
+    public override LevelData PrevLevel => Get<Fragment_Selection>();
+}
+
+public class ResultsScreen : LevelData {
+    public override string PlainName => "Results";
+    public override string SceneName => "Results";
+    public override LevelType Type => LevelType.Other;
+    public override LevelData NextLevel => Get<Fragment_Selection>();
+    public override LevelData PrevLevel => Get<Title>();
 }

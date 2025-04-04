@@ -1,3 +1,4 @@
+using Enemies.Armadillo;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -49,6 +50,7 @@ namespace Scenes.World5 {
             }
 
             yield return new WaitForSeconds(3f);
+            HUDManager.Instance.gameObject.SetActive(true);
             LevelManager.Instance.NextLevel();
 
         }

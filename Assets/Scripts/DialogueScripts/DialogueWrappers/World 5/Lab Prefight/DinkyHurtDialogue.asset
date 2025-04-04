@@ -19,17 +19,26 @@ MonoBehaviour:
     highlightedWords: []
     shadow: 0
     broadcastAnEvent: 0
-  - bodyText: Unexpected levels of Waste concentration detected. Please remove object.
+  - bodyText: Unexpected levels of Waste concentration detected, initiating hyper-cleaning
+      protocol.
     speakerName: Machine
     displayingImage: {fileID: 0}
     highlightedWords: []
     shadow: 0
     broadcastAnEvent: 0
-  - bodyText: "What?! His Waste\u2026 it\u2019s giving the machine power! He won\u2019t
-      last long like this. Jamie! Destroy the tanks! They\u2019re connected to the
-      main power source!\n"
+  - bodyText: "What?! His Waste\u2026 it seems to be making the machine act on its
+      own! Jamie! Cover me as I work on shutting off the machine."
     speakerName: Uncle
     displayingImage: {fileID: 21300000, guid: b9960c2a9c079824b9837bbe9e91bc9a, type: 3}
     highlightedWords: []
+    shadow: 0
+    broadcastAnEvent: 0
+  - bodyText: 'Pull the kill switch levers on any tanks that may activate! That should
+      help short circuit the machine and stop any monsters from escaping! '
+    speakerName: Uncle
+    displayingImage: {fileID: 21300000, guid: b9960c2a9c079824b9837bbe9e91bc9a, type: 3}
+    highlightedWords:
+    - Pull the kill switches
+    - activate
     shadow: 0
     broadcastAnEvent: 0

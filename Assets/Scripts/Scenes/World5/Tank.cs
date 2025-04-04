@@ -7,11 +7,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Tank : MonoBehaviour {
-    private enum TankState { Inactive, Active, Broken }
+    private enum TankState { Off, On, Deactivated, Actived, Broken }
     [SerializeField] private Sprite crackedTank;
     [SerializeField] private Sprite normalTank;
     [SerializeField] private Sprite brokenTank;
+    [SerializeField] private Sprite deactivatedTank;
     [SerializeField] private Sprite crackedDeactivatedTank;
+    [SerializeField] private SpriteRenderer containedSpecimen;
+    [SerializeField] private SpriteRenderer transparentOverlay;
+    [SerializeField] private SpriteRenderer crossFadeRenderer;
+    [SerializeField] private CrossFade crossFade;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private InterfaceReference<IProgress> lever;
     [SerializeField] private Spawnball spawnball;
@@ -20,8 +25,9 @@ public class Tank : MonoBehaviour {
     [SerializeField] private List<TransformInfo> spawnLocations;
     private IProgress progressLever;
 
+
 #nullable enable
-    private TankState State { get; set; } = TankState.Inactive;
+    private TankState State { get; set; } = TankState.Deactivated;
     public static event TankDelegate? TankDeactivated;
     public static event TankDelegate? TankActivated;
     public delegate void TankDelegate(Tank thank);
@@ -47,7 +53,7 @@ public class Tank : MonoBehaviour {
 
     public void Activate() {
         Shake();
-        PerformTransition(TankState.Active);
+        PerformTransition(TankState.Actived);
         spawner.IsActive = true;
         spawner.TrySpawn();
         TankActivated?.Invoke(this);
@@ -57,10 +63,28 @@ public class Tank : MonoBehaviour {
         Shake(3, 1f);
         PerformTransition(TankState.Broken);
         spawner.IsActive = false;
+        containedSpecimen.gameObject.SetActive(false);
         KillAllChildren();
     }
 
-    public bool IsInactive() => State == TankState.Inactive;
+    public void TurnOff() {
+        PerformTransition(TankState.Off);
+        spawner.IsActive = false;
+    }
+
+    public void FadeOn() {
+        PerformTransition(TankState.On, doCrossFade: true);
+        spawner.IsActive = false;
+    }
+
+    public void Deactivate() {
+        Shake();
+        PerformTransition(TankState.Deactivated);
+        spawner.IsActive = false;
+        TankDeactivated?.Invoke(this);
+    }
+
+    public bool IsInactive() => State == TankState.Deactivated;
 
     private void KillAllChildren() {
         spawner.KillAllChildren();
@@ -68,11 +92,8 @@ public class Tank : MonoBehaviour {
     }
 
     private void HandleShutoff(IProgress progress) {
-        if (progress != null && Mathf.Approximately(progress.Progress, 1f) && State == TankState.Active) {
-            Shake();
-            PerformTransition(TankState.Inactive);
-            spawner.IsActive = false;
-            TankDeactivated?.Invoke(this);
+        if (progress != null && Mathf.Approximately(progress.Progress, 1f) && State == TankState.Actived) {
+            Deactivate();
         }
     }
 
@@ -118,23 +139,30 @@ public class Tank : MonoBehaviour {
         return inactiveSpawnLocations[UnityEngine.Random.Range(0, inactiveSpawnLocations.Count)];
     }
 
-    private void PerformTransition(TankState state) {
+    private void PerformTransition(TankState state, bool doCrossFade = false) {
         State = state;
-        StartCoroutine(CrossFade(GetSpriteForState(state)));
+        StartCoroutine(SetSprites(GetSpriteForState(state), doCrossFade));
     }
 
     private Sprite GetSpriteForState(TankState state) {
         return state switch {
-            TankState.Active => crackedTank,
-            TankState.Inactive => crackedDeactivatedTank,
+            TankState.On => normalTank,
+            TankState.Off => deactivatedTank,
+            TankState.Actived => crackedTank,
+            TankState.Deactivated => crackedDeactivatedTank,
             TankState.Broken => brokenTank,
             _ => normalTank,
         };
     }
 
-    private IEnumerator CrossFade(Sprite sprite) {
-        spriteRenderer.sprite = sprite;
-        //TODO make pretty
+    private IEnumerator SetSprites(Sprite sprite, bool doCrossFade = false) {
+        if (doCrossFade) {
+            crossFade.StartCrossFadeBackground(new CrossFade.CrossFadeRenderers(frontRenderer: new() { spriteRenderer }, backRenderer: crossFadeRenderer), sprite);
+        } else {
+            spriteRenderer.sprite = sprite;
+            transparentOverlay.sprite = sprite;
+        }
+
         yield return null;
     }
 

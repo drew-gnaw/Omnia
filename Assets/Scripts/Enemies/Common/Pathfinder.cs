@@ -32,6 +32,10 @@ namespace Enemies.Common {
             }
         }
 
+        public void UpdateTilemap() {
+            OnAwake();
+        }
+
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
             OnAwake();
         }

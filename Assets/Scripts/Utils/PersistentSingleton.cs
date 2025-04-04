@@ -8,7 +8,7 @@ namespace Utils {
      */
     public abstract class PersistentSingleton<T> : MonoBehaviour where T : Component {
         private static T _singleton;
-        public static T Instance => _singleton ??= GetOrCreateSelf();
+        public static T Instance => _singleton;
 
         [Tooltip("This object re-parents itself to the root of the scene hierarchy.")] //
         [SerializeField]

@@ -15,7 +15,9 @@ public class TrinketSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void Initialize() {
         iconImage = GetComponent<Image>();
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        player = GameObject.FindGameObjectWithTag("Player")?.GetComponent<Player>();
+
+        if (player == null) return;
 
         RefreshSlot(); // Set initial state
 
