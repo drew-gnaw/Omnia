@@ -59,6 +59,23 @@ namespace Players.Buff {
             Destroy(buffInstance.gameObject);
         }
 
+        public void ClearAllBuffs() {
+            if (activeBuffs.Count == 0) {
+                Debug.Log("No active buffs to clear.");
+                return;
+            }
+
+            Debug.Log("Clearing all active buffs.");
+
+            foreach (Buff buff in activeBuffs) {
+                buff.RevokeBuff();
+                Destroy(buff.gameObject);
+            }
+
+            activeBuffs.Clear();
+        }
+
+
         // Required because the player was destroyed and reinstantiated on scene load, losing buff properties.
         public void ReapplyBuffs() {
             foreach (Buff buff in activeBuffs) {

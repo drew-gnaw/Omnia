@@ -17,7 +17,7 @@ namespace Scenes {
 
         private Image[] dustImages;
 
-        private void Start() {
+        protected void Start() {
             fadeScreen.SetLightScreen();
             dustImages = dustParent.GetComponentsInChildren<Image>();
 

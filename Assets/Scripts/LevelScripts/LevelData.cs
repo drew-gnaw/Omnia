@@ -344,3 +344,11 @@ public class Level_1 : LevelData {
     public override LevelData NextLevel => Get<Fragment_Selection>();
     public override LevelData PrevLevel => Get<Fragment_Selection>();
 }
+
+public class ResultsScreen : LevelData {
+    public override string PlainName => "Results";
+    public override string SceneName => "Results";
+    public override LevelType Type => LevelType.Other;
+    public override LevelData NextLevel => Get<Fragment_Selection>();
+    public override LevelData PrevLevel => Get<Title>();
+}

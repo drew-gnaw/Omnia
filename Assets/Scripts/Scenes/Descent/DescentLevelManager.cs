@@ -16,7 +16,8 @@ namespace Scenes.Descent {
         }
 
         private void EndRun() {
-            LevelManager.Instance.CustomLevel(new Warped_Depths());
+            BuffManager.Instance.ClearAllBuffs();
+            LevelManager.Instance.CustomLevel(new ResultsScreen());
         }
     }
 }
