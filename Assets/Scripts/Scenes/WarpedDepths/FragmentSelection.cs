@@ -30,8 +30,11 @@ namespace Scenes {
             DisablePersistentSingletons.DisableInventory();
             DisablePersistentSingletons.DisablePause();
 
-            FragmentChoice[] choices = FindObjectsOfType<FragmentChoice>();
+            RandomFragments();
+        }
 
+        private void RandomFragments() {
+            FragmentChoice[] choices = FindObjectsOfType<FragmentChoice>();
             List<Fragment> fragmentOptions = BuffManager.Instance.GetRandomizedFragments(choices.Length);
 
             int count = Mathf.Min(choices.Length, fragmentOptions.Count);
@@ -39,12 +42,20 @@ namespace Scenes {
             for (int i = 0; i < count; i++) {
                 choices[i].SetFragment(fragmentOptions[i]);
             }
-
         }
 
         public void StartLevel() {
             LevelManager.Instance.NextLevel();
         }
+
+        #if UNITY_EDITOR
+        private void Update() {
+            if (Input.GetKeyDown(KeyCode.Escape)) {
+                RandomFragments();
+            }
+        }
+
+        #endif
 
     }
 

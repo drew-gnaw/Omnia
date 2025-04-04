@@ -44,7 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69246c2888c14243836694571f6c46ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextFragments: []
+  nextFragments:
+  - {fileID: 8508480822382541823, guid: 1ec8014489e61ad48beb206aa8a3df75, type: 3}
   fragmentName: Instinct
   description: Gain a 20% chance to do a critical strike.
   critChanceBoost: 0.2
