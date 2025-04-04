@@ -31,6 +31,7 @@ namespace Players.Fragments {
         }
 
         public override void ApplyBuff() {
+            base.ApplyBuff();
             OnDamageTaken.AddLast(Explode);
         }
 
