@@ -1,59 +1,101 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Enemies.Common;
-using System.Linq;
 using Enemies;
 using Players;
 
 public class PurpleArrow : MonoBehaviour {
-    [SerializeField] private float speed = 5f;
-    [SerializeField] private float nodeThreshold = 0.1f;
-    [SerializeField] private float pathRecalculationInterval = 0.2f;
-    private List<Vector3> path;
-    private int currentIndex = 0;
-    private Coroutine pathRecalculationCoroutine;
+    [SerializeField] private float turnSpeed = 180f;
+    [SerializeField] private float initialSpeed = 8f;
+    [SerializeField] private float minSpeed = 1f;
+    [SerializeField] private float maxSpeed = 12f;
+    [SerializeField] private float deceleration = 8f;
+    [SerializeField] private float acceleration = 25f;
+
+    [SerializeField] private float angleThreshold = 5f; // degrees within target direction to start accelerating
+    [SerializeField] private float lifetime = 3f;
+
+    private float currentSpeed;
+    private bool isAccelerating = false;
+
+    private Vector3 targetPosition;
+    private Vector2 currentDirection;
     private Rigidbody2D rb;
-    private Enemy targetInstance;
+    private float damage;
 
-    public void Initialize(Enemy target) {
-        targetInstance = target;
+    [SerializeField] private ParticleSystem trailParticles;
+    [SerializeField] private GameObject impactParticlesPrefab;
+
+
+    public void Initialize(Vector3 targetPos, float damage) {
+        targetPosition = targetPos;
+        this.damage = damage;
         rb = GetComponent<Rigidbody2D>();
-        path = Pathfinder.FindPath(transform.position, targetInstance.transform.position);
-        currentIndex = 0;
-        pathRecalculationCoroutine = StartCoroutine(RecalculatePathRoutine());
+
+        // Start in completely random direction (360°)
+        float randomAngle = Random.Range(0f, 360f);
+        currentDirection = new Vector2(Mathf.Cos(randomAngle * Mathf.Deg2Rad), Mathf.Sin(randomAngle * Mathf.Deg2Rad)).normalized;
+
+        currentSpeed = initialSpeed;
+        rb.velocity = currentDirection * currentSpeed;
+        StartCoroutine(SelfDestruct());
     }
 
-    private void Update() {
-        if (path == null || currentIndex >= path.Count) return;
+    private void FixedUpdate() {
+        Vector2 toTarget = ((Vector2)targetPosition - rb.position).normalized;
+        float angle = Vector2.SignedAngle(currentDirection, toTarget);
 
-        Vector3 target = path[currentIndex];
-        Vector3 direction = (target - transform.position).normalized;
-        rb.velocity = direction * speed;
+        // Smooth rotation toward target
+        float rotateAmount = Mathf.Clamp(angle, -turnSpeed * Time.fixedDeltaTime, turnSpeed * Time.fixedDeltaTime);
+        currentDirection = Quaternion.Euler(0, 0, rotateAmount) * currentDirection;
+        currentDirection.Normalize();
 
-        transform.right = (target - transform.position).normalized;
-
-        if (Vector3.Distance(transform.position, target) < nodeThreshold) {
-            currentIndex++;
+        // Phase switch: accelerate once we're nearly aligned
+        if (!isAccelerating && Mathf.Abs(angle) < angleThreshold) {
+            isAccelerating = true;
         }
-    }
 
-    private IEnumerator RecalculatePathRoutine() {
-        while (targetInstance != null) {
-            path = Pathfinder.FindPath(transform.position, targetInstance.transform.position);
-            currentIndex = 0;
-            yield return new WaitForSeconds(pathRecalculationInterval);
+        if (isAccelerating) {
+            currentSpeed = Mathf.MoveTowards(currentSpeed, maxSpeed, acceleration * Time.fixedDeltaTime);
+        } else {
+            currentSpeed = Mathf.MoveTowards(currentSpeed, minSpeed, deceleration * Time.fixedDeltaTime);
         }
+
+        rb.velocity = currentDirection * currentSpeed;
+
+        float visualAngle = Mathf.Atan2(currentDirection.y, currentDirection.x) * Mathf.Rad2Deg;
+        rb.rotation = visualAngle;
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
-        Debug.Log(other.gameObject.name);
+        Enemy enemy = other.GetComponent<Enemy>();
+        if (enemy != null) {
+            Player player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+            enemy.Hurt(damage * player.damageMultiplier);
+
+            if (impactParticlesPrefab != null) {
+                GameObject burst = Instantiate(impactParticlesPrefab, transform.position, Quaternion.identity);
+                Destroy(burst, 1.5f);
+            }
+
+            DetachAndCleanupParticles();
+            Destroy(gameObject);
+        }
+    }
+
+
+    private IEnumerator SelfDestruct() {
+        yield return new WaitForSeconds(lifetime);
+        DetachAndCleanupParticles();
         Destroy(gameObject);
     }
 
-    private void OnDestroy() {
-        if (pathRecalculationCoroutine != null) {
-            StopCoroutine(pathRecalculationCoroutine);
+    private void DetachAndCleanupParticles() {
+        if (trailParticles != null) {
+            trailParticles.transform.parent = null;
+            trailParticles.Stop();
+
+            float duration = trailParticles.main.duration + trailParticles.main.startLifetime.constantMax;
+            Destroy(trailParticles.gameObject, duration);
         }
     }
 }

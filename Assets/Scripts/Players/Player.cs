@@ -202,7 +202,8 @@ namespace Players {
         private IBehaviour behaviour;
         private StateMachine animationStateMachine;
         internal bool lockGravity = false;
-        public Vector3 Center => transform.position + new Vector3(0, 1, 0);
+        public Vector3 Center => this ? transform.position + new Vector3(0, 1, 0) : Vector3.zero;
+
 
         public void Awake() {
             cam = Camera.main;

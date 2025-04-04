@@ -8,12 +8,11 @@ namespace Players.Fragments {
         public void SpawnArrow(float damage, Enemy target) {
             if (target == null) return;
 
-            Vector2 offset = Random.insideUnitCircle.normalized * 1f;
-            Vector3 spawnPos = player.Center + (Vector3)offset;
+            Vector3 spawnPos = player.Center;
 
             GameObject arrow = Instantiate(purpleArrowPrefab, spawnPos, Quaternion.identity);
             PurpleArrow arrowScript = arrow.GetComponent<PurpleArrow>();
-            arrowScript.Initialize(target);
+            arrowScript.Initialize(target.transform.position, damage);
         }
 
         public override void ApplyBuff() {
