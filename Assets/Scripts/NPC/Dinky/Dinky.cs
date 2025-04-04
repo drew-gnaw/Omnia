@@ -20,13 +20,24 @@ namespace NPC.Dinky {
         public static readonly int IdleTrigger = Animator.StringToHash("Idle");
         public static readonly int WalkTrigger = Animator.StringToHash("Walk");
 
+        public static readonly int BrownWalkTrigger = Animator.StringToHash("BrownWalk");
+        public static readonly int BrownIdleTrigger = Animator.StringToHash("BrownIdle");
+        public static readonly int BrownDisappearTrigger = Animator.StringToHash("BrownBurrow");
+
         public static event Action OnInteract;
         private Coroutine walkCoroutine;
+
+        private bool brownMode;
 
         private void Awake() {
             if (!animator && graphics) {
                 animator = graphics.GetComponent<Animator>();
             }
+        }
+
+        public void TurnBrown(bool brown) {
+            brownMode = brown;
+            animator.SetTrigger(BrownIdleTrigger);
         }
 
         public void Appear(Transform t) {
@@ -41,7 +52,19 @@ namespace NPC.Dinky {
             if (!animator) return;
 
             interactable?.SetEnable(false);
-            animator.SetTrigger(DisappearTrigger);
+
+            if (brownMode) {
+                animator.SetTrigger(BrownDisappearTrigger);
+            } else {
+                animator.SetTrigger(DisappearTrigger);
+            }
+            StartCoroutine(WaitForAnimation());
+        }
+
+        private IEnumerator WaitForAnimation() {
+            AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+            yield return new WaitForSeconds(stateInfo.length); // Wait for the animation duration
+            gameObject.SetActive(false);
         }
 
         public void Interact() {
@@ -64,7 +87,11 @@ namespace NPC.Dinky {
         private IEnumerator WalkRoutine(float distance, float speed) {
             if (!animator) yield break;
 
-            animator.SetTrigger(WalkTrigger);
+            if (brownMode) {
+                animator.SetTrigger(BrownWalkTrigger);
+            } else {
+                animator.SetTrigger(WalkTrigger);
+            }
 
             float startX = transform.position.x;
             float targetX = startX + distance;
@@ -81,7 +108,12 @@ namespace NPC.Dinky {
             }
 
             transform.position = new Vector3(targetX, transform.position.y, transform.position.z);
-            animator.SetTrigger(IdleTrigger);
+
+            if (brownMode) {
+                animator.SetTrigger(BrownIdleTrigger);
+            } else {
+                animator.SetTrigger(IdleTrigger);
+            }
         }
 
 

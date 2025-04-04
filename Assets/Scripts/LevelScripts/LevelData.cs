@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Scenes;
 
 public enum LevelType {
     Normal,
@@ -307,4 +308,47 @@ public class Level_Credits : LevelData {
     public override LevelType Type => LevelType.Other;
     public override LevelData NextLevel => Get<Title>();
     public override LevelData PrevLevel => Get<Level_B_E>();
+}
+
+// --------- DESCENT MODE --------- //
+
+public class Level_Select : LevelData {
+    public override string PlainName => "Level Select";
+    public override string SceneName => "LevelSelect";
+    public override LevelType Type => LevelType.Other;
+    public override LevelData NextLevel => Get<Opening>();
+    public override LevelData PrevLevel => Get<Title>();
+}
+
+
+public class Warped_Depths : LevelData {
+    public override string PlainName => "Warped Depths";
+    public override string SceneName => "WarpedDepths";
+    public override LevelType Type => LevelType.Other;
+    public override LevelData NextLevel => Get<Fragment_Selection>();
+    public override LevelData PrevLevel => Get<Title>();
+}
+
+public class Fragment_Selection : LevelData {
+    public override string PlainName => "Fragment Selection";
+    public override string SceneName => "FragmentSelection";
+    public override LevelType Type => LevelType.Other;
+    public override LevelData NextLevel => Get<Level_1>();
+    public override LevelData PrevLevel => Get<Level_1>();
+}
+
+public class Level_1 : LevelData {
+    public override string PlainName => "Level 1";
+    public override string SceneName => "Level 1";
+    public override LevelType Type => LevelType.Normal;
+    public override LevelData NextLevel => Get<Fragment_Selection>();
+    public override LevelData PrevLevel => Get<Fragment_Selection>();
+}
+
+public class ResultsScreen : LevelData {
+    public override string PlainName => "Results";
+    public override string SceneName => "Results";
+    public override LevelType Type => LevelType.Other;
+    public override LevelData NextLevel => Get<Fragment_Selection>();
+    public override LevelData PrevLevel => Get<Title>();
 }

@@ -10,10 +10,13 @@ namespace Players {
 
         [SerializeField] private Trinket[] trinkets;
 
+        public int warpedDepthsProgress;
+
         public void Start() {
             foreach (Trinket trinket in trinkets) {
                 trinket.IsLocked = !devMode;
             }
+            warpedDepthsProgress = 0;
         }
 
         public int playerSelectedWeapon = 0;
@@ -29,9 +32,7 @@ namespace Players {
         // Trinket data
 
         public void AddTrinket(Trinket trinket) {
-            Debug.Log("Searching for: " + trinket.name);
             foreach (var t in trinkets) {
-                Debug.Log(t.name);
                 if (t.trinketName == trinket.trinketName) {
                     t.IsLocked = false;
                     return;
@@ -46,11 +47,5 @@ namespace Players {
         public void HandleWeaponChange(int targetWeapon) {
             playerSelectedWeapon = targetWeapon;
         }
-
-
-
-
-
-
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using Background;
 using Initializers;
+using Players;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -50,6 +51,7 @@ namespace Scenes {
         }
 
         private void Start() {
+            PlayerDataManager.Instance.warpedDepthsProgress = 0;
             dustImages = dustParent.GetComponentsInChildren<Image>();
 
             foreach (var img in dustImages) {
@@ -82,6 +84,10 @@ namespace Scenes {
 
         public void GoToLevelSelect() {
             SceneManager.LoadScene("LevelSelect");
+        }
+
+        public void GoToWarpedDepths() {
+            SceneManager.LoadScene("WarpedDepths");
         }
 
         private IEnumerator StartGameSequence() {
