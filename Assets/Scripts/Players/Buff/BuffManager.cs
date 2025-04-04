@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Players.Fragments;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Utils;
@@ -9,16 +10,21 @@ namespace Players.Buff {
     public class BuffManager : PersistentSingleton<BuffManager> {
         private Player player;
         private List<Buff> activeBuffs = new List<Buff>();
-        [SerializeField] private List<Fragment> fragmentPool = new List<Fragment>();
+        [SerializeField] private List<Fragment> fragmentPoolSerialized = new List<Fragment>();
+
+        private HashSet<Fragment> fragmentPool = new HashSet<Fragment>();
+        private HashSet<Fragment> originalFragmentPool = new HashSet<Fragment>();
 
 
-        private List<Fragment> originalFragmentPool = new List<Fragment>();
+
 
 
         protected override void OnAwake() {
             player = GameObject.FindGameObjectWithTag("Player")?.GetComponent<Player>();
-            originalFragmentPool = new List<Fragment>(fragmentPool);
+            fragmentPool = new HashSet<Fragment>(fragmentPoolSerialized);
+            originalFragmentPool = new HashSet<Fragment>(fragmentPool);
         }
+
 
         private void OnEnable() {
             SceneManager.sceneLoaded += OnSceneLoaded;
@@ -90,13 +96,13 @@ namespace Players.Buff {
         }
 
         public void ResetFragmentPoolToOriginal() {
-            fragmentPool = new List<Fragment>(originalFragmentPool);
+            fragmentPool = new HashSet<Fragment>(originalFragmentPool);
             Debug.Log("Resetting fragment pool to original buffs.");
         }
 
         public void AddFragmentsToPool(List<Fragment> fragments) {
             if (fragments.Count > 0) {
-                fragmentPool.AddRange(fragments);
+                fragmentPool.UnionWith(fragments);
             }
         }
 
