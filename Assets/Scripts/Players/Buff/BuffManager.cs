@@ -107,6 +107,7 @@ namespace Players.Buff {
         }
 
         public void RemoveFragmentFromPool(Fragment fragment) {
+            Debug.Log("Trying to remove fragment " + fragment);
             if (fragmentPool.Contains(fragment)) {
                 fragmentPool.Remove(fragment);
                 Debug.Log($"Removed fragment {fragment.fragmentName} from the pool.");

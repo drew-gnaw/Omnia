@@ -12,5 +12,16 @@ namespace Players.Fragments {
             BuffManager.Instance.AddFragmentsToPool(nextFragments);
             BuffManager.Instance.RemoveFragmentFromPool(this);
         }
+
+        public override bool Equals(object obj) {
+            if (obj is Fragment otherFragment) {
+                return fragmentName == otherFragment.fragmentName;
+            }
+            return false;
+        }
+
+        public override int GetHashCode() {
+            return fragmentName.GetHashCode();
+        }
     }
 }
