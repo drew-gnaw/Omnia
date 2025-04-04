@@ -11,8 +11,13 @@ namespace Players.Buff {
         private List<Buff> activeBuffs = new List<Buff>();
         [SerializeField] private List<Fragment> fragmentPool = new List<Fragment>();
 
+
+        private List<Fragment> originalFragmentPool = new List<Fragment>();
+
+
         protected override void OnAwake() {
             player = GameObject.FindGameObjectWithTag("Player")?.GetComponent<Player>();
+            originalFragmentPool = new List<Fragment>(fragmentPool);
         }
 
         private void OnEnable() {
@@ -84,11 +89,24 @@ namespace Players.Buff {
             }
         }
 
+        public void ResetFragmentPoolToOriginal() {
+            fragmentPool = new List<Fragment>(originalFragmentPool);
+            Debug.Log("Resetting fragment pool to original buffs.");
+        }
+
         public void AddFragmentsToPool(List<Fragment> fragments) {
             if (fragments.Count > 0) {
                 fragmentPool.AddRange(fragments);
             }
         }
+
+        public void RemoveFragmentFromPool(Fragment fragment) {
+            if (fragmentPool.Contains(fragment)) {
+                fragmentPool.Remove(fragment);
+                Debug.Log($"Removed fragment {fragment.fragmentName} from the pool.");
+            }
+        }
+
 
         public List<Fragment> GetRandomizedFragments(int fragmentCount) {
             if (fragmentPool.Count == 0) {

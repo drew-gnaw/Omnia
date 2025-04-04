@@ -17,6 +17,7 @@ namespace Scenes.Descent {
 
         private void EndRun() {
             BuffManager.Instance.ClearAllBuffs();
+            BuffManager.Instance.ResetFragmentPoolToOriginal();
             LevelManager.Instance.CustomLevel(new ResultsScreen());
         }
     }

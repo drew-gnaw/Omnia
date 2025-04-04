@@ -10,6 +10,7 @@ namespace Players.Fragments {
 
         public override void ApplyBuff() {
             BuffManager.Instance.AddFragmentsToPool(nextFragments);
+            BuffManager.Instance.RemoveFragmentFromPool(this);
         }
     }
 }
