@@ -76,8 +76,8 @@ public class HarpoonSpear : MonoBehaviour {
         Vector2 difference = (player.Center - transform.position).normalized;
         TaggedEnemy.GetComponent<Rigidbody2D>().AddForce(difference * gun.pullPower);
         AudioManager.Instance.PlaySFX(AudioTracks.HarpoonRetract);
-        TaggedEnemy.GetComponent<Enemy>().Hurt(gun.damage);
-        player?.OnHit(gun.damage * gun.damageToFlowRatio);
+
+        DoDamage();
     }
 
     public void ReleaseHarpoonFromEnemy() {
@@ -163,13 +163,15 @@ public class HarpoonSpear : MonoBehaviour {
 
         TaggedEnemy = enemy;
         AttachToRigidBody(TaggedEnemy.GetComponent<Rigidbody2D>());
+    }
 
+    private void DoDamage() {
         bool isCrit = Random.Range(0f, 1f) < player.critChance;
-        TaggedEnemy.GetComponent<Enemy>().Hurt(
-            gun.damage * (isCrit ? player.critMultiplier : 1),
-            crit: isCrit);
 
-        player?.OnHit(gun.damage * gun.damageToFlowRatio);
+        float damageAmount = gun.damage * player.damageMultiplier * (isCrit ? player.critMultiplier : 1);
+        TaggedEnemy.GetComponent<Enemy>().Hurt(damageAmount, crit: isCrit);
+
+        player?.OnHit(damageAmount);
     }
 
     private void HandleSemisolidCollision(GameObject semi) {

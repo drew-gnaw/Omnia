@@ -98,6 +98,8 @@ namespace Players {
         [SerializeField] public float critChance;
         [SerializeField] public float critMultiplier;
 
+        public float damageMultiplier = 1;
+
         // disable user input if this is true.
         public static bool controlsLocked = false;
 
@@ -246,10 +248,10 @@ namespace Players {
             if (CurrentHealth == 0) Die();
         }
 
-        public void OnHit(float flowAmount) {
+        public void OnHit(float damage) {
             combatTimer.Start();
             if (!hasShotgun) return;
-            CurrentFlow = Mathf.Min(CurrentFlow + flowAmount, maximumFlow);
+            CurrentFlow = Mathf.Min(CurrentFlow + (damage / damageMultiplier) * WeaponClass.damageToFlowRatio, maximumFlow);
         }
 
         public void ConsumeAllFlow() {

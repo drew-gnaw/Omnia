@@ -163,7 +163,7 @@ public class Shotgun : WeaponClass {
                         damageAmount *= DamageDropOff(distance);
                     }
 
-                    damageAmount = Mathf.Max(damageAmount, 0);
+                    damageAmount = Mathf.Max(damageAmount, 0) * player.GetComponent<Player>().damageMultiplier;
 
                     bool isCrit = Random.Range(0f, 1f) < player.GetComponent<Player>().critChance;
                     if (isCrit) {
@@ -171,7 +171,7 @@ public class Shotgun : WeaponClass {
                     }
 
                     enemy.Hurt(damageAmount, crit: isCrit);
-                    playerScript.OnHit(damageAmount * damageToFlowRatio);
+                    playerScript.OnHit(damageAmount);
                 }
             }
         }
