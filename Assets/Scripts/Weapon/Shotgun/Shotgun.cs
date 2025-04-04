@@ -171,7 +171,7 @@ public class Shotgun : WeaponClass {
                     }
 
                     enemy.Hurt(damageAmount, crit: isCrit);
-                    playerScript.OnHit(damageAmount);
+                    playerScript.OnHit(damageAmount, enemy);
                 }
             }
         }

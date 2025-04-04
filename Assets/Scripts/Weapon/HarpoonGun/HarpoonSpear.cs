@@ -180,7 +180,7 @@ public class HarpoonSpear : MonoBehaviour {
         float damageAmount = gun.damage * player.damageMultiplier * (isCrit ? player.critMultiplier : 1);
         TaggedEnemy.GetComponent<Enemy>().Hurt(damageAmount, crit: isCrit);
 
-        player?.OnHit(damageAmount);
+        player?.OnHit(damageAmount, TaggedEnemy);
     }
 
     private void HandleSemisolidCollision(GameObject semi) {

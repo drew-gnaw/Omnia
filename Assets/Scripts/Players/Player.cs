@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Enemies;
 using Omnia.State;
 using Omnia.Utils;
 using Players.Animation;
@@ -297,7 +298,7 @@ namespace Players {
             if (CurrentHealth == 0) Die();
         }
 
-        public void OnHit(float damage) {
+        public void OnHit(float damage, Enemy enemy) {
             combatTimer.Start();
             if (!hasShotgun) return;
             CurrentFlow = Mathf.Min(CurrentFlow + (damage / damageMultiplier) * WeaponClass.damageToFlowRatio, maximumFlow);
