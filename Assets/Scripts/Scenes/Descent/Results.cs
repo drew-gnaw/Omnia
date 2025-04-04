@@ -16,6 +16,8 @@ namespace Scenes {
         protected void Start() {
             base.Start();
             resultText.text = $"{PlayerDataManager.Instance.warpedDepthsProgress}";
+
+            PlayerDataManager.Instance.warpedDepthsProgress = 0;
         }
     }
 
