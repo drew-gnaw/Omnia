@@ -70,7 +70,7 @@ public class PurpleArrow : MonoBehaviour {
         Enemy enemy = other.GetComponent<Enemy>();
         if (enemy != null) {
             Player player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
-            enemy.Hurt(damage * player.damageMultiplier);
+            enemy.Hurt(damage * player.damageMultiplier * Mathf.Clamp(player.critChance, 0.2f, 2f) * player.critMultiplier, crit: true);
 
             if (impactParticlesPrefab != null) {
                 GameObject burst = Instantiate(impactParticlesPrefab, transform.position, Quaternion.identity);
