@@ -1,9 +1,11 @@
+using System;
 using Unity.VisualScripting;
 using UnityEngine;
 using Enemies;
 using Omnia.Utils;
 using Players;
 using System.Collections;
+using Random = UnityEngine.Random;
 
 /*
     The projectile for HarpoonGun
@@ -31,6 +33,10 @@ public class HarpoonSpear : MonoBehaviour {
     public Transform PullTo { get; private set; }
 
     public bool IsCollectable => collectable;
+
+    public static bool CanPullToGround;
+
+    public static event Action<Transform> OnHitEnemy;
 
     public void Awake() {
         dropped = false;
@@ -165,6 +171,7 @@ public class HarpoonSpear : MonoBehaviour {
         AttachToRigidBody(TaggedEnemy.GetComponent<Rigidbody2D>());
 
         DoDamage();
+        OnHitEnemy?.Invoke(transform);
     }
 
     private void DoDamage() {
@@ -187,6 +194,9 @@ public class HarpoonSpear : MonoBehaviour {
     private void HandleGroundCollision(GameObject ground) {
         Freeze();
         AttachToRigidBody(ground.GetComponent<Rigidbody2D>());
+        if (CanPullToGround) {
+            PullTo = gameObject.transform;
+        }
         StartCooldown();
         StartHarpoonTimer();
     }
