@@ -147,6 +147,8 @@ namespace Players {
         // disable user input if this is true.
         public static bool controlsLocked = false;
 
+        public static bool knockbackImmune;
+
         private bool _healthBoosted;
 
         public bool HealthBoosted {
@@ -287,7 +289,9 @@ namespace Players {
             combatTimer.Start();
             CurrentHealth -= (int)damage;
             currentHurtInvulnerability = hurtInvulnerabilityTime;
-            UseExternalVelocity(velocity, lockout);
+            if (!knockbackImmune) {
+                UseExternalVelocity(velocity, lockout);
+            }
             StartCoroutine(DoHurtInvincibilityFlicker());
 
             if (CurrentHealth == 0) Die();
