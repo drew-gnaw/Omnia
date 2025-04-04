@@ -126,7 +126,7 @@ public class Shotgun : WeaponClass {
 
     private List<RaycastHit2D> PerformRayCasts() {
         Vector2 origin = transform.position;
-        float clampedBlastAngle = Mathf.Max(blastAngle, 0);
+        float clampedBlastAngle = Mathf.Max(blastAngle, 1);
 
         float halfAngle = clampedBlastAngle / 2;
         float angleStep = clampedBlastAngle / (subDivide - 1);
@@ -188,7 +188,7 @@ public class Shotgun : WeaponClass {
     private void HandleTracers() {
         Vector2 origin = barrelPosition.transform.position;
         for (int i = 0; i < subDivide; i++) {
-            float clampedBlastAngle = Mathf.Max(blastAngle, 0);
+            float clampedBlastAngle = Mathf.Max(blastAngle, 1);
 
             float randomAngle = MathUtils.RandomGaussian(-clampedBlastAngle / 2, clampedBlastAngle / 2);
             Vector2 direction = Quaternion.Euler(0, 0, randomAngle) * transform.right;

@@ -20,5 +20,15 @@ namespace Scenes.Descent {
             BuffManager.Instance.ResetFragmentPoolToOriginal();
             LevelManager.Instance.CustomLevel(new ResultsScreen());
         }
+
+        // for playtesting; allows "fishing" for certain fragments
+        #if UNITY_EDITOR
+        private void Update() {
+            if (Input.GetKeyDown(KeyCode.Escape)) {
+                PlayerDataManager.Instance.warpedDepthsProgress++;
+                LevelManager.Instance.NextLevel();
+            }
+        }
+        #endif
     }
 }

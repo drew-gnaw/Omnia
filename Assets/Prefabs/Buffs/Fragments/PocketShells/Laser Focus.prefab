@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1523410134929337208}
   - component: {fileID: 4668020448773337953}
   m_Layer: 0
-  m_Name: ScopedIn
+  m_Name: Laser Focus
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,6 +45,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nextFragments: []
-  fragmentName: Scoped In
-  description: Reduce the spread of the Scrap Gun.
+  fragmentName: Laser Focus
+  description: Reduce the spread even further. Shoots completely accurately.
   angleReduction: 20
