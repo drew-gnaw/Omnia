@@ -129,6 +129,8 @@ namespace Players {
         public static event Action<int> OnWeaponChanged;
         public static event Action<float> OnSkillCooldownUpdated;
 
+        public static event Action OnSkill;
+
         public static event Action<bool> OnBearEffectReady;
         private bool wasBearReady = false; // Track previous state
 
@@ -314,7 +316,10 @@ namespace Players {
             }
             if (!skill) return;
             skill = false;
-            if (weapons[selectedWeapon].UseSkill()) skillCooldownTimer.Start();
+            if (weapons[selectedWeapon].UseSkill()) {
+                skillCooldownTimer.Start();
+                OnSkill?.Invoke();
+            }
         }
 
         private void DoIntroSkill() {
