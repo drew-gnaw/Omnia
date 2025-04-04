@@ -122,6 +122,7 @@ namespace Players {
         }
 
         public void AddAdditiveBuff(float value) {
+            Debug.Log("Adding a buff with factor "+ value);
             additiveMultipliers.Add(value);
         }
 

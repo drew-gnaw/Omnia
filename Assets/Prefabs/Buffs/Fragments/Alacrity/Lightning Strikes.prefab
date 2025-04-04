@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &886742886748824601
+--- !u!1 &5951492580680739696
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4952238071796513806}
-  - component: {fileID: 5293423221939211821}
+  - component: {fileID: 3956530023963413342}
+  - component: {fileID: 3316637867347683732}
   m_Layer: 0
-  m_Name: Springloaded
+  m_Name: Lightning Strikes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4952238071796513806
+--- !u!4 &3956530023963413342
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 886742886748824601}
+  m_GameObject: {fileID: 5951492580680739696}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -32,20 +32,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5293423221939211821
+--- !u!114 &3316637867347683732
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 886742886748824601}
+  m_GameObject: {fileID: 5951492580680739696}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7cf52d97e7bb4ffcb00d48a907d16c0c, type: 3}
+  m_Script: {fileID: 11500000, guid: c7aaf9819f134c45b5a03df903301ccb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextFragments:
-  - {fileID: 3316637867347683732, guid: f3dbcdf1cf2fefe4c9657557e0038c8c, type: 3}
-  fragmentName: Springloaded
-  description: You can jump higher.
-  jumpBoost: 3
+  nextFragments: []
+  fragmentName: Lightning Strikes
+  description: You deal additional damage based on how fast you are moving.
+  damageMultiplierBuff: 2

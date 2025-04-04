@@ -10,9 +10,11 @@ namespace Players.Fragments {
         [SerializeField] private float damage;
 
         private GameObject[] orbitals;
+        private Player player;
 
         private void Start() {
             GenerateOrbitals();
+            player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         }
 
         private void Update() {
@@ -34,7 +36,7 @@ namespace Players.Fragments {
                 orbitals[i] = orbital;
                 Orbital o = orbital.GetComponent<Orbital>();
                 if (o != null) {
-                    o.damage = damage;
+                    o.damage = damage * player.damageMultiplier;
                 }
             }
         }

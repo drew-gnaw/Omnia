@@ -12,7 +12,8 @@ namespace Players.Fragments {
             if (rb == null || player == null) return;
 
             float speed = rb.velocity.magnitude;
-            float newBuffValue = speed * damageMultiplierBuff;
+            float newBuffValue = Mathf.Floor(speed / 5f) * damageMultiplierBuff;
+
 
             player.RemoveAdditiveBuff(currentBuffValue);
             player.AddAdditiveBuff(newBuffValue);
