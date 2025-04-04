@@ -13,6 +13,8 @@ namespace Players.Fragments {
         private float originalSpeed;
 
         private void SpinFaster() {
+            Debug.Log("spinning faster");
+            orbitObject = player.GetComponentInChildren<OrbitObject>();
             if (orbitObject == null) return;
 
             if (spinCoroutine != null) {
@@ -23,7 +25,6 @@ namespace Players.Fragments {
         }
 
         private IEnumerator SpinFasterCoroutine() {
-            originalSpeed = orbitObject.orbitSpeed;
             orbitObject.orbitSpeed = originalSpeed + increase;
 
             yield return new WaitForSeconds(duration);
@@ -42,6 +43,7 @@ namespace Players.Fragments {
             base.ApplyBuff();
             orbitObject = player.GetComponentInChildren<OrbitObject>();
             Player.OnSkill += SpinFaster;
+            originalSpeed = orbitObject.orbitSpeed;
 
         }
 
