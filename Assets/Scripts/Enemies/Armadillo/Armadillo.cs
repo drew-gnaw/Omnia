@@ -67,7 +67,7 @@ namespace Enemies.Armadillo {
         }
 
         public bool IsTargetDetected() {
-            List<RaycastHit2D> sweptCast = new (Sweep(rb.worldCenterOfMass, facing, 45, detectionRange, 5, player));
+            List<RaycastHit2D> sweptCast = new (Sweep(rb.worldCenterOfMass, facing, 45, detectionRange, 5, ground | player));
             RaycastHit2D sweepPlayer = sweptCast.Find(hit => IsOnLayer(hit, player));
 
             if (sweepPlayer) {
