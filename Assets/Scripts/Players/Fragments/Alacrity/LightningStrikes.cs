@@ -6,12 +6,19 @@ namespace Players.Fragments {
 
         private Rigidbody2D rb;
 
+        private float currentBuffValue;
+
         private void Update() {
             if (rb == null || player == null) return;
 
             float speed = rb.velocity.magnitude;
-            player.damageMultiplier += (speed * damageMultiplierBuff);
+            float newBuffValue = speed * damageMultiplierBuff;
+
+            player.RemoveAdditiveBuff(currentBuffValue);
+            player.AddAdditiveBuff(newBuffValue);
+            currentBuffValue = newBuffValue;
         }
+
 
         public override void ApplyBuff() {
             base.ApplyBuff();
@@ -19,7 +26,8 @@ namespace Players.Fragments {
         }
 
         public override void RevokeBuff() {
-            player.damageMultiplier -= damageMultiplierBuff;
+            player.RemoveAdditiveBuff(currentBuffValue);
+            currentBuffValue = 0f;
         }
     }
 }

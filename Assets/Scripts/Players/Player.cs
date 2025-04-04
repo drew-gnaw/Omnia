@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Omnia.State;
 using Omnia.Utils;
 using Players.Animation;
@@ -30,17 +31,20 @@ namespace Players {
 
         // health and flow are properties that broadcast an event whenever they are changed.
         private int _currentHealth;
+
         public int CurrentHealth {
             get => _currentHealth;
             set {
                 if (_currentHealth != value) {
-                    _currentHealth = Mathf.Clamp(value, 0, maximumHealth); ;
+                    _currentHealth = Mathf.Clamp(value, 0, maximumHealth);
+                    ;
                     OnHealthChanged?.Invoke(_currentHealth);
                 }
             }
         }
 
         private float _currentFlow;
+
         public float CurrentFlow {
             get => _currentFlow;
             set {
@@ -98,12 +102,52 @@ namespace Players {
         [SerializeField] public float critChance;
         [SerializeField] public float critMultiplier;
 
-        public float damageMultiplier = 1;
+        private List<float> additiveMultipliers = new List<float>();
+        private List<float> multiplicativeMultipliers = new List<float>();
+
+        public float BaseDamageMultiplier => 1f;
+
+        public float damageMultiplier {
+            get {
+                float sumAdd = 0f;
+                foreach (var val in additiveMultipliers)
+                    sumAdd += val;
+
+                float prodMul = 1f;
+                foreach (var val in multiplicativeMultipliers)
+                    prodMul *= val;
+
+                return (BaseDamageMultiplier + sumAdd) * prodMul;
+            }
+        }
+
+        public void AddAdditiveBuff(float value) {
+            additiveMultipliers.Add(value);
+        }
+
+        public void RemoveAdditiveBuff(float value) {
+            additiveMultipliers.Remove(value);
+        }
+
+        public void AddMultiplicativeBuff(float value) {
+            multiplicativeMultipliers.Add(value);
+        }
+
+        public void RemoveMultiplicativeBuff(float value) {
+            multiplicativeMultipliers.Remove(value);
+        }
+
+        public void ClearAllBuffs() {
+            additiveMultipliers.Clear();
+            multiplicativeMultipliers.Clear();
+        }
+
 
         // disable user input if this is true.
         public static bool controlsLocked = false;
 
         private bool _healthBoosted;
+
         public bool HealthBoosted {
             get => _healthBoosted;
             set {
@@ -240,7 +284,7 @@ namespace Players {
             AudioManager.Instance.PlayHurtSound();
 
             combatTimer.Start();
-            CurrentHealth -= (int) damage;
+            CurrentHealth -= (int)damage;
             currentHurtInvulnerability = hurtInvulnerabilityTime;
             UseExternalVelocity(velocity, lockout);
             StartCoroutine(DoHurtInvincibilityFlicker());
@@ -286,6 +330,7 @@ namespace Players {
             var control = 1 - currentLockout / maximumLockout;
             return MathUtils.Lerpish(rb.velocity.x, x, control * acceleration);
         }
+
         public void SetGravityLock(bool lockGravity, float gravity) {
             rb.gravityScale = gravity;
             this.lockGravity = lockGravity;
@@ -316,6 +361,7 @@ namespace Players {
                 OnSkillCooldownUpdated?.Invoke(skillCooldownTimer.Progress);
                 return;
             }
+
             if (!skill) return;
             skill = false;
             if (weapons[selectedWeapon].UseSkill()) {
