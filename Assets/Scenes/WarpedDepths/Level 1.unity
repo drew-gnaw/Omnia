@@ -1131,9 +1131,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerRb: {fileID: 1975500274}
-  fallVelocityThreshold: -5
+  fallVelocityThreshold: -10
   offsetYWhileFalling: -3
-  lerpSpeed: 3
+  lerpSpeed: 4
 --- !u!1 &1578684680
 GameObject:
   m_ObjectHideFlags: 0
