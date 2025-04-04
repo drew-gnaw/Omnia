@@ -688,8 +688,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 28.5, y: -46.4}
-  m_SizeDelta: {x: 130, y: 23.5}
+  m_AnchoredPosition: {x: 30.03, y: -46.4}
+  m_SizeDelta: {x: 153.01, y: 23.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &312909971
 MonoBehaviour:
@@ -748,10 +748,10 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 2
+  m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.3773585, g: 0.3773585, b: 0.3773585, a: 1}
+    m_HighlightedColor: {r: 0.7294118, g: 0.7294118, b: 0.7294118, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
@@ -775,7 +775,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1632812236}
         m_TargetAssemblyTypeName: Scenes.Title, Assembly-CSharp
-        m_MethodName: GoToLevelSelect
+        m_MethodName: GoToWarpedDepths
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1861,7 +1861,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -264.1, y: -146.3}
+  m_AnchoredPosition: {x: -264.1, y: -148.9}
   m_SizeDelta: {x: 415, y: 233}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &840928403

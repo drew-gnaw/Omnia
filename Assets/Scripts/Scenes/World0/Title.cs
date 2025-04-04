@@ -84,6 +84,10 @@ namespace Scenes {
             SceneManager.LoadScene("LevelSelect");
         }
 
+        public void GoToWarpedDepths() {
+            SceneManager.LoadScene("WarpedDepths");
+        }
+
         private IEnumerator StartGameSequence() {
             yield return StartCoroutine(fadeScreen.FadeInDarkScreen(2f));
             yield return new WaitForSeconds(1f);

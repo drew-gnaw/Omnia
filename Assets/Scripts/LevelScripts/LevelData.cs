@@ -326,7 +326,7 @@ public class Warped_Depths : LevelData {
     public override string SceneName => "WarpedDepths";
     public override LevelType Type => LevelType.Other;
     public override LevelData NextLevel => Get<Fragment_Selection>();
-    public override LevelData PrevLevel => Get<Level_Select>();
+    public override LevelData PrevLevel => Get<Title>();
 }
 
 public class Fragment_Selection : LevelData {
