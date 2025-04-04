@@ -37,7 +37,7 @@ namespace Enemies {
         public void Magnify(float factor) {
             maximumHealth *= factor;
             currentHealth *= factor;
-            attack = Mathf.Floor(attack * factor);
+            attack = Mathf.Floor((attack * factor)/2);
         }
 
 
