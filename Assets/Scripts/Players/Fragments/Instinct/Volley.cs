@@ -45,5 +45,9 @@ namespace Players.Fragments {
         public override void RevokeBuff() {
             Player.OnSkill -= SpawnArrows;
         }
+
+        void OnDisable() {
+            Player.OnSkill -= SpawnArrows;
+        }
     }
 }
