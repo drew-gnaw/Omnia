@@ -31,6 +31,7 @@ namespace Scenes {
             DisablePersistentSingletons.DisablePause();
 
             RandomFragments();
+            AudioManager.Instance.PlayBGM(AudioTracks.JamiesTheme);
         }
 
         private void RandomFragments() {
