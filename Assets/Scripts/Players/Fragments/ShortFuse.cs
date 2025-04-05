@@ -10,8 +10,6 @@ namespace Players.Fragments {
         [SerializeField] internal float knockbackForce;
         private float Explode(float incomingDamage) {
             Instantiate(explosion, player.Center, Quaternion.identity);
-            AudioManager.Instance.PlaySFX(AudioTracks.FlyBoom);
-
             Collider2D[] hits = Physics2D.OverlapCircleAll(player.Center, explosionRadius);
 
             foreach (var hit in hits) {
@@ -31,6 +29,7 @@ namespace Players.Fragments {
         }
 
         public override void ApplyBuff() {
+            base.ApplyBuff();
             OnDamageTaken.AddLast(Explode);
         }
 
