@@ -39,6 +39,7 @@ namespace Players.Buff {
             if (player == null) {
                 Debug.LogWarning("Player not found in the new scene.");
             }
+
             ReapplyBuffs();
         }
 
@@ -90,10 +91,15 @@ namespace Players.Buff {
         // Required because the player was destroyed and reinstantiated on scene load, losing buff properties.
         public void ReapplyBuffs() {
             foreach (Buff buff in activeBuffs) {
-                buff.Initialize(player);
-                buff.ApplyBuff();
+                buff.RevokeBuff(); // Unsubscribe events, remove stat effects, etc.
+            }
+
+            foreach (Buff buff in activeBuffs) {
+                buff.Initialize(player); // Re-assign player reference
+                buff.ApplyBuff();        // Resubscribe and reapply cleanly
             }
         }
+
 
         public void ResetFragmentPoolToOriginal() {
             fragmentPool = new HashSet<Fragment>(originalFragmentPool);
