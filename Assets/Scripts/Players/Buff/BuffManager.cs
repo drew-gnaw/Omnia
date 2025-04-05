@@ -90,11 +90,8 @@ namespace Players.Buff {
 
         // Required because the player was destroyed and reinstantiated on scene load, losing buff properties.
         public void ReapplyBuffs() {
-
-
             foreach (Buff buff in activeBuffs) {
-                buff.Initialize(player);
-                buff.RevokeBuff();
+                buff.RevokeBuff(); // Unsubscribe events, remove stat effects, etc.
             }
 
             foreach (Buff buff in activeBuffs) {
