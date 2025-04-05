@@ -314,6 +314,11 @@ namespace Players {
             }
         }
 
+        private void OnDestroy() {
+            OnEnemyHit = null;
+            OnSkill = null;
+        }
+
 
         public void Die() {
             Death?.Invoke();
